@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCA · Digital Transformation Proposal</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red:       #8B1A1A;
+    --red-dark:  #6B1414;
+    --white:     #FFFFFF;
+    --off-white: #F5F3F0;
+    --grey-light:#EBEBEB;
+    --grey-mid:  #999999;
+    --text:      #1A1A1A;
+    --text-light:#555555;
+    --fd: 'Barlow Condensed', sans-serif;
+    --fb: 'Barlow', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--fb); color: var(--text); background: #000; margin: 0; }
+
+  /* ── SLIDE CONTAINER: 16/9 viewport scroll ── */
+  .deck {
+    width: 100vw;
+  }
+
+  .slide {
+    width: 100vw;
+    height: 56.25vw; /* 16:9 */
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── NAV BAR (on every slide) ── */
+  .slide-nav {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 3.5vw;
+    height: 7vh;
+    background: rgba(255,255,255,0.96);
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .nav-logo {
+    display: flex; align-items: center; text-decoration: none;
+  }
+  .nav-logo img {
+    height: 4.8vh;
+    width: auto;
+    display: block;
+  }
+  .nav-tag {
+    font-family: var(--fd);
+    font-size: 0.7vw;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+  }
+  .nav-cta-btn {
+    font-family: var(--fd);
+    font-size: 0.7vw;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--red);
+    color: #fff;
+    border: none;
+    padding: 0.5vh 1.4vw;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  /* ── EYEBROW / LABEL ── */
+  .eyebrow {
+    font-family: var(--fd);
+    font-size: 0.75vw;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--red);
+    display: block;
+    margin-bottom: 0.8vh;
+  }
+  .eyebrow--light { color: rgba(255,255,255,0.45); }
+  .eyebrow--grey  { color: var(--grey-mid); }
+
+  /* ── BIG TITLE ── */
+  .slide-title {
+    font-family: var(--fd);
+    font-weight: 800;
+    line-height: 0.93;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    font-size: clamp(2rem, 5.5vw, 6vw);
+  }
+  .slide-title em { color: #A52020; font-style: normal; }
+
+  /* ── LEAD TEXT ── */
+  .slide-lead {
+    font-size: clamp(0.75rem, 1.1vw, 1.1vw);
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--text-light);
+  }
+  .slide-lead--light { color: rgba(255,255,255,0.65); }
+
+  /* ── BUTTONS ── */
+  .btn {
+    font-family: var(--fd);
+    font-size: 0.75vw;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 1vh 2vw;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    border: 2px solid transparent;
+  }
+  .btn-red  { background: var(--red); color: #fff; border-color: var(--red); }
+  .btn-red:hover { background: var(--red-dark); }
+  .btn-outline { background: transparent; color: #fff; border-color: rgba(255,255,255,0.55); }
+  .btn-outline:hover { border-color: #fff; }
+
+  /* ════════════════════════════════════════════
+     SLIDE 1 — COVER
+  ════════════════════════════════════════════ */
+  .s1 { background: var(--text); }
+  .s1-bg {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(105deg, rgba(26,26,26,0.88) 42%, rgba(139,26,26,0.30) 100%),
+      url('https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?w=1600&q=80') center/cover no-repeat;
+  }
+  .s1-content {
+    position: relative; z-index: 2;
+    padding: 12vh 6vw 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    flex: 1;
+  }
+  .s1-title {
+    font-family: var(--fd);
+    font-size: clamp(3rem, 8.5vw, 9vw);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 0.9;
+    color: #fff;
+    letter-spacing: -0.015em;
+  }
+  .s1-title em { color: #C0282A; font-style: normal; }
+  .s1-sub {
+    font-size: clamp(0.8rem, 1.15vw, 1.15vw);
+    font-weight: 300;
+    color: rgba(255,255,255,0.72);
+    line-height: 1.65;
+    max-width: 44vw;
+  }
+  .s1-actions { display: flex; gap: 1vw; margin-top: 1vh; }
+  .s1-meta {
+    position: absolute;
+    bottom: 3.5vh; right: 4vw;
+    font-family: var(--fd);
+    font-size: 0.7vw;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.28);
+    text-align: right;
+    line-height: 1.8;
+  }
+  /* TCA watermark */
+  .s1-watermark {
+    position: absolute;
+    bottom: -4vw; right: 2vw;
+    font-family: var(--fd);
+    font-size: 22vw;
+    font-weight: 800;
+    color: rgba(255,255,255,0.03);
+    line-height: 1;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* ════════════════════════════════════════════
+     SLIDE 2 — WHO I AM
+  ════════════════════════════════════════════ */
+  .s2 { background: var(--off-white); }
+  .s2-grid {
+    display: grid;
+    grid-template-columns: 38% 62%;
+    height: 100%;
+    margin-top: 7vh;
+  }
+  .s2-left {
+    background: var(--text);
+    padding: 5vh 3.5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2vh;
+  }
+  .s2-name {
+    font-family: var(--fd);
+    font-size: clamp(2.5rem, 5vw, 5.5vw);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 0.93;
+    color: #fff;
+  }
+  .s2-divider { width: 3.5vw; height: 3px; background: var(--red); }
+  .s2-tagline {
+    font-size: clamp(0.75rem, 1vw, 1vw);
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+  }
+  .s2-right {
+    padding: 3vh 3.5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.8vh;
+  }
+  .s2-card {
+    background: #fff;
+    border-left: 3px solid var(--red);
+    padding: 1.8vh 1.8vw;
+  }
+  .s2-card-label {
+    font-family: var(--fd);
+    font-size: 0.65vw;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 0.3vh;
+  }
+  .s2-card-title {
+    font-family: var(--fd);
+    font-size: 1.1vw;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.5vh;
+  }
+  .s2-card-text {
+    font-size: 0.82vw;
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.65;
+  }
+
+  /* ════════════════════════════════════════════
+     SLIDE 3 — OPPORTUNITY
+  ════════════════════════════════════════════ */
+  .s3 { background: var(--text); }
+  .s3-content {
+    margin-top: 7vh;
+    padding: 4vh 5vw;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .s3-header { margin-bottom: 3vh; }
+  .s3-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.08);
+    flex: 1;
+  }
+  .s3-card {
+    background: #1E2530;
+    padding: 3.5vh 2.2vw;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+  }
+  .s3-card--accent { background: var(--red); }
+  .s3-num {
+    font-family: var(--fd);
+    font-size: 3.5vw;
+    font-weight: 800;
+    line-height: 1;
+    color: rgba(255,255,255,0.08);
+  }
+  .s3-card-title {
+    font-family: var(--fd);
+    font-size: 1.2vw;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #fff;
+  }
+  .s3-card-text {
+    font-size: 0.82vw;
+    font-weight: 300;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+  }
+  .s3-card--accent .s3-card-text { color: rgba(255,255,255,0.8); }
+
+  /* ════════════════════════════════════════════
+     SLIDE 4 — THE MODEL
+  ════════════════════════════════════════════ */
+  .s4 { background: #fff; }
+  .s4-content {
+    margin-top: 7vh;
+    padding: 3.5vh 5vw;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .s4-header { margin-bottom: 2.5vh; }
+  .s4-subtitle {
+    font-size: 0.9vw;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text-light);
+    margin-top: 0.6vh;
+  }
+  .s4-pillars {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: var(--grey-light);
+    border: 1px solid var(--grey-light);
+    flex: 1;
+  }
+  .s4-card {
+    background: #fff;
+    padding: 2.5vh 1.5vw;
+    transition: background 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+  }
+  .s4-card:hover { background: var(--off-white); }
+  .s4-num {
+    font-family: var(--fd);
+    font-size: 2.5vw;
+    font-weight: 800;
+    color: var(--red);
+    line-height: 1;
+  }
+  .s4-line { width: 2vw; height: 2px; background: var(--grey-light); transition: background 0.2s; }
+  .s4-card:hover .s4-line { background: var(--red); }
+  .s4-title {
+    font-family: var(--fd);
+    font-size: 0.9vw;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.25;
+  }
+  .s4-text {
+    font-size: 0.75vw;
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.7;
+  }
+
+  /* ════════════════════════════════════════════
+     SLIDE 5 — UNFAIR ADVANTAGE
+  ════════════════════════════════════════════ */
+  .s5 { background: var(--off-white); }
+  .s5-content {
+    margin-top: 7vh;
+    padding: 3.5vh 5vw;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .s5-header { margin-bottom: 2.5vh; }
+  .s5-grid {
+    display: grid;
+    grid-template-columns: 1fr 3vw 1fr 1.15fr;
+    gap: 1.2vw;
+    align-items: stretch;
+    flex: 1;
+  }
+  .s5-bad {
+    background: #fff;
+    border: 1px solid var(--grey-light);
+    padding: 2.5vh 1.8vw;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2vh;
+  }
+  .s5-bad-tag {
+    font-family: var(--fd);
+    font-size: 0.65vw;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+  }
+  .s5-bad-title {
+    font-family: var(--fd);
+    font-size: 1.05vw;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-light);
+    line-height: 1.2;
+  }
+  .s5-bad-text {
+    font-size: 0.78vw;
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.7;
+  }
+  .s5-vs {
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--fd);
+    font-size: 1.4vw;
+    font-weight: 800;
+    color: var(--grey-light);
+  }
+  .s5-winner {
+    background: var(--red);
+    padding: 2.5vh 2vw;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2vh;
+  }
+  .s5-winner-tag {
+    font-family: var(--fd);
+    font-size: 0.65vw;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+  }
+  .s5-winner-title {
+    font-family: var(--fd);
+    font-size: 1.6vw;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #fff;
+    line-height: 1.1;
+  }
+  .s5-winner-text {
+    font-size: 0.78vw;
+    font-weight: 300;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.6;
+  }
+  .s5-points {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6vh;
+    margin-top: 0.5vh;
+  }
+  .s5-points li {
+    font-family: var(--fd);
+    font-size: 0.72vw;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.9);
+    padding-left: 0.8vw;
+    border-left: 2px solid rgba(255,255,255,0.35);
+  }
+
+  /* ════════════════════════════════════════════
+     SLIDE 6 — OUTCOMES
+  ════════════════════════════════════════════ */
+  .s6 { background: #fff; }
+  .s6-content {
+    margin-top: 7vh;
+    padding: 3.5vh 5vw;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .s6-header { margin-bottom: 2.5vh; }
+  .s6-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--grey-light);
+    border: 1px solid var(--grey-light);
+    flex: 1;
+  }
+  .s6-card {
+    background: #fff;
+    padding: 2.5vh 2.5vw;
+    display: flex;
+    gap: 2vw;
+    align-items: flex-start;
+  }
+  .s6-stat {
+    font-family: var(--fd);
+    font-size: 3.5vw;
+    font-weight: 800;
+    color: var(--red);
+    line-height: 1;
+    min-width: 3vw;
+    letter-spacing: -0.02em;
+  }
+  .s6-body { display: flex; flex-direction: column; gap: 0.4vh; }
+  .s6-kpi {
+    font-family: var(--fd);
+    font-size: 0.65vw;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+  }
+  .s6-title {
+    font-family: var(--fd);
+    font-size: 1.1vw;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .s6-text {
+    font-size: 0.78vw;
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.7;
+  }
+
+  /* ════════════════════════════════════════════
+     SLIDE 7 — CLOSING
+  ════════════════════════════════════════════ */
+  .s7 { background: var(--text); }
+  .s7-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #0D1520 0%, #1A1A1A 60%, rgba(139,26,26,0.15) 100%);
+  }
+  .s7-corner-tl, .s7-corner-br {
+    position: absolute;
+    width: 5vw; height: 3px;
+    background: var(--red);
+  }
+  .s7-corner-tl { top: 0; left: 0; }
+  .s7-corner-tl-v {
+    position: absolute; top: 0; left: 0;
+    width: 3px; height: 5vw;
+    background: var(--red);
+  }
+  .s7-corner-br { bottom: 0; right: 0; }
+  .s7-corner-br-v {
+    position: absolute; bottom: 0; right: 0;
+    width: 3px; height: 5vw;
+    background: var(--red);
+  }
+  .s7-content {
+    position: relative; z-index: 2;
+    padding: 12vh 7vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    gap: 2.5vh;
+  }
+  .s7-quote {
+    font-family: var(--fd);
+    font-size: clamp(0.9rem, 1.3vw, 1.3vw);
+    font-weight: 400;
+    font-style: italic;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.55;
+    max-width: 55vw;
+  }
+  .s7-title {
+    font-family: var(--fd);
+    font-size: clamp(3rem, 8vw, 8.5vw);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 0.92;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+  .s7-meta {
+    font-family: var(--fd);
+    font-size: 0.7vw;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.28);
+    margin-top: 1vh;
+  }
+
+  /* ── SLIDE NAV DOTS ── */
+  .slide-dots {
+    position: fixed;
+    right: 1.5vw;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0.8vh;
+    z-index: 999;
+  }
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .dot.active { background: var(--red); transform: scale(1.4); }
+  .dot-dark { background: rgba(0,0,0,0.2); }
+  .dot-dark.active { background: var(--red); }
+
+</style>
+</head>
+<body>
+
+<!-- NAV DOTS -->
+<div class="slide-dots" id="dots"></div>
+
+<!-- ════════════════════════════════════
+  SLIDE 1 — COVER
+════════════════════════════════════ -->
+<section class="slide s1" id="s1">
+  <div class="s1-bg"></div>
+  <nav class="slide-nav">
+    <a href="#s1" class="nav-logo">
+      <img src="logo%20tca.png" alt="Tennis Club Ambrosiano">
+    </a>
+    <span class="nav-tag">Confidential Proposal · Milan · 2025</span>
+    <a href="#s7" class="nav-cta-btn">Contact Maurizio</a>
+  </nav>
+  <div class="s1-watermark">TCA</div>
+  <div class="s1-content">
+    <span class="eyebrow eyebrow--light">Digital Transformation &amp; Operational Excellence</span>
+    <h1 class="s1-title">
+      Digital<br>
+      <em>Infrastructure.</em><br>
+      Human<br>Touch.
+    </h1>
+    <p class="s1-sub">
+      A transformation that doesn't replace your people —
+      it sets them free. The window is open right now.
+    </p>
+    <div class="s1-actions">
+      <a href="#s2" class="btn btn-red">Explore the Proposal</a>
+      <a href="#s3" class="btn btn-outline">The Opportunity Window</a>
+    </div>
+  </div>
+  <div class="s1-meta">
+    Presented by Maurizio Taruggi<br>
+    In partnership with Laura Bonamico
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  SLIDE 2 — WHO I AM
+════════════════════════════════════ -->
+<section class="slide s2" id="s2">
+  <nav class="slide-nav">
+    <a href="#s1" class="nav-logo">
+      <img src="logo%20tca.png" alt="Tennis Club Ambrosiano">
+    </a>
+    <span class="nav-tag">Who I Am</span>
+    <a href="#s7" class="nav-cta-btn">Contact Maurizio</a>
+  </nav>
+  <div class="s2-grid">
+    <div class="s2-left">
+      <span class="eyebrow eyebrow--light">About</span>
+      <h2 class="s2-name">Maurizio<br>Taruggi</h2>
+      <div class="s2-divider"></div>
+      <p class="s2-tagline">
+        Translator between corporate finance,<br>
+        elite hospitality, and<br>advanced digital architecture.
+      </p>
+    </div>
+    <div class="s2-right">
+      <span class="eyebrow">Who I Am</span>
+      <div class="s2-card">
+        <div class="s2-card-label">01 · Club Owner &amp; Operator</div>
+        <div class="s2-card-title">I Don't Just Advise — I Operate</div>
+        <p class="s2-card-text">I run my own sports club. I live the daily operational realities of member management, P&amp;L responsibility, and real bottlenecks — not in theory, but on the floor.</p>
+      </div>
+      <div class="s2-card">
+        <div class="s2-card-label">02 · Digital Transformation Consultant</div>
+        <div class="s2-card-title">Systems That Outlast the Engagement</div>
+        <p class="s2-card-text">I design and implement digital infrastructure that keeps working after I leave. From CRM automation to fiscal compliance architecture — my deliverables are built to scale.</p>
+      </div>
+      <div class="s2-card">
+        <div class="s2-card-label">03 · Aspria Ecosystem Insider</div>
+        <div class="s2-card-title">I Already Have the Access Codes</div>
+        <p class="s2-card-text">Through the Aspresso Roma project I built your group's financial and fiscal compliance architecture. I know your standards, your philosophy, and how your finance team thinks.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  SLIDE 3 — OPPORTUNITY WINDOW
+════════════════════════════════════ -->
+<section class="slide s3" id="s3">
+  <nav class="slide-nav">
+    <a href="#s1" class="nav-logo">
+      <img src="logo%20tca.png" alt="Tennis Club Ambrosiano">
+    </a>
+    <span class="nav-tag">The Opportunity Window</span>
+    <a href="#s7" class="nav-cta-btn">Contact Maurizio</a>
+  </nav>
+  <div class="s3-content">
+    <div class="s3-header">
+      <span class="eyebrow eyebrow--light">The Window</span>
+      <h2 class="slide-title" style="color:#fff; font-size:clamp(2rem,4.5vw,4.8vw);">
+        Right now, as the corporate<br>structure shifts — this is the<br><em style="color:#C0282A;">perfect moment.</em>
+      </h2>
+    </div>
+    <div class="s3-cards">
+      <div class="s3-card">
+        <div class="s3-num">01</div>
+        <div class="s3-card-title">The Carve-Out Risk</div>
+        <p class="s3-card-text">A corporate separation from Aspria Holdings can easily become an operational headache — system downtime, data loss, staff overload, and members who notice.</p>
+      </div>
+      <div class="s3-card s3-card--accent">
+        <div class="s3-num">02</div>
+        <div class="s3-card-title">The Perfect Moment</div>
+        <p class="s3-card-text">During restructuring, new systems can be built in parallel — silently — and switched on only when 100% ready. Zero downtime. Surgical. Invisible to your members.</p>
+      </div>
+      <div class="s3-card">
+        <div class="s3-num">03</div>
+        <div class="s3-card-title">The Outcome</div>
+        <p class="s3-card-text">TCA emerges as a lean, independent, digitally-led premium club — operationally stronger than it was inside the group. A clean start with a competitive edge.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  SLIDE 4 — THE MODEL
+════════════════════════════════════ -->
+<section class="slide s4" id="s4">
+  <nav class="slide-nav">
+    <a href="#s1" class="nav-logo">
+      <img src="logo%20tca.png" alt="Tennis Club Ambrosiano">
+    </a>
+    <span class="nav-tag">The Model</span>
+    <a href="#s7" class="nav-cta-btn">Contact Maurizio</a>
+  </nav>
+  <div class="s4-content">
+    <div class="s4-header">
+      <span class="eyebrow">The Model</span>
+      <h2 class="slide-title" style="font-size:clamp(1.8rem,4.2vw,4.5vw);">Human-Centric Digital Infrastructure</h2>
+      <p class="s4-subtitle">Technology that hides in the background, so your team stays on the floor — not behind a screen.</p>
+    </div>
+    <div class="s4-pillars">
+      <div class="s4-card">
+        <div class="s4-num">01</div>
+        <div class="s4-line"></div>
+        <div class="s4-title">Self-Service Online</div>
+        <p class="s4-text">Enrolment, renewals, and bookings managed directly by members. Front-desk staff freed for human relationships.</p>
+      </div>
+      <div class="s4-card">
+        <div class="s4-num">02</div>
+        <div class="s4-line"></div>
+        <div class="s4-title">CRM &amp; Lead Automation</div>
+        <p class="s4-text">Zero lead loss. Every prospect tracked and nurtured automatically through the pipeline, with no manual effort.</p>
+      </div>
+      <div class="s4-card">
+        <div class="s4-num">03</div>
+        <div class="s4-line"></div>
+        <div class="s4-title">BI &amp; AI Dashboard</div>
+        <p class="s4-text">Live data on revenue, churn, and operations. Clean data foundation first — then AI amplifies every insight.</p>
+      </div>
+      <div class="s4-card">
+        <div class="s4-num">04</div>
+        <div class="s4-line"></div>
+        <div class="s4-title">Compliance Engine</div>
+        <p class="s4-text">Membership cards, medical certificates, fiscal invoicing — automated and embedded directly into the workflow.</p>
+      </div>
+      <div class="s4-card">
+        <div class="s4-num">05</div>
+        <div class="s4-line"></div>
+        <div class="s4-title">Mini ERP &amp; Care Hub</div>
+        <p class="s4-text">Maintenance, cleaning, complaint tracking with scoring. Reduce churn by converting dissatisfaction into loyalty.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  SLIDE 5 — UNFAIR ADVANTAGE
+════════════════════════════════════ -->
+<section class="slide s5" id="s5">
+  <nav class="slide-nav">
+    <a href="#s1" class="nav-logo">
+      <img src="logo%20tca.png" alt="Tennis Club Ambrosiano">
+    </a>
+    <span class="nav-tag">The Unfair Advantage</span>
+    <a href="#s7" class="nav-cta-btn">Contact Maurizio</a>
+  </nav>
+  <div class="s5-content">
+    <div class="s5-header">
+      <span class="eyebrow">The Unfair Advantage</span>
+      <h2 class="slide-title" style="font-size:clamp(1.8rem,4vw,4.2vw);">The market offers two extremes.<br>Neither of them can help you.</h2>
+    </div>
+    <div class="s5-grid">
+      <div class="s5-bad">
+        <span class="s5-bad-tag">Option A</span>
+        <div class="s5-bad-title">Mass-Market<br>Digital Agencies</div>
+        <p class="s5-bad-text">Aggressive discounts. Built for low-cost gyms. They would destroy TCA's premium brand equity within six months, attracting the wrong clientele.</p>
+      </div>
+      <div class="s5-vs">VS</div>
+      <div class="s5-bad">
+        <span class="s5-bad-tag">Option B</span>
+        <div class="s5-bad-title">Traditional Tennis<br>Managers</div>
+        <p class="s5-bad-text">They know the courts. They know nothing about digital. They would leave Laura drowning in the technical chaos of a corporate separation.</p>
+      </div>
+      <div class="s5-winner">
+        <span class="s5-winner-tag">The Right Choice</span>
+        <div class="s5-winner-title">Maurizio<br>Taruggi</div>
+        <p class="s5-winner-text">The only partner who connects all three worlds this transition demands.</p>
+        <ul class="s5-points">
+          <li>Club owner himself</li>
+          <li>Aspresso Roma alumnus</li>
+          <li>Operational from day one</li>
+          <li>Zero learning curve</li>
+          <li>Laura protected from friction</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  SLIDE 6 — OUTCOMES
+════════════════════════════════════ -->
+<section class="slide s6" id="s6">
+  <nav class="slide-nav">
+    <a href="#s1" class="nav-logo">
+      <img src="logo%20tca.png" alt="Tennis Club Ambrosiano">
+    </a>
+    <span class="nav-tag">The Outcomes</span>
+    <a href="#s7" class="nav-cta-btn">Contact Maurizio</a>
+  </nav>
+  <div class="s6-content">
+    <div class="s6-header">
+      <span class="eyebrow">The Outcomes</span>
+      <h2 class="slide-title" style="font-size:clamp(1.8rem,4vw,4.2vw);">What this means for TCA's EBITDA</h2>
+    </div>
+    <div class="s6-grid">
+      <div class="s6-card">
+        <div class="s6-stat">↓</div>
+        <div class="s6-body">
+          <div class="s6-kpi">Cost per Member Served</div>
+          <div class="s6-title">Operational Cost</div>
+          <p class="s6-text">Automating routine admin tasks reduces front-desk overhead without reducing the quality of service your members experience.</p>
+        </div>
+      </div>
+      <div class="s6-card">
+        <div class="s6-stat">↑</div>
+        <div class="s6-body">
+          <div class="s6-kpi">Member Loyalty Rate</div>
+          <div class="s6-title">Retention</div>
+          <p class="s6-text">Active complaint management and renewal automation convert at-risk members into long-term loyal advocates of the club.</p>
+        </div>
+      </div>
+      <div class="s6-card">
+        <div class="s6-stat">↑</div>
+        <div class="s6-body">
+          <div class="s6-kpi">Lead-to-Member Rate</div>
+          <div class="s6-title">Conversion</div>
+          <p class="s6-text">CRM funnel with AI lead scoring ensures every opportunity is captured and followed up. No lead is ever lost again.</p>
+        </div>
+      </div>
+      <div class="s6-card">
+        <div class="s6-stat">↓</div>
+        <div class="s6-body">
+          <div class="s6-kpi">Compliance &amp; Operational Risk</div>
+          <div class="s6-title">Exposure</div>
+          <p class="s6-text">Fiscal, membership, and medical compliance built directly into the workflow. Zero manual errors, zero regulatory exposure.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  SLIDE 7 — CLOSING
+════════════════════════════════════ -->
+<section class="slide s7" id="s7">
+  <div class="s7-bg"></div>
+  <div class="s7-corner-tl"></div>
+  <div class="s7-corner-tl-v"></div>
+  <div class="s7-corner-br"></div>
+  <div class="s7-corner-br-v"></div>
+  <nav class="slide-nav" style="background:rgba(26,26,26,0.95); border-color:rgba(255,255,255,0.08);">
+    <a href="#s1" class="nav-logo">
+      <img src="logo%20tca.png" alt="Tennis Club Ambrosiano">
+    </a>
+    <span class="nav-tag" style="color:rgba(255,255,255,0.3);">Confidential Proposal · 2025</span>
+    <a href="mailto:maurizio@example.com" class="nav-cta-btn">Get in Touch</a>
+  </nav>
+  <div class="s7-content">
+    <p class="s7-quote">
+      "Opportunities tend to come all at once.<br>
+      Right now is the window."
+    </p>
+    <h2 class="s7-title">
+      Ready to hit<br>the ground<br>running.
+    </h2>
+    <a href="mailto:maurizio@example.com" class="btn btn-red" style="align-self:flex-start; font-size:0.8vw; padding:1.2vh 2.5vw; margin-top:1vh;">
+      Start the Conversation
+    </a>
+    <p class="s7-meta">
+      Maurizio Taruggi &nbsp;·&nbsp; Tennis Club Ambrosiano &nbsp;·&nbsp; In partnership with Laura Bonamico
+    </p>
+  </div>
+</section>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const dotsContainer = document.getElementById('dots');
+
+  // Build dots
+  slides.forEach((s, i) => {
+    const d = document.createElement('div');
+    const isDark = ['s1','s3','s7'].includes(s.id);
+    d.className = 'dot' + (isDark ? '' : ' dot-dark') + (i===0 ? ' active' : '');
+    d.addEventListener('click', () => s.scrollIntoView({ behavior: 'smooth' }));
+    dotsContainer.appendChild(d);
+  });
+
+  // Update active dot on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = Array.from(slides).indexOf(entry.target);
+        document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===idx));
+      }
+    });
+  }, { threshold: 0.5 });
+
+  slides.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
