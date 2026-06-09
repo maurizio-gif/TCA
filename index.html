@@ -21,22 +21,30 @@
     --fb: 'Barlow', sans-serif;
   }
 
-  html { scroll-behavior: smooth; }
-  body { font-family: var(--fb); color: var(--text); background: #000; margin: 0; }
-
-  /* ── SLIDE CONTAINER: 16/9 viewport scroll ── */
-  .deck {
-    width: 100vw;
+  html {
+    height: 100%;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+  body {
+    font-family: var(--fb);
+    color: var(--text);
+    background: #000;
+    margin: 0;
+    height: 100%;
   }
 
+  /* ── SLIDE: esatto 16:9 Full HD ── */
   .slide {
     width: 100vw;
-    height: 56.25vw; /* 16:9 */
-    min-height: 100vh;
+    height: 100vh;
     position: relative;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
 
   /* ── NAV BAR (on every slide) ── */
@@ -203,7 +211,7 @@
     display: grid;
     grid-template-columns: 38% 62%;
     height: 100%;
-    margin-top: 7vh;
+    margin-top: 9vh;
   }
   .s2-left {
     background: var(--text);
@@ -270,7 +278,7 @@
   ════════════════════════════════════════════ */
   .s3 { background: var(--text); }
   .s3-content {
-    margin-top: 7vh;
+    margin-top: 9vh;
     padding: 4vh 5vw;
     display: flex;
     flex-direction: column;
@@ -320,7 +328,7 @@
   ════════════════════════════════════════════ */
   .s4 { background: #fff; }
   .s4-content {
-    margin-top: 7vh;
+    margin-top: 9vh;
     padding: 3.5vh 5vw;
     display: flex;
     flex-direction: column;
@@ -380,7 +388,7 @@
   ════════════════════════════════════════════ */
   .s5 { background: var(--off-white); }
   .s5-content {
-    margin-top: 7vh;
+    margin-top: 9vh;
     padding: 3.5vh 5vw;
     display: flex;
     flex-direction: column;
@@ -483,7 +491,7 @@
   ════════════════════════════════════════════ */
   .s6 { background: #fff; }
   .s6-content {
-    margin-top: 7vh;
+    margin-top: 9vh;
     padding: 3.5vh 5vw;
     display: flex;
     flex-direction: column;
@@ -544,7 +552,9 @@
   .s7 { background: var(--text); }
   .s7-bg {
     position: absolute; inset: 0;
-    background: linear-gradient(135deg, #0D1520 0%, #1A1A1A 60%, rgba(139,26,26,0.15) 100%);
+    background:
+      linear-gradient(135deg, rgba(10,14,20,0.82) 0%, rgba(26,26,26,0.75) 55%, rgba(100,18,18,0.55) 100%),
+      url('orizzntale%20tca.avif') center/cover no-repeat;
   }
   .s7-corner-tl, .s7-corner-br {
     position: absolute;
@@ -577,7 +587,7 @@
     font-size: clamp(1.2rem, 2vw, 2vw);
     font-weight: 400;
     font-style: italic;
-    color: rgba(255,255,255,0.4);
+    color: #fff;
     line-height: 1.55;
     max-width: 55vw;
   }
@@ -621,6 +631,197 @@
   .dot.active { background: var(--red); transform: scale(1.4); }
   .dot-dark { background: rgba(0,0,0,0.2); }
   .dot-dark.active { background: var(--red); }
+
+  /* ════════════════════════════════════════════
+     MOBILE — ≤ 768px
+  ════════════════════════════════════════════ */
+  @media (max-width: 768px) {
+
+    /* ── Scroll continuo, niente snap ── */
+    html { scroll-snap-type: none; overflow-y: auto; }
+
+    /* Tutte le slide: altezza libera, il contenuto decide quanto occupa */
+    .slide {
+      height: auto;
+      min-height: auto;
+      scroll-snap-align: none;
+      scroll-snap-stop: normal;
+    }
+    /* Solo cover e closing mantengono almeno una schermata intera */
+    .s1, .s7 { min-height: 100svh; }
+
+    /* Dots nascosti (navigazione = scroll touch) */
+    .slide-dots { display: none; }
+
+    /* ── NAV ── */
+    .slide-nav { height: 56px; padding: 0 20px; }
+    .nav-logo img { height: 34px; }
+    .nav-tag { display: none; }
+
+    /* ── TIPOGRAFIA GLOBALE ── */
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      margin-bottom: 8px;
+    }
+    .slide-title {
+      font-size: clamp(1.9rem, 8.5vw, 2.8rem) !important;
+      line-height: 1.05 !important;
+    }
+    .btn { font-size: 14px; padding: 13px 24px; }
+
+    /* ════════════════════
+       SLIDE 1 — COVER
+    ════════════════════ */
+    .s1-content {
+      padding: 72px 24px 40px;
+      gap: 20px;
+    }
+    .s1-title {
+      font-size: clamp(3rem, 13vw, 4.5rem);
+      line-height: 0.93;
+    }
+    .s1-sub {
+      font-size: 15px;
+      max-width: 100%;
+      line-height: 1.65;
+    }
+    .s1-actions {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .s1-meta {
+      position: static;
+      font-size: 11px;
+      text-align: left;
+      padding: 24px 24px 36px;
+      color: rgba(255,255,255,0.35);
+    }
+
+    /* ════════════════════
+       SLIDE 2 — CHI SONO
+    ════════════════════ */
+    .s2-grid {
+      grid-template-columns: 1fr;
+      height: auto;
+      margin-top: 56px; /* altezza esatta del nav */
+    }
+    .s2-left {
+      padding: 40px 24px 32px;
+      gap: 16px;
+    }
+    .s2-name { font-size: clamp(2.4rem, 11vw, 3.5rem); }
+    .s2-tagline { font-size: 15px; line-height: 1.65; }
+    .s2-right {
+      padding: 24px 20px 40px;
+      gap: 16px;
+    }
+    .s2-card { padding: 18px 18px; }
+    .s2-card-label { font-size: 11px; margin-bottom: 5px; }
+    .s2-card-title { font-size: 17px; margin-bottom: 7px; }
+    .s2-card-text  { font-size: 14px; line-height: 1.6; }
+
+    /* ════════════════════════
+       SLIDE 3 — OPPORTUNITY
+    ════════════════════════ */
+    .s3-content {
+      margin-top: 56px;
+      padding: 28px 20px 40px;
+      flex: none;
+    }
+    .s3-header { margin-bottom: 22px; }
+    .s3-cards {
+      grid-template-columns: 1fr;
+      flex: none;
+      gap: 3px;
+    }
+    .s3-card { padding: 28px 22px; gap: 12px; }
+    .s3-num { font-size: 44px; }
+    .s3-card-title { font-size: 18px; }
+    .s3-card-text  { font-size: 14px; line-height: 1.65; }
+
+    /* ════════════════════
+       SLIDE 4 — THE MODEL
+    ════════════════════ */
+    .s4-content {
+      margin-top: 56px;
+      padding: 28px 20px 40px;
+      flex: none;
+    }
+    .s4-header { margin-bottom: 18px; }
+    .s4-subtitle { font-size: 14px; margin-top: 6px; }
+    .s4-pillars {
+      grid-template-columns: 1fr; /* colonna unica: 5 card leggibili */
+      flex: none;
+    }
+    .s4-card { padding: 22px 20px; gap: 10px; }
+    .s4-num  { font-size: 32px; }
+    .s4-title { font-size: 16px; }
+    .s4-text  { font-size: 14px; line-height: 1.65; }
+
+    /* ══════════════════════════
+       SLIDE 5 — UNFAIR ADVANTAGE
+    ══════════════════════════ */
+    .s5-content {
+      margin-top: 56px;
+      padding: 28px 20px 40px;
+      flex: none;
+    }
+    .s5-header { margin-bottom: 18px; }
+    .s5-grid {
+      grid-template-columns: 1fr;
+      flex: none;
+      gap: 12px;
+    }
+    .s5-vs { display: none; }
+    .s5-bad { padding: 22px 20px; gap: 10px; }
+    .s5-bad-tag   { font-size: 11px; }
+    .s5-bad-title { font-size: 18px; }
+    .s5-bad-text  { font-size: 14px; line-height: 1.65; }
+    .s5-winner { padding: 26px 22px; gap: 14px; }
+    .s5-winner-title { font-size: 32px; }
+    .s5-winner-text  { font-size: 14px; line-height: 1.6; }
+    .s5-points { gap: 8px; }
+    .s5-points li { font-size: 13px; padding-left: 12px; }
+
+    /* ════════════════════
+       SLIDE 6 — OUTCOMES
+    ════════════════════ */
+    .s6-content {
+      margin-top: 56px;
+      padding: 28px 20px 40px;
+      flex: none;
+    }
+    .s6-header { margin-bottom: 18px; }
+    .s6-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+      flex: none;
+    }
+    .s6-card  { padding: 22px 20px; gap: 16px; align-items: center; }
+    .s6-stat  { font-size: 52px; min-width: auto; }
+    .s6-kpi   { font-size: 11px; }
+    .s6-title { font-size: 19px; }
+    .s6-text  { font-size: 14px; line-height: 1.65; }
+
+    /* ════════════════════
+       SLIDE 7 — CLOSING
+    ════════════════════ */
+    .s7-bg {
+      background:
+        linear-gradient(170deg, rgba(10,14,20,0.85) 0%, rgba(26,26,26,0.78) 50%, rgba(100,18,18,0.60) 100%),
+        url('verticale%20tca.avif') 35% center/cover no-repeat;
+    }
+    .s7-content {
+      padding: 80px 24px 52px;
+      gap: 20px;
+    }
+    .s7-quote { font-size: 15px; max-width: 100%; line-height: 1.6; }
+    .s7-title { font-size: clamp(2.8rem, 13.5vw, 4.2rem); }
+    .s7-meta  { font-size: 12px; }
+
+  }
 
 </style>
 </head>
@@ -678,26 +879,27 @@
       <h2 class="s2-name">Maurizio<br>Taruggi</h2>
       <div class="s2-divider"></div>
       <p class="s2-tagline">
-        Translator between corporate finance,<br>
-        elite hospitality, and<br>advanced digital architecture.
+        I speak both languages:<br>
+        the floor operations and every pain they hide —<br>
+        and the digital stack built to fix them.
       </p>
     </div>
     <div class="s2-right">
       <span class="eyebrow">Who I Am</span>
       <div class="s2-card">
         <div class="s2-card-label">01 · Club Owner &amp; Operator</div>
-        <div class="s2-card-title">I Don't Just Advise — I Operate</div>
-        <p class="s2-card-text">I run my own sports club. I live the daily operational realities of member management, P&amp;L responsibility, and real bottlenecks — not in theory, but on the floor.</p>
+        <div class="s2-card-title">I Know Every Pain Before You Name It</div>
+        <p class="s2-card-text">I run my own sports club every day. I know the booking chaos, the renewal slippage, the member complaints that never reach management, the staff overloaded with tasks a system should handle. I don't theorise about operations — I live them.</p>
       </div>
       <div class="s2-card">
-        <div class="s2-card-label">02 · Digital Transformation Consultant</div>
-        <div class="s2-card-title">Systems That Outlast the Engagement</div>
-        <p class="s2-card-text">I design and implement digital infrastructure that keeps working after I leave. From CRM automation to fiscal compliance architecture — my deliverables are built to scale.</p>
+        <div class="s2-card-label">02 · Web · CRM · Automations</div>
+        <div class="s2-card-title">Full-Stack Digital — No Gaps</div>
+        <p class="s2-card-text">I design and build web interfaces, CRM pipelines, and complex automation flows from end to end. Lead capture, nurture sequences, member portals, renewal triggers, backend integrations — I build the full stack, not just the slide deck.</p>
       </div>
       <div class="s2-card">
         <div class="s2-card-label">03 · TCA Insider</div>
         <div class="s2-card-title">I'm Already Inside the System</div>
-        <p class="s2-card-text">I conducted the financial and fiscal compliance audit for Aspresso Roma working directly alongside Laura Bonamico. I know your standards, your philosophy, and how this group thinks — and I already have active access to TCA's Perfect Gym platform.</p>
+        <p class="s2-card-text">For Aspresso Roma I audited the customer journey and technology stack, then delivered the operational fiscal compliance implementation — working directly alongside Laura Bonamico. I know this group's standards from the inside — and I already have active access to TCA's Perfect Gym platform.</p>
       </div>
     </div>
   </div>
@@ -821,10 +1023,10 @@
       <div class="s5-winner">
         <span class="s5-winner-tag">The Right Choice</span>
         <div class="s5-winner-title">Maurizio<br>Taruggi</div>
-        <p class="s5-winner-text">The only partner who connects all three worlds this transition demands.</p>
+        <p class="s5-winner-text">The only one who already knows the operational pain — and has the web, CRM and automation depth to fix it.</p>
         <ul class="s5-points">
           <li>Club owner himself</li>
-          <li>Aspresso Roma audit &amp; Laura Bonamico</li>
+          <li>Aspresso audit + fiscal compliance</li>
           <li>Active Perfect Gym access</li>
           <li>Operational from day one</li>
           <li>Zero learning curve</li>
@@ -903,8 +1105,8 @@
   </nav>
   <div class="s7-content">
     <p class="s7-quote">
-      "Opportunities tend to come all at once.<br>
-      Right now is the window."
+      "Every difficulty is, for me, an opportunity.<br>
+      Every challenge a battle I have always won."
     </p>
     <h2 class="s7-title">
       Ready to hit<br>the ground<br>running.
@@ -916,27 +1118,45 @@
 </section>
 
 <script>
-  const slides = document.querySelectorAll('.slide');
+  const slides = Array.from(document.querySelectorAll('.slide'));
   const dotsContainer = document.getElementById('dots');
+  let current = 0;
 
   // Build dots
   slides.forEach((s, i) => {
     const d = document.createElement('div');
     const isDark = ['s1','s3','s7'].includes(s.id);
-    d.className = 'dot' + (isDark ? '' : ' dot-dark') + (i===0 ? ' active' : '');
-    d.addEventListener('click', () => s.scrollIntoView({ behavior: 'smooth' }));
+    d.className = 'dot' + (isDark ? '' : ' dot-dark') + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
     dotsContainer.appendChild(d);
   });
 
-  // Update active dot on scroll
+  function goTo(idx) {
+    idx = Math.max(0, Math.min(slides.length - 1, idx));
+    current = idx;
+    slides[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+  }
+
+  // Keyboard navigation (frecce, spazio, PgUp/PgDn)
+  document.addEventListener('keydown', e => {
+    if (['ArrowDown', 'ArrowRight', 'PageDown', ' '].includes(e.key)) {
+      e.preventDefault(); goTo(current + 1);
+    } else if (['ArrowUp', 'ArrowLeft', 'PageUp'].includes(e.key)) {
+      e.preventDefault(); goTo(current - 1);
+    }
+  });
+
+  // Aggiorna dot attivo sullo scroll
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        const idx = Array.from(slides).indexOf(entry.target);
-        document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===idx));
+        const idx = slides.indexOf(entry.target);
+        current = idx;
+        document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === idx));
       }
     });
-  }, { threshold: 0.5 });
+  }, { threshold: 0.6 });
 
   slides.forEach(s => observer.observe(s));
 </script>
