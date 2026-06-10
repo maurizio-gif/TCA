@@ -80,7 +80,7 @@
     display: flex; align-items: center; text-decoration: none;
   }
   .nav-logo img {
-    height: 7vh;
+    height: 9vh;
     width: auto;
     display: block;
   }
@@ -109,7 +109,7 @@
   /* ── EYEBROW / LABEL ── */
   .eyebrow {
     font-family: var(--fd);
-    font-size: 1.15vw;
+    font-size: 1.3vw;
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -127,13 +127,13 @@
     line-height: 0.93;
     text-transform: uppercase;
     letter-spacing: -0.01em;
-    font-size: clamp(2.5rem, 7.5vw, 8vw);
+    font-size: clamp(2.5rem, 8.5vw, 9vw);
   }
   .slide-title em { color: #A52020; font-style: normal; }
 
   /* ── LEAD TEXT ── */
   .slide-lead {
-    font-size: clamp(1rem, 1.6vw, 1.6vw);
+    font-size: clamp(1rem, 1.9vw, 1.9vw);
     font-weight: 300;
     line-height: 1.7;
     color: var(--text-light);
@@ -143,7 +143,7 @@
   /* ── BUTTONS ── */
   .btn {
     font-family: var(--fd);
-    font-size: 1.15vw;
+    font-size: 1.3vw;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -178,7 +178,7 @@
   }
   .s1-title {
     font-family: var(--fd);
-    font-size: clamp(4rem, 11vw, 12vw);
+    font-size: clamp(3.5rem, 9vw, 10vw);
     font-weight: 800;
     text-transform: uppercase;
     line-height: 0.9;
@@ -187,7 +187,7 @@
   }
   .s1-title em { color: #C0282A; font-style: normal; }
   .s1-sub {
-    font-size: clamp(1rem, 1.7vw, 1.7vw);
+    font-size: clamp(1rem, 2vw, 2vw);
     font-weight: 300;
     color: rgba(255,255,255,0.72);
     line-height: 1.65;
@@ -247,7 +247,7 @@
   }
   .s2-divider { width: 3.5vw; height: 3px; background: var(--red); }
   .s2-tagline {
-    font-size: clamp(1rem, 1.5vw, 1.5vw);
+    font-size: clamp(1rem, 1.8vw, 1.8vw);
     font-weight: 300;
     font-style: italic;
     color: rgba(255,255,255,0.6);
@@ -267,7 +267,7 @@
   }
   .s2-card-label {
     font-family: var(--fd);
-    font-size: 1vw;
+    font-size: 1.15vw;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -276,14 +276,14 @@
   }
   .s2-card-title {
     font-family: var(--fd);
-    font-size: 1.65vw;
+    font-size: 1.9vw;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     margin-bottom: 0.5vh;
   }
   .s2-card-text {
-    font-size: 1.2vw;
+    font-size: 1.4vw;
     font-weight: 300;
     color: var(--text-light);
     line-height: 1.65;
@@ -325,14 +325,14 @@
   }
   .s3-card-title {
     font-family: var(--fd);
-    font-size: 1.8vw;
+    font-size: 2.1vw;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: #fff;
   }
   .s3-card-text {
-    font-size: 1.2vw;
+    font-size: 1.4vw;
     font-weight: 300;
     color: rgba(255,255,255,0.6);
     line-height: 1.7;
@@ -352,7 +352,7 @@
   }
   .s4-header { margin-bottom: 2.5vh; }
   .s4-subtitle {
-    font-size: 1.35vw;
+    font-size: 1.6vw;
     font-weight: 300;
     font-style: italic;
     color: var(--text-light);
@@ -386,14 +386,14 @@
   .s4-card:hover .s4-line { background: var(--red); }
   .s4-title {
     font-family: var(--fd);
-    font-size: 1.35vw;
+    font-size: 1.6vw;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     line-height: 1.25;
   }
   .s4-text {
-    font-size: 1.1vw;
+    font-size: 1.35vw;
     font-weight: 300;
     color: var(--text-light);
     line-height: 1.7;
@@ -413,7 +413,7 @@
   .s5-header { margin-bottom: 2.5vh; }
   .s5-grid {
     display: grid;
-    grid-template-columns: 1fr 3vw 1fr 1.15fr;
+    grid-template-columns: 1fr 1fr 1.15fr;
     gap: 1.2vw;
     align-items: stretch;
     flex: 1;
@@ -421,6 +421,7 @@
   .s5-bad {
     background: #fff;
     border: 1px solid var(--grey-light);
+    border-top: 3px solid var(--text);
     padding: 2.5vh 1.8vw;
     display: flex;
     flex-direction: column;
@@ -428,22 +429,22 @@
   }
   .s5-bad-tag {
     font-family: var(--fd);
-    font-size: 1vw;
+    font-size: 1.15vw;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--grey-mid);
+    color: var(--red);
   }
   .s5-bad-title {
     font-family: var(--fd);
-    font-size: 1.6vw;
+    font-size: 1.9vw;
     font-weight: 700;
     text-transform: uppercase;
-    color: var(--text-light);
+    color: var(--text);
     line-height: 1.2;
   }
   .s5-bad-text {
-    font-size: 1.15vw;
+    font-size: 1.35vw;
     font-weight: 300;
     color: var(--text-light);
     line-height: 1.7;
@@ -464,7 +465,7 @@
   }
   .s5-winner-tag {
     font-family: var(--fd);
-    font-size: 1vw;
+    font-size: 1.15vw;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -472,14 +473,14 @@
   }
   .s5-winner-title {
     font-family: var(--fd);
-    font-size: 2.4vw;
+    font-size: 2.8vw;
     font-weight: 800;
     text-transform: uppercase;
     color: #fff;
     line-height: 1.1;
   }
   .s5-winner-text {
-    font-size: 1.15vw;
+    font-size: 1.35vw;
     font-weight: 300;
     color: rgba(255,255,255,0.8);
     line-height: 1.6;
@@ -493,7 +494,7 @@
   }
   .s5-points li {
     font-family: var(--fd);
-    font-size: 1.1vw;
+    font-size: 1.3vw;
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -542,7 +543,7 @@
   .s6-body { display: flex; flex-direction: column; gap: 0.4vh; }
   .s6-kpi {
     font-family: var(--fd);
-    font-size: 1vw;
+    font-size: 1.15vw;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -550,13 +551,13 @@
   }
   .s6-title {
     font-family: var(--fd);
-    font-size: 1.65vw;
+    font-size: 1.9vw;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
   }
   .s6-text {
-    font-size: 1.15vw;
+    font-size: 1.35vw;
     font-weight: 300;
     color: var(--text-light);
     line-height: 1.7;
@@ -600,7 +601,7 @@
   }
   .s7-quote {
     font-family: var(--fd);
-    font-size: clamp(1.2rem, 2vw, 2vw);
+    font-size: clamp(1.2rem, 2.4vw, 2.4vw);
     font-weight: 400;
     font-style: italic;
     color: #fff;
@@ -671,7 +672,7 @@
 
     /* ── NAV ── */
     .slide-nav { height: 56px; padding: 0 20px; }
-    .nav-logo img { height: 34px; }
+    .nav-logo img { height: 44px; }
     .nav-tag { display: none; }
 
     /* ── TIPOGRAFIA GLOBALE ── */
@@ -790,8 +791,7 @@
       flex: none;
       gap: 12px;
     }
-    .s5-vs { display: none; }
-    .s5-bad { padding: 22px 20px; gap: 10px; }
+    .s5-bad { padding: 22px 20px; gap: 10px; border-top-width: 3px; }
     .s5-bad-tag   { font-size: 11px; }
     .s5-bad-title { font-size: 18px; }
     .s5-bad-text  { font-size: 14px; line-height: 1.65; }
@@ -866,8 +866,8 @@
       Human<br>Touch.
     </h1>
     <p class="s1-sub">
-      A transformation that protects TCA's legacy while setting
-      your people free. The window is open right now.
+      A lean, digital model built around TCA — protecting its legacy
+      while freeing your people from every friction that slows them down.
     </p>
     <div class="s1-actions">
       <a href="#s2" class="btn btn-red">Explore the Proposal</a>
@@ -934,7 +934,7 @@
   <div class="s3-content">
     <div class="s3-header">
       <span class="eyebrow eyebrow--light">The Window</span>
-      <h2 class="slide-title" style="color:#fff; font-size:clamp(2.5rem,6.5vw,7vw);">
+      <h2 class="slide-title" style="color:#fff; font-size:clamp(2.5rem,7.5vw,8vw);">
         Right now, as the corporate<br>structure shifts — this is the<br><em style="color:#C0282A;">perfect moment.</em>
       </h2>
     </div>
@@ -971,8 +971,8 @@
   <div class="s4-content">
     <div class="s4-header">
       <span class="eyebrow">The Model</span>
-      <h2 class="slide-title" style="font-size:clamp(2.5rem,6vw,6.5vw);">Human-Centric Digital Infrastructure</h2>
-      <p class="s4-subtitle">Technology that hides in the background, so your team stays on the floor — preserving TCA's identity while quietly powering its future.</p>
+      <h2 class="slide-title" style="font-size:clamp(2.5rem,7vw,7.5vw);">Human-Centric Digital Infrastructure</h2>
+      <p class="s4-subtitle">A lean, digital operating model — technology that hides in the background so your team stays on the floor, preserving TCA's identity while quietly powering its future.</p>
     </div>
     <div class="s4-pillars">
       <div class="s4-card">
@@ -1017,35 +1017,32 @@
     <a href="#s1" class="nav-logo">
       <img src="logo%20tca.png" alt="Tennis Club Ambrosiano">
     </a>
-    <span class="nav-tag">The Unfair Advantage</span>
+    <span class="nav-tag">Why Me</span>
   </nav>
   <div class="s5-content">
     <div class="s5-header">
-      <span class="eyebrow">The Unfair Advantage</span>
-      <h2 class="slide-title" style="font-size:clamp(2.5rem,5.8vw,6.2vw);">The market offers two extremes.<br>Neither of them can help you.</h2>
+      <span class="eyebrow">Why Me</span>
+      <h2 class="slide-title" style="font-size:clamp(2.5rem,7vw,7.5vw);">One partner.<br>Every capability TCA needs right now.</h2>
     </div>
     <div class="s5-grid">
       <div class="s5-bad">
-        <span class="s5-bad-tag">Option A</span>
-        <div class="s5-bad-title">Mass-Market<br>Digital Agencies</div>
-        <p class="s5-bad-text">Aggressive discounts. Built for low-cost gyms. They would destroy TCA's premium brand equity within six months, attracting the wrong clientele.</p>
+        <span class="s5-bad-tag">01 · Club Operations</span>
+        <div class="s5-bad-title">I Live the<br>Daily Grind</div>
+        <p class="s5-bad-text">I run my own sports club every day. Booking chaos, renewal slippage, member complaints that never reach management, staff overloaded by tasks a system should handle. I know every friction point before you name it — not theory, floor-level reality.</p>
       </div>
-      <div class="s5-vs">VS</div>
       <div class="s5-bad">
-        <span class="s5-bad-tag">Option B</span>
-        <div class="s5-bad-title">Traditional Tennis<br>Managers</div>
-        <p class="s5-bad-text">They know the courts. They know nothing about digital. They would leave the club drowning in the technical chaos of a corporate separation.</p>
+        <span class="s5-bad-tag">02 · Full Digital Stack</span>
+        <div class="s5-bad-title">End to End,<br>No Gaps</div>
+        <p class="s5-bad-text">Web interfaces, CRM pipelines, complex automations — from customer acquisition to renewal triggers, from member portals to fiscal compliance. I design and build the full stack, from the customer-facing interface all the way through to back-office operations.</p>
       </div>
       <div class="s5-winner">
-        <span class="s5-winner-tag">The Right Choice</span>
-        <div class="s5-winner-title">Maurizio<br>Taruggi</div>
-        <p class="s5-winner-text">The only one who already knows the operational pain — and has the web, CRM and automation depth to fix it.</p>
+        <span class="s5-winner-tag">03 · Already Inside TCA</span>
+        <div class="s5-winner-title">Zero<br>Learning Curve</div>
+        <p class="s5-winner-text">I audited Aspresso Roma's customer journey and technology stack, delivered the fiscal compliance implementation, and I already have active access to TCA's Perfect Gym platform. I know this club's DNA. The transition window is open now — I move at its pace.</p>
         <ul class="s5-points">
-          <li>Club owner himself</li>
-          <li>Aspresso audit + fiscal compliance</li>
+          <li>Aspresso audit + Laura Bonamico</li>
           <li>Active Perfect Gym access</li>
           <li>Operational from day one</li>
-          <li>Zero learning curve</li>
         </ul>
       </div>
     </div>
@@ -1065,7 +1062,7 @@
   <div class="s6-content">
     <div class="s6-header">
       <span class="eyebrow">The Outcomes</span>
-      <h2 class="slide-title" style="font-size:clamp(2.5rem,5.8vw,6.2vw);">What this means for TCA's EBITDA</h2>
+      <h2 class="slide-title" style="font-size:clamp(2.5rem,7vw,7.5vw);">What this means for TCA's EBITDA</h2>
     </div>
     <div class="s6-grid">
       <div class="s6-card">
