@@ -651,6 +651,55 @@
   .dot-dark.active { background: var(--red); }
 
   /* ════════════════════════════════════════════
+     MACBOOK AIR 15" — schermi 3:2 / 16:10 (≤ 7:4)
+     Tipografia più grande: il vw rende i testi
+     piccoli rispetto all'altezza extra disponibile
+  ════════════════════════════════════════════ */
+  @media (min-width: 769px) and (max-aspect-ratio: 7/4) {
+    .nav-tag, .nav-cta-btn { font-size: 1.25vw; }
+    .eyebrow { font-size: 1.55vw; }
+    .btn { font-size: 1.5vw; }
+
+    /* Slide 1 — Cover */
+    .s1-sub  { font-size: clamp(1rem, 2.3vw, 2.3vw); max-width: 48vw; }
+    .s1-meta { font-size: 1.25vw; }
+
+    /* Slide 2 — Who I Am */
+    .s2-tagline    { font-size: clamp(1rem, 2.1vw, 2.1vw); }
+    .s2-card-label { font-size: 1.35vw; }
+    .s2-card-title { font-size: 2.2vw; }
+    .s2-card-text  { font-size: 1.65vw; }
+
+    /* Slide 3 — Opportunity */
+    .s3-card-title { font-size: 2.4vw; }
+    .s3-card-text  { font-size: 1.65vw; }
+
+    /* Slide 4 — The Model */
+    .s4-subtitle { font-size: 1.85vw; }
+    .s4-num   { font-size: 4.2vw; }
+    .s4-title { font-size: 1.85vw; }
+    .s4-text  { font-size: 1.6vw; }
+
+    /* Slide 5 — Unfair Advantage */
+    .s5-bad-tag, .s5-winner-tag { font-size: 1.35vw; }
+    .s5-bad-title { font-size: 2.2vw; }
+    .s5-bad-text, .s5-winner-text { font-size: 1.6vw; }
+    .s5-winner-title { font-size: 3.2vw; }
+    .s5-points li { font-size: 1.5vw; }
+    .s5-vs { font-size: 2.4vw; }
+
+    /* Slide 6 — Outcomes */
+    .s6-stat  { font-size: 5.5vw; }
+    .s6-kpi   { font-size: 1.35vw; }
+    .s6-title { font-size: 2.2vw; }
+    .s6-text  { font-size: 1.6vw; }
+
+    /* Slide 7 — Closing */
+    .s7-quote { font-size: clamp(1.2rem, 2.7vw, 2.7vw); max-width: 62vw; }
+    .s7-meta  { font-size: 1.25vw; }
+  }
+
+  /* ════════════════════════════════════════════
      MOBILE — ≤ 768px
   ════════════════════════════════════════════ */
   @media (max-width: 768px) {
