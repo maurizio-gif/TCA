@@ -25,11 +25,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: "npm"
-          cache-dependency-path: majestic-mercury/package-lock.json
 
       - name: Install dependencies
-        run: cd majestic-mercury && npm ci
+        run: cd majestic-mercury && npm install
 
       - name: Build Astro
         run: cd majestic-mercury && npm run build
