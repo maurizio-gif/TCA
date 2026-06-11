@@ -3,14 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TCA · The Carve-Out Plan</title>
+<title>TCA · Carve-Out Roadmap</title>
 
-<!-- Favicon -->
 <link rel="icon" type="image/png" href="logo%20tca.png">
 <link rel="apple-touch-icon" href="logo%20tca.png">
-
-<!-- Meta description -->
-<meta name="description" content="Maurizio Taruggi for Tennis Club Ambrosiano. The Carve-Out Plan: zero interruptions, technology by technology.">
 
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
@@ -19,28 +15,22 @@
   :root {
     --red:       #8B1A1A;
     --red-dark:  #6B1414;
-    --white:     #FFFFFF;
-    --off-white: #F5F3F0;
     --grey-light:#EBEBEB;
     --grey-mid:  #999999;
     --text:      #1A1A1A;
-    --text-light:#555555;
     --fd: 'Barlow Condensed', sans-serif;
     --fb: 'Barlow', sans-serif;
   }
 
-  body {
+  html, body {
     font-family: var(--fb);
-    color: #fff;
-    background: var(--text);
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    background: #fff;
+    color: var(--text);
+    min-height: 100%;
   }
 
-  /* ── NAV BAR ── */
-  .slide-nav {
+  /* ── NAV ── */
+  .page-nav {
     position: sticky;
     top: 0;
     z-index: 10;
@@ -48,208 +38,339 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 3.5vw;
-    height: 7vh;
-    background: rgba(255,255,255,0.96);
+    height: 64px;
+    background: rgba(255,255,255,0.97);
     border-bottom: 1px solid var(--grey-light);
+    backdrop-filter: blur(8px);
   }
-  .nav-logo {
-    display: flex; align-items: center; text-decoration: none;
-  }
-  .nav-logo img {
-    height: 7vh;
-    width: auto;
-    display: block;
-  }
+  .nav-logo img { height: 52px; }
   .nav-tag {
     font-family: var(--fd);
-    font-size: 1.05vw;
+    font-size: 0.75vw;
     font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--grey-mid);
   }
-  .nav-cta-btn {
+  .nav-back {
     font-family: var(--fd);
-    font-size: 1.05vw;
+    font-size: 0.75vw;
     font-weight: 700;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    background: var(--red);
-    color: #fff;
-    border: none;
-    padding: 0.7vh 1.8vw;
-    cursor: pointer;
+    color: var(--grey-mid);
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
   }
-  .nav-cta-btn:hover { background: var(--red-dark); }
+  .nav-back:hover { color: var(--text); }
+  .nav-back::before { content: '←'; font-size: 1em; }
+
+  /* ── MAIN CONTENT ── */
+  .page-content {
+    padding: 4vh 5vw 6vh;
+    max-width: 1500px;
+    margin: 0 auto;
+  }
 
   /* ── HEADER ── */
   .eyebrow {
     font-family: var(--fd);
-    font-size: 1.3vw;
+    font-size: 0.78vw;
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.45);
+    color: var(--grey-mid);
     display: block;
-    margin-bottom: 0.8vh;
+    margin-bottom: 10px;
   }
-  .slide-title {
+  .page-title {
     font-family: var(--fd);
+    font-size: clamp(2.2rem, 4.5vw, 5rem);
     font-weight: 800;
-    line-height: 0.93;
     text-transform: uppercase;
-    letter-spacing: -0.01em;
-    color: #fff;
-    font-size: clamp(2.5rem, 6.5vw, 7vw);
+    line-height: 1.0;
+    color: var(--text);
+    margin-bottom: 1.5vh;
   }
-  .slide-title em { color: #C0282A; font-style: normal; }
+  .page-title em { color: var(--red); font-style: normal; }
 
-  /* ── CONTENT ── */
-  .sc-content {
-    padding: 3.5vh 5vw 5vh;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+  .deadline-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--red);
+    color: #fff;
+    font-family: var(--fd);
+    font-size: 0.82vw;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 7px 16px;
+    border-radius: 3px;
+    margin-bottom: 3.5vh;
   }
-  .sc-header { margin-bottom: 2.5vh; }
-  .sc-subtitle {
-    font-size: 1.6vw;
+
+  /* ── TABLE ── */
+  .table-wrap { overflow-x: auto; }
+
+  .sco-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .sco-table thead tr {
+    background: var(--red);
+  }
+  .sco-table th {
+    font-family: var(--fd);
+    font-size: 0.82vw;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #fff;
+    padding: 14px 20px;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .sco-table tbody tr {
+    border-bottom: 1px solid var(--grey-light);
+    transition: background 0.15s;
+  }
+  .sco-table tbody tr:hover { background: #f7f7f7; }
+  .sco-table td {
+    font-size: 1.0vw;
     font-weight: 300;
-    font-style: italic;
-    color: rgba(255,255,255,0.6);
-    margin-top: 0.6vh;
+    color: #444;
+    padding: 18px 20px;
+    vertical-align: top;
+    line-height: 1.55;
   }
-  .sc-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 1px;
-    background: rgba(255,255,255,0.08);
-    flex: 1;
-  }
-  .sc-card {
-    background: #1E2530;
-    padding: 2.5vh 1.5vw;
-    display: flex;
-    flex-direction: column;
-    gap: 1vh;
-  }
-  .sc-tag {
+  .sco-table td:first-child {
     font-family: var(--fd);
     font-size: 1.1vw;
     font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #C0282A;
+    color: var(--text);
+    white-space: nowrap;
   }
-  .sc-title {
+  .sco-table td.td-empty {
+    color: var(--grey-light);
+    font-size: 1.2vw;
+    text-align: center;
+  }
+
+  .sco-badge {
+    display: inline-block;
+    font-size: 0.75vw;
+    font-weight: 600;
     font-family: var(--fd);
-    font-size: 1.7vw;
-    font-weight: 700;
-    text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: #fff;
-    line-height: 1.2;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 3px;
   }
-  .sc-text {
-    font-size: 1.3vw;
+  .sco-badge--todo { background: rgba(139,26,26,0.08); color: var(--red); border: 1px solid rgba(139,26,26,0.25); }
+  .sco-badge--wip  { background: rgba(180,120,0,0.08); color: #8B6000; border: 1px solid rgba(180,120,0,0.25); }
+  .sco-badge--prep { background: rgba(0,80,180,0.07);  color: #004FAF; border: 1px solid rgba(0,80,180,0.2); }
+
+  .sco-note {
+    font-size: 0.82vw;
+    color: var(--grey-mid);
+    margin-top: 5px;
+    font-style: italic;
+    line-height: 1.55;
     font-weight: 300;
-    color: rgba(255,255,255,0.6);
-    line-height: 1.65;
   }
 
-  /* ════════════════════════════════════════════
-     MACBOOK AIR 15" — schermi 3:2 / 16:10 (≤ 7:4)
-  ════════════════════════════════════════════ */
-  @media (min-width: 769px) and (max-aspect-ratio: 7/4) {
-    .nav-tag, .nav-cta-btn { font-size: min(1.25vw, 1.95vh); }
-    .eyebrow { font-size: min(1.55vw, 2.4vh); }
-    .slide-title { font-size: min(6.5vw, 10vh); }
-    .sc-subtitle { font-size: min(1.85vw, 2.85vh); }
-    .sc-tag   { font-size: min(1.3vw, 2vh); }
-    .sc-title { font-size: min(2vw, 3.1vh); }
-    .sc-text  { font-size: min(1.55vw, 2.4vh); }
+  /* ── FOOTER ── */
+  .page-footer {
+    margin-top: 4vh;
+    border-top: 1px solid var(--grey-light);
+    padding-top: 2vh;
+    font-size: 0.75vw;
+    color: var(--grey-mid);
+    font-family: var(--fd);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
 
-  /* ════════════════════════════════════════════
-     MOBILE — ≤ 768px
-  ════════════════════════════════════════════ */
+  /* ── MOBILE ── */
   @media (max-width: 768px) {
-    .slide-nav { height: 68px; padding: 0 20px; }
-    .nav-logo img { height: 60px; }
+    .page-nav { height: 56px; padding: 0 20px; }
+    .nav-logo img { height: 42px; }
     .nav-tag { display: none; }
-    .nav-cta-btn { font-size: 12px; padding: 8px 14px; }
+    .nav-back { font-size: 12px; }
+    .page-content { padding: 24px 16px 48px; }
+    .eyebrow { font-size: 11px; }
+    .page-title { font-size: clamp(1.8rem, 8vw, 2.6rem); }
+    .deadline-badge { font-size: 11px; padding: 6px 12px; }
+    .page-footer { font-size: 10px; }
 
-    .eyebrow {
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      margin-bottom: 8px;
+    /* ── TABLE → CARDS ── */
+    .table-wrap { overflow: visible; }
+
+    .sco-table thead { display: none; }
+
+    .sco-table tbody,
+    .sco-table tr,
+    .sco-table td { display: block; width: 100%; }
+
+    .sco-table tr {
+      border: 1px solid var(--grey-light);
+      border-radius: 6px;
+      margin-bottom: 14px;
+      padding: 0;
+      overflow: hidden;
     }
-    .slide-title {
-      font-size: clamp(1.9rem, 8.5vw, 2.8rem);
-      line-height: 1.05;
+    .sco-table tr:hover { background: #fff; }
+
+    .sco-table td {
+      padding: 11px 14px;
+      font-size: 14px;
+      border-bottom: 1px solid var(--grey-light);
+      position: relative;
+    }
+    .sco-table td:last-child { border-bottom: none; }
+
+    /* label chip above each cell value */
+    .sco-table td::before {
+      content: attr(data-label);
+      display: block;
+      font-family: var(--fd);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--grey-mid);
+      margin-bottom: 4px;
     }
 
-    .sc-content { padding: 28px 20px 40px; }
-    .sc-header { margin-bottom: 18px; }
-    .sc-subtitle { font-size: 14px; margin-top: 6px; }
-    .sc-grid {
-      grid-template-columns: 1fr;
-      gap: 3px;
+    /* scope cell: full-width red header */
+    .sco-table td:first-child {
+      background: var(--red);
+      color: #fff;
+      font-size: 16px;
+      white-space: normal;
+      padding: 12px 14px;
     }
-    .sc-card { padding: 24px 20px; gap: 10px; }
-    .sc-tag   { font-size: 11px; }
-    .sc-title { font-size: 18px; }
-    .sc-text  { font-size: 14px; line-height: 1.65; }
+    .sco-table td:first-child::before { color: rgba(255,255,255,0.55); }
+    .sco-table td:first-child .sco-note { color: rgba(255,255,255,0.6); font-size: 11px; }
+
+    .sco-table td.td-empty { color: #444; text-align: left; font-size: 14px; }
+
+    .sco-badge { font-size: 11px; }
+    .sco-note  { font-size: 12px; }
   }
 </style>
 </head>
 <body>
 
-<nav class="slide-nav">
+<nav class="page-nav">
   <a href="index.html" class="nav-logo">
     <img src="logo%20tca.png" alt="Tennis Club Ambrosiano">
   </a>
-  <div style="display:flex; align-items:center; gap:1.5vw;">
-    <span class="nav-tag">Confidential Proposal · Milan · June 2026</span>
-    <a href="index.html" class="nav-cta-btn">Back to Proposal</a>
-  </div>
+  <span class="nav-tag">Carve-Out Roadmap</span>
+  <a href="index.html" class="nav-back">Proposal</a>
 </nav>
 
-<div class="sc-content">
-  <div class="sc-header">
-    <span class="eyebrow">The Carve-Out Plan</span>
-    <h1 class="slide-title">One goal: <em>zero interruptions.</em></h1>
-    <p class="sc-subtitle">Operations keep running without disruption — every function previously managed by the group is re-allocated in-house, technology by technology.</p>
+<main class="page-content">
+
+  <div class="page-header">
+    <span class="eyebrow">Operational Plan</span>
+    <h1 class="page-title">
+      Carve-Out Roadmap &mdash; <em>Cut-Off July 31st</em>
+    </h1>
+    <span class="deadline-badge">&#9679;&nbsp; Hard Deadline: July 31, 2025</span>
   </div>
-  <div class="sc-grid">
-    <div class="sc-card">
-      <div class="sc-tag">01 · Perfect Gym</div>
-      <div class="sc-title">Contract Under TCA</div>
-      <p class="sc-text">Move the contract directly to TCA, stripping out everything superfluous from the current agreement — and optimise the platform from day one to cover more functions, such as newsletters.</p>
-    </div>
-    <div class="sc-card">
-      <div class="sc-tag">02 · Website</div>
-      <div class="sc-title">Prismic to TCA — or a New Site</div>
-      <p class="sc-text">Evaluate transferring the current Prismic site under TCA — carefully assessing the entire tracking and form system currently running on HubSpot. Alternatively, the opportunity to build a brand-new TCA website from scratch.</p>
-    </div>
-    <div class="sc-card">
-      <div class="sc-tag">03 · Forms</div>
-      <div class="sc-title">Clean Break from HubSpot</div>
-      <p class="sc-text">Remove the HubSpot account. New HTML forms integrated directly with Perfect Gym: a clean, rebuilt data flow — detached from HubSpot, at minimal cost.</p>
-    </div>
-    <div class="sc-card">
-      <div class="sc-tag">04 · Email · Outlook 365</div>
-      <div class="sc-title">Account Ownership</div>
-      <p class="sc-text">Assess whether account ownership can be transferred to TCA; alternatively, plan the migration of accounts to a new Outlook 365 or Google Workspace tenant.</p>
-    </div>
-    <div class="sc-card">
-      <div class="sc-tag">05 · Newsletter</div>
-      <div class="sc-title">HubSpot → Perfect Gym</div>
-      <p class="sc-text">Move newsletters out of HubSpot into Perfect Gym — all member communication consolidated in the platform the club already owns.</p>
-    </div>
+
+  <div class="table-wrap">
+    <table class="sco-table">
+      <thead>
+        <tr>
+          <th>Scope</th>
+          <th>Owner</th>
+          <th>Other People Involved</th>
+          <th>Status</th>
+          <th>Next Step</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- 1 · PERFECT GYM -->
+        <tr>
+          <td data-label="Scope">Perfect Gym</td>
+          <td data-label="Owner">Maurizio Taruggi</td>
+          <td data-label="Other People Involved">Peter Croft</td>
+          <td data-label="Status">
+            <span class="sco-badge sco-badge--todo">To call</span>
+          </td>
+          <td data-label="Next Step">Call Peter Croft</td>
+          <td data-label="Date">Jun 15–19</td>
+        </tr>
+
+        <!-- 2 · WEBSITE -->
+        <tr>
+          <td data-label="Scope">Website</td>
+          <td data-label="Owner">Maurizio Taruggi</td>
+          <td data-label="Other People Involved">Laura Giardini &amp; Thomas Sander</td>
+          <td data-label="Status">
+            <span class="sco-badge sco-badge--todo">To call</span>
+          </td>
+          <td data-label="Next Step">Call Laura Giardini</td>
+          <td data-label="Date">Jun 15–19</td>
+        </tr>
+
+        <!-- 3 · HUBSPOT & JOTFORM -->
+        <tr>
+          <td data-label="Scope">HubSpot &amp; JotForm</td>
+          <td data-label="Owner">Maurizio Taruggi</td>
+          <td data-label="Other People Involved"><span class="sco-note">No external contact required</span></td>
+          <td data-label="Status">
+            <span class="sco-badge sco-badge--prep">Independent</span>
+            <div class="sco-note">All existing forms replaced with custom HTML forms built from scratch · HubSpot: new automations and pipelines · Prismic access needed for current form mapping · Newsletter management: training for Marketing resource</div>
+          </td>
+          <td data-label="Next Step">Analyze forms &amp; automations</td>
+          <td data-label="Date">Jun 22–26</td>
+        </tr>
+
+        <!-- 4 · MICROSOFT -->
+        <tr>
+          <td data-label="Scope">Microsoft<br><span class="sco-note">Outlook &amp; OneDrive</span></td>
+          <td data-label="Owner">Maurizio Taruggi</td>
+          <td data-label="Other People Involved">
+            Emanuele <span class="sco-note">(Maurizio's Partner)</span><br>
+            Thomas Sander
+          </td>
+          <td data-label="Status">
+            <span class="sco-badge sco-badge--wip">In preparation</span>
+            <div class="sco-note">Mapping requirements and drafting technical document before engaging Thomas Sander · Includes OneDrive migration planning</div>
+          </td>
+          <td data-label="Next Step">Call Thomas Sander</td>
+          <td data-label="Date">Jun 22–26</td>
+        </tr>
+
+        <!-- 5 · PHYSICAL DEVICES -->
+        <tr>
+          <td data-label="Scope">Physical Devices<br><span class="sco-note">PCs &amp; Wi-Fi</span></td>
+          <td data-label="Owner">TBD<br><span class="sco-note">External on-site partner</span></td>
+          <td data-label="Other People Involved">Thomas Sander</td>
+          <td data-label="Status">
+            <span class="sco-badge sco-badge--todo">To call</span>
+            <div class="sco-note">Preparing technical requirements document ahead of Thomas Sander call</div>
+          </td>
+          <td data-label="Next Step">Call Thomas Sander</td>
+          <td data-label="Date">Jun 22–26</td>
+        </tr>
+
+      </tbody>
+    </table>
   </div>
-</div>
+
+  <p class="page-footer">Confidential · Tennis Club Ambrosiano · 2025</p>
+
+</main>
 
 </body>
 </html>

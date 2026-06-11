@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CarveOutTable from '../components/CarveOutTable.astro';
+---
+
+<BaseLayout title="TCA · Carve-Out Roadmap">
+
+  <main class="co-page">
+    <div class="co-header">
+      <span class="eyebrow eyebrow--grey">Operational Plan</span>
+      <h1 class="co-title">
+        Carve-Out Roadmap &mdash; <em>Cut-Off July 31st</em>
+      </h1>
+      <span class="deadline-badge">&#9679;&nbsp; Hard Deadline: July 31, 2025</span>
+    </div>
+
+    <CarveOutTable />
+
+    <p class="co-footer">Confidential · Tennis Club Ambrosiano · 2025</p>
+  </main>
+
+</BaseLayout>
+
+<style>
+  :global(body) { background: #fff; }
+
+  .co-page {
+    padding: calc(var(--header-h) + 3.5vh) clamp(20px, 5vw, 72px) 6vh;
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+
+  .co-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8vh;
+    margin-bottom: 3.5vh;
+  }
+
+  .co-title {
+    font-family: var(--fd);
+    font-size: clamp(2rem, 4vw, 4rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.0;
+    color: var(--text);
+  }
+  .co-title em { color: var(--red); font-style: normal; }
+
+  .deadline-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--red);
+    color: #fff;
+    font-family: var(--fd);
+    font-size: clamp(10px, 0.75vw, 12px);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 7px 16px;
+    border-radius: 3px;
+    margin-top: 0.5vh;
+    width: fit-content;
+  }
+
+  .co-footer {
+    margin-top: 4vh;
+    border-top: 1px solid var(--grey-light);
+    padding-top: 2vh;
+    font-size: clamp(9px, 0.65vw, 11px);
+    color: var(--grey-mid);
+    font-family: var(--fd);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 768px) {
+    .co-page { padding: calc(var(--header-h) + 20px) 16px 40px; }
+    .co-title { font-size: clamp(1.7rem, 7.5vw, 2.4rem); }
+    .deadline-badge { font-size: 11px; padding: 6px 12px; }
+    .co-footer { font-size: 10px; }
+  }
+</style>

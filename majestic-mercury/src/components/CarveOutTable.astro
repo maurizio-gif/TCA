@@ -1,0 +1,224 @@
+---
+interface Row {
+  scope: string;
+  scopeNote?: string;
+  owner: string;
+  ownerNote?: string;
+  people: string;
+  peopleNote?: string;
+  status: 'todo' | 'wip' | 'prep';
+  statusLabel: string;
+  statusNote?: string;
+  nextStep: string;
+  date: string;
+}
+
+const rows: Row[] = [
+  {
+    scope: 'Perfect Gym',
+    owner: 'Maurizio Taruggi',
+    people: 'Peter Croft',
+    status: 'todo',
+    statusLabel: 'To call',
+    nextStep: 'Call Peter Croft',
+    date: 'Jun 15–19',
+  },
+  {
+    scope: 'Website',
+    owner: 'Maurizio Taruggi',
+    people: 'Laura Giardini & Thomas Sander',
+    status: 'todo',
+    statusLabel: 'To call',
+    nextStep: 'Call Laura Giardini',
+    date: 'Jun 15–19',
+  },
+  {
+    scope: 'HubSpot & JotForm',
+    owner: 'Maurizio Taruggi',
+    people: '—',
+    peopleNote: 'No external contact required',
+    status: 'prep',
+    statusLabel: 'Independent',
+    statusNote: 'All existing forms replaced with custom HTML forms · HubSpot: new automations & pipelines · Prismic access needed for form mapping · Newsletter: training for Marketing resource',
+    nextStep: 'Analyze forms & automations',
+    date: 'Jun 22–26',
+  },
+  {
+    scope: 'Microsoft',
+    scopeNote: 'Outlook & OneDrive',
+    owner: 'Maurizio Taruggi',
+    people: 'Emanuele (Partner) & Thomas Sander',
+    status: 'wip',
+    statusLabel: 'In preparation',
+    statusNote: 'Mapping requirements and drafting technical document before engaging Thomas Sander · Includes OneDrive migration planning',
+    nextStep: 'Call Thomas Sander',
+    date: 'Jun 22–26',
+  },
+  {
+    scope: 'Physical Devices',
+    scopeNote: 'PCs & Wi-Fi',
+    owner: 'TBD',
+    ownerNote: 'External on-site partner',
+    people: 'Thomas Sander',
+    status: 'todo',
+    statusLabel: 'To call',
+    statusNote: 'Preparing technical requirements document ahead of Thomas Sander call',
+    nextStep: 'Call Thomas Sander',
+    date: 'Jun 22–26',
+  },
+];
+---
+
+<div class="table-wrap">
+  <table class="sco-table">
+    <thead>
+      <tr>
+        <th>Scope</th>
+        <th>Owner</th>
+        <th>Other People Involved</th>
+        <th>Status</th>
+        <th>Next Step</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((row) => (
+        <tr>
+          <td data-label="Scope">
+            {row.scope}
+            {row.scopeNote && <span class="note">{row.scopeNote}</span>}
+          </td>
+          <td data-label="Owner">
+            {row.owner}
+            {row.ownerNote && <span class="note">{row.ownerNote}</span>}
+          </td>
+          <td data-label="Other People Involved">
+            {row.peopleNote
+              ? <span class="note">{row.peopleNote}</span>
+              : row.people}
+          </td>
+          <td data-label="Status">
+            <span class={`badge badge--${row.status}`}>{row.statusLabel}</span>
+            {row.statusNote && <div class="note">{row.statusNote}</div>}
+          </td>
+          <td data-label="Next Step">{row.nextStep}</td>
+          <td data-label="Date">{row.date}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .table-wrap { overflow-x: auto; }
+
+  .sco-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .sco-table thead tr { background: var(--red); }
+  .sco-table th {
+    font-family: var(--fd);
+    font-size: clamp(10px, 0.75vw, 12px);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #fff;
+    padding: 14px 20px;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .sco-table tbody tr {
+    border-bottom: 1px solid var(--grey-light);
+    transition: background 0.15s;
+  }
+  .sco-table tbody tr:hover { background: #f7f7f7; }
+  .sco-table td {
+    font-size: clamp(12px, 0.9vw, 14px);
+    font-weight: 300;
+    color: #444;
+    padding: 16px 20px;
+    vertical-align: top;
+    line-height: 1.55;
+  }
+  .sco-table td:first-child {
+    font-family: var(--fd);
+    font-size: clamp(13px, 1vw, 15px);
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .note {
+    display: block;
+    font-size: clamp(10px, 0.75vw, 12px);
+    color: var(--grey-mid);
+    margin-top: 4px;
+    font-style: italic;
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: clamp(9px, 0.65vw, 11px);
+    font-weight: 600;
+    font-family: var(--fd);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 3px;
+  }
+  .badge--todo { background: rgba(139,26,26,0.08); color: var(--red);    border: 1px solid rgba(139,26,26,0.25); }
+  .badge--wip  { background: rgba(180,120,0,0.08); color: #8B6000;       border: 1px solid rgba(180,120,0,0.25); }
+  .badge--prep { background: rgba(0,80,180,0.07);  color: #004FAF;       border: 1px solid rgba(0,80,180,0.2); }
+
+  /* ── MOBILE: card layout ── */
+  @media (max-width: 768px) {
+    .table-wrap { overflow: visible; }
+    .sco-table thead { display: none; }
+    .sco-table tbody,
+    .sco-table tr,
+    .sco-table td { display: block; width: 100%; }
+
+    .sco-table tr {
+      border: 1px solid var(--grey-light);
+      border-radius: 6px;
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+    .sco-table tr:hover { background: #fff; }
+
+    .sco-table td {
+      padding: 11px 14px;
+      font-size: 14px;
+      border-bottom: 1px solid var(--grey-light);
+    }
+    .sco-table td:last-child { border-bottom: none; }
+
+    .sco-table td::before {
+      content: attr(data-label);
+      display: block;
+      font-family: var(--fd);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--grey-mid);
+      margin-bottom: 4px;
+    }
+
+    .sco-table td:first-child {
+      background: var(--red);
+      color: #fff;
+      font-size: 16px;
+      white-space: normal;
+      padding: 12px 14px;
+    }
+    .sco-table td:first-child::before { color: rgba(255,255,255,0.55); }
+    .sco-table td:first-child :global(.note) { color: rgba(255,255,255,0.6); font-size: 11px; }
+
+    .badge  { font-size: 11px; }
+    .note   { font-size: 12px; }
+  }
+</style>

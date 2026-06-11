@@ -1,0 +1,602 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const pillars = [
+  ['01','Self-Service Online','Enrolment, renewals, and bookings managed directly by members. Front-desk staff freed for human relationships.'],
+  ['02','CRM & Lead Automation','Zero lead loss. Every prospect tracked and nurtured automatically through the pipeline, with no manual effort.'],
+  ['03','BI & AI Dashboard','Live data on revenue, churn, and operations. Clean data foundation first — then AI amplifies every insight.'],
+  ['04','Compliance Engine','Membership cards, medical certificates, fiscal invoicing — automated and embedded directly into the workflow.'],
+  ['05','Mini ERP & Care Hub','Maintenance, cleaning, complaint tracking with scoring. Reduce churn by converting dissatisfaction into loyalty.'],
+];
+
+const outcomes = [
+  ['↓','Cost per Member Served','Operational Cost','Automating routine admin tasks reduces front-desk overhead without reducing the quality of service your members experience.'],
+  ['↑','Member Loyalty Rate','Retention','Active complaint management and renewal automation convert at-risk members into long-term loyal advocates of the club.'],
+  ['↑','Lead-to-Member Rate','Conversion','CRM funnel with AI lead scoring ensures every opportunity is captured and followed up. No lead is ever lost again.'],
+  ['↓','Compliance & Operational Risk','Exposure','Fiscal, membership, and medical compliance built directly into the workflow. Zero manual errors, zero regulatory exposure.'],
+];
+---
+
+<BaseLayout title="TCA · Digital Transformation Proposal">
+
+<div class="slide-dots" id="dots"></div>
+
+<!-- S1 · COVER -->
+<section class="slide s1" id="s1" data-header="dark">
+  <div class="s1-bg"></div>
+  <div class="s1-watermark">TCA</div>
+  <div class="s1-content">
+    <span class="eyebrow eyebrow--light">Digital Transformation &amp; Operational Excellence</span>
+    <h1 class="s1-title">Digital<br /><em>Infrastructure.</em><br />Human<br />Touch.</h1>
+    <p class="s1-sub">A lean, digital model built around TCA — protecting its legacy while freeing your people from every friction that slows them down.</p>
+    <div class="s1-actions">
+      <a href="#s2" class="btn btn-red">Explore the Proposal</a>
+      <a href="#s3" class="btn btn-outline">The Opportunity Window</a>
+    </div>
+  </div>
+  <div class="s1-meta">Presented by Maurizio Taruggi</div>
+</section>
+
+<!-- S2 · WHO I AM -->
+<section class="slide s2" id="s2" data-header="light">
+  <div class="s2-grid">
+    <div class="s2-left">
+      <span class="eyebrow eyebrow--light">About</span>
+      <h2 class="s2-name">Maurizio<br />Taruggi</h2>
+      <div class="s2-divider"></div>
+      <p class="s2-tagline">I speak both languages:<br />the floor operations and every pain they hide —<br />and the digital stack built to fix them.</p>
+    </div>
+    <div class="s2-right">
+      <span class="eyebrow">Who I Am</span>
+      <div class="s2-card">
+        <div class="s2-card-label">01 · Club Owner &amp; Operator</div>
+        <div class="s2-card-title">I Know Every Pain Before You Name It</div>
+        <p class="s2-card-text">I run my own sports club, Athlon Roma, every day — 70% of memberships sold online, €200k monthly revenue, €50k total employee costs (25% of revenue). I know the booking chaos, the renewal slippage, the complaints that never reach management. I don't theorise about operations — I live them.</p>
+      </div>
+      <div class="s2-card">
+        <div class="s2-card-label">02 · Web · CRM · Automations</div>
+        <div class="s2-card-title">Full-Stack Digital — No Gaps</div>
+        <p class="s2-card-text">I design and build web interfaces, CRM pipelines, and complex automation flows from end to end. Lead capture, nurture sequences, member portals, renewal triggers, backend integrations — I build the full stack, not just the slide deck.</p>
+      </div>
+      <div class="s2-card">
+        <div class="s2-card-label">03 · TCA Insider</div>
+        <div class="s2-card-title">I'm Already Inside the System</div>
+        <p class="s2-card-text">For Aspresso Roma I audited the customer journey and technology stack, then delivered the fiscal compliance implementation — working directly alongside Laura Bonamico. I know this group's standards from the inside — and I already have active access to TCA's Perfect Gym platform.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S3 · OPPORTUNITY WINDOW -->
+<section class="slide s3" id="s3" data-header="dark">
+  <div class="s3-content">
+    <div class="s3-header">
+      <span class="eyebrow eyebrow--light">The Window</span>
+      <h2 class="slide-title" style="color:#fff;">
+        Right now, as the corporate<br />structure shifts — this is the<br /><em style="color:#C0282A;">perfect moment.</em>
+      </h2>
+    </div>
+    <div class="s3-cards">
+      <div class="s3-card">
+        <div class="s3-num">01</div>
+        <div class="s3-card-title">The Carve-Out Risk</div>
+        <p class="s3-card-text">A corporate separation from Aspria Holdings can easily become an operational headache — system downtime, data loss, staff overload, and members who notice.</p>
+      </div>
+      <div class="s3-card s3-card--accent">
+        <div class="s3-num">02</div>
+        <div class="s3-card-title">The Perfect Moment</div>
+        <p class="s3-card-text">During restructuring, new systems can be built in parallel — silently — and switched on only when 100% ready. Zero downtime. Surgical. Invisible to your members.</p>
+      </div>
+      <div class="s3-card">
+        <div class="s3-num">03</div>
+        <div class="s3-card-title">The Outcome</div>
+        <p class="s3-card-text">TCA emerges fully independent — its history, identity and premium positioning completely intact. The legacy is protected. The operations are stronger. The competitive edge is new.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S4 · THE MODEL -->
+<section class="slide s4" id="s4" data-header="light">
+  <div class="s4-content">
+    <div class="s4-header">
+      <span class="eyebrow">The Model</span>
+      <h2 class="slide-title">Human-Centric Digital Infrastructure</h2>
+      <p class="s4-subtitle">A lean, digital operating model — technology that hides in the background so your team stays on the floor, preserving TCA's identity while quietly powering its future.</p>
+    </div>
+    <div class="s4-pillars">
+      {pillars.map(([num, title, text]) => (
+        <div class="s4-card">
+          <div class="s4-num">{num}</div>
+          <div class="s4-line"></div>
+          <div class="s4-title">{title}</div>
+          <p class="s4-text">{text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- S5 · WHY ME -->
+<section class="slide s5" id="s5" data-header="light">
+  <div class="s5-content">
+    <div class="s5-header">
+      <span class="eyebrow">Why Me</span>
+      <h2 class="slide-title">One partner.<br />Every capability TCA needs right now.</h2>
+    </div>
+    <div class="s5-grid">
+      <div class="s5-bad">
+        <span class="s5-bad-tag">01 · Club Operations</span>
+        <div class="s5-bad-title">I Live the<br />Daily Grind</div>
+        <p class="s5-bad-text">I run Athlon Roma every day: 70% of memberships sold online, €200k monthly revenue, €50k total employee costs — 25% of revenue. Booking chaos, renewal slippage, complaints that never reach management. I know every friction point before you name it — not theory, floor-level reality.</p>
+      </div>
+      <div class="s5-bad">
+        <span class="s5-bad-tag">02 · Full Digital Stack</span>
+        <div class="s5-bad-title">End to End,<br />No Gaps</div>
+        <p class="s5-bad-text">Web interfaces, CRM pipelines, complex automations — from customer acquisition to renewal triggers, from member portals to fiscal compliance. I design and build the full stack, from the customer-facing interface all the way through to back-office operations.</p>
+      </div>
+      <div class="s5-winner">
+        <span class="s5-winner-tag">03 · Already Inside TCA</span>
+        <div class="s5-winner-title">Zero<br />Learning Curve</div>
+        <p class="s5-winner-text">I audited Aspresso Roma's customer journey and technology stack, delivered the fiscal compliance implementation, and I already have active access to TCA's Perfect Gym platform. I know this club's DNA. The transition window is open now — I move at its pace.</p>
+        <ul class="s5-points">
+          <li>Aspresso audit + Laura Bonamico</li>
+          <li>Active Perfect Gym access</li>
+          <li>Operational from day one</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S6 · OUTCOMES -->
+<section class="slide s6" id="s6" data-header="light">
+  <div class="s6-content">
+    <div class="s6-header">
+      <span class="eyebrow">The Outcomes</span>
+      <h2 class="slide-title">What this means for TCA's EBITDA</h2>
+    </div>
+    <div class="s6-grid">
+      {outcomes.map(([stat, kpi, title, text]) => (
+        <div class="s6-card">
+          <div class="s6-stat">{stat}</div>
+          <div class="s6-body">
+            <div class="s6-kpi">{kpi}</div>
+            <div class="s6-title">{title}</div>
+            <p class="s6-text">{text}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- S7 · CLOSING -->
+<section class="slide s7" id="s7" data-header="dark">
+  <div class="s7-bg"></div>
+  <div class="s7-corner-tl"></div><div class="s7-corner-tl-v"></div>
+  <div class="s7-corner-br"></div><div class="s7-corner-br-v"></div>
+  <div class="s7-content">
+    <p class="s7-quote">"Every transition carries risk — and a rare window of opportunity.<br />Prepared with care, this one can deliver TCA lasting independence and stronger operations."</p>
+    <h2 class="s7-title">Ready to hit<br />the ground<br />running.</h2>
+    <div class="s7-actions">
+      <a href="mailto:maurizio@ready2digital.it" class="btn btn-red">Send an Email</a>
+      <a href="tel:+393409237059" class="btn btn-outline">Call</a>
+      <a href="https://wa.me/393409237059" target="_blank" rel="noopener" class="btn btn-outline">Chat on WhatsApp</a>
+    </div>
+    <p class="s7-meta">Maurizio Taruggi · maurizio@ready2digital.it · +39 340 923 7059</p>
+  </div>
+</section>
+
+</BaseLayout>
+
+<style is:global>
+  /* ── Page base ── */
+  html { scroll-behavior: smooth; }
+  body { background: var(--text); }
+
+  /* ── Slides: no snap, natural scroll, min-height 100vh ── */
+  .slide {
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    scroll-margin-top: var(--header-h);
+  }
+
+  /* ── DOTS ── */
+  .slide-dots {
+    position: fixed;
+    right: clamp(12px, 1.4vw, 22px);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    z-index: 200;
+  }
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.25s;
+    background: rgba(255,255,255,0.25);
+  }
+  .dot-on-light { background: rgba(0,0,0,0.2); }
+  .dot.active { background: var(--red); transform: scale(1.5); }
+
+  /* ══════════════════════════════════════
+     S1 · COVER
+  ══════════════════════════════════════ */
+  .s1 { background: var(--text); overflow: hidden; }
+  .s1-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(105deg, rgba(26,26,26,.88) 42%, rgba(139,26,26,.30) 100%),
+                url('https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?w=1600&q=80') center/cover no-repeat;
+  }
+  .s1-content {
+    position: relative; z-index: 2;
+    padding: calc(var(--header-h) + 5vh) clamp(24px,6vw,80px) 5vh;
+    display: flex; flex-direction: column; gap: 2.5vh; flex: 1;
+  }
+  .s1-title {
+    font-family: var(--fd);
+    font-size: clamp(3.2rem, 7vw, 6.5rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: .9;
+    color: #fff;
+    letter-spacing: -.015em;
+  }
+  .s1-title em { color: #C0282A; font-style: normal; }
+  .s1-sub {
+    font-size: clamp(0.95rem, 1.4vw, 1.2rem);
+    font-weight: 300;
+    color: rgba(255,255,255,.72);
+    line-height: 1.65;
+    max-width: min(44vw, 600px);
+  }
+  .s1-actions { display: flex; gap: clamp(10px,1vw,16px); margin-top: 1vh; flex-wrap: wrap; }
+  .s1-meta {
+    position: absolute; bottom: 3.5vh; right: clamp(24px,4vw,60px);
+    font-family: var(--fd); font-size: clamp(10px, 0.9vw, 13px);
+    font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
+    color: rgba(255,255,255,.28);
+  }
+  .s1-watermark {
+    position: absolute; bottom: -4vw; right: 2vw;
+    font-family: var(--fd); font-size: clamp(140px, 18vw, 280px);
+    font-weight: 800; color: rgba(255,255,255,.03);
+    line-height: 1; user-select: none; pointer-events: none;
+  }
+
+  /* ══════════════════════════════════════
+     S2 · WHO I AM
+  ══════════════════════════════════════ */
+  .s2 { background: var(--off-white); }
+  .s2-grid {
+    display: grid;
+    grid-template-columns: 38% 62%;
+    flex: 1;
+    min-height: calc(100vh - var(--header-h));
+    margin-top: var(--header-h);
+  }
+  .s2-left {
+    background: var(--text);
+    padding: clamp(28px,5vh,60px) clamp(20px,3.5vw,48px);
+    display: flex; flex-direction: column; justify-content: center; gap: 2.5vh;
+  }
+  .s2-name {
+    font-family: var(--fd);
+    font-size: clamp(2.8rem, 5.5vw, 5.5rem);
+    font-weight: 800; text-transform: uppercase; line-height: .93; color: #fff;
+  }
+  .s2-divider { width: clamp(32px,3.5vw,52px); height: 3px; background: var(--red); }
+  .s2-tagline {
+    font-size: clamp(0.9rem, 1.4vw, 1.15rem);
+    font-weight: 300; font-style: italic; color: rgba(255,255,255,.6); line-height: 1.7;
+  }
+  .s2-right {
+    padding: clamp(20px,3vh,40px) clamp(20px,3.5vw,48px);
+    display: flex; flex-direction: column; justify-content: center; gap: clamp(12px,1.8vh,24px);
+    overflow-y: auto;
+  }
+  .s2-card { background: #fff; border-left: 3px solid var(--red); padding: clamp(14px,1.8vh,24px) clamp(16px,1.8vw,28px); }
+  .s2-card-label {
+    font-family: var(--fd); font-size: clamp(10px,0.9vw,12px);
+    font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--red);
+  }
+  .s2-card-title {
+    font-family: var(--fd); font-size: clamp(14px,1.4vw,20px);
+    font-weight: 700; text-transform: uppercase; color: var(--text); margin: .4vh 0;
+  }
+  .s2-card-text {
+    font-size: clamp(12px,0.85vw,14px); font-weight: 300; color: var(--text-light); line-height: 1.65;
+  }
+
+  /* ══════════════════════════════════════
+     S3 · OPPORTUNITY WINDOW
+  ══════════════════════════════════════ */
+  .s3 { background: var(--text); }
+  .s3-content {
+    padding: calc(var(--header-h) + 4vh) clamp(24px,5vw,72px) 4vh;
+    display: flex; flex-direction: column; flex: 1;
+  }
+  .s3-header { margin-bottom: 3vh; }
+  .s3-cards {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: rgba(255,255,255,.08); flex: 1;
+  }
+  .s3-card {
+    background: #1E2530; padding: clamp(24px,3.5vh,48px) clamp(20px,2.2vw,36px);
+    display: flex; flex-direction: column; gap: clamp(10px,1.5vh,20px);
+  }
+  .s3-card--accent { background: var(--red); }
+  .s3-num {
+    font-family: var(--fd); font-size: clamp(32px,4.5vw,72px);
+    font-weight: 800; line-height: 1; color: rgba(255,255,255,.08);
+  }
+  .s3-card-title {
+    font-family: var(--fd); font-size: clamp(1rem,1.7vw,1.6rem);
+    font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: #fff;
+  }
+  .s3-card-text {
+    font-size: clamp(12px, 1vw, 15px); font-weight: 300; color: rgba(255,255,255,.6); line-height: 1.7;
+  }
+  .s3-card--accent .s3-card-text { color: rgba(255,255,255,.8); }
+
+  /* ══════════════════════════════════════
+     S4 · THE MODEL
+  ══════════════════════════════════════ */
+  .s4 { background: #fff; }
+  .s4-content {
+    padding: calc(var(--header-h) + 3vh) clamp(24px,5vw,72px) 4vh;
+    display: flex; flex-direction: column; flex: 1;
+  }
+  .s4-header { margin-bottom: 3vh; }
+  .s4-subtitle {
+    font-size: clamp(12px, 1vw, 15px); font-weight: 300; color: var(--text-light);
+    line-height: 1.6; margin-top: 1vh; max-width: min(72vw, 900px);
+  }
+  .s4-pillars {
+    display: grid; grid-template-columns: repeat(5,1fr);
+    gap: 1px; background: var(--grey-light); flex: 1;
+  }
+  .s4-card {
+    background: #fff; padding: clamp(18px,3vh,40px) clamp(14px,1.8vw,28px);
+    display: flex; flex-direction: column; gap: clamp(8px,1.2vh,16px);
+  }
+  .s4-num {
+    font-family: var(--fd); font-size: clamp(24px,3vw,48px);
+    font-weight: 800; color: var(--grey-light); line-height: 1;
+  }
+  .s4-line { width: clamp(24px,2.5vw,40px); height: 2px; background: var(--red); }
+  .s4-title {
+    font-family: var(--fd); font-size: clamp(13px,1.3vw,18px);
+    font-weight: 700; text-transform: uppercase; color: var(--text);
+  }
+  .s4-text {
+    font-size: clamp(11px, 0.85vw, 14px); font-weight: 300; color: var(--text-light); line-height: 1.65;
+  }
+
+  /* ══════════════════════════════════════
+     S5 · WHY ME
+  ══════════════════════════════════════ */
+  .s5 { background: var(--off-white); }
+  .s5-content {
+    padding: calc(var(--header-h) + 3vh) clamp(24px,5vw,72px) 4vh;
+    display: flex; flex-direction: column; flex: 1;
+  }
+  .s5-header { margin-bottom: 3vh; }
+  .s5-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1.1fr;
+    gap: 1px; background: var(--grey-light); flex: 1;
+  }
+  .s5-bad {
+    background: #fff; padding: clamp(20px,3vh,40px) clamp(16px,2.2vw,32px);
+    display: flex; flex-direction: column; gap: clamp(10px,1.5vh,20px);
+    border-top: 5px solid var(--grey-light);
+  }
+  .s5-bad-tag {
+    font-family: var(--fd); font-size: clamp(9px,0.8vw,12px);
+    font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--grey-mid);
+  }
+  .s5-bad-title {
+    font-family: var(--fd); font-size: clamp(1.4rem,2.2vw,2.4rem);
+    font-weight: 800; text-transform: uppercase; color: var(--text); line-height: .95;
+  }
+  .s5-bad-text {
+    font-size: clamp(12px,0.9vw,14px); font-weight: 300; color: var(--text-light); line-height: 1.65;
+  }
+  .s5-winner {
+    background: var(--text); padding: clamp(22px,3.5vh,48px) clamp(18px,2.5vw,36px);
+    display: flex; flex-direction: column; gap: clamp(12px,2vh,24px);
+    border-top: 5px solid var(--red);
+  }
+  .s5-winner-tag {
+    font-family: var(--fd); font-size: clamp(9px,0.8vw,12px);
+    font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--red);
+  }
+  .s5-winner-title {
+    font-family: var(--fd); font-size: clamp(2rem,3vw,3.5rem);
+    font-weight: 800; text-transform: uppercase; color: #fff; line-height: .9;
+  }
+  .s5-winner-text {
+    font-size: clamp(12px,0.9vw,14px); font-weight: 300; color: rgba(255,255,255,.65); line-height: 1.65;
+  }
+  .s5-points { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
+  .s5-points li {
+    font-family: var(--fd); font-size: clamp(10px,0.9vw,13px);
+    font-weight: 600; text-transform: uppercase; letter-spacing: .08em;
+    color: rgba(255,255,255,.5); padding-left: 16px; position: relative;
+  }
+  .s5-points li::before { content: '—'; position: absolute; left: 0; color: var(--red); }
+
+  /* ══════════════════════════════════════
+     S6 · OUTCOMES
+  ══════════════════════════════════════ */
+  .s6 { background: #fff; }
+  .s6-content {
+    padding: calc(var(--header-h) + 3vh) clamp(24px,5vw,72px) 4vh;
+    display: flex; flex-direction: column; flex: 1;
+  }
+  .s6-header { margin-bottom: 3vh; }
+  .s6-grid {
+    display: grid; grid-template-columns: repeat(4,1fr);
+    gap: 1px; background: var(--grey-light); flex: 1;
+  }
+  .s6-card {
+    background: #fff; padding: clamp(20px,3vh,40px) clamp(16px,2vw,28px);
+    display: flex; flex-direction: column; gap: clamp(12px,2vh,24px);
+  }
+  .s6-stat {
+    font-family: var(--fd); font-size: clamp(2.5rem,4.5vw,5rem);
+    font-weight: 800; color: var(--red); line-height: 1;
+  }
+  .s6-kpi {
+    font-family: var(--fd); font-size: clamp(9px,0.75vw,11px);
+    font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--grey-mid);
+  }
+  .s6-title {
+    font-family: var(--fd); font-size: clamp(1rem,1.7vw,1.8rem);
+    font-weight: 800; text-transform: uppercase; color: var(--text); margin-top: .3vh;
+  }
+  .s6-text {
+    font-size: clamp(11px,0.85vw,14px); font-weight: 300; color: var(--text-light); line-height: 1.65;
+  }
+
+  /* ══════════════════════════════════════
+     S7 · CLOSING
+  ══════════════════════════════════════ */
+  .s7 { background: var(--text); overflow: hidden; }
+  .s7-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(170deg, rgba(10,14,20,.85) 0%, rgba(26,26,26,.78) 50%, rgba(100,18,18,.60) 100%),
+                url('/verticale tca.avif') 35% center/cover no-repeat;
+  }
+  .s7-content {
+    position: relative; z-index: 2;
+    padding: calc(var(--header-h) + 7vh) clamp(24px,7vw,100px) 6vh;
+    display: flex; flex-direction: column; gap: 3.5vh; flex: 1; justify-content: center;
+  }
+  .s7-quote {
+    font-size: clamp(0.9rem,1.3vw,1.2rem); font-weight: 300; font-style: italic;
+    color: rgba(255,255,255,.5); line-height: 1.7; max-width: min(55vw, 700px);
+  }
+  .s7-title {
+    font-family: var(--fd); font-size: clamp(2.8rem,7vw,7rem);
+    font-weight: 800; text-transform: uppercase; color: #fff; line-height: .88;
+  }
+  .s7-actions { display: flex; gap: clamp(8px,1vw,16px); flex-wrap: wrap; }
+  .s7-meta {
+    font-family: var(--fd); font-size: clamp(10px,0.9vw,13px);
+    font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.3);
+  }
+  .s7-corner-tl, .s7-corner-tl-v, .s7-corner-br, .s7-corner-br-v {
+    position: absolute; z-index: 1; background: var(--red);
+  }
+  .s7-corner-tl  { top: 0; left: 0; width: clamp(40px,6vw,96px); height: 3px; }
+  .s7-corner-tl-v { top: 0; left: 0; width: 3px; height: clamp(40px,6vw,96px); }
+  .s7-corner-br  { bottom: 0; right: 0; width: clamp(40px,6vw,96px); height: 3px; }
+  .s7-corner-br-v { bottom: 0; right: 0; width: 3px; height: clamp(40px,6vw,96px); }
+
+  /* ══════════════════════════════════════
+     MOBILE
+  ══════════════════════════════════════ */
+  @media (max-width: 768px) {
+    .slide { min-height: auto; }
+    .s1, .s7 { min-height: 100svh; }
+    .slide-dots { display: none; }
+
+    .s1-content { padding: calc(var(--header-h) + 28px) 22px 36px; gap: 18px; }
+    .s1-title { font-size: clamp(2.8rem,13vw,4.2rem); line-height: .93; }
+    .s1-sub { font-size: 14px; max-width: 100%; }
+    .s1-actions { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .s1-meta { position: static; font-size: 11px; padding: 20px 22px; color: rgba(255,255,255,.3); }
+
+    .s2-grid { grid-template-columns: 1fr; margin-top: var(--header-h); min-height: auto; }
+    .s2-left  { padding: 28px 22px; }
+    .s2-name  { font-size: clamp(2.5rem,11vw,3.5rem); }
+    .s2-right { padding: 22px 20px 32px; gap: 12px; overflow-y: visible; }
+    .s2-card  { padding: 14px 16px; }
+    .s2-card-label { font-size: 10px; }
+    .s2-card-title { font-size: 16px; }
+    .s2-card-text  { font-size: 13px; }
+    .s2-tagline    { font-size: 14px; }
+
+    .s3-content { padding: calc(var(--header-h) + 20px) 20px 28px; }
+    .s3-cards { grid-template-columns: 1fr; gap: 3px; }
+    .s3-card  { padding: 24px 20px; }
+    .s3-card-title { font-size: 18px; }
+    .s3-card-text  { font-size: 14px; }
+
+    .s4-content { padding: calc(var(--header-h) + 20px) 20px 32px; }
+    .s4-pillars { grid-template-columns: 1fr; }
+    .s4-card    { padding: 20px 18px; }
+    .s4-subtitle { font-size: 13px; }
+    .s4-title    { font-size: 15px; }
+    .s4-text     { font-size: 13px; }
+
+    .s5-content { padding: calc(var(--header-h) + 20px) 20px 32px; }
+    .s5-grid    { grid-template-columns: 1fr; gap: 10px; }
+    .s5-bad     { padding: 20px 18px; }
+    .s5-bad-text    { font-size: 13px; }
+    .s5-bad-title   { font-size: 28px; }
+    .s5-winner      { padding: 24px 20px; }
+    .s5-winner-text { font-size: 13px; }
+    .s5-winner-title { font-size: clamp(2rem,10vw,3rem); }
+    .s5-points li { font-size: 12px; }
+
+    .s6-content { padding: calc(var(--header-h) + 20px) 20px 32px; }
+    .s6-grid    { grid-template-columns: 1fr; }
+    .s6-card    { padding: 20px 18px; }
+    .s6-stat    { font-size: 48px; }
+    .s6-title   { font-size: 18px; }
+    .s6-text    { font-size: 13px; }
+
+    .s7-content { padding: calc(var(--header-h) + 36px) 22px 48px; gap: 18px; }
+    .s7-quote   { font-size: 14px; max-width: 100%; }
+    .s7-title   { font-size: clamp(2.5rem,13vw,4rem); }
+    .s7-actions { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .s7-meta    { font-size: 11px; }
+  }
+</style>
+
+<script>
+  const slides        = Array.from(document.querySelectorAll<HTMLElement>('.slide'));
+  const dotsContainer = document.getElementById('dots')!;
+  const header        = document.getElementById('g-header');
+
+  const darkSlides = new Set(['s1','s3','s7']);
+
+  // Build dots
+  slides.forEach((s, i) => {
+    const d = document.createElement('div');
+    const onLight = !darkSlides.has(s.id);
+    d.className = 'dot' + (onLight ? ' dot-on-light' : '') + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => s.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    dotsContainer.appendChild(d);
+  });
+
+  // Set initial header state (S1 is dark)
+  if (darkSlides.has(slides[0]?.id ?? '')) {
+    header?.classList.add('g-header--dark');
+  }
+
+  const allDots = () => Array.from(document.querySelectorAll('.dot'));
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting && e.intersectionRatio >= 0.5) {
+        const idx = slides.indexOf(e.target as HTMLElement);
+        allDots().forEach((d, i) => d.classList.toggle('active', i === idx));
+        // Toggle header dark/light
+        const isDark = darkSlides.has((e.target as HTMLElement).id);
+        header?.classList.toggle('g-header--dark', isDark);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  slides.forEach(s => observer.observe(s));
+</script>

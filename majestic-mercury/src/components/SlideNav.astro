@@ -1,0 +1,96 @@
+---
+interface Props {
+  tag: string;
+  dark?: boolean;         // true = dark nav (slide 7)
+  carveoutLink?: boolean; // show carve-out button
+}
+const { tag, dark = false, carveoutLink = true } = Astro.props;
+---
+
+<nav class:list={['slide-nav', { 'slide-nav--dark': dark }]}>
+  <a href="/" class="nav-logo">
+    <img src="/logo tca.png" alt="Tennis Club Ambrosiano" />
+  </a>
+  <div class="nav-right">
+    <span class="nav-tag">{tag}</span>
+    {carveoutLink && (
+      <a
+        href="/carve-out"
+        class:list={['nav-carveout', { 'nav-carveout--light': !dark }]}
+      >
+        Carve-Out
+      </a>
+    )}
+  </div>
+</nav>
+
+<style>
+  .slide-nav {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 3.5vw;
+    height: 7vh;
+    background: rgba(255,255,255,0.96);
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .slide-nav--dark {
+    background: rgba(26,26,26,0.95);
+    border-color: rgba(255,255,255,0.08);
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+  .nav-logo img {
+    height: 7vh;
+    width: auto;
+    display: block;
+  }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 2vw;
+  }
+  .nav-tag {
+    font-family: var(--fd);
+    font-size: 1.05vw;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+  }
+  .slide-nav--dark .nav-tag { color: rgba(255,255,255,0.3); }
+
+  .nav-carveout {
+    font-family: var(--fd);
+    font-size: 0.82vw;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--red);
+    text-decoration: none;
+    padding: 5px 14px;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+  .nav-carveout:hover { background: var(--red-dark); }
+  .nav-carveout--light {
+    background: transparent;
+    color: var(--red);
+    border: 1.5px solid var(--red);
+  }
+  .nav-carveout--light:hover { background: rgba(139,26,26,0.08); }
+
+  @media (max-width: 768px) {
+    .slide-nav { height: 56px; padding: 0 20px; }
+    .nav-logo img { height: 44px; }
+    .nav-tag { display: none; }
+    .nav-carveout { font-size: 11px; padding: 4px 10px; }
+  }
+</style>

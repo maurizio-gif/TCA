@@ -1,0 +1,282 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description = 'Maurizio Taruggi for Tennis Club Ambrosiano.' } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+
+  <link rel="icon" type="image/png" href="/logo tca.png" />
+  <link rel="apple-touch-icon" href="/logo tca.png" />
+
+  <meta name="description" content={description} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content="/orizzntale tca.avif" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="/orizzntale tca.avif" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body>
+
+  <!-- ── GLOBAL HEADER ── -->
+  <header class="g-header" id="g-header">
+    <a href="/" class="g-header__logo">
+      <img src="/logo tca.png" alt="Tennis Club Ambrosiano" />
+    </a>
+    <button class="g-header__burger" id="g-burger" aria-label="Open menu" aria-expanded="false">
+      <span class="burger-bar b1"></span>
+      <span class="burger-bar b2"></span>
+      <span class="burger-bar b3"></span>
+    </button>
+  </header>
+
+  <!-- ── FULL-SCREEN MENU OVERLAY ── -->
+  <div class="g-menu" id="g-menu" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="g-menu__inner">
+      <nav class="g-menu__nav">
+        <div class="g-menu__section">
+          <span class="g-menu__section-label">The Proposal</span>
+          <a href="/"    class="g-menu__link" data-close><em>01</em>Home</a>
+          <a href="/#s2" class="g-menu__link" data-close><em>02</em>Who I Am</a>
+          <a href="/#s3" class="g-menu__link" data-close><em>03</em>The Opportunity</a>
+          <a href="/#s4" class="g-menu__link" data-close><em>04</em>The Model</a>
+          <a href="/#s5" class="g-menu__link" data-close><em>05</em>Why Me</a>
+          <a href="/#s6" class="g-menu__link" data-close><em>06</em>The Outcomes</a>
+          <a href="/#s7" class="g-menu__link" data-close><em>07</em>Closing</a>
+        </div>
+        <div class="g-menu__section g-menu__section--ops">
+          <span class="g-menu__section-label">Operations</span>
+          <a href="/carve-out" class="g-menu__link g-menu__link--accent" data-close>
+            <em>→</em>Carve-Out Roadmap
+          </a>
+        </div>
+      </nav>
+      <div class="g-menu__footer">
+        Confidential &middot; Tennis Club Ambrosiano &middot; 2025
+      </div>
+    </div>
+  </div>
+
+  <slot />
+
+</body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+
+  /* ── header height token ── */
+  :root { --header-h: 60px; }
+  @media (max-width: 768px) { :root { --header-h: 52px; } }
+
+  /* ────────────────── GLOBAL HEADER ────────────────── */
+  .g-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 500;
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 clamp(16px, 2.5vw, 40px);
+    background: rgba(255, 255, 255, 0.96);
+    border-bottom: 1px solid var(--grey-light);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: background 0.35s, border-color 0.35s;
+  }
+  .g-header--dark {
+    background: rgba(18, 18, 20, 0.95);
+    border-bottom-color: rgba(255, 255, 255, 0.07);
+  }
+  .g-header--dark .burger-bar { background: rgba(255, 255, 255, 0.8); }
+
+  .g-header__logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  .g-header__logo img {
+    height: calc(var(--header-h) - 14px);
+    width: auto;
+    display: block;
+  }
+
+  /* hamburger */
+  .g-header__burger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .g-header__burger:hover { background: rgba(0,0,0,0.06); }
+  .g-header--dark .g-header__burger:hover { background: rgba(255,255,255,0.08); }
+
+  .burger-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--text);
+    border-radius: 2px;
+    transition: transform 0.28s ease, opacity 0.2s ease, background 0.35s;
+  }
+  body.menu-open .b1 { transform: translateY(7px) rotate(45deg); }
+  body.menu-open .b2 { opacity: 0; transform: scaleX(0); }
+  body.menu-open .b3 { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ────────────────── OVERLAY MENU ────────────────── */
+  .g-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 490;
+    background: #0f1013;
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.32s ease, visibility 0.32s ease;
+  }
+  .g-menu.is-open {
+    pointer-events: all;
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .g-menu__inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: calc(var(--header-h) + 4.5vh) clamp(24px, 6vw, 100px) 5vh;
+    overflow-y: auto;
+  }
+
+  .g-menu__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4.5vh;
+    flex: 1;
+  }
+
+  .g-menu__section { display: flex; flex-direction: column; }
+  .g-menu__section--ops {
+    padding-top: 3.5vh;
+    border-top: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .g-menu__section-label {
+    font-family: var(--fd);
+    font-size: clamp(9px, 0.6vw, 11px);
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.22);
+    display: block;
+    margin-bottom: 1vh;
+  }
+
+  .g-menu__link {
+    font-family: var(--fd);
+    font-size: clamp(1.9rem, 3.6vw, 3.8rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    line-height: 1.1;
+    display: flex;
+    align-items: baseline;
+    gap: 0.55em;
+    padding: 0.25vh 0;
+    transition: color 0.18s, transform 0.2s ease;
+  }
+  .g-menu__link em {
+    font-style: normal;
+    font-size: 0.38em;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.18);
+    min-width: 3em;
+    transition: color 0.18s;
+  }
+  .g-menu__link:hover { color: #fff; transform: translateX(10px); }
+  .g-menu__link:hover em { color: var(--red); }
+
+  .g-menu__link--accent {
+    color: var(--red);
+    font-size: clamp(1.3rem, 2.2vw, 2.6rem);
+    margin-top: 1vh;
+  }
+  .g-menu__link--accent em { color: rgba(139,26,26,0.5); min-width: 2em; }
+  .g-menu__link--accent:hover { color: #d43535; }
+  .g-menu__link--accent:hover em { color: #d43535; }
+
+  .g-menu__footer {
+    font-family: var(--fd);
+    font-size: clamp(9px, 0.6vw, 10px);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.12);
+    margin-top: 3vh;
+    padding-top: 2vh;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  @media (max-width: 768px) {
+    .g-menu__link { font-size: clamp(1.8rem, 9vw, 2.8rem); }
+    .g-menu__link--accent { font-size: clamp(1.3rem, 6.5vw, 1.9rem); }
+    .g-menu__inner { padding: calc(var(--header-h) + 3vh) 24px 5vh; }
+    .g-menu__nav { gap: 3.5vh; }
+  }
+</style>
+
+<script>
+  const burger = document.getElementById('g-burger')!;
+  const menu   = document.getElementById('g-menu')!;
+
+  function openMenu() {
+    menu.classList.add('is-open');
+    menu.setAttribute('aria-hidden', 'false');
+    burger.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('menu-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    menu.classList.remove('is-open');
+    menu.setAttribute('aria-hidden', 'true');
+    burger.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('menu-open');
+    document.body.style.overflow = '';
+  }
+
+  burger.addEventListener('click', () =>
+    menu.classList.contains('is-open') ? closeMenu() : openMenu()
+  );
+
+  menu.querySelectorAll('[data-close]').forEach(el =>
+    el.addEventListener('click', closeMenu)
+  );
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeMenu();
+  });
+</script>
