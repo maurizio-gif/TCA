@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
+const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith("/") ? b : b + "/"; })();
+
 const pillars = [
   ['01','Self-Service Online','Enrolment, renewals, and bookings managed directly by members. Front-desk staff freed for human relationships.'],
   ['02','CRM & Lead Automation','Zero lead loss. Every prospect tracked and nurtured automatically through the pipeline, with no manual effort.'],
@@ -173,7 +175,10 @@ const outcomes = [
 
 <!-- S7 · CLOSING -->
 <section class="slide s7" id="s7" data-header="dark">
-  <div class="s7-bg"></div>
+  <div
+    class="s7-bg"
+    style={`background: linear-gradient(170deg, rgba(10,14,20,.85) 0%, rgba(26,26,26,.78) 50%, rgba(100,18,18,.60) 100%), url('${base}verticale tca.avif') 35% center/cover no-repeat`}
+  ></div>
   <div class="s7-corner-tl"></div><div class="s7-corner-tl-v"></div>
   <div class="s7-corner-br"></div><div class="s7-corner-br-v"></div>
   <div class="s7-content">
@@ -470,11 +475,7 @@ const outcomes = [
      S7 · CLOSING
   ══════════════════════════════════════ */
   .s7 { background: var(--text); overflow: hidden; }
-  .s7-bg {
-    position: absolute; inset: 0;
-    background: linear-gradient(170deg, rgba(10,14,20,.85) 0%, rgba(26,26,26,.78) 50%, rgba(100,18,18,.60) 100%),
-                url('/verticale tca.avif') 35% center/cover no-repeat;
-  }
+  .s7-bg { position: absolute; inset: 0; }
   .s7-content {
     position: relative; z-index: 2;
     padding: calc(var(--header-h) + 7vh) clamp(24px,7vw,100px) 6vh;
@@ -579,7 +580,7 @@ const outcomes = [
     dotsContainer.appendChild(d);
   });
 
-  // Set initial header state (S1 is dark)
+  // Set initial header state
   if (darkSlides.has(slides[0]?.id ?? '')) {
     header?.classList.add('g-header--dark');
   }
@@ -591,7 +592,6 @@ const outcomes = [
       if (e.isIntersecting && e.intersectionRatio >= 0.5) {
         const idx = slides.indexOf(e.target as HTMLElement);
         allDots().forEach((d, i) => d.classList.toggle('active', i === idx));
-        // Toggle header dark/light
         const isDark = darkSlides.has((e.target as HTMLElement).id);
         header?.classList.toggle('g-header--dark', isDark);
       }
