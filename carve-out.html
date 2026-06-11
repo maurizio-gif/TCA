@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCA · The Carve-Out Plan</title>
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="logo%20tca.png">
+<link rel="apple-touch-icon" href="logo%20tca.png">
+
+<!-- Meta description -->
+<meta name="description" content="Maurizio Taruggi for Tennis Club Ambrosiano. The Carve-Out Plan: zero interruptions, technology by technology.">
+
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red:       #8B1A1A;
+    --red-dark:  #6B1414;
+    --white:     #FFFFFF;
+    --off-white: #F5F3F0;
+    --grey-light:#EBEBEB;
+    --grey-mid:  #999999;
+    --text:      #1A1A1A;
+    --text-light:#555555;
+    --fd: 'Barlow Condensed', sans-serif;
+    --fb: 'Barlow', sans-serif;
+  }
+
+  body {
+    font-family: var(--fb);
+    color: #fff;
+    background: var(--text);
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── NAV BAR ── */
+  .slide-nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 3.5vw;
+    height: 12vh;
+    background: rgba(255,255,255,0.96);
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .nav-logo {
+    display: flex; align-items: center; text-decoration: none;
+  }
+  .nav-logo img {
+    height: 12vh;
+    width: auto;
+    display: block;
+  }
+  .nav-tag {
+    font-family: var(--fd);
+    font-size: 1.05vw;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+  }
+  .nav-cta-btn {
+    font-family: var(--fd);
+    font-size: 1.05vw;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--red);
+    color: #fff;
+    border: none;
+    padding: 0.7vh 1.8vw;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .nav-cta-btn:hover { background: var(--red-dark); }
+
+  /* ── HEADER ── */
+  .eyebrow {
+    font-family: var(--fd);
+    font-size: 1.3vw;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    display: block;
+    margin-bottom: 0.8vh;
+  }
+  .slide-title {
+    font-family: var(--fd);
+    font-weight: 800;
+    line-height: 0.93;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    color: #fff;
+    font-size: clamp(2.5rem, 6.5vw, 7vw);
+  }
+  .slide-title em { color: #C0282A; font-style: normal; }
+
+  /* ── CONTENT ── */
+  .sc-content {
+    padding: 3.5vh 5vw 5vh;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .sc-header { margin-bottom: 2.5vh; }
+  .sc-subtitle {
+    font-size: 1.6vw;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(255,255,255,0.6);
+    margin-top: 0.6vh;
+  }
+  .sc-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.08);
+    flex: 1;
+  }
+  .sc-card {
+    background: #1E2530;
+    padding: 2.5vh 1.5vw;
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+  }
+  .sc-tag {
+    font-family: var(--fd);
+    font-size: 1.1vw;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #C0282A;
+  }
+  .sc-title {
+    font-family: var(--fd);
+    font-size: 1.7vw;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #fff;
+    line-height: 1.2;
+  }
+  .sc-text {
+    font-size: 1.3vw;
+    font-weight: 300;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.65;
+  }
+
+  /* ════════════════════════════════════════════
+     MOBILE — ≤ 768px
+  ════════════════════════════════════════════ */
+  @media (max-width: 768px) {
+    .slide-nav { height: 68px; padding: 0 20px; }
+    .nav-logo img { height: 60px; }
+    .nav-tag { display: none; }
+    .nav-cta-btn { font-size: 12px; padding: 8px 14px; }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      margin-bottom: 8px;
+    }
+    .slide-title {
+      font-size: clamp(1.9rem, 8.5vw, 2.8rem);
+      line-height: 1.05;
+    }
+
+    .sc-content { padding: 28px 20px 40px; }
+    .sc-header { margin-bottom: 18px; }
+    .sc-subtitle { font-size: 14px; margin-top: 6px; }
+    .sc-grid {
+      grid-template-columns: 1fr;
+      gap: 3px;
+    }
+    .sc-card { padding: 24px 20px; gap: 10px; }
+    .sc-tag   { font-size: 11px; }
+    .sc-title { font-size: 18px; }
+    .sc-text  { font-size: 14px; line-height: 1.65; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="slide-nav">
+  <a href="index.html" class="nav-logo">
+    <img src="logo%20tca.png" alt="Tennis Club Ambrosiano">
+  </a>
+  <div style="display:flex; align-items:center; gap:1.5vw;">
+    <span class="nav-tag">Confidential Proposal · Milan · June 2026</span>
+    <a href="index.html" class="nav-cta-btn">Back to Proposal</a>
+  </div>
+</nav>
+
+<div class="sc-content">
+  <div class="sc-header">
+    <span class="eyebrow">The Carve-Out Plan</span>
+    <h1 class="slide-title">One goal: <em>zero interruptions.</em></h1>
+    <p class="sc-subtitle">Operations keep running without disruption — every function previously managed by the group is re-allocated in-house, technology by technology.</p>
+  </div>
+  <div class="sc-grid">
+    <div class="sc-card">
+      <div class="sc-tag">01 · Perfect Gym</div>
+      <div class="sc-title">Contract Under TCA</div>
+      <p class="sc-text">Move the contract directly to TCA, stripping out everything superfluous from the current agreement — and optimise the platform from day one to cover more functions, such as newsletters.</p>
+    </div>
+    <div class="sc-card">
+      <div class="sc-tag">02 · Website</div>
+      <div class="sc-title">Prismic to TCA — or a New Site</div>
+      <p class="sc-text">Evaluate transferring the current Prismic site under TCA — carefully assessing the entire tracking and form system currently running on HubSpot. Alternatively, the opportunity to build a brand-new TCA website from scratch.</p>
+    </div>
+    <div class="sc-card">
+      <div class="sc-tag">03 · Forms</div>
+      <div class="sc-title">Clean Break from HubSpot</div>
+      <p class="sc-text">Remove the HubSpot account. New HTML forms integrated directly with Perfect Gym: a clean, rebuilt data flow — detached from HubSpot, at minimal cost.</p>
+    </div>
+    <div class="sc-card">
+      <div class="sc-tag">04 · Email · Outlook 365</div>
+      <div class="sc-title">Account Ownership</div>
+      <p class="sc-text">Assess whether account ownership can be transferred to TCA; alternatively, plan the migration of accounts to a new Outlook 365 or Google Workspace tenant.</p>
+    </div>
+    <div class="sc-card">
+      <div class="sc-tag">05 · Newsletter</div>
+      <div class="sc-title">HubSpot → Perfect Gym</div>
+      <p class="sc-text">Move newsletters out of HubSpot into Perfect Gym — all member communication consolidated in the platform the club already owns.</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
