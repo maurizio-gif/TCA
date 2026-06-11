@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCA · Carve-Out Roadmap</title>
+
+<link rel="icon" type="image/png" href="logo%20tca.png">
+<link rel="apple-touch-icon" href="logo%20tca.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red:       #8B1A1A;
+    --red-dark:  #6B1414;
+    --grey-light:#EBEBEB;
+    --grey-mid:  #999999;
+    --text:      #1A1A1A;
+    --fd: 'Barlow Condensed', sans-serif;
+    --fb: 'Barlow', sans-serif;
+  }
+
+  html, body {
+    font-family: var(--fb);
+    background: #fff;
+    color: var(--text);
+    min-height: 100%;
+  }
+
+  /* ── NAV ── */
+  .page-nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 3.5vw;
+    height: 64px;
+    background: rgba(255,255,255,0.97);
+    border-bottom: 1px solid var(--grey-light);
+    backdrop-filter: blur(8px);
+  }
+  .nav-logo img { height: 52px; }
+  .nav-tag {
+    font-family: var(--fd);
+    font-size: 0.75vw;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+  }
+  .nav-back {
+    font-family: var(--fd);
+    font-size: 0.75vw;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+  }
+  .nav-back:hover { color: var(--text); }
+  .nav-back::before { content: '←'; font-size: 1em; }
+
+  /* ── MAIN CONTENT ── */
+  .page-content {
+    padding: 4vh 5vw 6vh;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* ── HEADER ── */
+  .eyebrow {
+    font-family: var(--fd);
+    font-size: 0.78vw;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    display: block;
+    margin-bottom: 10px;
+  }
+  .page-title {
+    font-family: var(--fd);
+    font-size: clamp(2.2rem, 4.5vw, 5rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.0;
+    color: var(--text);
+    margin-bottom: 1.5vh;
+  }
+  .page-title em { color: var(--red); font-style: normal; }
+
+  .deadline-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--red);
+    color: #fff;
+    font-family: var(--fd);
+    font-size: 0.82vw;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 7px 16px;
+    border-radius: 3px;
+    margin-bottom: 3.5vh;
+  }
+
+  /* ── TABLE ── */
+  .table-wrap { overflow-x: auto; }
+
+  .sco-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .sco-table thead tr {
+    background: var(--red);
+  }
+  .sco-table th {
+    font-family: var(--fd);
+    font-size: 0.82vw;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #fff;
+    padding: 14px 20px;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .sco-table tbody tr {
+    border-bottom: 1px solid var(--grey-light);
+    transition: background 0.15s;
+  }
+  .sco-table tbody tr:hover { background: #f7f7f7; }
+  .sco-table td {
+    font-size: 1.0vw;
+    font-weight: 300;
+    color: #444;
+    padding: 18px 20px;
+    vertical-align: top;
+    line-height: 1.55;
+  }
+  .sco-table td:first-child {
+    font-family: var(--fd);
+    font-size: 1.1vw;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .sco-badge {
+    display: inline-block;
+    font-size: 0.75vw;
+    font-weight: 600;
+    font-family: var(--fd);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 3px;
+  }
+  .sco-badge--todo { background: rgba(139,26,26,0.08); color: var(--red); border: 1px solid rgba(139,26,26,0.25); }
+  .sco-badge--wip  { background: rgba(180,120,0,0.08); color: #8B6000; border: 1px solid rgba(180,120,0,0.25); }
+  .sco-badge--prep { background: rgba(0,80,180,0.07);  color: #004FAF; border: 1px solid rgba(0,80,180,0.2); }
+
+  .sco-note {
+    font-size: 0.82vw;
+    color: var(--grey-mid);
+    margin-top: 4px;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    margin-top: 4vh;
+    border-top: 1px solid var(--grey-light);
+    padding-top: 2vh;
+    font-size: 0.75vw;
+    color: var(--grey-mid);
+    font-family: var(--fd);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    .page-nav { height: 56px; padding: 0 20px; }
+    .nav-logo img { height: 42px; }
+    .nav-tag { display: none; }
+    .nav-back { font-size: 12px; }
+    .page-content { padding: 28px 20px 48px; }
+    .eyebrow { font-size: 11px; }
+    .page-title { font-size: clamp(1.8rem, 8vw, 2.6rem); }
+    .deadline-badge { font-size: 11px; }
+    .sco-table th { font-size: 11px; padding: 10px 12px; }
+    .sco-table td { font-size: 13px; padding: 13px 12px; }
+    .sco-table td:first-child { font-size: 13px; white-space: normal; }
+    .sco-badge { font-size: 10px; }
+    .sco-note  { font-size: 11px; }
+    .page-footer { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="page-nav">
+  <a href="index.html" class="nav-logo">
+    <img src="logo%20tca.png" alt="Tennis Club Ambrosiano">
+  </a>
+  <span class="nav-tag">Carve-Out Roadmap</span>
+  <a href="index.html" class="nav-back">Proposal</a>
+</nav>
+
+<main class="page-content">
+
+  <div class="page-header">
+    <span class="eyebrow">Operational Plan</span>
+    <h1 class="page-title">
+      Carve-Out Roadmap &mdash; <em>Cut-Off July 31st</em>
+    </h1>
+    <span class="deadline-badge">&#9679;&nbsp; Target Cut-Off: July 31, 2025</span>
+  </div>
+
+  <div class="table-wrap">
+    <table class="sco-table">
+      <thead>
+        <tr>
+          <th>Area</th>
+          <th>TCA Owner</th>
+          <th>External Contact</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Perfect Gym</td>
+          <td>Maurizio Taruggi</td>
+          <td>Peter Croft</td>
+          <td>
+            <span class="sco-badge sco-badge--todo">To contact</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Website</td>
+          <td>Maurizio Taruggi</td>
+          <td>Laura Giardini &amp; Thomas Sander</td>
+          <td>
+            <span class="sco-badge sco-badge--todo">To contact</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Email &amp; OneDrive<br><span class="sco-note">Outlook / Microsoft</span></td>
+          <td>Maurizio Taruggi</td>
+          <td>Thomas Sander</td>
+          <td>
+            <span class="sco-badge sco-badge--wip">Pre-analysis</span>
+            <div class="sco-note">Mapping requirements before engaging Thomas</div>
+          </td>
+        </tr>
+        <tr>
+          <td>TCA PCs &amp; Physical Devices<br><span class="sco-note">9 physical computers · centralised admin account · physical apparatus</span></td>
+          <td>TBD<br><span class="sco-note">On-site partner</span></td>
+          <td>Thomas Sander</td>
+          <td>
+            <span class="sco-badge sco-badge--prep">In preparation</span>
+            <div class="sco-note">Technical document drafted by Maurizio Taruggi</div>
+          </td>
+        </tr>
+        <tr>
+          <td>JotForm</td>
+          <td>Maurizio Taruggi</td>
+          <td><span class="sco-note">—</span></td>
+          <td>
+            <span class="sco-badge sco-badge--prep">In preparation</span>
+            <div class="sco-note">All existing forms replaced with new ones built from scratch</div>
+          </td>
+        </tr>
+        <tr>
+          <td>HubSpot</td>
+          <td>Maurizio Taruggi</td>
+          <td>Laura Giardini</td>
+          <td>
+            <span class="sco-badge sco-badge--todo">To contact</span>
+            <div class="sco-note">Prismic access required for forms &amp; automations · Newsletter: training for Marketing resource</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="page-footer">Confidential · Tennis Club Ambrosiano · 2025</p>
+
+</main>
+
+</body>
+</html>

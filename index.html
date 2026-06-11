@@ -105,6 +105,31 @@
     cursor: pointer;
     text-decoration: none;
   }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 2vw;
+  }
+  .nav-carveout {
+    font-family: var(--fd);
+    font-size: 0.82vw;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--red);
+    text-decoration: none;
+    padding: 5px 14px;
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+  .nav-carveout:hover { background: var(--red-dark); }
+  .nav-carveout--light {
+    background: transparent;
+    color: var(--red);
+    border: 1.5px solid var(--red);
+  }
+  .nav-carveout--light:hover { background: rgba(139,26,26,0.08); }
 
   /* ── EYEBROW / LABEL ── */
   .eyebrow {
@@ -674,6 +699,7 @@
     .slide-nav { height: 56px; padding: 0 20px; }
     .nav-logo img { height: 44px; }
     .nav-tag { display: none; }
+    .nav-carveout { font-size: 11px; padding: 4px 10px; }
 
     /* ── TIPOGRAFIA GLOBALE ── */
     .eyebrow {
@@ -855,7 +881,10 @@
     <a href="#s1" class="nav-logo">
       <img src="logo%20tca.png" alt="Tennis Club Ambrosiano">
     </a>
-    <span class="nav-tag">Confidential Proposal · Milan · 2025</span>
+    <div class="nav-right">
+      <span class="nav-tag">Confidential Proposal · Milan · 2025</span>
+      <a href="carveout.html" class="nav-carveout nav-carveout--light">Carve-Out</a>
+    </div>
   </nav>
   <div class="s1-watermark">TCA</div>
   <div class="s1-content">
@@ -887,7 +916,10 @@
     <a href="#s1" class="nav-logo">
       <img src="logo%20tca.png" alt="Tennis Club Ambrosiano">
     </a>
-    <span class="nav-tag">Who I Am</span>
+    <div class="nav-right">
+      <span class="nav-tag">Who I Am</span>
+      <a href="carveout.html" class="nav-carveout nav-carveout--light">Carve-Out</a>
+    </div>
   </nav>
   <div class="s2-grid">
     <div class="s2-left">
@@ -929,7 +961,10 @@
     <a href="#s1" class="nav-logo">
       <img src="logo%20tca.png" alt="Tennis Club Ambrosiano">
     </a>
-    <span class="nav-tag">The Opportunity Window</span>
+    <div class="nav-right">
+      <span class="nav-tag">The Opportunity Window</span>
+      <a href="carveout.html" class="nav-carveout">Carve-Out</a>
+    </div>
   </nav>
   <div class="s3-content">
     <div class="s3-header">
@@ -966,7 +1001,10 @@
     <a href="#s1" class="nav-logo">
       <img src="logo%20tca.png" alt="Tennis Club Ambrosiano">
     </a>
-    <span class="nav-tag">The Model</span>
+    <div class="nav-right">
+      <span class="nav-tag">The Model</span>
+      <a href="carveout.html" class="nav-carveout nav-carveout--light">Carve-Out</a>
+    </div>
   </nav>
   <div class="s4-content">
     <div class="s4-header">
@@ -1017,7 +1055,10 @@
     <a href="#s1" class="nav-logo">
       <img src="logo%20tca.png" alt="Tennis Club Ambrosiano">
     </a>
-    <span class="nav-tag">Why Me</span>
+    <div class="nav-right">
+      <span class="nav-tag">Why Me</span>
+      <a href="carveout.html" class="nav-carveout nav-carveout--light">Carve-Out</a>
+    </div>
   </nav>
   <div class="s5-content">
     <div class="s5-header">
@@ -1057,7 +1098,10 @@
     <a href="#s1" class="nav-logo">
       <img src="logo%20tca.png" alt="Tennis Club Ambrosiano">
     </a>
-    <span class="nav-tag">The Outcomes</span>
+    <div class="nav-right">
+      <span class="nav-tag">The Outcomes</span>
+      <a href="carveout.html" class="nav-carveout nav-carveout--light">Carve-Out</a>
+    </div>
   </nav>
   <div class="s6-content">
     <div class="s6-header">
@@ -1114,7 +1158,10 @@
     <a href="#s1" class="nav-logo">
       <img src="logo%20tca.png" alt="Tennis Club Ambrosiano">
     </a>
-    <span class="nav-tag" style="color:rgba(255,255,255,0.3);">Confidential Proposal · 2025</span>
+    <div class="nav-right">
+      <span class="nav-tag" style="color:rgba(255,255,255,0.3);">Confidential Proposal · 2025</span>
+      <a href="carveout.html" class="nav-carveout">Carve-Out</a>
+    </div>
   </nav>
   <div class="s7-content">
     <p class="s7-quote">
