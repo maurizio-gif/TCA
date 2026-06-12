@@ -1,0 +1,550 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const rows = [
+  {
+    finalist: true,
+    sw: 'TeamSystem Contabilità in Cloud',
+    swNote: 'ex Reviso',
+    gl: 'Yes',
+    api: 'Yes — documented REST API',
+    post: 'Yes — vouchers/invoices onto a real chart of accounts',
+    get: 'Yes — accounts.balance, entries by period',
+    it: 'Yes',
+    verdict: 'Finalist #1', vClass: 'ok', vNote: 'Confirm product roadmap with TeamSystem',
+  },
+  {
+    finalist: true,
+    sw: 'Odoo',
+    swNote: 'Enterprise + l10n_it',
+    gl: 'Yes',
+    api: 'Yes — XML-RPC/JSON-RPC, full ORM',
+    post: 'Yes — account.move journal entries, payments per journal',
+    get: 'Yes — trial balance & P&L via read_group',
+    it: 'Yes — native SDI proxy, withholding, Ri.Ba.',
+    verdict: 'Finalist #2', vClass: 'ok', vNote: 'API on Custom plans / Odoo.sh / self-hosted; partner-led project',
+  },
+  {
+    sw: 'TeamSystem Enterprise',
+    swNote: 'TSE in Cloud',
+    gl: 'Yes',
+    api: 'Yes — developer portal incl. accounting',
+    post: 'Likely ("accounting movements" services)',
+    get: 'To be verified',
+    it: 'Yes',
+    verdict: 'Fallback', vClass: 'warn', vNote: 'Over-sized mid-market ERP for a club',
+  },
+  {
+    sw: 'Passepartout',
+    swNote: 'Passcom / Mexal',
+    gl: 'Yes',
+    api: 'Partial — WebAPI documented, standard resources document-oriented',
+    post: 'Via partner-built PassBuilder/Sprix customization',
+    get: 'Via the same customization',
+    it: 'Yes',
+    verdict: 'Fallback', vClass: 'warn', vNote: 'Partner-dependent custom development',
+  },
+  {
+    sw: 'Fatture in Cloud',
+    swNote: 'TeamSystem',
+    gl: 'No — invoicing/receipts/cash only',
+    api: 'Yes — excellent (OpenAPI, SDKs, webhooks)',
+    post: 'Yes, but onto categories/revenue centers, not GL accounts',
+    get: 'No — lists only, no balances',
+    it: 'Yes — SDI via API',
+    verdict: 'Not accounting', vClass: 'no', vNote: 'Complementary invoicing layer at most',
+  },
+  {
+    sw: 'Zucchetti',
+    swNote: 'Digital Hub · Tieni il Conto',
+    gl: 'Partial',
+    api: 'No — docs only via sales/partner channel',
+    post: 'Not publicly documented',
+    get: 'No',
+    it: 'Yes (DH = SDI only)',
+    verdict: 'Excluded', vClass: 'no', vNote: 'API opacity',
+  },
+  {
+    sw: 'Aruba Electronic Invoicing',
+    gl: 'No — SDI channel only',
+    api: 'Yes — public apidoc',
+    post: 'No — XML upload to SDI only',
+    get: 'No — invoice/notification search only',
+    it: 'Yes (SDI only)',
+    verdict: 'Excluded', vClass: 'no',
+  },
+  {
+    sw: 'WK Genya · Dylog · Datev Koinos · B.Point',
+    gl: 'Yes',
+    api: 'No public API (file imports / e-invoicing only)',
+    post: 'No',
+    get: 'No',
+    it: 'Yes',
+    verdict: 'Excluded', vClass: 'no', vNote: 'Koinos/B.Point are accountant-side tools',
+  },
+  {
+    sw: 'Sibill · Tot · Qonto · Agicap',
+    gl: 'No — fintech / treasury',
+    api: 'Partial (Qonto, Agicap well documented)',
+    post: 'No',
+    get: 'No',
+    it: 'Partial',
+    verdict: 'Wrong category', vClass: 'no',
+  },
+  {
+    sw: 'Xero',
+    gl: 'Yes',
+    api: 'Yes — excellent Reports API (TrialBalance, P&L)',
+    post: 'Yes',
+    get: 'Yes',
+    it: 'No SDI / Italy support',
+    verdict: 'Excluded', vClass: 'no',
+  },
+  {
+    sw: 'QuickBooks Online',
+    gl: 'Yes',
+    api: 'Yes — excellent Reports API',
+    post: 'Yes',
+    get: 'Yes',
+    it: 'Only via third-party add-on (FOR S.r.l.)',
+    verdict: 'Not recommended', vClass: 'no', vNote: 'Double-vendor risk; Intuit withdrew from France in 2023',
+  },
+  {
+    sw: 'Holded',
+    gl: 'Yes (Spain)',
+    api: 'Partial — API key, no consolidated report endpoints',
+    post: 'Partial',
+    get: 'No',
+    it: 'No — Spain only (Veri*factu/AEAT)',
+    verdict: 'Excluded', vClass: 'no',
+  },
+];
+---
+
+<BaseLayout title="TCA · Cloud Accounting Software Analysis" description="Comparative analysis of cloud accounting software with public APIs for the TCA carve-out migration." initialHeaderDark={true}>
+
+  <main class="aa-page">
+
+    <div class="aa-header">
+      <span class="eyebrow eyebrow--grey">Carve-Out · Finance Workstream</span>
+      <h1 class="aa-title">
+        Cloud Accounting Software &mdash; <em>API Analysis</em>
+      </h1>
+      <p class="aa-intro">
+        The carve-out requires migrating TCA's accounting software by December. This analysis compares
+        cloud accounting platforms for Italy on their <strong>public API catalogs</strong>, against two
+        requirements &mdash; scoped to <strong>true general-ledger accounting</strong> (chart of accounts,
+        double-entry, balances). Invoicing-only tools such as Fatture in Cloud do not qualify as the
+        accounting backend.
+      </p>
+      <span class="deadline-badge">&#9679;&nbsp; Hard Deadline: December 2026</span>
+
+      <div class="req-grid">
+        <div class="req-card">
+          <div class="req-label">Requirement 01 · Import (POST)</div>
+          <p class="req-text">Push revenue data from the club's management system into the ledger, broken down by <strong>GL account</strong> and <strong>payment type/method</strong> (ideally also by revenue center).</p>
+        </div>
+        <div class="req-card">
+          <div class="req-label">Requirement 02 · Extract (GET)</div>
+          <p class="req-text">Pull consolidated data (account balances, trial balance, aggregated income/expenses) to feed <strong>dynamic external dashboards</strong> &mdash; Power BI, Looker Studio, custom apps.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── COMPARISON TABLE ── -->
+    <h2 class="aa-section-title">01 · Comparison <em>Table</em></h2>
+    <div class="table-wrap">
+      <table class="aa-table">
+        <thead>
+          <tr>
+            <th>Software</th>
+            <th>True GL Accounting</th>
+            <th>Public API</th>
+            <th>POST Revenue<br />(account + payment)</th>
+            <th>GET Balances /<br />Trial Balance</th>
+            <th>Italian Compliance</th>
+            <th>Verdict</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr class={r.finalist ? 'row-finalist' : ''}>
+              <td>{r.sw}{r.swNote && <div class="aa-note">{r.swNote}</div>}</td>
+              <td>{r.gl}</td>
+              <td>{r.api}</td>
+              <td>{r.post}</td>
+              <td>{r.get}</td>
+              <td>{r.it}</td>
+              <td>
+                <span class={`aa-badge aa-badge--${r.vClass}`}>{r.verdict}</span>
+                {r.vNote && <div class="aa-note">{r.vNote}</div>}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── FINALISTS ── -->
+    <h2 class="aa-section-title">02 · The <em>Finalists</em></h2>
+    <div class="fin-grid">
+      <div class="fin-card">
+        <div class="fin-tag">Finalist #1 · First Choice</div>
+        <div class="fin-title">TeamSystem Contabilità in Cloud (ex Reviso)</div>
+        <p class="fin-text">The only Italian-native cloud product that satisfies <strong>both requirements through a publicly documented REST API</strong>, at SME-friendly cost.</p>
+        <ul class="fin-points">
+          <li><strong>POST:</strong> journal entries and invoices via vouchers onto a real, customizable chart of accounts — revenue posted per account with the right counterpart (cash, bank, POS) covers the payment-type breakdown.</li>
+          <li><strong>GET:</strong> the <code>accounts</code> resource exposes <code>balance</code> per account plus entries by fiscal year/period — a trial balance via API, ready for dashboards.</li>
+          <li><strong>Auth:</strong> dual token (AppSecret + AgreementGrant); free demo environment.</li>
+          <li><strong>Condition:</strong> obtain written confirmation of the product roadmap from TeamSystem (the product is the rebranded Reviso) before signing.</li>
+        </ul>
+      </div>
+      <div class="fin-card">
+        <div class="fin-tag">Finalist #2 · Most Powerful</div>
+        <div class="fin-title">Odoo Enterprise + Italian Localization</div>
+        <p class="fin-text">The most powerful and future-proof option: full GL API, native SDI e-invoicing, built-in dashboards — at the price of a partner-led implementation.</p>
+        <ul class="fin-points">
+          <li><strong>Compliance:</strong> mature <code>l10n_it_edi</code> — FatturaPA through Odoo's accredited SDI proxy, withholding, Ri.Ba., DDT, VAT export; receipts via PoS + RT printers.</li>
+          <li><strong>POST:</strong> <code>account.move</code> (any journal entry, lines per GL account) and <code>account.payment</code> (journal = payment method/account).</li>
+          <li><strong>GET:</strong> <code>read_group</code> on <code>account.move.line</code> for balances, trial balance and P&amp;L per period.</li>
+          <li><strong>Caveat:</strong> External API only on Custom plans (or Odoo.sh / self-hosted); weigh the implementation project against the December deadline.</li>
+        </ul>
+      </div>
+      <div class="fin-card fin-card--alt">
+        <div class="fin-tag">Fallbacks</div>
+        <div class="fin-title">TeamSystem Enterprise · Passepartout</div>
+        <p class="fin-text"><strong>TSE in Cloud</strong> is a real candidate on paper (public developer portal with accounting movement services) but it is a full mid-market ERP — oversized for a club. <strong>Passepartout Passcom/Mexal</strong> is true accounting with a documented WebAPI, but journal-entry POST and balance GET would go through a partner-built PassBuilder/Sprix customization: feasible, with lock-in and custom development to budget.</p>
+      </div>
+      <div class="fin-card fin-card--alt">
+        <div class="fin-tag">Where Fatture in Cloud Still Fits</div>
+        <div class="fin-title">Complementary Layer Only</div>
+        <p class="fin-text">Best-documented API on the Italian market (OpenAPI spec, 8 SDKs, webhooks, API included in every paid plan) with native <code>payment_account</code>, revenue centers and SDI sending — but <strong>no chart of accounts, no double-entry, no balance endpoints</strong>. If the chosen GL system lacks a good SDI front-end, it could serve as the invoicing/receipts layer feeding the ledger; otherwise it drops out of the architecture.</p>
+      </div>
+    </div>
+
+    <!-- ── NEXT STEPS ── -->
+    <h2 class="aa-section-title">03 · Next <em>Steps</em></h2>
+    <ol class="steps-list">
+      <li><span><strong>Confirm the accounting perimeter</strong> with the accountant: full double-entry in-house vs. cash-basis management with the GL at the firm — this validates the scoping assumption of this analysis.</span></li>
+      <li><span><strong>Open test accounts:</strong> Contabilità in Cloud / Reviso demo + an Odoo trial with the Italian localization.</span></li>
+      <li><span><strong>Two-week proof of concept:</strong> POST one real day of revenue (courts, bar, membership fees) with accounts and payment methods, then GET balances into a prototype Power BI / Looker Studio dashboard.</span></li>
+      <li><span><strong>Obtain TeamSystem's roadmap commitment</strong> for Contabilità in Cloud before contract signature.</span></li>
+    </ol>
+
+    <!-- ── SOURCES ── -->
+    <h2 class="aa-section-title">04 · Main <em>Sources</em></h2>
+    <p class="sources">
+      <strong>Contabilità in Cloud / Reviso:</strong>
+      <a href="https://api-docs.reviso.com/" target="_blank" rel="noopener">API docs</a> ·
+      <a href="https://www.reviso.com/it/assistenza/articoli/rest-api/" target="_blank" rel="noopener">REST API (IT)</a> ·
+      <a href="https://www.reviso.com/it/assistenza/articoli/restful-api-esempio-crea-fattura-manuale/" target="_blank" rel="noopener">invoice creation example</a> ·
+      <a href="https://www.teamsystem.com/store/contabilita-in-cloud/funzionalita/registrazioni-contabili/" target="_blank" rel="noopener">TeamSystem Store</a><br />
+      <strong>Odoo:</strong>
+      <a href="https://www.odoo.com/documentation/18.0/applications/finance/fiscal_localizations/italy.html" target="_blank" rel="noopener">Italian localization</a> ·
+      <a href="https://www.odoo.com/documentation/18.0/developer/reference/external_api.html" target="_blank" rel="noopener">External API</a> ·
+      <a href="https://github.com/OCA/l10n-italy" target="_blank" rel="noopener">OCA l10n-italy</a><br />
+      <strong>TeamSystem:</strong>
+      <a href="https://tse.docs.teamsystem.cloud/" target="_blank" rel="noopener">TSE developer portal</a> ·
+      <a href="https://www.teamsystem.com/store/ts-digital-invoice/funzionalita/api/" target="_blank" rel="noopener">TS Digital Invoice API</a><br />
+      <strong>Fatture in Cloud:</strong>
+      <a href="https://developers.fattureincloud.it/" target="_blank" rel="noopener">developer portal</a> ·
+      <a href="https://github.com/fattureincloud/openapi-fattureincloud" target="_blank" rel="noopener">OpenAPI spec</a> ·
+      <a href="https://developers.fattureincloud.it/docs/basics/limits-and-quotas/" target="_blank" rel="noopener">limits &amp; quotas</a> ·
+      <a href="https://developers.fattureincloud.it/docs/webhooks/" target="_blank" rel="noopener">webhooks</a><br />
+      <strong>Passepartout:</strong>
+      <a href="https://www.edupass.it/manuali/manualistica-passcom/manuale-prodotto?a=manuale-passweb-ecommerce%2Fconfigurazione%2Fpasscom--configurazione-gestionale%2Fweb-api-passcom" target="_blank" rel="noopener">Passcom WebAPI (EduPass)</a>
+      &nbsp;·&nbsp; <strong>Zucchetti:</strong>
+      <a href="https://help.zucchetti.it/cms/kb/soluzioni/fatturazione-elettronica/digital-hub/scopri-e-informati/faq/integrazioni/non-ho-gestionale-zucchetti-come-posso-integrarmi-con-digital-hub.html" target="_blank" rel="noopener">Digital Hub third-party integration</a>
+      &nbsp;·&nbsp; <strong>Aruba:</strong>
+      <a href="https://fatturazioneelettronica.aruba.it/apidoc/docs.html" target="_blank" rel="noopener">apidoc</a><br />
+      <strong>Xero:</strong>
+      <a href="https://developer.xero.com/documentation/api/accounting/reports" target="_blank" rel="noopener">Reports API</a> ·
+      <a href="https://community.xero.com/business/discussion/115295423" target="_blank" rel="noopener">no Italy support</a>
+      &nbsp;·&nbsp; <strong>QuickBooks:</strong>
+      <a href="https://developer.intuit.com/app/developer/qbo/docs/workflows/run-reports" target="_blank" rel="noopener">Reports API</a> ·
+      <a href="https://blogs.intuit.com/2023/06/12/discontinuation-of-quickbooks-in-france/" target="_blank" rel="noopener">France discontinuation</a>
+      &nbsp;·&nbsp; <strong>Holded:</strong>
+      <a href="https://developers.holded.com/reference" target="_blank" rel="noopener">API reference</a><br />
+      <strong>ASD/SSD 398/91:</strong>
+      <a href="https://fatturapro.click/associazioni-sportive-dilettantistiche-regime-398-91-e-novita-2026/" target="_blank" rel="noopener">2026 changes</a> ·
+      <a href="https://www.aruba.it/magazine/fatturazione-elettronica/associazioni-sportive-dilettantistiche-fattura-elettronica-obbligatoria-dal-1-gennaio-2024.aspx" target="_blank" rel="noopener">mandatory e-invoicing since 2024</a>
+    </p>
+
+    <p class="aa-footer">Confidential · Tennis Club Ambrosiano · Analysis date: 12 June 2026</p>
+
+  </main>
+
+</BaseLayout>
+
+<style>
+  :global(body) { background: #fff; }
+
+  .aa-page {
+    padding: calc(var(--header-h) + 3.5vh) clamp(20px, 5vw, 72px) 6vh;
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+
+  .aa-header { display: flex; flex-direction: column; gap: 0.8vh; }
+
+  .aa-title {
+    font-family: var(--fd);
+    font-size: clamp(2rem, 4vw, 4rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.0;
+    color: var(--text);
+  }
+  .aa-title em { color: var(--red); font-style: normal; }
+
+  .aa-intro {
+    font-size: clamp(14px, 1.05vw, 18px);
+    font-weight: 300;
+    color: #444;
+    line-height: 1.7;
+    max-width: 70ch;
+    margin: 0.5vh 0;
+  }
+  .aa-intro strong { font-weight: 600; color: var(--text); }
+
+  .deadline-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--red);
+    color: #fff;
+    font-family: var(--fd);
+    font-size: clamp(10px, 0.75vw, 12px);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 7px 16px;
+    border-radius: 3px;
+    margin-top: 0.5vh;
+    width: fit-content;
+  }
+
+  .aa-section-title {
+    font-family: var(--fd);
+    font-size: clamp(1.4rem, 2.2vw, 2.4rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin: 5vh 0 1.5vh;
+    color: var(--text);
+  }
+  .aa-section-title em { color: var(--red); font-style: normal; }
+
+  /* ── REQUIREMENTS ── */
+  .req-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin: 2.5vh 0 1vh;
+  }
+  .req-card {
+    background: #fff;
+    border: 1px solid var(--grey-light);
+    border-left: 3px solid var(--red);
+    padding: 18px 20px;
+  }
+  .req-label {
+    font-family: var(--fd);
+    font-size: clamp(11px, 0.8vw, 14px);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 6px;
+  }
+  .req-text {
+    font-size: clamp(13px, 0.95vw, 16px);
+    font-weight: 300;
+    color: #444;
+    line-height: 1.65;
+  }
+  .req-text strong { font-weight: 600; color: var(--text); }
+
+  /* ── TABLE ── */
+  .table-wrap { overflow-x: auto; margin: 2vh 0; }
+
+  .aa-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 880px;
+  }
+  .aa-table thead tr { background: var(--red); }
+  .aa-table th {
+    font-family: var(--fd);
+    font-size: clamp(11px, 0.82vw, 15px);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #fff;
+    padding: 13px 16px;
+    text-align: left;
+  }
+  .aa-table tbody tr {
+    border-bottom: 1px solid var(--grey-light);
+    transition: background 0.15s;
+  }
+  .aa-table tbody tr:hover { background: #f7f7f7; }
+  .aa-table tbody tr.row-finalist { background: rgba(30,107,46,0.05); }
+  .aa-table tbody tr.row-finalist:hover { background: rgba(30,107,46,0.09); }
+  .aa-table td {
+    font-size: clamp(12px, 0.92vw, 15px);
+    font-weight: 300;
+    color: #444;
+    padding: 14px 16px;
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .aa-table td:first-child {
+    font-family: var(--fd);
+    font-size: clamp(13px, 1.05vw, 17px);
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .aa-badge {
+    display: inline-block;
+    font-size: clamp(10px, 0.75vw, 13px);
+    font-weight: 600;
+    font-family: var(--fd);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .aa-badge--ok   { background: rgba(30,107,46,0.08);  color: #1E6B2E; border: 1px solid rgba(30,107,46,0.3); }
+  .aa-badge--no   { background: rgba(139,26,26,0.08);  color: var(--red); border: 1px solid rgba(139,26,26,0.25); }
+  .aa-badge--warn { background: rgba(180,120,0,0.08);  color: #8B6000; border: 1px solid rgba(180,120,0,0.25); }
+
+  .aa-note {
+    font-size: clamp(11px, 0.8vw, 13px);
+    color: var(--grey-mid);
+    margin-top: 5px;
+    font-style: italic;
+    line-height: 1.55;
+    font-weight: 300;
+    white-space: normal;
+  }
+
+  /* ── FINALIST CARDS ── */
+  .fin-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 2vh 0;
+  }
+  .fin-card {
+    border: 1px solid var(--grey-light);
+    border-top: 3px solid #1E6B2E;
+    padding: 22px 24px;
+    background: #fff;
+  }
+  .fin-card--alt { border-top-color: var(--grey-mid); }
+  .fin-tag {
+    font-family: var(--fd);
+    font-size: clamp(11px, 0.8vw, 14px);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #1E6B2E;
+    margin-bottom: 6px;
+  }
+  .fin-card--alt .fin-tag { color: var(--grey-mid); }
+  .fin-title {
+    font-family: var(--fd);
+    font-size: clamp(1.1rem, 1.7vw, 1.7rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+  .fin-text {
+    font-size: clamp(13px, 0.95vw, 16px);
+    font-weight: 300;
+    color: #444;
+    line-height: 1.65;
+  }
+  .fin-text strong { font-weight: 600; color: var(--text); }
+  .fin-points {
+    list-style: none;
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .fin-points li {
+    font-size: clamp(12px, 0.9vw, 15px);
+    font-weight: 400;
+    color: #444;
+    padding-left: 12px;
+    border-left: 2px solid var(--grey-light);
+    line-height: 1.5;
+  }
+  .fin-points li strong { font-weight: 600; color: var(--text); }
+
+  /* ── NEXT STEPS ── */
+  .steps-list {
+    counter-reset: step;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 1.5vh 0;
+    max-width: 85ch;
+  }
+  .steps-list li {
+    counter-increment: step;
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+    font-size: clamp(13px, 0.98vw, 16px);
+    font-weight: 300;
+    color: #444;
+    line-height: 1.65;
+  }
+  .steps-list li::before {
+    content: counter(step, decimal-leading-zero);
+    font-family: var(--fd);
+    font-size: clamp(1.3rem, 1.9vw, 1.9rem);
+    font-weight: 800;
+    color: var(--red);
+    min-width: 2ch;
+  }
+  .steps-list li strong { font-weight: 600; color: var(--text); }
+
+  /* ── SOURCES ── */
+  .sources {
+    font-size: clamp(11px, 0.82vw, 14px);
+    font-weight: 300;
+    color: var(--grey-mid);
+    line-height: 1.9;
+    max-width: 100ch;
+  }
+  .sources a { color: var(--grey-mid); }
+  .sources a:hover { color: var(--red); }
+  .sources strong { font-weight: 600; color: #777; }
+
+  /* ── FOOTER ── */
+  .aa-footer {
+    margin-top: 4vh;
+    border-top: 1px solid var(--grey-light);
+    padding-top: 2vh;
+    font-size: clamp(9px, 0.65vw, 11px);
+    color: var(--grey-mid);
+    font-family: var(--fd);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    .aa-page { padding: calc(var(--header-h) + 20px) 16px 40px; }
+    .req-grid, .fin-grid { grid-template-columns: 1fr; }
+    .aa-footer { font-size: 12px; }
+  }
+</style>
