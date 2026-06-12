@@ -185,6 +185,7 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
         </div>
         <div class="qt-stream-price">
           <span class="qt-price">{eur(addon.price)}</span>
+          <span class="qt-vat">+ 22% VAT</span>
         </div>
       </header>
       <ul class="qt-items">
@@ -213,7 +214,7 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
         <h3>Terms</h3>
         <ul>
           <li>Proposed invoicing: 40% at kick-off · 40% at progress milestone · 20% at closure</li>
-          <li>All amounts are exempt from VAT; a 4% INPS social-security contribution (rivalsa INPS) applies</li>
+          <li>Carve-out amounts are exempt from VAT, with a 4% INPS social-security contribution (rivalsa INPS); the New Website add-on is subject to 22% VAT</li>
           <li>Offer validity: 30 days from the issue date</li>
         </ul>
       </div>
@@ -515,6 +516,16 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
     border-radius: 3px;
     padding: 3px 9px;
     margin-bottom: 8px;
+  }
+  .qt-vat {
+    display: block;
+    font-family: var(--fd);
+    font-size: clamp(10px, 0.7vw, 12px);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    text-align: right;
   }
   .qt-addon-name h2 {
     font-family: var(--fd);
