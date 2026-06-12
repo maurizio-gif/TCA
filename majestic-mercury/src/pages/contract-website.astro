@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PhotoBand from '../components/PhotoBand.astro';
 
 const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/') ? b : b + '/'; })();
 ---
@@ -170,6 +171,8 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
       </footer>
 
     </article>
+
+    <PhotoBand img="club-players.jpeg" eyebrow="Agreement" blur={3} line="Built for TCA. Owned by TCA." />
 
   </main>
 

@@ -25,7 +25,7 @@ const outcomes = [
 
 <!-- S1 · COVER -->
 <section class="slide s1" id="s1" data-header="dark">
-  <div class="s1-bg"></div>
+  <div class="s1-bg" style={`background-image: linear-gradient(105deg, rgba(26,26,26,.88) 42%, rgba(139,26,26,.30) 100%), url('${base}club-dome.jpeg')`}></div>
   <div class="s1-watermark">TCA</div>
   <div class="s1-content">
     <span class="eyebrow eyebrow--light">Digital Transformation &amp; Operational Excellence</span>
@@ -237,8 +237,11 @@ const outcomes = [
   .s1 { background: var(--text); overflow: hidden; }
   .s1-bg {
     position: absolute; inset: 0;
-    background: linear-gradient(105deg, rgba(26,26,26,.88) 42%, rgba(139,26,26,.30) 100%),
-                url('https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?w=1600&q=80') center/cover no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: blur(2px);
+    transform: scale(1.06);
   }
   .s1-content {
     position: relative; z-index: 2;

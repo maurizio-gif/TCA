@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PhotoBand from '../components/PhotoBand.astro';
 
 const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/') ? b : b + '/'; })();
 
@@ -226,6 +227,8 @@ const fees = [
       </footer>
 
     </article>
+
+    <PhotoBand img="club-dome.jpeg" eyebrow="Agreement" line="Clear terms. Shared goals." />
 
   </main>
 
