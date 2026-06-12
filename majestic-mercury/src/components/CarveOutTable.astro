@@ -28,8 +28,8 @@ const rows: Row[] = [
     scope:       'Perfect Gym',
     owner:       'Maurizio Taruggi',
     people:      'Peter Croft',
-    status:      'todo',
-    statusLabel: 'To call',
+    status:      'wip',
+    statusLabel: 'Waiting for call confirmation from Peter',
     nextStep:    'Call Peter Croft',
     date:        'Jun 15–19',
     detail: [
@@ -106,7 +106,7 @@ const rows: Row[] = [
     scope:       'Microsoft',
     scopeNote:   'Outlook & OneDrive',
     owner:       'Maurizio Taruggi',
-    people:      'Emanuele (Partner), Alice & Thomas Sander',
+    people:      'Alice & Thomas Sander',
     status:      'wip',
     statusLabel: 'In preparation',
     nextStep:    'Call Thomas Sander',
@@ -719,13 +719,20 @@ const rows: Row[] = [
 </style>
 
 <script>
-  document.querySelectorAll<HTMLElement>('.row-main').forEach(row => {
+  const mainRows = document.querySelectorAll<HTMLElement>('.row-main');
+
+  function setRow(row: HTMLElement, open: boolean) {
+    const detail = document.getElementById(`detail-${row.dataset.idx!}`) as HTMLTableRowElement;
+    row.setAttribute('aria-expanded', open ? 'true' : 'false');
+    detail.hidden = !open;
+  }
+
+  mainRows.forEach(row => {
     const toggle = () => {
-      const idx    = row.dataset.idx!;
-      const detail = document.getElementById(`detail-${idx}`) as HTMLTableRowElement;
-      const open   = row.getAttribute('aria-expanded') === 'true';
-      row.setAttribute('aria-expanded', open ? 'false' : 'true');
-      detail.hidden = open;
+      const willOpen = row.getAttribute('aria-expanded') !== 'true';
+      // only one accordion expanded at a time
+      mainRows.forEach(r => { if (r !== row) setRow(r, false); });
+      setRow(row, willOpen);
     };
     row.addEventListener('click', toggle);
     row.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
