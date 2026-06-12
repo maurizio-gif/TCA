@@ -1,70 +1,154 @@
 ---
+interface Option  { label: string; text: string; }
+interface Block   {
+  heading?: string;
+  text?:    string;
+  bullets?: string[];
+  options?: Option[];
+  highlight?: { from: string; to: string };
+}
 interface Row {
-  scope: string;
-  scopeNote?: string;
-  owner: string;
-  ownerNote?: string;
-  people: string;
+  scope:       string;
+  scopeNote?:  string;
+  owner:       string;
+  ownerNote?:  string;
+  people:      string;
   peopleNote?: string;
-  status: 'todo' | 'wip' | 'prep';
+  status:      'todo' | 'wip' | 'prep';
   statusLabel: string;
-  statusNote?: string;
-  nextStep: string;
-  date: string;
+  nextStep:    string;
+  date:        string;
+  detail:      Block[];
 }
 
 const rows: Row[] = [
   {
-    scope: 'Perfect Gym',
-    owner: 'Maurizio Taruggi',
-    people: 'Peter Croft',
-    status: 'todo',
+    scope:       'Perfect Gym',
+    owner:       'Maurizio Taruggi',
+    people:      'Peter Croft',
+    status:      'todo',
     statusLabel: 'To call',
-    nextStep: 'Call Peter Croft',
-    date: 'Jun 15–19',
+    nextStep:    'Call Peter Croft',
+    date:        'Jun 15–19',
+    detail: [
+      {
+        heading: 'Urgency',
+        text: 'Administrative separation of contracts from Aspria Holdings. Goal: direct invoicing to Tennis Club Ambrosiano with full service continuity guaranteed throughout the transition.',
+      },
+      {
+        heading: 'Cost Optimisation',
+        text: 'The current contract includes features that are not being used. Target: 40% reduction of the monthly fee.',
+        highlight: { from: '€1,500/mo', to: '~€900/mo' },
+      },
+    ],
   },
   {
-    scope: 'Website',
-    owner: 'Maurizio Taruggi',
-    people: 'Laura Giardini & Thomas Sander',
-    status: 'todo',
+    scope:       'Website',
+    owner:       'Maurizio Taruggi',
+    people:      'Laura Giardini & Thomas Sander',
+    status:      'todo',
     statusLabel: 'To call',
-    nextStep: 'Call Laura Giardini',
-    date: 'Jun 15–19',
+    nextStep:    'Call Laura Giardini',
+    date:        'Jun 15–19',
+    detail: [
+      {
+        heading: 'Current State',
+        text: 'The site runs on Prismic (CMS + marketing). Feedback from Laura Giardini and Alice on the platform has been negative. If the goal is to internalise digital functions, rebuilding the site from scratch should be seriously considered.',
+      },
+      {
+        heading: 'Open Strategic Decision',
+        options: [
+          { label: 'Option A', text: 'Keep Prismic, replace forms only' },
+          { label: 'Option B', text: 'Rebuild the entire site on a new platform' },
+        ],
+      },
+    ],
   },
   {
-    scope: 'HubSpot & JotForm',
-    owner: 'Maurizio Taruggi',
-    people: '—',
-    peopleNote: 'No external contact required',
-    status: 'prep',
+    scope:       'HubSpot & JotForm',
+    owner:       'Maurizio Taruggi',
+    people:      '—',
+    peopleNote:  'No external contact required',
+    status:      'prep',
     statusLabel: 'Independent',
-    statusNote: 'All existing forms replaced with custom HTML forms · HubSpot: new automations & pipelines · Prismic access needed for form mapping · Newsletter: training for Marketing resource',
-    nextStep: 'Analyze forms & automations',
-    date: 'Jun 22–26',
+    nextStep:    'Analyze forms & automations',
+    date:        'Jun 22–26',
+    detail: [
+      {
+        heading: 'Approach',
+        text: 'All existing forms will be fully replaced with custom HTML/CSS forms connected via N8N to Perfect Gym. This is not a 1:1 replacement — it is a complete rebuild with a restructured form logic.',
+      },
+      {
+        heading: 'Strategic Improvements',
+        bullets: [
+          'Deeper user profiling compared to current setup',
+          'Renewed deduplication and lead-nurturing logic',
+          'New automation architecture via N8N → Perfect Gym',
+        ],
+      },
+      {
+        heading: 'Scope',
+        text: 'Static site lead generation (SEO / acquisition) + event registration forms.',
+      },
+    ],
   },
   {
-    scope: 'Microsoft',
-    scopeNote: 'Outlook & OneDrive',
-    owner: 'Maurizio Taruggi',
-    people: 'Emanuele (Partner) & Thomas Sander',
-    status: 'wip',
+    scope:       'Microsoft',
+    scopeNote:   'Outlook & OneDrive',
+    owner:       'Maurizio Taruggi',
+    people:      'Emanuele (Partner) & Thomas Sander',
+    status:      'wip',
     statusLabel: 'In preparation',
-    statusNote: 'Mapping requirements and drafting technical document before engaging Thomas Sander · Includes OneDrive migration planning',
-    nextStep: 'Call Thomas Sander',
-    date: 'Jun 22–26',
+    nextStep:    'Call Thomas Sander',
+    date:        'Jun 22–26',
+    detail: [
+      {
+        heading: 'Two Objectives',
+        bullets: [
+          'Email migration (Outlook)',
+          'File migration (OneDrive → new drive)',
+        ],
+      },
+      {
+        heading: 'Alternative Migration Paths',
+        options: [
+          { label: 'Fast track', text: 'Thomas shares admin credentials → centralised migration, reduced time and cost' },
+          { label: 'Manual track', text: 'Account-by-account access, local save of emails and files, then upload to the new drive — longer and more costly' },
+        ],
+      },
+      {
+        text: 'Final timeline and costs depend on Thomas Sander\'s response regarding admin access.',
+      },
+    ],
   },
   {
-    scope: 'Physical Devices',
-    scopeNote: 'PCs & Wi-Fi',
-    owner: 'TBD',
-    ownerNote: 'External on-site partner',
-    people: 'Thomas Sander',
-    status: 'todo',
+    scope:       'Physical Devices',
+    scopeNote:   'PCs & Wi-Fi',
+    owner:       'TBD',
+    ownerNote:   'External on-site partner',
+    people:      'Thomas Sander',
+    status:      'todo',
     statusLabel: 'To call',
-    statusNote: 'Preparing technical requirements document ahead of Thomas Sander call',
-    nextStep: 'Call Thomas Sander',
-    date: 'Jun 22–26',
+    nextStep:    'Call Thomas Sander',
+    date:        'Jun 22–26',
+    detail: [
+      {
+        heading: 'Blocking Prerequisite',
+        text: 'Devices must be unlocked by removing the central admin role held by Aspria Holdings. This can only be done after the call with Thomas Sander, who will provide the procedure.',
+      },
+      {
+        heading: 'Operational Plan',
+        bullets: [
+          'Full factory reset of all devices (consecutive to the Microsoft migration)',
+          'Storage target: migration to Google Drive',
+          'Identify a local on-site IT manager for physical operations',
+        ],
+      },
+      {
+        heading: 'Out of Scope',
+        text: 'Internal data management must be assigned to an external IT partner — not included in the current project perimeter.',
+      },
+    ],
   },
 ];
 ---
@@ -79,31 +163,76 @@ const rows: Row[] = [
         <th>Status</th>
         <th>Next Step</th>
         <th>Date</th>
+        <th class="th-expand"></th>
       </tr>
     </thead>
     <tbody>
-      {rows.map((row) => (
-        <tr>
-          <td data-label="Scope">
-            {row.scope}
-            {row.scopeNote && <span class="note">{row.scopeNote}</span>}
-          </td>
-          <td data-label="Owner">
-            {row.owner}
-            {row.ownerNote && <span class="note">{row.ownerNote}</span>}
-          </td>
-          <td data-label="Other People Involved">
-            {row.peopleNote
-              ? <span class="note">{row.peopleNote}</span>
-              : row.people}
-          </td>
-          <td data-label="Status">
-            <span class={`badge badge--${row.status}`}>{row.statusLabel}</span>
-            {row.statusNote && <div class="note">{row.statusNote}</div>}
-          </td>
-          <td data-label="Next Step">{row.nextStep}</td>
-          <td data-label="Date">{row.date}</td>
-        </tr>
+      {rows.map((row, i) => (
+        <>
+          <tr class="row-main" data-idx={String(i)} aria-expanded="false" tabindex="0" role="button">
+            <td data-label="Scope">
+              <strong>{row.scope}</strong>
+              {row.scopeNote && <span class="note">{row.scopeNote}</span>}
+            </td>
+            <td data-label="Owner">
+              {row.owner}
+              {row.ownerNote && <span class="note">{row.ownerNote}</span>}
+            </td>
+            <td data-label="Other People">
+              {row.peopleNote
+                ? <span class="note">{row.peopleNote}</span>
+                : row.people}
+            </td>
+            <td data-label="Status">
+              <span class={`badge badge--${row.status}`}>{row.statusLabel}</span>
+            </td>
+            <td data-label="Next Step">{row.nextStep}</td>
+            <td data-label="Date">{row.date}</td>
+            <td class="td-expand" data-label="">
+              <span class="expand-icon" aria-hidden="true">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <path class="arm-h" d="M2 6h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path class="arm-v" d="M6 2v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </span>
+            </td>
+          </tr>
+
+          <tr class="row-detail" id={`detail-${i}`} hidden>
+            <td colspan="7">
+              <div class="detail-panel">
+                {row.detail.map((block) => (
+                  <div class="detail-block">
+                    {block.heading && <div class="detail-heading">{block.heading}</div>}
+                    {block.text    && <p class="detail-text">{block.text}</p>}
+                    {block.highlight && (
+                      <div class="detail-highlight">
+                        <span class="hl-from">{block.highlight.from}</span>
+                        <span class="hl-arrow">→</span>
+                        <span class="hl-to">{block.highlight.to}</span>
+                      </div>
+                    )}
+                    {block.bullets && (
+                      <ul class="detail-bullets">
+                        {block.bullets.map(b => <li>{b}</li>)}
+                      </ul>
+                    )}
+                    {block.options && (
+                      <div class="detail-options">
+                        {block.options.map(o => (
+                          <div class="detail-option">
+                            <span class="option-label">{o.label}</span>
+                            <span class="option-text">{o.text}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </td>
+          </tr>
+        </>
       ))}
     </tbody>
   </table>
@@ -128,32 +257,55 @@ const rows: Row[] = [
     text-align: left;
     white-space: nowrap;
   }
-  .sco-table tbody tr {
+  .th-expand { width: 44px; padding: 0; }
+
+  /* ── main rows ── */
+  .row-main {
     border-bottom: 1px solid var(--grey-light);
+    cursor: pointer;
     transition: background 0.15s;
   }
-  .sco-table tbody tr:hover { background: #f7f7f7; }
+  .row-main:hover { background: #f7f7f7; }
+  .row-main[aria-expanded="true"] { background: #f3f0ec; }
+  .row-main:focus-visible { outline: 2px solid var(--red); outline-offset: -2px; }
+
   .sco-table td {
     font-size: clamp(12px, 0.9vw, 14px);
     font-weight: 300;
     color: #444;
     padding: 16px 20px;
-    vertical-align: top;
+    vertical-align: middle;
     line-height: 1.55;
   }
-  .sco-table td:first-child {
+  .sco-table td:first-child strong {
     font-family: var(--fd);
     font-size: clamp(13px, 1vw, 15px);
     font-weight: 700;
     color: var(--text);
-    white-space: nowrap;
+    display: block;
   }
+  .td-expand {
+    padding: 0 14px 0 0;
+    width: 44px;
+    text-align: center;
+    color: var(--grey-mid);
+    transition: color 0.15s;
+    vertical-align: middle;
+  }
+  .row-main:hover .td-expand { color: var(--red); }
+
+  .expand-icon svg { display: block; transition: transform 0.25s ease; }
+  .row-main[aria-expanded="true"] .arm-v {
+    transform: scaleY(0);
+    transform-origin: center;
+  }
+  .arm-v { transition: transform 0.22s ease; }
 
   .note {
     display: block;
     font-size: clamp(10px, 0.75vw, 12px);
     color: var(--grey-mid);
-    margin-top: 4px;
+    margin-top: 3px;
     font-style: italic;
     line-height: 1.5;
     font-weight: 300;
@@ -168,32 +320,127 @@ const rows: Row[] = [
     text-transform: uppercase;
     padding: 4px 10px;
     border-radius: 3px;
+    white-space: nowrap;
   }
-  .badge--todo { background: rgba(139,26,26,0.08); color: var(--red);    border: 1px solid rgba(139,26,26,0.25); }
-  .badge--wip  { background: rgba(180,120,0,0.08); color: #8B6000;       border: 1px solid rgba(180,120,0,0.25); }
-  .badge--prep { background: rgba(0,80,180,0.07);  color: #004FAF;       border: 1px solid rgba(0,80,180,0.2); }
+  .badge--todo { background: rgba(139,26,26,0.08); color: var(--red);  border: 1px solid rgba(139,26,26,0.25); }
+  .badge--wip  { background: rgba(180,120,0,0.08); color: #8B6000;     border: 1px solid rgba(180,120,0,0.25); }
+  .badge--prep { background: rgba(0,80,180,0.07);  color: #004FAF;     border: 1px solid rgba(0,80,180,0.2); }
 
-  /* ── MOBILE: card layout ── */
+  /* ── detail rows ── */
+  .row-detail td {
+    padding: 0;
+    border-bottom: 1px solid var(--grey-light);
+    background: #faf9f7;
+  }
+  .detail-panel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    padding: 24px 28px 28px;
+    border-left: 3px solid var(--red);
+  }
+  .detail-block {
+    flex: 1 1 260px;
+    padding: 0 24px 16px 0;
+    min-width: 220px;
+  }
+  .detail-heading {
+    font-family: var(--fd);
+    font-size: clamp(9px, 0.7vw, 11px);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 8px;
+  }
+  .detail-text {
+    font-size: clamp(12px, 0.85vw, 13px);
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.7;
+    margin: 0;
+  }
+  .detail-highlight {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    padding: 8px 14px;
+    background: rgba(139,26,26,0.06);
+    border-radius: 4px;
+  }
+  .hl-from { font-size: 13px; font-weight: 400; color: var(--text-light); text-decoration: line-through; }
+  .hl-arrow { color: var(--red); font-weight: 700; }
+  .hl-to { font-family: var(--fd); font-size: 15px; font-weight: 700; color: var(--red); }
+
+  .detail-bullets {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .detail-bullets li {
+    font-size: clamp(12px, 0.85vw, 13px);
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.6;
+    padding-left: 16px;
+    position: relative;
+  }
+  .detail-bullets li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--red);
+    font-weight: 700;
+  }
+
+  .detail-options { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+  .detail-option {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .option-label {
+    font-family: var(--fd);
+    font-size: clamp(9px, 0.65vw, 10px);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #fff;
+    background: var(--text);
+    padding: 2px 7px;
+    border-radius: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .option-text {
+    font-size: clamp(12px, 0.85vw, 13px);
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+
+  /* ── MOBILE ── */
   @media (max-width: 768px) {
     .table-wrap { overflow: visible; }
     .sco-table thead { display: none; }
-    .sco-table tbody,
-    .sco-table tr,
-    .sco-table td { display: block; width: 100%; }
+    .sco-table,
+    .sco-table tbody { display: block; }
+    .sco-table tr.row-main,
+    .sco-table tr.row-detail { display: block; }
 
-    .sco-table tr {
+    .row-main {
       border: 1px solid var(--grey-light);
-      border-radius: 6px;
-      margin-bottom: 14px;
+      border-radius: 6px 6px 0 0;
+      margin-top: 16px;
       overflow: hidden;
     }
-    .sco-table tr:hover { background: #fff; }
+    .row-main[aria-expanded="false"] { border-radius: 6px; }
 
-    .sco-table td {
-      padding: 11px 14px;
-      font-size: 14px;
-      border-bottom: 1px solid var(--grey-light);
-    }
+    .sco-table td { display: block; width: 100%; padding: 10px 14px; font-size: 14px; border-bottom: 1px solid var(--grey-light); }
     .sco-table td:last-child { border-bottom: none; }
 
     .sco-table td::before {
@@ -205,20 +452,52 @@ const rows: Row[] = [
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--grey-mid);
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
+    .td-expand { display: none; }
 
     .sco-table td:first-child {
       background: var(--red);
       color: #fff;
-      font-size: 16px;
-      white-space: normal;
       padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    .sco-table td:first-child::before { color: rgba(255,255,255,0.55); }
-    .sco-table td:first-child :global(.note) { color: rgba(255,255,255,0.6); font-size: 11px; }
+    .sco-table td:first-child::before { display: none; }
+    .sco-table td:first-child strong { color: #fff; font-size: 17px; }
+    .sco-table td:first-child :global(.note) { color: rgba(255,255,255,0.65); font-size: 11px; }
 
-    .badge  { font-size: 11px; }
-    .note   { font-size: 12px; }
+    .row-detail td { display: block; }
+    .detail-panel {
+      flex-direction: column;
+      padding: 18px 16px 20px;
+      border-left-width: 3px;
+    }
+    .detail-block { flex: none; padding: 0 0 14px; }
+    .detail-text, .detail-bullets li, .option-text { font-size: 13px; }
+
+    .badge { font-size: 11px; }
+    .note  { font-size: 12px; }
+
+    .row-main[aria-expanded="true"] {
+      border-radius: 6px 6px 0 0;
+      border-bottom: none;
+    }
+    .row-detail { border: 1px solid var(--grey-light); border-top: none; border-radius: 0 0 6px 6px; margin-bottom: 0; overflow: hidden; }
   }
 </style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.row-main').forEach(row => {
+    const toggle = () => {
+      const idx    = row.dataset.idx!;
+      const detail = document.getElementById(`detail-${idx}`) as HTMLTableRowElement;
+      const open   = row.getAttribute('aria-expanded') === 'true';
+      row.setAttribute('aria-expanded', open ? 'false' : 'true');
+      detail.hidden = open;
+    };
+    row.addEventListener('click', toggle);
+    row.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+  });
+</script>

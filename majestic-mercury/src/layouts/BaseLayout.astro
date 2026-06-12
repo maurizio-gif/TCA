@@ -48,22 +48,8 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith("/")
   <div class="g-menu" id="g-menu" aria-hidden="true" role="dialog" aria-modal="true">
     <div class="g-menu__inner">
       <nav class="g-menu__nav">
-        <div class="g-menu__section">
-          <span class="g-menu__section-label">The Proposal</span>
-          <a href={base}           class="g-menu__link" data-close><em>01</em>Home</a>
-          <a href={`${base}#s2`}  class="g-menu__link" data-close><em>02</em>Who I Am</a>
-          <a href={`${base}#s3`}  class="g-menu__link" data-close><em>03</em>The Opportunity</a>
-          <a href={`${base}#s4`}  class="g-menu__link" data-close><em>04</em>The Model</a>
-          <a href={`${base}#s5`}  class="g-menu__link" data-close><em>05</em>Why Me</a>
-          <a href={`${base}#s6`}  class="g-menu__link" data-close><em>06</em>The Outcomes</a>
-          <a href={`${base}#s7`}  class="g-menu__link" data-close><em>07</em>Closing</a>
-        </div>
-        <div class="g-menu__section g-menu__section--ops">
-          <span class="g-menu__section-label">Operations</span>
-          <a href={`${base}carve-out/`} class="g-menu__link g-menu__link--accent" data-close>
-            <em>→</em>Carve-Out Roadmap
-          </a>
-        </div>
+        <a href={base}                class="g-menu__link" data-close><em>01</em>Proposal</a>
+        <a href={`${base}carve-out/`} class="g-menu__link g-menu__link--accent" data-close><em>02</em>Carve-Out Roadmap</a>
       </nav>
       <div class="g-menu__footer">
         Confidential &middot; Tennis Club Ambrosiano &middot; 2025
