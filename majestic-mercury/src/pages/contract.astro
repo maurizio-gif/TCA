@@ -45,7 +45,13 @@ const fees = [
       <!-- ── PARTIES ── -->
       <section class="ct-section">
         <h2>Between</h2>
-        <div class="ct-party">
+        <div class="ct-party screen-only">
+          <p><strong>Maurizio Taruggi</strong> (the “Consultant”)</p>
+          <p class="ct-fill">Address: <span></span></p>
+          <p class="ct-fill">VAT no.: <span></span></p>
+          <p class="ct-fill">Email: <span></span></p>
+        </div>
+        <div class="ct-party print-only">
           <p><strong>Maurizio Taruggi</strong> (the “Consultant”)</p>
           <p>Address: Via Codette 122, 00060 Riano (RM), Italy</p>
           <p>VAT no.: 17244271007</p>
@@ -389,7 +395,10 @@ const fees = [
   .ct-sign-img {
     height: 86px;
     margin-bottom: -10px;
+    display: none; /* signature appears only in the printed PDF */
   }
+
+  .print-only { display: none; }
   .ct-sign-name { font-size: 13px; }
   .ct-2702 {
     font-size: 12px;
@@ -422,7 +431,9 @@ const fees = [
   /* ── PRINT ── */
   @media print {
     :global(body) { background: #fff !important; }
-    :global(.g-header), :global(.g-menu), .ct-toolbar, .gate { display: none !important; }
+    :global(.g-header), :global(.g-menu), .ct-toolbar, .gate, .screen-only { display: none !important; }
+    .print-only { display: block; }
+    .ct-sign-img { display: block; }
     .ct-page { padding: 0; max-width: none; }
     .ct-page[hidden] { display: none; }
     .ct-doc {
