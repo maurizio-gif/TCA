@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PhotoBand from '../components/PhotoBand.astro';
 
 interface LineItem {
   label: string;
@@ -292,6 +293,8 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
       </ol>
       <a class="qt-contract-btn" href={`${base}contract-website/?print=1`}>Print website contract (PDF)</a>
     </section>
+
+    <PhotoBand img="club-family.jpeg" eyebrow="Investment" blur={3} line="One partner. Every capability TCA needs right now." />
 
     <p class="qt-footer">Confidential · Tennis Club Ambrosiano · 2026</p>
 

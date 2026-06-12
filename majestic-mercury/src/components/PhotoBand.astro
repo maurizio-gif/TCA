@@ -73,4 +73,8 @@ const src = encodeURI(`${base}${img}`);
     .photo-band { min-height: 200px; margin-top: 32px; margin-bottom: 32px; }
     .photo-band__inner { padding: 24px 20px; }
   }
+
+  @media print {
+    .photo-band { display: none; }
+  }
 </style>
