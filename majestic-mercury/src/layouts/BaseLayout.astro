@@ -3,8 +3,9 @@ interface Props {
   title: string;
   description?: string;
   initialHeaderDark?: boolean;
+  noindex?: boolean;
 }
-const { title, description = 'Maurizio Taruggi for Tennis Club Ambrosiano.', initialHeaderDark = false } = Astro.props;
+const { title, description = 'Maurizio Taruggi for Tennis Club Ambrosiano.', initialHeaderDark = false, noindex = false } = Astro.props;
 const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith("/") ? b : b + "/"; })();
 ---
 <!DOCTYPE html>
@@ -17,6 +18,7 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith("/")
   <link rel="icon" type="image/png" href={`${base}logo tca.png`} />
   <link rel="apple-touch-icon" href={`${base}logo tca.png`} />
 
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
   <meta name="description" content={description} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />

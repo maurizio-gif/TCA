@@ -1,0 +1,563 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface LineItem {
+  label: string;
+  note?: string;
+}
+interface Workstream {
+  id: string;
+  name: string;
+  subtitle?: string;
+  hours: number;
+  items: LineItem[];
+  caveat?: string;
+}
+
+const RATE_MIN = 80;
+const RATE_MAX = 100;
+
+const workstreams: Workstream[] = [
+  {
+    id: '01',
+    name: 'Perfect Gym',
+    subtitle: 'Separazione contrattuale & continuità di servizio',
+    hours: 28,
+    items: [
+      { label: 'Coordinamento con Peter Croft e separazione amministrativa dei contratti da Aspria Holdings' },
+      { label: 'Attivazione fatturazione diretta a Tennis Club Ambrosiano con piena continuità di servizio' },
+      { label: 'Presa in carico del supporto ordinario precedentemente erogato dall’IT Aspria' },
+      { label: 'Negoziazione riduzione del canone mensile', note: 'Target −40%: da €1.500/mese a ~€900/mese' },
+    ],
+  },
+  {
+    id: '02',
+    name: 'Website',
+    subtitle: 'Carve-out moduli & presa in carico (Opzione A)',
+    hours: 24,
+    items: [
+      { label: 'Coordinamento con Laura Giardini e Thomas Sander' },
+      { label: 'Mappatura dei form attuali su Prismic e sostituzione con moduli proprietari' },
+      { label: 'Presa in carico operativa del sito esistente' },
+    ],
+    caveat: 'L’Opzione B (rebuild completo del sito su nuova piattaforma) è esclusa dal presente preventivo e sarà oggetto di quotazione separata: stima indicativa 100–130 ore.',
+  },
+  {
+    id: '03',
+    name: 'HubSpot & JotForm',
+    subtitle: 'Rebuild completo form & nuove automazioni',
+    hours: 56,
+    items: [
+      { label: 'Analisi dei form e delle automazioni esistenti' },
+      { label: 'Rebuild completo dei form in HTML/CSS custom con logica ristrutturata (non sostituzione 1:1)' },
+      { label: 'Nuova architettura di automazione via N8N → Perfect Gym' },
+      { label: 'Logica di deduplica e lead nurturing rinnovata, profilazione utenti più profonda' },
+      { label: 'Formazione della risorsa Marketing sulla gestione newsletter' },
+    ],
+  },
+  {
+    id: '04',
+    name: 'Microsoft → Google Workspace',
+    subtitle: 'Migrazione completa · ~10 account',
+    hours: 52,
+    items: [
+      { label: 'Assessment iniziale e definizione del perimetro (account, alias, gruppi, volumi)' },
+      { label: 'Setup del nuovo tenant Google Workspace indipendente (dominio, sicurezza, struttura Drive)' },
+      { label: 'Mappatura utenti, alias e caselle condivise; coordinamento tecnico con IT Aspria' },
+      { label: 'Migrazione pilota, migrazione massiva di email, calendari, contatti e file OneDrive' },
+      { label: 'Migrazione delta, cutover DNS/mail routing e validazione finale per utente' },
+      { label: 'Supporto post-migrazione, riconfigurazione dispositivi e onboarding Gmail/Drive' },
+    ],
+    caveat: 'Prezzo basato sul percorso “fast track” (accesso amministrativo temporaneo concesso da IT Aspria). In caso di percorso manuale account-per-account l’effort aumenta del 40–60% e sarà riquotato.',
+  },
+  {
+    id: '05',
+    name: 'Project Management',
+    subtitle: 'Regia & coordinamento trasversale',
+    hours: 20,
+    items: [
+      { label: 'Regia complessiva della fase di carve-out e governo del piano verso il cut-off del 31 luglio' },
+      { label: 'Coordinamento con Aspria Holdings e fornitori terzi' },
+      { label: 'Reporting periodico di avanzamento alla proprietà' },
+    ],
+  },
+];
+
+const totalHours = workstreams.reduce((s, w) => s + w.hours, 0);
+const eur = (n: number) => '€' + n.toLocaleString('it-IT');
+const totMin = totalHours * RATE_MIN;
+const totMax = totalHours * RATE_MAX;
+---
+
+<BaseLayout title="TCA · Preventivo Carve-Out" initialHeaderDark={true} noindex={true}>
+
+  <!-- ── PASSWORD GATE ── -->
+  <div class="gate" id="gate">
+    <form class="gate-box" id="gate-form" autocomplete="off">
+      <span class="eyebrow eyebrow--grey">Documento riservato</span>
+      <h2 class="gate-title">Preventivo <em>Carve-Out</em></h2>
+      <p class="gate-text">Inserisci la password per accedere al documento.</p>
+      <div class="gate-row">
+        <input type="password" id="gate-pass" class="gate-input" placeholder="Password" aria-label="Password" required />
+        <button type="submit" class="gate-btn">Accedi</button>
+      </div>
+      <p class="gate-error" id="gate-error" hidden>Password non corretta.</p>
+    </form>
+  </div>
+
+  <main class="qt-page" id="qt-content" hidden>
+
+    <div class="qt-header">
+      <span class="eyebrow eyebrow--grey">Documento Riservato · Offerta Economica</span>
+      <h1 class="qt-title">Preventivo &mdash; <em>Fase di Carve-Out</em></h1>
+      <div class="qt-meta">
+        <div class="qt-meta-item"><span>Cliente</span>Tennis Club Ambrosiano</div>
+        <div class="qt-meta-item"><span>Consulente</span>Maurizio Taruggi</div>
+        <div class="qt-meta-item"><span>Data</span>12 giugno 2026</div>
+        <div class="qt-meta-item"><span>Validità</span>30 giorni</div>
+        <div class="qt-meta-item"><span>Cut-off di riferimento</span>31 luglio</div>
+      </div>
+    </div>
+
+    <p class="qt-intro">
+      La presente offerta copre le attività di consulenza per la separazione dell’infrastruttura digitale
+      di Tennis Club Ambrosiano dal perimetro Aspria Holdings, secondo la Carve-Out Roadmap condivisa.
+      I prezzi sono <strong>a corpo per ciascun workstream</strong>, calcolati su una tariffa oraria di
+      riferimento di {RATE_MIN}&ndash;{RATE_MAX}&nbsp;€/ora; l’importo definitivo di ciascun workstream
+      viene fissato alla conferma d’ordine all’interno del range indicato.
+    </p>
+
+    <!-- ── WORKSTREAMS ── -->
+    <div class="qt-streams">
+      {workstreams.map(w => (
+        <section class="qt-stream">
+          <header class="qt-stream-head">
+            <div class="qt-stream-name">
+              <em>{w.id}</em>
+              <div>
+                <h2>{w.name}</h2>
+                {w.subtitle && <span class="qt-stream-sub">{w.subtitle}</span>}
+              </div>
+            </div>
+            <div class="qt-stream-price">
+              <span class="qt-hours">{w.hours} ore</span>
+              <span class="qt-price">{eur(w.hours * RATE_MIN)} &ndash; {eur(w.hours * RATE_MAX)}</span>
+            </div>
+          </header>
+          <ul class="qt-items">
+            {w.items.map(it => (
+              <li>
+                {it.label}
+                {it.note && <span class="qt-note">{it.note}</span>}
+              </li>
+            ))}
+          </ul>
+          {w.caveat && <p class="qt-caveat">{w.caveat}</p>}
+        </section>
+      ))}
+    </div>
+
+    <!-- ── TOTAL ── -->
+    <div class="qt-total">
+      <div class="qt-total-label">
+        Totale fase di carve-out
+        <span>{totalHours} ore stimate · prezzi a corpo per workstream</span>
+      </div>
+      <div class="qt-total-price">{eur(totMin)} &ndash; {eur(totMax)}</div>
+    </div>
+
+    <!-- ── EXCLUSIONS & TERMS ── -->
+    <div class="qt-terms">
+      <div class="qt-terms-block">
+        <h3>Esclusioni</h3>
+        <ul>
+          <li>Dispositivi fisici (PC &amp; Wi-Fi): assegnati a partner IT esterno on-site, fuori perimetro</li>
+          <li>Rebuild completo del sito web (Opzione B): quotazione separata</li>
+          <li>Licenze e canoni di terze parti (Google Workspace, strumenti di migrazione, hosting N8N, Perfect Gym, ecc.)</li>
+          <li>Attività eccedenti il perimetro descritto: valutate e quotate separatamente</li>
+        </ul>
+      </div>
+      <div class="qt-terms-block">
+        <h3>Condizioni</h3>
+        <ul>
+          <li>Tariffa oraria di riferimento: {RATE_MIN}&ndash;{RATE_MAX} €/ora</li>
+          <li>Fatturazione proposta: 40% all’avvio · 40% a stato avanzamento · 20% alla chiusura</li>
+          <li>Importi IVA esclusa</li>
+          <li>Validità dell’offerta: 30 giorni dalla data di emissione</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="qt-footer">Confidenziale · Tennis Club Ambrosiano · 2026</p>
+
+  </main>
+
+</BaseLayout>
+
+<style>
+  :global(body) { background: #fff; }
+
+  /* ── GATE ── */
+  .gate {
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    padding: 24px;
+  }
+  .gate[hidden] { display: none; }
+  .gate-box {
+    width: min(420px, 100%);
+    border: 1px solid var(--grey-light);
+    border-top: 3px solid var(--red);
+    border-radius: 6px;
+    padding: 36px 32px;
+  }
+  .gate-title {
+    font-family: var(--fd);
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .gate-title em { color: var(--red); font-style: normal; }
+  .gate-text {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text-light);
+    margin-bottom: 18px;
+  }
+  .gate-row { display: flex; gap: 8px; }
+  .gate-input {
+    flex: 1;
+    font-family: var(--fb);
+    font-size: 14px;
+    padding: 10px 12px;
+    border: 1px solid var(--grey-light);
+    border-radius: 4px;
+    outline: none;
+  }
+  .gate-input:focus { border-color: var(--red); }
+  .gate-btn {
+    font-family: var(--fd);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--red);
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .gate-btn:hover { background: var(--red-dark); }
+  .gate-error {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--red);
+  }
+
+  /* ── PAGE ── */
+  .qt-page {
+    padding: calc(var(--header-h) + 3.5vh) clamp(20px, 5vw, 72px) 6vh;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .qt-header { margin-bottom: 3vh; }
+  .qt-title {
+    font-family: var(--fd);
+    font-size: clamp(2rem, 4vw, 4rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.0;
+    color: var(--text);
+    margin-bottom: 2vh;
+  }
+  .qt-title em { color: var(--red); font-style: normal; }
+
+  .qt-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 36px;
+    border-top: 1px solid var(--grey-light);
+    border-bottom: 1px solid var(--grey-light);
+    padding: 14px 0;
+  }
+  .qt-meta-item {
+    font-size: clamp(13px, 0.95vw, 15px);
+    font-weight: 500;
+    color: var(--text);
+  }
+  .qt-meta-item span {
+    display: block;
+    font-family: var(--fd);
+    font-size: clamp(9px, 0.65vw, 11px);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    margin-bottom: 2px;
+  }
+
+  .qt-intro {
+    font-size: clamp(13px, 0.95vw, 15px);
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.7;
+    max-width: 70ch;
+    margin-bottom: 4vh;
+  }
+
+  /* ── STREAMS ── */
+  .qt-streams { display: flex; flex-direction: column; gap: 18px; }
+
+  .qt-stream {
+    border: 1px solid var(--grey-light);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .qt-stream-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 22px;
+    background: #faf9f7;
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .qt-stream-name {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .qt-stream-name em {
+    font-family: var(--fd);
+    font-style: normal;
+    font-size: clamp(11px, 0.8vw, 13px);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--red);
+  }
+  .qt-stream-name h2 {
+    font-family: var(--fd);
+    font-size: clamp(17px, 1.4vw, 21px);
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text);
+    line-height: 1.1;
+  }
+  .qt-stream-sub {
+    display: block;
+    font-size: clamp(11px, 0.8vw, 13px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--grey-mid);
+    margin-top: 2px;
+  }
+  .qt-stream-price { text-align: right; flex-shrink: 0; }
+  .qt-hours {
+    display: block;
+    font-family: var(--fd);
+    font-size: clamp(10px, 0.7vw, 12px);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+  }
+  .qt-price {
+    font-family: var(--fd);
+    font-size: clamp(17px, 1.4vw, 21px);
+    font-weight: 800;
+    color: var(--red);
+    white-space: nowrap;
+  }
+
+  .qt-items {
+    list-style: none;
+    padding: 16px 22px 6px;
+    margin: 0;
+  }
+  .qt-items li {
+    font-size: clamp(13px, 0.9vw, 14px);
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.6;
+    padding: 0 0 10px 18px;
+    position: relative;
+  }
+  .qt-items li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--red);
+    font-weight: 700;
+  }
+  .qt-note {
+    display: block;
+    font-size: clamp(11px, 0.78vw, 12px);
+    font-style: italic;
+    color: var(--grey-mid);
+  }
+  .qt-caveat {
+    margin: 0 22px 16px;
+    padding: 10px 14px;
+    background: rgba(139,26,26,0.05);
+    border-left: 3px solid var(--red);
+    border-radius: 0 4px 4px 0;
+    font-size: clamp(12px, 0.82vw, 13px);
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+
+  /* ── TOTAL ── */
+  .qt-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 24px;
+    padding: 20px 24px;
+    background: var(--red);
+    border-radius: 6px;
+    color: #fff;
+  }
+  .qt-total-label {
+    font-family: var(--fd);
+    font-size: clamp(15px, 1.2vw, 19px);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .qt-total-label span {
+    display: block;
+    font-family: var(--fb);
+    font-size: clamp(11px, 0.78vw, 12px);
+    font-weight: 300;
+    text-transform: none;
+    letter-spacing: 0;
+    color: rgba(255,255,255,0.7);
+    margin-top: 3px;
+  }
+  .qt-total-price {
+    font-family: var(--fd);
+    font-size: clamp(22px, 2.2vw, 32px);
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  /* ── TERMS ── */
+  .qt-terms {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-top: 4vh;
+  }
+  .qt-terms-block h3 {
+    font-family: var(--fd);
+    font-size: clamp(11px, 0.8vw, 13px);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 10px;
+  }
+  .qt-terms-block ul { list-style: none; margin: 0; padding: 0; }
+  .qt-terms-block li {
+    font-size: clamp(12px, 0.85vw, 13px);
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.6;
+    padding: 0 0 8px 16px;
+    position: relative;
+  }
+  .qt-terms-block li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--red);
+    font-weight: 700;
+  }
+
+  .qt-footer {
+    margin-top: 5vh;
+    border-top: 1px solid var(--grey-light);
+    padding-top: 2vh;
+    font-size: clamp(9px, 0.65vw, 11px);
+    color: var(--grey-mid);
+    font-family: var(--fd);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    .qt-page { padding: calc(var(--header-h) + 20px) 16px 40px; }
+    .qt-title { font-size: clamp(1.9rem, 8.5vw, 2.6rem); }
+    .qt-meta { gap: 10px 24px; }
+    .qt-meta-item { font-size: 14px; }
+    .qt-meta-item span { font-size: 10px; }
+    .qt-intro { font-size: 15px; }
+    .qt-stream-head { flex-direction: column; align-items: flex-start; gap: 8px; padding: 14px 16px; }
+    .qt-stream-price { text-align: left; }
+    .qt-stream-name h2 { font-size: 19px; }
+    .qt-stream-sub { font-size: 13px; }
+    .qt-price { font-size: 20px; }
+    .qt-items { padding: 14px 16px 4px; }
+    .qt-items li { font-size: 15px; }
+    .qt-note { font-size: 13px; }
+    .qt-caveat { margin: 0 16px 14px; font-size: 13px; }
+    .qt-total { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .qt-total-price { font-size: 26px; }
+    .qt-terms { grid-template-columns: 1fr; gap: 22px; }
+    .qt-terms-block li { font-size: 14px; }
+    .qt-footer { font-size: 12px; }
+  }
+</style>
+
+<script>
+  const HASH = '480fa9a2765c43cc4430a13124ecef83ae0f63ff6cc842f1aaf9d868c530f0c6';
+  const KEY  = 'tca-quote-auth';
+
+  const gate    = document.getElementById('gate')!;
+  const content = document.getElementById('qt-content')!;
+  const form    = document.getElementById('gate-form')!;
+  const input   = document.getElementById('gate-pass') as HTMLInputElement;
+  const error   = document.getElementById('gate-error')!;
+
+  async function sha256(text: string): Promise<string> {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function unlock() {
+    gate.setAttribute('hidden', '');
+    content.removeAttribute('hidden');
+  }
+
+  if (sessionStorage.getItem(KEY) === HASH) {
+    unlock();
+  } else {
+    input.focus();
+  }
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const h = await sha256(input.value);
+    if (h === HASH) {
+      sessionStorage.setItem(KEY, h);
+      error.setAttribute('hidden', '');
+      unlock();
+    } else {
+      error.removeAttribute('hidden');
+      input.select();
+    }
+  });
+</script>
