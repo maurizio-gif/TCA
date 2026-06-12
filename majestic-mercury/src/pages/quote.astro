@@ -118,10 +118,7 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
   <main class="qt-page" id="qt-content" hidden>
 
     <div class="qt-header">
-      <div class="qt-topbar">
-        <span class="eyebrow eyebrow--grey">Confidential · Commercial Offer</span>
-        <a class="qt-contract-btn" href={`${base}contract/?print=1`}>Print contract (PDF)</a>
-      </div>
+      <span class="eyebrow eyebrow--grey">Confidential · Commercial Offer</span>
       <h1 class="qt-title">Quote &mdash; <em>Carve-Out Phase</em></h1>
       <div class="qt-meta">
         <div class="qt-meta-item"><span>Client</span>Tennis Club Ambrosiano</div>
@@ -222,6 +219,18 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
       </div>
     </div>
 
+    <!-- ── ACCEPTANCE ── -->
+    <section class="qt-accept">
+      <h3>How to accept this offer</h3>
+      <ol class="qt-accept-steps">
+        <li>Print the contract using the button below (or save it as a PDF)</li>
+        <li>Fill in your details in the Client section (registered office, VAT no., signatory name and role)</li>
+        <li>Sign it — both the main signature and the express-approval signature</li>
+        <li>Send the signed copy to <strong>maurizio@ready2digital.it</strong></li>
+      </ol>
+      <a class="qt-contract-btn" href={`${base}contract/?print=1`}>Print contract (PDF)</a>
+    </section>
+
     <p class="qt-footer">Confidential · Tennis Club Ambrosiano · 2026</p>
 
   </main>
@@ -305,28 +314,6 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
   }
 
   .qt-header { margin-bottom: 3vh; }
-  .qt-topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .qt-contract-btn {
-    font-family: var(--fd);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #fff;
-    background: var(--red);
-    border-radius: 4px;
-    padding: 9px 18px;
-    text-decoration: none;
-    transition: background 0.15s;
-    margin-bottom: 0.8vh;
-  }
-  .qt-contract-btn:hover { background: var(--red-dark); }
   .qt-title {
     font-family: var(--fd);
     font-size: clamp(2rem, 4vw, 4rem);
@@ -571,6 +558,58 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
     font-weight: 700;
   }
 
+  /* ── ACCEPTANCE ── */
+  .qt-accept {
+    margin-top: 4vh;
+    padding: 22px 24px;
+    background: #faf9f7;
+    border: 1px solid var(--grey-light);
+    border-left: 3px solid var(--red);
+    border-radius: 6px;
+  }
+  .qt-accept h3 {
+    font-family: var(--fd);
+    font-size: clamp(13px, 1vw, 16px);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 12px;
+  }
+  .qt-accept-steps {
+    margin: 0 0 18px;
+    padding-left: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .qt-accept-steps li {
+    font-size: clamp(13px, 0.92vw, 14px);
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+  .qt-accept-steps li::marker {
+    font-family: var(--fd);
+    font-weight: 700;
+    color: var(--red);
+  }
+  .qt-contract-btn {
+    display: inline-block;
+    font-family: var(--fd);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--red);
+    border-radius: 4px;
+    padding: 11px 24px;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .qt-contract-btn:hover { background: var(--red-dark); }
+
   .qt-footer {
     margin-top: 5vh;
     border-top: 1px solid var(--grey-light);
@@ -601,6 +640,9 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
     .qt-caveat { margin: 0 16px 14px; font-size: 13px; }
     .qt-total { flex-direction: column; align-items: flex-start; gap: 6px; }
     .qt-total-price { font-size: 26px; }
+    .qt-accept { padding: 18px 16px; }
+    .qt-accept h3 { font-size: 15px; }
+    .qt-accept-steps li { font-size: 15px; }
     .qt-terms { grid-template-columns: 1fr; gap: 22px; }
     .qt-terms-block li { font-size: 14px; }
     .qt-footer { font-size: 12px; }
