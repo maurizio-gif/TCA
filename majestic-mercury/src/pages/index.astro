@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PhotoBand from '../components/PhotoBand.astro';
 
 const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith("/") ? b : b + "/"; })();
 const heroImg = encodeURI(`${base}orizzntale tca.avif`);
@@ -15,7 +16,7 @@ const team = [
   ['Maurizio Taruggi','Project Lead · Digital'],
   ['Alice Bartoli','Core Team'],
   ['Brian Morris','Core Team'],
-  ['Thomas','Core Team'],
+  ['Thomas Escher','Core Team'],
   ['Laura Bonamico','Core Team'],
 ];
 
@@ -67,6 +68,8 @@ const method = [
       ))}
     </div>
 
+    <PhotoBand img="club-aerial.jpeg" eyebrow="The Club" line="Protecting the legacy — rebuilding the engine underneath." />
+
     <!-- ── PEOPLE ── -->
     <h2 class="hub-section-title">03 · People Directly <em>Involved</em></h2>
     <div class="team-grid">
@@ -95,6 +98,8 @@ const method = [
         </li>
       ))}
     </ol>
+
+    <PhotoBand img="club-family.jpeg" eyebrow="Human Touch" blur={3} line="Members never notice the change. That's the point." />
 
     <!-- ── DOCUMENT INDEX ── -->
     <h2 class="hub-section-title">05 · Project <em>Contents</em></h2>

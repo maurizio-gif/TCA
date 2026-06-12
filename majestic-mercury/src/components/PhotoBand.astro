@@ -1,0 +1,76 @@
+---
+interface Props {
+  img: string;          // filename inside /public
+  eyebrow?: string;
+  line: string;
+  blur?: number;        // px — masks low-res sources stretched full-width
+}
+const { img, eyebrow, line, blur = 2 } = Astro.props;
+const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith("/") ? b : b + "/"; })();
+const src = encodeURI(`${base}${img}`);
+---
+
+<section class="photo-band">
+  <div class="photo-band__bg" style={`background-image: url('${src}'); filter: blur(${blur}px) brightness(0.85) saturate(1.05);`}></div>
+  <div class="photo-band__grad"></div>
+  <div class="photo-band__inner">
+    {eyebrow && <span class="photo-band__eyebrow">{eyebrow}</span>}
+    <p class="photo-band__line">{line}</p>
+  </div>
+</section>
+
+<style>
+  .photo-band {
+    position: relative;
+    overflow: hidden;
+    width: 100vw;
+    margin: 6vh calc(50% - 50vw);
+    min-height: clamp(240px, 34vh, 380px);
+    display: flex;
+    align-items: flex-end;
+  }
+  .photo-band__bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transform: scale(1.08);
+  }
+  .photo-band__grad {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, rgba(20,20,22,0.82) 28%, rgba(139,26,26,0.42) 100%);
+  }
+  .photo-band__inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 4vh clamp(20px, 5vw, 72px);
+  }
+  .photo-band__eyebrow {
+    font-family: var(--fd);
+    font-size: clamp(10px, 0.8vw, 13px);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .photo-band__line {
+    font-family: var(--fd);
+    font-size: clamp(1.4rem, 2.8vw, 2.8rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.05;
+    color: #fff;
+    max-width: 28ch;
+  }
+
+  @media (max-width: 768px) {
+    .photo-band { min-height: 200px; margin-top: 32px; margin-bottom: 32px; }
+    .photo-band__inner { padding: 24px 20px; }
+  }
+</style>
