@@ -85,7 +85,9 @@ const addon = {
   subtitle: 'Rebuild on a new platform',
   price: 4000,
   items: [
-    { label: 'Design and development of the new website on a platform suited to in-house operational management' },
+    { label: 'Development in custom HTML/CSS on an Astro architecture, with Decap CMS for in-house content management' },
+    { label: 'SEO optimisation targeted at the activities offered by Tennis Club Ambrosiano' },
+    { label: 'Events section with booking forms included', note: 'Event pages will be editable by the internal team via the CMS' },
     { label: 'Structured lead-generation architecture, natively integrated with the new forms and N8N → Perfect Gym automations' },
     { label: 'Content migration and SEO continuity from the current site' },
   ],
@@ -185,7 +187,12 @@ const eur = (n: number) => '€' + n.toLocaleString('en-US');
         </div>
       </header>
       <ul class="qt-items">
-        {addon.items.map(it => <li>{it.label}</li>)}
+        {addon.items.map(it => (
+          <li>
+            {it.label}
+            {it.note && <span class="qt-note">{it.note}</span>}
+          </li>
+        ))}
       </ul>
       <p class="qt-caveat">{addon.rationale}</p>
     </section>
