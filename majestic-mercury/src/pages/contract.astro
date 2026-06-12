@@ -1,0 +1,471 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const fees = [
+  { id: '01', name: 'Perfect Gym — contract separation & service continuity', price: '€1,600' },
+  { id: '02', name: 'Website — carve-out & operational takeover', price: '€800' },
+  { id: '03', name: 'HubSpot & JotForm — full form rebuild & new automations', price: '€3,200' },
+  { id: '04', name: 'Microsoft → Google Workspace — full migration (~10 accounts)', price: '€3,400' },
+  { id: '05', name: 'Project Management — overall steering & coordination', price: '€1,000' },
+];
+---
+
+<BaseLayout title="TCA · Consulting Agreement" initialHeaderDark={true} noindex={true}>
+
+  <!-- ── PASSWORD GATE ── -->
+  <div class="gate" id="gate">
+    <form class="gate-box" id="gate-form" autocomplete="off">
+      <span class="eyebrow eyebrow--grey">Confidential document</span>
+      <h2 class="gate-title">Consulting <em>Agreement</em></h2>
+      <p class="gate-text">Enter the password to access the document.</p>
+      <div class="gate-row">
+        <input type="password" id="gate-pass" class="gate-input" placeholder="Password" aria-label="Password" required />
+        <button type="submit" class="gate-btn">Unlock</button>
+      </div>
+      <p class="gate-error" id="gate-error" hidden>Incorrect password.</p>
+    </form>
+  </div>
+
+  <main class="ct-page" id="ct-content" hidden>
+
+    <div class="ct-toolbar">
+      <span class="eyebrow eyebrow--grey">Confidential · For signature</span>
+      <button class="ct-print-btn" id="ct-print">Print / Save as PDF</button>
+    </div>
+
+    <article class="ct-doc">
+
+      <header class="ct-head">
+        <h1>Consulting Services Agreement</h1>
+        <p class="ct-subtitle">Digital Carve-Out from the Aspria Holdings Perimeter</p>
+      </header>
+
+      <!-- ── PARTIES ── -->
+      <section class="ct-section">
+        <h2>Between</h2>
+        <div class="ct-party">
+          <p><strong>Maurizio Taruggi</strong> (the “Consultant”)</p>
+          <p class="ct-fill">Registered office / address: <span></span></p>
+          <p class="ct-fill">VAT no. / Tax code: <span></span></p>
+          <p class="ct-fill">Email: <span></span></p>
+        </div>
+        <h2>And</h2>
+        <div class="ct-party">
+          <p><strong>Tennis Club Ambrosiano</strong> (the “Client”)</p>
+          <p class="ct-fill">Registered office: <span></span></p>
+          <p class="ct-fill">VAT no. / Tax code: <span></span></p>
+          <p class="ct-fill">Represented by (name and surname): <span></span></p>
+          <p class="ct-fill">In the capacity of (role): <span></span></p>
+          <p class="ct-fill">Email / PEC: <span></span></p>
+        </div>
+        <p>jointly referred to as the “Parties”.</p>
+      </section>
+
+      <!-- ── RECITALS ── -->
+      <section class="ct-section">
+        <h2>Whereas</h2>
+        <ol type="a">
+          <li>The Client intends to separate its digital infrastructure from the perimeter currently managed by Aspria Holdings (the “Carve-Out”), with a reference cut-off date of July 31st;</li>
+          <li>The Consultant has submitted to the Client a commercial offer dated June 12, 2026 (the “Quote”), describing the workstreams, fees, exclusions and terms of the Carve-Out, which the Parties acknowledge and accept as an integral part of this Agreement (Annex A);</li>
+          <li>The Client wishes to engage the Consultant for the activities described in the Quote, under the terms and conditions set out below.</li>
+        </ol>
+      </section>
+
+      <!-- ── 1 SUBJECT ── -->
+      <section class="ct-section">
+        <h2>1. Subject</h2>
+        <p>1.1 The Consultant shall provide the consulting services described in the Quote, organised in the following workstreams: (i) Perfect Gym — contract separation and service continuity; (ii) Website — carve-out and operational takeover; (iii) HubSpot &amp; JotForm — full form rebuild and new automations; (iv) Microsoft 365 → Google Workspace — full migration of approximately 10 accounts; (v) Project Management — overall steering and cross-stream coordination.</p>
+        <p>1.2 The detailed scope, activities and assumptions of each workstream are set out in the Quote (Annex A), which prevails over this summary in case of discrepancy on scope matters.</p>
+      </section>
+
+      <!-- ── 2 FEES ── -->
+      <section class="ct-section">
+        <h2>2. Fees</h2>
+        <p>2.1 As consideration for the services under art. 1, the Client shall pay the Consultant a fixed, all-inclusive fee per workstream, as follows:</p>
+        <table class="ct-fees">
+          <tbody>
+            {fees.map(f => (
+              <tr>
+                <td>{f.id}</td>
+                <td>{f.name}</td>
+                <td class="ct-fees-price">{f.price}</td>
+              </tr>
+            ))}
+            <tr class="ct-fees-total">
+              <td></td>
+              <td>Carve-out phase total</td>
+              <td class="ct-fees-price">€10,000</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>2.2 <strong>Add-on — New Website.</strong> The rebuild of the Client’s website (custom HTML/CSS on an Astro architecture with Decap CMS, SEO optimisation, events section with booking forms, as detailed in the Quote) is offered as a separate add-on for a fixed fee of <strong>€4,000</strong>. The add-on is not included in the total under art. 2.1 and shall become binding only upon written activation by the Client (email being sufficient).</p>
+        <p>2.3 All amounts are net of VAT and any statutory charges, which shall be added as applicable.</p>
+        <p>2.4 The fee for the Microsoft → Google Workspace workstream is based on the “fast track” path (temporary admin access granted by Aspria IT). Should the manual account-by-account path be required, the Parties shall agree in writing on a revised fee before the workstream proceeds.</p>
+      </section>
+
+      <!-- ── 3 INVOICING ── -->
+      <section class="ct-section">
+        <h2>3. Invoicing and Payment</h2>
+        <p>3.1 The fee under art. 2.1 shall be invoiced as follows: <strong>40%</strong> upon signature of this Agreement (kick-off); <strong>40%</strong> upon completion of the Microsoft → Google Workspace migration cutover; <strong>20%</strong> upon completion of the Carve-Out phase.</p>
+        <p>3.2 If activated, the add-on under art. 2.2 shall be invoiced 50% upon activation and 50% upon go-live of the new website.</p>
+        <p>3.3 Invoices are payable within 30 days from the invoice date by bank transfer to the account indicated by the Consultant.</p>
+      </section>
+
+      <!-- ── 4 TERM ── -->
+      <section class="ct-section">
+        <h2>4. Term and Timeline</h2>
+        <p>4.1 This Agreement enters into force on the date of the last signature and shall remain effective until completion of the services.</p>
+        <p>4.2 The Parties acknowledge July 31st as the reference cut-off date for the Carve-Out. The Consultant shall use its best efforts to meet this date; the Parties acknowledge that the timeline depends on third parties outside the Consultant’s control (in particular Aspria Holdings IT, Perfect Gym and other vendors), and that delays attributable to such third parties shall not constitute a breach by the Consultant.</p>
+      </section>
+
+      <!-- ── 5 CLIENT OBLIGATIONS ── -->
+      <section class="ct-section">
+        <h2>5. Client Obligations</h2>
+        <p>5.1 The Client shall: (i) provide timely access to systems, accounts, credentials and information reasonably required for the services; (ii) designate a contact person empowered to approve deliverables and decisions; (iii) facilitate the cooperation of Aspria Holdings IT and other third parties; (iv) review and approve the user/data inventory and mapping documents within 5 working days of submission.</p>
+      </section>
+
+      <!-- ── 6 EXCLUSIONS ── -->
+      <section class="ct-section">
+        <h2>6. Exclusions</h2>
+        <p>6.1 The following are excluded from the fees under art. 2: (i) physical devices (PCs and Wi-Fi), assigned to an external on-site IT partner; (ii) third-party licenses and fees (including Google Workspace, migration tools, N8N hosting, Perfect Gym); (iii) any activity beyond the scope described in the Quote, which shall be assessed and quoted separately and performed only upon written approval by the Client.</p>
+      </section>
+
+      <!-- ── 7 CONFIDENTIALITY ── -->
+      <section class="ct-section">
+        <h2>7. Confidentiality</h2>
+        <p>7.1 Each Party shall keep confidential all non-public information received from the other Party in connection with this Agreement, use it solely for the performance of this Agreement, and not disclose it to third parties without prior written consent, except as required by law. This obligation survives for 3 years after termination.</p>
+      </section>
+
+      <!-- ── 8 DATA PROTECTION ── -->
+      <section class="ct-section">
+        <h2>8. Data Protection</h2>
+        <p>8.1 Each Party shall comply with applicable data protection laws, including Regulation (EU) 2016/679 (GDPR). To the extent the Consultant processes personal data on behalf of the Client in the course of the migration activities, the Parties shall execute a data processing agreement pursuant to art. 28 GDPR.</p>
+      </section>
+
+      <!-- ── 9 LIABILITY ── -->
+      <section class="ct-section">
+        <h2>9. Liability</h2>
+        <p>9.1 Except in cases of wilful misconduct or gross negligence, the Consultant’s aggregate liability under this Agreement shall not exceed the total fees actually paid by the Client under art. 2.</p>
+        <p>9.2 The Consultant shall perform the services with professional diligence (obbligazione di mezzi); the Consultant does not guarantee specific business results.</p>
+      </section>
+
+      <!-- ── 10 TERMINATION ── -->
+      <section class="ct-section">
+        <h2>10. Withdrawal and Termination</h2>
+        <p>10.1 Either Party may terminate this Agreement for material breach not cured within 15 days of written notice.</p>
+        <p>10.2 The Client may withdraw at any time upon written notice, paying the Consultant the fees for the activities performed up to the date of withdrawal, plus the portion of the current invoicing milestone accrued pro-rata.</p>
+      </section>
+
+      <!-- ── 11 GENERAL ── -->
+      <section class="ct-section">
+        <h2>11. Final Provisions</h2>
+        <p>11.1 This Agreement, together with the Quote (Annex A), constitutes the entire agreement between the Parties on its subject matter and supersedes any prior understanding. Amendments are valid only if made in writing.</p>
+        <p>11.2 The Parties agree that this Agreement may be executed by exchange of signed copies (including scanned copies exchanged by email or certified email/PEC), each of which shall be deemed an original.</p>
+        <p>11.3 This Agreement is governed by Italian law. Any dispute shall be subject to the exclusive jurisdiction of the Court of Milan.</p>
+      </section>
+
+      <!-- ── SIGNATURES ── -->
+      <section class="ct-section ct-signatures">
+        <div class="ct-sign-row">
+          <div class="ct-sign-block">
+            <p class="ct-sign-role">The Consultant</p>
+            <p class="ct-fill">Place and date: <span></span></p>
+            <div class="ct-sign-line"></div>
+            <p class="ct-sign-name">Maurizio Taruggi</p>
+          </div>
+          <div class="ct-sign-block">
+            <p class="ct-sign-role">The Client — Tennis Club Ambrosiano</p>
+            <p class="ct-fill">Place and date: <span></span></p>
+            <div class="ct-sign-line"></div>
+            <p class="ct-fill ct-sign-name">Name and role: <span></span></p>
+          </div>
+        </div>
+
+        <p class="ct-2702">Pursuant to articles 1341 and 1342 of the Italian Civil Code, the Client expressly approves the following clauses: art. 4.2 (third-party dependencies), art. 9 (liability), art. 10 (withdrawal and termination), art. 11.3 (governing law and jurisdiction).</p>
+
+        <div class="ct-sign-row">
+          <div class="ct-sign-block">
+            <p class="ct-sign-role">The Client — for express approval</p>
+            <div class="ct-sign-line"></div>
+            <p class="ct-fill ct-sign-name">Name and role: <span></span></p>
+          </div>
+        </div>
+      </section>
+
+      <footer class="ct-foot">
+        <p>Annex A — Commercial offer “Quote — Carve-Out Phase” dated June 12, 2026 (to be printed, initialled on each page and attached).</p>
+        <p class="ct-conf">Confidential · Tennis Club Ambrosiano · 2026</p>
+      </footer>
+
+    </article>
+
+  </main>
+
+</BaseLayout>
+
+<style>
+  :global(body) { background: #f0eeeb; }
+
+  /* ── GATE (same as quote page) ── */
+  .gate {
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    padding: 24px;
+  }
+  .gate[hidden] { display: none; }
+  .gate-box {
+    width: min(420px, 100%);
+    border: 1px solid var(--grey-light);
+    border-top: 3px solid var(--red);
+    border-radius: 6px;
+    padding: 36px 32px;
+    background: #fff;
+  }
+  .gate-title {
+    font-family: var(--fd);
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .gate-title em { color: var(--red); font-style: normal; }
+  .gate-text { font-size: 14px; font-weight: 300; color: var(--text-light); margin-bottom: 18px; }
+  .gate-row { display: flex; gap: 8px; }
+  .gate-input {
+    flex: 1;
+    font-family: var(--fb);
+    font-size: 14px;
+    padding: 10px 12px;
+    border: 1px solid var(--grey-light);
+    border-radius: 4px;
+    outline: none;
+  }
+  .gate-input:focus { border-color: var(--red); }
+  .gate-btn {
+    font-family: var(--fd);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--red);
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .gate-btn:hover { background: var(--red-dark); }
+  .gate-error { margin-top: 12px; font-size: 13px; color: var(--red); }
+
+  /* ── PAGE & TOOLBAR ── */
+  .ct-page {
+    padding: calc(var(--header-h) + 3vh) clamp(12px, 4vw, 48px) 6vh;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .ct-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .ct-print-btn {
+    font-family: var(--fd);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--red);
+    border: none;
+    border-radius: 4px;
+    padding: 9px 18px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .ct-print-btn:hover { background: var(--red-dark); }
+
+  /* ── DOCUMENT ── */
+  .ct-doc {
+    background: #fff;
+    border: 1px solid var(--grey-light);
+    border-radius: 4px;
+    padding: clamp(28px, 6vw, 64px);
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1.65;
+  }
+
+  .ct-head { text-align: center; margin-bottom: 28px; }
+  .ct-head h1 {
+    font-family: var(--fd);
+    font-size: clamp(1.6rem, 3.2vw, 2.2rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.05;
+  }
+  .ct-subtitle {
+    font-size: 13px;
+    font-style: italic;
+    color: var(--text-light);
+    margin-top: 6px;
+  }
+
+  .ct-section { margin-bottom: 20px; }
+  .ct-section h2 {
+    font-family: var(--fd);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 8px;
+  }
+  .ct-section p { margin-bottom: 7px; }
+  .ct-section ol { padding-left: 22px; }
+  .ct-section ol li { margin-bottom: 5px; }
+
+  .ct-party { margin-bottom: 12px; }
+  .ct-fill span {
+    display: inline-block;
+    min-width: 260px;
+    border-bottom: 1px dotted #999;
+    height: 1em;
+    vertical-align: bottom;
+  }
+
+  .ct-fees { width: 100%; border-collapse: collapse; margin: 10px 0; }
+  .ct-fees td {
+    border: 1px solid var(--grey-light);
+    padding: 7px 10px;
+    font-size: 13px;
+  }
+  .ct-fees td:first-child { width: 36px; color: var(--grey-mid); font-family: var(--fd); font-weight: 700; }
+  .ct-fees-price { text-align: right; white-space: nowrap; font-weight: 500; }
+  .ct-fees-total td { font-weight: 600; background: #faf9f7; }
+
+  /* ── SIGNATURES ── */
+  .ct-signatures { margin-top: 34px; }
+  .ct-sign-row {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+  .ct-sign-block { flex: 1 1 280px; }
+  .ct-sign-role {
+    font-family: var(--fd);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .ct-sign-line {
+    border-bottom: 1px solid var(--text);
+    height: 52px;
+    margin-bottom: 6px;
+  }
+  .ct-sign-name { font-size: 13px; }
+  .ct-2702 {
+    font-size: 12px;
+    color: var(--text-light);
+    margin: 18px 0;
+  }
+
+  .ct-foot {
+    margin-top: 28px;
+    border-top: 1px solid var(--grey-light);
+    padding-top: 12px;
+    font-size: 12px;
+    color: var(--text-light);
+  }
+  .ct-conf {
+    font-family: var(--fd);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    margin-top: 8px;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    .ct-doc { font-size: 15px; }
+    .ct-sign-row { gap: 24px; }
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    :global(body) { background: #fff !important; }
+    :global(.g-header), :global(.g-menu), .ct-toolbar, .gate { display: none !important; }
+    .ct-page { padding: 0; max-width: none; }
+    .ct-page[hidden] { display: none; }
+    .ct-doc {
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      font-size: 11pt;
+      line-height: 1.5;
+      color: #000;
+    }
+    .ct-section h2, .ct-head h1 { color: #000; }
+    .ct-section { break-inside: avoid-page; }
+    .ct-signatures { break-inside: avoid-page; }
+    .ct-fees td { border-color: #999; }
+    .ct-fill span { border-bottom-color: #555; }
+    a { text-decoration: none; color: inherit; }
+    @page { size: A4; margin: 18mm 16mm; }
+  }
+</style>
+
+<script>
+  const HASH = '480fa9a2765c43cc4430a13124ecef83ae0f63ff6cc842f1aaf9d868c530f0c6';
+  const KEY  = 'tca-quote-auth';
+
+  const gate    = document.getElementById('gate')!;
+  const content = document.getElementById('ct-content')!;
+  const form    = document.getElementById('gate-form')!;
+  const input   = document.getElementById('gate-pass') as HTMLInputElement;
+  const error   = document.getElementById('gate-error')!;
+
+  async function sha256(text: string): Promise<string> {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function unlock() {
+    gate.setAttribute('hidden', '');
+    content.removeAttribute('hidden');
+  }
+
+  if (sessionStorage.getItem(KEY) === HASH) {
+    unlock();
+  } else {
+    input.focus();
+  }
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const h = await sha256(input.value);
+    if (h === HASH) {
+      sessionStorage.setItem(KEY, h);
+      error.setAttribute('hidden', '');
+      unlock();
+    } else {
+      error.removeAttribute('hidden');
+      input.select();
+    }
+  });
+
+  document.getElementById('ct-print')!.addEventListener('click', () => window.print());
+</script>
