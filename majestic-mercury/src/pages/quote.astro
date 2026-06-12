@@ -91,7 +91,6 @@ const addon = {
     { label: 'Structured lead-generation architecture, natively integrated with the new forms and N8N → Perfect Gym automations' },
     { label: 'Content migration and SEO continuity from the current site' },
   ],
-  rationale: 'Quoted separately and not included in the carve-out total. Following feedback from Laura and Alice, the current platform (Prismic) is not suited to day-to-day operational management and does not produce structured leads — hence the recommendation to rebuild the website on a new platform.',
 };
 
 const totalPrice = workstreams.reduce((s, w) => s + w.price, 0);
@@ -133,8 +132,8 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
       This offer covers the consulting activities required to separate Tennis Club Ambrosiano’s
       digital infrastructure from the Aspria Holdings perimeter, as per the shared Carve-Out Roadmap.
       Prices are <strong>fixed per workstream</strong>, for a total of <strong>{eur(totalPrice)}</strong>
-      for the carve-out phase. The rebuild of the website is offered as a separate add-on and is not
-      included in this total.
+      for the carve-out phase. The rebuild of the website is offered separately by Ready 2 Digital Srl
+      — see the dedicated offer at the end of this page.
     </p>
 
     <!-- ── WORKSTREAMS ── -->
@@ -175,37 +174,13 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
       <div class="qt-total-price">{eur(totalPrice)}</div>
     </div>
 
-    <!-- ── ADD-ON ── -->
-    <section class="qt-addon">
-      <header class="qt-addon-head">
-        <div class="qt-addon-name">
-          <span class="qt-addon-badge">Add-On · Not included in the total</span>
-          <h2>{addon.name}</h2>
-          <span class="qt-stream-sub">{addon.subtitle}</span>
-        </div>
-        <div class="qt-stream-price">
-          <span class="qt-price">{eur(addon.price)}</span>
-          <span class="qt-vat">+ 22% VAT</span>
-        </div>
-      </header>
-      <ul class="qt-items">
-        {addon.items.map(it => (
-          <li>
-            {it.label}
-            {it.note && <span class="qt-note">{it.note}</span>}
-          </li>
-        ))}
-      </ul>
-      <p class="qt-caveat">{addon.rationale}</p>
-    </section>
-
     <!-- ── EXCLUSIONS & TERMS ── -->
     <div class="qt-terms">
       <div class="qt-terms-block">
         <h3>Exclusions</h3>
         <ul>
           <li>Physical devices (PCs &amp; Wi-Fi): assigned to an external on-site IT partner, out of scope</li>
-          <li>Website rebuild: offered only as the dedicated add-on above, not part of the carve-out total</li>
+          <li>Website rebuild: offered separately by Ready 2 Digital Srl — see the dedicated offer below</li>
           <li>Third-party licenses and fees (Google Workspace, migration tools, N8N hosting, Perfect Gym, etc.)</li>
           <li>Activities beyond the described scope: assessed and quoted separately</li>
         </ul>
@@ -214,7 +189,7 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
         <h3>Terms</h3>
         <ul>
           <li>Proposed invoicing: 40% at kick-off · 40% at progress milestone · 20% at closure</li>
-          <li>Carve-out amounts are exempt from VAT, with a 4% INPS social-security contribution (rivalsa INPS); the New Website add-on is subject to 22% VAT</li>
+          <li>All amounts are exempt from VAT, with a 4% INPS social-security contribution (rivalsa INPS)</li>
           <li>Offer validity: 30 days from the issue date</li>
         </ul>
       </div>
@@ -230,38 +205,93 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
         <li>Send the signed copy to <strong>maurizio@ready2digital.it</strong></li>
       </ol>
       <a class="qt-contract-btn" href={`${base}contract/?print=1`}>Print contract (PDF)</a>
-
-      <label class="qt-addon-flag">
-        <input type="checkbox" id="addon-flag" />
-        <span>The Client also wishes to activate the <strong>New Website</strong> add-on (€4,000 + 22% VAT)</span>
-      </label>
     </section>
 
-    <!-- ── WEBSITE ADD-ON MODAL ── -->
-    <div class="qt-modal" id="addon-modal" hidden>
-      <div class="qt-modal-box" role="dialog" aria-modal="true" aria-labelledby="addon-modal-title">
-        <button class="qt-modal-close" id="addon-modal-close" aria-label="Close">&times;</button>
-        <span class="eyebrow eyebrow--grey">Add-On · Separate agreement</span>
-        <h3 id="addon-modal-title">New Website</h3>
-        <p class="qt-modal-text">
-          The new website is developed and invoiced separately by <strong>Ready 2 Digital Srl</strong>
-          for a fixed fee of <strong>€4,000 + 22% VAT</strong>, under a dedicated agreement.
-        </p>
-        <div class="qt-modal-data">
-          <p><span>Company</span>Ready 2 Digital Srl</p>
-          <p><span>VAT no.</span>16573891005</p>
-          <p><span>Registered office</span>Via Ugo Ojetti 134, Roma</p>
-          <p><span>Website</span>www.ready2digital.it</p>
-        </div>
-        <ol class="qt-accept-steps">
-          <li>Print the website agreement using the button below (or save it as a PDF)</li>
-          <li>Fill in your details in the Client section</li>
-          <li>Sign it — both the main signature and the express-approval signature</li>
-          <li>Send the signed copy to <strong>maurizio@ready2digital.it</strong></li>
-        </ol>
-        <a class="qt-contract-btn" href={`${base}contract-website/?print=1`}>Print website contract (PDF)</a>
+    <!-- ── DIVIDER ── -->
+    <hr class="qt-divider" />
+
+    <!-- ── NEW WEBSITE — SEPARATE OFFER ── -->
+    <div class="qt-header">
+      <span class="eyebrow eyebrow--grey">Separate Offer · Ready 2 Digital Srl</span>
+      <h2 class="qt-title">Quote &mdash; <em>New Website</em></h2>
+      <div class="qt-meta">
+        <div class="qt-meta-item"><span>Client</span>Tennis Club Ambrosiano</div>
+        <div class="qt-meta-item"><span>Supplier</span>Ready 2 Digital Srl</div>
+        <div class="qt-meta-item"><span>VAT no.</span>16573891005</div>
+        <div class="qt-meta-item"><span>Registered office</span>Via Ugo Ojetti 134, Roma</div>
+        <div class="qt-meta-item"><span>Website</span>www.ready2digital.it</div>
       </div>
     </div>
+
+    <p class="qt-intro">
+      Following feedback from Laura and Alice, the current platform (Prismic) is not suited to
+      day-to-day operational management and does not produce structured leads. The new website is
+      therefore offered as a separate engagement, developed and invoiced by
+      <strong>Ready 2 Digital Srl</strong>, and is not included in the carve-out total above.
+    </p>
+
+    <div class="qt-streams">
+      <section class="qt-stream">
+        <header class="qt-stream-head">
+          <div class="qt-stream-name">
+            <em>01</em>
+            <div>
+              <h2>{addon.name}</h2>
+              <span class="qt-stream-sub">{addon.subtitle}</span>
+            </div>
+          </div>
+          <div class="qt-stream-price">
+            <span class="qt-price">{eur(addon.price)}</span>
+            <span class="qt-vat">+ 22% VAT</span>
+          </div>
+        </header>
+        <ul class="qt-items">
+          {addon.items.map(it => (
+            <li>
+              {it.label}
+              {it.note && <span class="qt-note">{it.note}</span>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
+
+    <div class="qt-total">
+      <div class="qt-total-label">
+        New website total
+        <span>Fixed price · developed and invoiced by Ready 2 Digital Srl</span>
+      </div>
+      <div class="qt-total-price">{eur(addon.price)} <span class="qt-total-vat">+ 22% VAT</span></div>
+    </div>
+
+    <div class="qt-terms">
+      <div class="qt-terms-block">
+        <h3>Exclusions</h3>
+        <ul>
+          <li>Third-party licenses and fees (hosting, domain, external services)</li>
+          <li>Activities beyond the described scope: assessed and quoted separately</li>
+        </ul>
+      </div>
+      <div class="qt-terms-block">
+        <h3>Terms</h3>
+        <ul>
+          <li>Proposed invoicing: 50% at signature · 50% at go-live</li>
+          <li>The fee is subject to VAT at the statutory rate of 22%</li>
+          <li>Offer validity: 30 days from the issue date</li>
+        </ul>
+      </div>
+    </div>
+
+    <section class="qt-accept">
+      <h3>How to accept this offer</h3>
+      <ol class="qt-accept-steps">
+        <li>Print the website contract using the button below (or save it as a PDF)</li>
+        <li>Fill in your details in the Client section (registered office, VAT no., signatory name and role)</li>
+        <li>Sign it — both the main signature and the express-approval signature</li>
+        <li>Send the signed copy to <strong>maurizio@ready2digital.it</strong></li>
+      </ol>
+      <a class="qt-contract-btn" href={`${base}contract-website/?print=1`}>Print website contract (PDF)</a>
+    </section>
 
     <p class="qt-footer">Confidential · Tennis Club Ambrosiano · 2026</p>
 
@@ -519,35 +549,13 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
     white-space: nowrap;
   }
 
-  /* ── ADD-ON ── */
-  .qt-addon {
-    margin-top: 24px;
-    border: 2px dashed rgba(139,26,26,0.35);
-    border-radius: 6px;
-    overflow: hidden;
-  }
-  .qt-addon-head {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 18px 22px 14px;
-    border-bottom: 1px solid var(--grey-light);
-  }
-  .qt-addon-badge {
-    display: inline-block;
-    font-family: var(--fd);
-    font-size: clamp(9px, 0.65vw, 11px);
+  .qt-total-vat {
+    font-size: 0.55em;
     font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--red);
-    background: rgba(139,26,26,0.07);
-    border: 1px solid rgba(139,26,26,0.25);
-    border-radius: 3px;
-    padding: 3px 9px;
-    margin-bottom: 8px;
+    letter-spacing: 0.04em;
+    color: rgba(255,255,255,0.75);
   }
+
   .qt-vat {
     display: block;
     font-family: var(--fd);
@@ -558,13 +566,13 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
     color: var(--grey-mid);
     text-align: right;
   }
-  .qt-addon-name h2 {
-    font-family: var(--fd);
-    font-size: clamp(17px, 1.4vw, 21px);
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--text);
-    line-height: 1.1;
+
+  /* ── DIVIDER ── */
+  .qt-divider {
+    margin: 7vh 0 5vh;
+    border: none;
+    border-top: 3px solid var(--red);
+    opacity: 0.85;
   }
 
   /* ── TERMS ── */
@@ -652,101 +660,6 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
   }
   .qt-contract-btn:hover { background: var(--red-dark); }
 
-  /* ── ADD-ON FLAG & MODAL ── */
-  .qt-addon-flag {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin-top: 18px;
-    padding-top: 16px;
-    border-top: 1px dashed var(--grey-light);
-    cursor: pointer;
-    font-size: clamp(13px, 0.92vw, 14px);
-    font-weight: 300;
-    color: var(--text-light);
-    line-height: 1.5;
-  }
-  .qt-addon-flag input {
-    accent-color: var(--red);
-    width: 17px;
-    height: 17px;
-    margin-top: 1px;
-    flex-shrink: 0;
-    cursor: pointer;
-  }
-
-  .qt-modal {
-    position: fixed;
-    inset: 0;
-    z-index: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(15, 16, 19, 0.55);
-    padding: 20px;
-  }
-  .qt-modal[hidden] { display: none; }
-  .qt-modal-box {
-    position: relative;
-    width: min(560px, 100%);
-    max-height: 90vh;
-    overflow-y: auto;
-    background: #fff;
-    border-top: 3px solid var(--red);
-    border-radius: 6px;
-    padding: 30px 28px;
-  }
-  .qt-modal-close {
-    position: absolute;
-    top: 10px;
-    right: 14px;
-    background: none;
-    border: none;
-    font-size: 26px;
-    line-height: 1;
-    color: var(--grey-mid);
-    cursor: pointer;
-  }
-  .qt-modal-close:hover { color: var(--text); }
-  .qt-modal-box h3 {
-    font-family: var(--fd);
-    font-size: clamp(1.5rem, 2.4vw, 2rem);
-    font-weight: 800;
-    text-transform: uppercase;
-    color: var(--text);
-    margin-bottom: 10px;
-  }
-  .qt-modal-text {
-    font-size: clamp(13px, 0.92vw, 14px);
-    font-weight: 300;
-    color: var(--text-light);
-    line-height: 1.6;
-    margin-bottom: 16px;
-  }
-  .qt-modal-data {
-    border: 1px solid var(--grey-light);
-    border-radius: 4px;
-    padding: 12px 16px;
-    margin-bottom: 16px;
-  }
-  .qt-modal-data p {
-    font-size: clamp(13px, 0.9vw, 14px);
-    font-weight: 400;
-    color: var(--text);
-    margin: 0 0 6px;
-  }
-  .qt-modal-data p:last-child { margin-bottom: 0; }
-  .qt-modal-data p span {
-    display: inline-block;
-    min-width: 130px;
-    font-family: var(--fd);
-    font-size: clamp(10px, 0.7vw, 11px);
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--grey-mid);
-  }
-
   .qt-footer {
     margin-top: 5vh;
     border-top: 1px solid var(--grey-light);
@@ -823,20 +736,5 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
       error.removeAttribute('hidden');
       input.select();
     }
-  });
-
-  /* ── website add-on flag & modal ── */
-  const flag       = document.getElementById('addon-flag') as HTMLInputElement;
-  const modal      = document.getElementById('addon-modal')!;
-  const modalClose = document.getElementById('addon-modal-close')!;
-
-  const openModal  = () => modal.removeAttribute('hidden');
-  const closeModal = () => modal.setAttribute('hidden', '');
-
-  flag.addEventListener('change', () => { if (flag.checked) openModal(); });
-  modalClose.addEventListener('click', closeModal);
-  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && !modal.hasAttribute('hidden')) closeModal();
   });
 </script>
