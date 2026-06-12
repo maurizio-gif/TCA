@@ -139,7 +139,8 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
         <div class="ct-sign-row">
           <div class="ct-sign-block">
             <p class="ct-sign-role">The Supplier — Ready 2 Digital Srl</p>
-            <p class="ct-fill">Place and date: <span></span></p>
+            <p class="ct-fill screen-only">Place and date: <span></span></p>
+            <p class="print-only">Date: <span class="ct-gen-date"></span></p>
             <div class="ct-sign-line ct-sign-line--signed">
               <img src={`${base}firma-mt.png`} alt="Signature" class="ct-sign-img" />
             </div>
@@ -348,6 +349,8 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
     margin-bottom: -10px;
     display: none; /* signature appears only in the printed PDF */
   }
+
+  .print-only { display: none; }
   .ct-sign-name { font-size: 13px; }
   .ct-2702 {
     font-size: 12px;
@@ -380,7 +383,8 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
   /* ── PRINT ── */
   @media print {
     :global(body) { background: #fff !important; }
-    :global(.g-header), :global(.g-menu), .ct-toolbar, .gate { display: none !important; }
+    :global(.g-header), :global(.g-menu), .ct-toolbar, .gate, .screen-only { display: none !important; }
+    .print-only { display: block; }
     .ct-sign-img { display: block; }
     .ct-page { padding: 0; max-width: none; }
     .ct-page[hidden] { display: none; }
@@ -444,4 +448,14 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
   });
 
   document.getElementById('ct-print')!.addEventListener('click', () => window.print());
+
+  /* fill the generation date next to the signature, e.g. "June 18th 2026" */
+  const now = new Date();
+  const day = now.getDate();
+  const suffix = day % 10 === 1 && day !== 11 ? 'st'
+               : day % 10 === 2 && day !== 12 ? 'nd'
+               : day % 10 === 3 && day !== 13 ? 'rd' : 'th';
+  const month = now.toLocaleString('en-US', { month: 'long' });
+  const genDate = `${month} ${day}${suffix} ${now.getFullYear()}`;
+  document.querySelectorAll('.ct-gen-date').forEach(el => { el.textContent = genDate; });
 </script>

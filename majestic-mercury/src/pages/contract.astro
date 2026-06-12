@@ -177,7 +177,8 @@ const fees = [
         <div class="ct-sign-row">
           <div class="ct-sign-block">
             <p class="ct-sign-role">The Consultant</p>
-            <p class="ct-fill">Place and date: <span></span></p>
+            <p class="ct-fill screen-only">Place and date: <span></span></p>
+            <p class="print-only">Date: <span class="ct-gen-date"></span></p>
             <div class="ct-sign-line ct-sign-line--signed">
               <img src={`${base}firma-mt.png`} alt="Signature of Maurizio Taruggi" class="ct-sign-img" />
             </div>
@@ -497,4 +498,14 @@ const fees = [
   });
 
   document.getElementById('ct-print')!.addEventListener('click', () => window.print());
+
+  /* fill the generation date next to the signature, e.g. "June 18th 2026" */
+  const now = new Date();
+  const day = now.getDate();
+  const suffix = day % 10 === 1 && day !== 11 ? 'st'
+               : day % 10 === 2 && day !== 12 ? 'nd'
+               : day % 10 === 3 && day !== 13 ? 'rd' : 'th';
+  const month = now.toLocaleString('en-US', { month: 'long' });
+  const genDate = `${month} ${day}${suffix} ${now.getFullYear()}`;
+  document.querySelectorAll('.ct-gen-date').forEach(el => { el.textContent = genDate; });
 </script>
