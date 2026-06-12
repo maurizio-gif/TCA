@@ -77,8 +77,9 @@ import CarveOutTable from '../components/CarveOutTable.astro';
 
   @media (max-width: 768px) {
     .co-page { padding: calc(var(--header-h) + 20px) 16px 40px; }
-    .co-title { font-size: clamp(1.7rem, 7.5vw, 2.4rem); }
-    .deadline-badge { font-size: 11px; padding: 6px 12px; }
-    .co-footer { font-size: 10px; }
+    .co-header :global(.eyebrow) { font-size: 13px; }
+    .co-title { font-size: clamp(2rem, 9vw, 2.8rem); }
+    .deadline-badge { font-size: 13px; padding: 7px 14px; }
+    .co-footer { font-size: 12px; }
   }
 </style>
