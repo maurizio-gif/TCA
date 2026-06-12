@@ -4,8 +4,8 @@
     {
       "name": "TCA Proposal",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "-l", "3000", "/Users/mauriziotaruggi/Documents/GitHub/TCA"],
-      "port": 3000
+      "runtimeArgs": ["serve", "-l", "4321", "/Users/mauriziotaruggi/Documents/GitHub/TCA/majestic-mercury"],
+      "port": 4321
     }
   ]
 }

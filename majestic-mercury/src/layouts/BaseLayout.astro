@@ -2,8 +2,9 @@
 interface Props {
   title: string;
   description?: string;
+  initialHeaderDark?: boolean;
 }
-const { title, description = 'Maurizio Taruggi for Tennis Club Ambrosiano.' } = Astro.props;
+const { title, description = 'Maurizio Taruggi for Tennis Club Ambrosiano.', initialHeaderDark = false } = Astro.props;
 const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith("/") ? b : b + "/"; })();
 ---
 <!DOCTYPE html>
@@ -32,7 +33,7 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith("/")
 <body>
 
   <!-- ── GLOBAL HEADER ── -->
-  <header class="g-header" id="g-header">
+  <header class={`g-header${initialHeaderDark ? ' g-header--dark' : ''}`} id="g-header">
     <a href={base} class="g-header__logo">
       <img src={`${base}logo tca.png`} alt="Tennis Club Ambrosiano" />
     </a>
@@ -114,6 +115,10 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith("/")
     height: calc(var(--header-h) - 14px);
     width: auto;
     display: block;
+    transition: filter 0.35s;
+  }
+  .g-header--dark .g-header__logo img {
+    filter: brightness(0) invert(1);
   }
 
   /* hamburger */

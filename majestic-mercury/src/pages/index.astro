@@ -569,21 +569,20 @@ const outcomes = [
   const dotsContainer = document.getElementById('dots')!;
   const header        = document.getElementById('g-header');
 
-  const darkSlides = new Set(['s1','s3','s7']);
+  // section dark  → header must be LIGHT (no dark class)  = contrast
+  // section light → header must be DARK  (add dark class) = contrast
+  const sectionIsLight = (s: HTMLElement) => s.dataset.header === 'light';
 
   // Build dots
   slides.forEach((s, i) => {
     const d = document.createElement('div');
-    const onLight = !darkSlides.has(s.id);
-    d.className = 'dot' + (onLight ? ' dot-on-light' : '') + (i === 0 ? ' active' : '');
+    d.className = 'dot' + (sectionIsLight(s) ? ' dot-on-light' : '') + (i === 0 ? ' active' : '');
     d.addEventListener('click', () => s.scrollIntoView({ behavior: 'smooth', block: 'start' }));
     dotsContainer.appendChild(d);
   });
 
-  // Set initial header state
-  if (darkSlides.has(slides[0]?.id ?? '')) {
-    header?.classList.add('g-header--dark');
-  }
+  // Set initial header state (first slide drives it; BaseLayout already set SSR state)
+  if (slides[0]) header?.classList.toggle('g-header--dark', sectionIsLight(slides[0]));
 
   const allDots = () => Array.from(document.querySelectorAll('.dot'));
 
@@ -592,8 +591,7 @@ const outcomes = [
       if (e.isIntersecting && e.intersectionRatio >= 0.5) {
         const idx = slides.indexOf(e.target as HTMLElement);
         allDots().forEach((d, i) => d.classList.toggle('active', i === idx));
-        const isDark = darkSlides.has((e.target as HTMLElement).id);
-        header?.classList.toggle('g-header--dark', isDark);
+        header?.classList.toggle('g-header--dark', sectionIsLight(e.target as HTMLElement));
       }
     });
   }, { threshold: 0.5 });
