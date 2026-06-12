@@ -9,21 +9,16 @@ interface Workstream {
   id: string;
   name: string;
   subtitle?: string;
-  hours: number;
   price: number;
   items: LineItem[];
   caveat?: string;
 }
-
-const RATE_MIN = 80;
-const RATE_MAX = 100;
 
 const workstreams: Workstream[] = [
   {
     id: '01',
     name: 'Perfect Gym',
     subtitle: 'Contract separation & service continuity',
-    hours: 18,
     price: 1600,
     items: [
       { label: 'Coordination with Peter Croft and administrative separation of contracts from Aspria Holdings' },
@@ -36,7 +31,6 @@ const workstreams: Workstream[] = [
     id: '02',
     name: 'Website',
     subtitle: 'Carve-out & operational takeover',
-    hours: 9,
     price: 800,
     items: [
       { label: 'Coordination with Laura Giardini and Thomas Sander' },
@@ -49,7 +43,6 @@ const workstreams: Workstream[] = [
     id: '03',
     name: 'HubSpot & JotForm',
     subtitle: 'Full form rebuild & new automations',
-    hours: 36,
     price: 3200,
     items: [
       { label: 'Analysis of the existing forms and automations' },
@@ -63,7 +56,6 @@ const workstreams: Workstream[] = [
     id: '04',
     name: 'Microsoft → Google Workspace',
     subtitle: 'Full migration · ~10 accounts',
-    hours: 38,
     price: 3400,
     items: [
       { label: 'Initial assessment and scope definition (accounts, aliases, groups, volumes)' },
@@ -79,7 +71,6 @@ const workstreams: Workstream[] = [
     id: '05',
     name: 'Project Management',
     subtitle: 'Overall steering & cross-stream coordination',
-    hours: 11,
     price: 1000,
     items: [
       { label: 'Overall steering of the carve-out phase and plan governance towards the July 31st cut-off' },
@@ -101,7 +92,6 @@ const addon = {
   rationale: 'Quoted separately and not included in the carve-out total. Following feedback from Laura and Alice, the current platform (Prismic) is not suited to day-to-day operational management and does not produce structured leads — hence the recommendation to rebuild the website on a new platform.',
 };
 
-const totalHours = workstreams.reduce((s, w) => s + w.hours, 0);
 const totalPrice = workstreams.reduce((s, w) => s + w.price, 0);
 const eur = (n: number) => '€' + n.toLocaleString('en-US');
 ---
@@ -139,9 +129,9 @@ const eur = (n: number) => '€' + n.toLocaleString('en-US');
     <p class="qt-intro">
       This offer covers the consulting activities required to separate Tennis Club Ambrosiano’s
       digital infrastructure from the Aspria Holdings perimeter, as per the shared Carve-Out Roadmap.
-      Prices are <strong>fixed per workstream</strong> (reference hourly rate €{RATE_MIN}&ndash;{RATE_MAX}/hour),
-      for a total of <strong>{eur(totalPrice)}</strong> for the carve-out phase. The rebuild of the
-      website is offered as a separate add-on and is not included in this total.
+      Prices are <strong>fixed per workstream</strong>, for a total of <strong>{eur(totalPrice)}</strong>
+      for the carve-out phase. The rebuild of the website is offered as a separate add-on and is not
+      included in this total.
     </p>
 
     <!-- ── WORKSTREAMS ── -->
@@ -157,7 +147,6 @@ const eur = (n: number) => '€' + n.toLocaleString('en-US');
               </div>
             </div>
             <div class="qt-stream-price">
-              <span class="qt-hours">{w.hours} hours</span>
               <span class="qt-price">{eur(w.price)}</span>
             </div>
           </header>
@@ -178,7 +167,7 @@ const eur = (n: number) => '€' + n.toLocaleString('en-US');
     <div class="qt-total">
       <div class="qt-total-label">
         Carve-out phase total
-        <span>{totalHours} estimated hours · fixed price per workstream · website rebuild excluded</span>
+        <span>Fixed price per workstream · website rebuild excluded</span>
       </div>
       <div class="qt-total-price">{eur(totalPrice)}</div>
     </div>
@@ -215,7 +204,6 @@ const eur = (n: number) => '€' + n.toLocaleString('en-US');
       <div class="qt-terms-block">
         <h3>Terms</h3>
         <ul>
-          <li>Reference hourly rate: €{RATE_MIN}&ndash;{RATE_MAX}/hour</li>
           <li>Proposed invoicing: 40% at kick-off · 40% at progress milestone · 20% at closure</li>
           <li>All amounts exclude VAT</li>
           <li>Offer validity: 30 days from the issue date</li>
@@ -397,15 +385,6 @@ const eur = (n: number) => '€' + n.toLocaleString('en-US');
     margin-top: 2px;
   }
   .qt-stream-price { text-align: right; flex-shrink: 0; }
-  .qt-hours {
-    display: block;
-    font-family: var(--fd);
-    font-size: clamp(10px, 0.7vw, 12px);
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--grey-mid);
-  }
   .qt-price {
     font-family: var(--fd);
     font-size: clamp(17px, 1.4vw, 21px);
