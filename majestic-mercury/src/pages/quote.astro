@@ -1,0 +1,563 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface LineItem {
+  label: string;
+  note?: string;
+}
+interface Workstream {
+  id: string;
+  name: string;
+  subtitle?: string;
+  hours: number;
+  items: LineItem[];
+  caveat?: string;
+}
+
+const RATE_MIN = 80;
+const RATE_MAX = 100;
+
+const workstreams: Workstream[] = [
+  {
+    id: '01',
+    name: 'Perfect Gym',
+    subtitle: 'Contract separation & service continuity',
+    hours: 28,
+    items: [
+      { label: 'Coordination with Peter Croft and administrative separation of contracts from Aspria Holdings' },
+      { label: 'Activation of direct invoicing to Tennis Club Ambrosiano with full service continuity' },
+      { label: 'Takeover of the ordinary support previously provided by the Aspria IT department' },
+      { label: 'Negotiation of the monthly fee reduction', note: 'Target −40%: from €1,500/mo to ~€900/mo' },
+    ],
+  },
+  {
+    id: '02',
+    name: 'Website',
+    subtitle: 'Forms carve-out & takeover (Option A)',
+    hours: 24,
+    items: [
+      { label: 'Coordination with Laura Giardini and Thomas Sander' },
+      { label: 'Mapping of the current Prismic forms and replacement with proprietary forms' },
+      { label: 'Operational takeover of the existing website' },
+    ],
+    caveat: 'Option B (full rebuild of the website on a new platform) is excluded from this quote and will be priced separately: indicative estimate 100–130 hours.',
+  },
+  {
+    id: '03',
+    name: 'HubSpot & JotForm',
+    subtitle: 'Full form rebuild & new automations',
+    hours: 56,
+    items: [
+      { label: 'Analysis of the existing forms and automations' },
+      { label: 'Complete rebuild of all forms in custom HTML/CSS with restructured logic (not a 1:1 replacement)' },
+      { label: 'New automation architecture via N8N → Perfect Gym' },
+      { label: 'Renewed deduplication and lead-nurturing logic, deeper user profiling' },
+      { label: 'Training of the Marketing resource on newsletter management' },
+    ],
+  },
+  {
+    id: '04',
+    name: 'Microsoft → Google Workspace',
+    subtitle: 'Full migration · ~10 accounts',
+    hours: 52,
+    items: [
+      { label: 'Initial assessment and scope definition (accounts, aliases, groups, volumes)' },
+      { label: 'Setup of the new independent Google Workspace tenant (domain, security, Drive structure)' },
+      { label: 'User, alias and shared-mailbox mapping; technical coordination with Aspria IT' },
+      { label: 'Pilot migration, then full migration of email, calendars, contacts and OneDrive files' },
+      { label: 'Delta migration, DNS/mail-routing cutover and final per-user validation' },
+      { label: 'Post-migration support, device reconfiguration and Gmail/Drive onboarding' },
+    ],
+    caveat: 'Price based on the “fast track” path (temporary admin access granted by Aspria IT). Should the manual account-by-account path be required, the effort increases by 40–60% and will be re-quoted.',
+  },
+  {
+    id: '05',
+    name: 'Project Management',
+    subtitle: 'Overall steering & cross-stream coordination',
+    hours: 20,
+    items: [
+      { label: 'Overall steering of the carve-out phase and plan governance towards the July 31st cut-off' },
+      { label: 'Coordination with Aspria Holdings and third-party vendors' },
+      { label: 'Periodic progress reporting to ownership' },
+    ],
+  },
+];
+
+const totalHours = workstreams.reduce((s, w) => s + w.hours, 0);
+const eur = (n: number) => '€' + n.toLocaleString('en-US');
+const totMin = totalHours * RATE_MIN;
+const totMax = totalHours * RATE_MAX;
+---
+
+<BaseLayout title="TCA · Carve-Out Quote" initialHeaderDark={true} noindex={true}>
+
+  <!-- ── PASSWORD GATE ── -->
+  <div class="gate" id="gate">
+    <form class="gate-box" id="gate-form" autocomplete="off">
+      <span class="eyebrow eyebrow--grey">Confidential document</span>
+      <h2 class="gate-title">Carve-Out <em>Quote</em></h2>
+      <p class="gate-text">Enter the password to access the document.</p>
+      <div class="gate-row">
+        <input type="password" id="gate-pass" class="gate-input" placeholder="Password" aria-label="Password" required />
+        <button type="submit" class="gate-btn">Unlock</button>
+      </div>
+      <p class="gate-error" id="gate-error" hidden>Incorrect password.</p>
+    </form>
+  </div>
+
+  <main class="qt-page" id="qt-content" hidden>
+
+    <div class="qt-header">
+      <span class="eyebrow eyebrow--grey">Confidential · Commercial Offer</span>
+      <h1 class="qt-title">Quote &mdash; <em>Carve-Out Phase</em></h1>
+      <div class="qt-meta">
+        <div class="qt-meta-item"><span>Client</span>Tennis Club Ambrosiano</div>
+        <div class="qt-meta-item"><span>Consultant</span>Maurizio Taruggi</div>
+        <div class="qt-meta-item"><span>Date</span>June 12, 2026</div>
+        <div class="qt-meta-item"><span>Validity</span>30 days</div>
+        <div class="qt-meta-item"><span>Reference cut-off</span>July 31st</div>
+      </div>
+    </div>
+
+    <p class="qt-intro">
+      This offer covers the consulting activities required to separate Tennis Club Ambrosiano’s
+      digital infrastructure from the Aspria Holdings perimeter, as per the shared Carve-Out Roadmap.
+      Prices are <strong>fixed per workstream</strong>, calculated on a reference hourly rate of
+      €{RATE_MIN}&ndash;{RATE_MAX}/hour; the final amount of each workstream is locked at order
+      confirmation within the indicated range.
+    </p>
+
+    <!-- ── WORKSTREAMS ── -->
+    <div class="qt-streams">
+      {workstreams.map(w => (
+        <section class="qt-stream">
+          <header class="qt-stream-head">
+            <div class="qt-stream-name">
+              <em>{w.id}</em>
+              <div>
+                <h2>{w.name}</h2>
+                {w.subtitle && <span class="qt-stream-sub">{w.subtitle}</span>}
+              </div>
+            </div>
+            <div class="qt-stream-price">
+              <span class="qt-hours">{w.hours} hours</span>
+              <span class="qt-price">{eur(w.hours * RATE_MIN)} &ndash; {eur(w.hours * RATE_MAX)}</span>
+            </div>
+          </header>
+          <ul class="qt-items">
+            {w.items.map(it => (
+              <li>
+                {it.label}
+                {it.note && <span class="qt-note">{it.note}</span>}
+              </li>
+            ))}
+          </ul>
+          {w.caveat && <p class="qt-caveat">{w.caveat}</p>}
+        </section>
+      ))}
+    </div>
+
+    <!-- ── TOTAL ── -->
+    <div class="qt-total">
+      <div class="qt-total-label">
+        Carve-out phase total
+        <span>{totalHours} estimated hours · fixed price per workstream</span>
+      </div>
+      <div class="qt-total-price">{eur(totMin)} &ndash; {eur(totMax)}</div>
+    </div>
+
+    <!-- ── EXCLUSIONS & TERMS ── -->
+    <div class="qt-terms">
+      <div class="qt-terms-block">
+        <h3>Exclusions</h3>
+        <ul>
+          <li>Physical devices (PCs &amp; Wi-Fi): assigned to an external on-site IT partner, out of scope</li>
+          <li>Full website rebuild (Option B): priced separately</li>
+          <li>Third-party licenses and fees (Google Workspace, migration tools, N8N hosting, Perfect Gym, etc.)</li>
+          <li>Activities beyond the described scope: assessed and quoted separately</li>
+        </ul>
+      </div>
+      <div class="qt-terms-block">
+        <h3>Terms</h3>
+        <ul>
+          <li>Reference hourly rate: €{RATE_MIN}&ndash;{RATE_MAX}/hour</li>
+          <li>Proposed invoicing: 40% at kick-off · 40% at progress milestone · 20% at closure</li>
+          <li>All amounts exclude VAT</li>
+          <li>Offer validity: 30 days from the issue date</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="qt-footer">Confidential · Tennis Club Ambrosiano · 2026</p>
+
+  </main>
+
+</BaseLayout>
+
+<style>
+  :global(body) { background: #fff; }
+
+  /* ── GATE ── */
+  .gate {
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    padding: 24px;
+  }
+  .gate[hidden] { display: none; }
+  .gate-box {
+    width: min(420px, 100%);
+    border: 1px solid var(--grey-light);
+    border-top: 3px solid var(--red);
+    border-radius: 6px;
+    padding: 36px 32px;
+  }
+  .gate-title {
+    font-family: var(--fd);
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .gate-title em { color: var(--red); font-style: normal; }
+  .gate-text {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text-light);
+    margin-bottom: 18px;
+  }
+  .gate-row { display: flex; gap: 8px; }
+  .gate-input {
+    flex: 1;
+    font-family: var(--fb);
+    font-size: 14px;
+    padding: 10px 12px;
+    border: 1px solid var(--grey-light);
+    border-radius: 4px;
+    outline: none;
+  }
+  .gate-input:focus { border-color: var(--red); }
+  .gate-btn {
+    font-family: var(--fd);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--red);
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .gate-btn:hover { background: var(--red-dark); }
+  .gate-error {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--red);
+  }
+
+  /* ── PAGE ── */
+  .qt-page {
+    padding: calc(var(--header-h) + 3.5vh) clamp(20px, 5vw, 72px) 6vh;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .qt-header { margin-bottom: 3vh; }
+  .qt-title {
+    font-family: var(--fd);
+    font-size: clamp(2rem, 4vw, 4rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.0;
+    color: var(--text);
+    margin-bottom: 2vh;
+  }
+  .qt-title em { color: var(--red); font-style: normal; }
+
+  .qt-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 36px;
+    border-top: 1px solid var(--grey-light);
+    border-bottom: 1px solid var(--grey-light);
+    padding: 14px 0;
+  }
+  .qt-meta-item {
+    font-size: clamp(13px, 0.95vw, 15px);
+    font-weight: 500;
+    color: var(--text);
+  }
+  .qt-meta-item span {
+    display: block;
+    font-family: var(--fd);
+    font-size: clamp(9px, 0.65vw, 11px);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    margin-bottom: 2px;
+  }
+
+  .qt-intro {
+    font-size: clamp(13px, 0.95vw, 15px);
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.7;
+    max-width: 70ch;
+    margin-bottom: 4vh;
+  }
+
+  /* ── STREAMS ── */
+  .qt-streams { display: flex; flex-direction: column; gap: 18px; }
+
+  .qt-stream {
+    border: 1px solid var(--grey-light);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .qt-stream-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 22px;
+    background: #faf9f7;
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .qt-stream-name {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .qt-stream-name em {
+    font-family: var(--fd);
+    font-style: normal;
+    font-size: clamp(11px, 0.8vw, 13px);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--red);
+  }
+  .qt-stream-name h2 {
+    font-family: var(--fd);
+    font-size: clamp(17px, 1.4vw, 21px);
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text);
+    line-height: 1.1;
+  }
+  .qt-stream-sub {
+    display: block;
+    font-size: clamp(11px, 0.8vw, 13px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--grey-mid);
+    margin-top: 2px;
+  }
+  .qt-stream-price { text-align: right; flex-shrink: 0; }
+  .qt-hours {
+    display: block;
+    font-family: var(--fd);
+    font-size: clamp(10px, 0.7vw, 12px);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+  }
+  .qt-price {
+    font-family: var(--fd);
+    font-size: clamp(17px, 1.4vw, 21px);
+    font-weight: 800;
+    color: var(--red);
+    white-space: nowrap;
+  }
+
+  .qt-items {
+    list-style: none;
+    padding: 16px 22px 6px;
+    margin: 0;
+  }
+  .qt-items li {
+    font-size: clamp(13px, 0.9vw, 14px);
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.6;
+    padding: 0 0 10px 18px;
+    position: relative;
+  }
+  .qt-items li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--red);
+    font-weight: 700;
+  }
+  .qt-note {
+    display: block;
+    font-size: clamp(11px, 0.78vw, 12px);
+    font-style: italic;
+    color: var(--grey-mid);
+  }
+  .qt-caveat {
+    margin: 0 22px 16px;
+    padding: 10px 14px;
+    background: rgba(139,26,26,0.05);
+    border-left: 3px solid var(--red);
+    border-radius: 0 4px 4px 0;
+    font-size: clamp(12px, 0.82vw, 13px);
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+
+  /* ── TOTAL ── */
+  .qt-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 24px;
+    padding: 20px 24px;
+    background: var(--red);
+    border-radius: 6px;
+    color: #fff;
+  }
+  .qt-total-label {
+    font-family: var(--fd);
+    font-size: clamp(15px, 1.2vw, 19px);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .qt-total-label span {
+    display: block;
+    font-family: var(--fb);
+    font-size: clamp(11px, 0.78vw, 12px);
+    font-weight: 300;
+    text-transform: none;
+    letter-spacing: 0;
+    color: rgba(255,255,255,0.7);
+    margin-top: 3px;
+  }
+  .qt-total-price {
+    font-family: var(--fd);
+    font-size: clamp(22px, 2.2vw, 32px);
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  /* ── TERMS ── */
+  .qt-terms {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-top: 4vh;
+  }
+  .qt-terms-block h3 {
+    font-family: var(--fd);
+    font-size: clamp(11px, 0.8vw, 13px);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 10px;
+  }
+  .qt-terms-block ul { list-style: none; margin: 0; padding: 0; }
+  .qt-terms-block li {
+    font-size: clamp(12px, 0.85vw, 13px);
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.6;
+    padding: 0 0 8px 16px;
+    position: relative;
+  }
+  .qt-terms-block li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--red);
+    font-weight: 700;
+  }
+
+  .qt-footer {
+    margin-top: 5vh;
+    border-top: 1px solid var(--grey-light);
+    padding-top: 2vh;
+    font-size: clamp(9px, 0.65vw, 11px);
+    color: var(--grey-mid);
+    font-family: var(--fd);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    .qt-page { padding: calc(var(--header-h) + 20px) 16px 40px; }
+    .qt-title { font-size: clamp(1.9rem, 8.5vw, 2.6rem); }
+    .qt-meta { gap: 10px 24px; }
+    .qt-meta-item { font-size: 14px; }
+    .qt-meta-item span { font-size: 10px; }
+    .qt-intro { font-size: 15px; }
+    .qt-stream-head { flex-direction: column; align-items: flex-start; gap: 8px; padding: 14px 16px; }
+    .qt-stream-price { text-align: left; }
+    .qt-stream-name h2 { font-size: 19px; }
+    .qt-stream-sub { font-size: 13px; }
+    .qt-price { font-size: 20px; }
+    .qt-items { padding: 14px 16px 4px; }
+    .qt-items li { font-size: 15px; }
+    .qt-note { font-size: 13px; }
+    .qt-caveat { margin: 0 16px 14px; font-size: 13px; }
+    .qt-total { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .qt-total-price { font-size: 26px; }
+    .qt-terms { grid-template-columns: 1fr; gap: 22px; }
+    .qt-terms-block li { font-size: 14px; }
+    .qt-footer { font-size: 12px; }
+  }
+</style>
+
+<script>
+  const HASH = '480fa9a2765c43cc4430a13124ecef83ae0f63ff6cc842f1aaf9d868c530f0c6';
+  const KEY  = 'tca-quote-auth';
+
+  const gate    = document.getElementById('gate')!;
+  const content = document.getElementById('qt-content')!;
+  const form    = document.getElementById('gate-form')!;
+  const input   = document.getElementById('gate-pass') as HTMLInputElement;
+  const error   = document.getElementById('gate-error')!;
+
+  async function sha256(text: string): Promise<string> {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function unlock() {
+    gate.setAttribute('hidden', '');
+    content.removeAttribute('hidden');
+  }
+
+  if (sessionStorage.getItem(KEY) === HASH) {
+    unlock();
+  } else {
+    input.focus();
+  }
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const h = await sha256(input.value);
+    if (h === HASH) {
+      sessionStorage.setItem(KEY, h);
+      error.setAttribute('hidden', '');
+      unlock();
+    } else {
+      error.removeAttribute('hidden');
+      input.select();
+    }
+  });
+</script>
