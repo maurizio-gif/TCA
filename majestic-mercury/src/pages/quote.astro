@@ -10,6 +10,7 @@ interface Workstream {
   name: string;
   subtitle?: string;
   hours: number;
+  price: number;
   items: LineItem[];
   caveat?: string;
 }
@@ -22,7 +23,8 @@ const workstreams: Workstream[] = [
     id: '01',
     name: 'Perfect Gym',
     subtitle: 'Contract separation & service continuity',
-    hours: 28,
+    hours: 18,
+    price: 1600,
     items: [
       { label: 'Coordination with Peter Croft and administrative separation of contracts from Aspria Holdings' },
       { label: 'Activation of direct invoicing to Tennis Club Ambrosiano with full service continuity' },
@@ -33,20 +35,22 @@ const workstreams: Workstream[] = [
   {
     id: '02',
     name: 'Website',
-    subtitle: 'Forms carve-out & takeover (Option A)',
-    hours: 24,
+    subtitle: 'Carve-out & operational takeover',
+    hours: 9,
+    price: 800,
     items: [
       { label: 'Coordination with Laura Giardini and Thomas Sander' },
-      { label: 'Mapping of the current Prismic forms and replacement with proprietary forms' },
-      { label: 'Operational takeover of the existing website' },
+      { label: 'Mapping of the current Prismic setup and separation from the Aspria perimeter' },
+      { label: 'Operational takeover of the existing website for the transition period' },
     ],
-    caveat: 'Option B (full rebuild of the website on a new platform) is excluded from this quote and will be priced separately: indicative estimate 100–130 hours.',
+    caveat: 'The rebuild of the website on a new platform is not included in this total — see the dedicated add-on below.',
   },
   {
     id: '03',
     name: 'HubSpot & JotForm',
     subtitle: 'Full form rebuild & new automations',
-    hours: 56,
+    hours: 36,
+    price: 3200,
     items: [
       { label: 'Analysis of the existing forms and automations' },
       { label: 'Complete rebuild of all forms in custom HTML/CSS with restructured logic (not a 1:1 replacement)' },
@@ -59,7 +63,8 @@ const workstreams: Workstream[] = [
     id: '04',
     name: 'Microsoft → Google Workspace',
     subtitle: 'Full migration · ~10 accounts',
-    hours: 52,
+    hours: 38,
+    price: 3400,
     items: [
       { label: 'Initial assessment and scope definition (accounts, aliases, groups, volumes)' },
       { label: 'Setup of the new independent Google Workspace tenant (domain, security, Drive structure)' },
@@ -74,7 +79,8 @@ const workstreams: Workstream[] = [
     id: '05',
     name: 'Project Management',
     subtitle: 'Overall steering & cross-stream coordination',
-    hours: 20,
+    hours: 11,
+    price: 1000,
     items: [
       { label: 'Overall steering of the carve-out phase and plan governance towards the July 31st cut-off' },
       { label: 'Coordination with Aspria Holdings and third-party vendors' },
@@ -83,10 +89,21 @@ const workstreams: Workstream[] = [
   },
 ];
 
+const addon = {
+  name: 'New Website',
+  subtitle: 'Rebuild on a new platform',
+  price: 4000,
+  items: [
+    { label: 'Design and development of the new website on a platform suited to in-house operational management' },
+    { label: 'Structured lead-generation architecture, natively integrated with the new forms and N8N → Perfect Gym automations' },
+    { label: 'Content migration and SEO continuity from the current site' },
+  ],
+  rationale: 'Quoted separately and not included in the carve-out total. Following feedback from Laura and Alice, the current platform (Prismic) is not suited to day-to-day operational management and does not produce structured leads — hence the recommendation to rebuild the website on a new platform.',
+};
+
 const totalHours = workstreams.reduce((s, w) => s + w.hours, 0);
+const totalPrice = workstreams.reduce((s, w) => s + w.price, 0);
 const eur = (n: number) => '€' + n.toLocaleString('en-US');
-const totMin = totalHours * RATE_MIN;
-const totMax = totalHours * RATE_MAX;
 ---
 
 <BaseLayout title="TCA · Carve-Out Quote" initialHeaderDark={true} noindex={true}>
@@ -122,9 +139,9 @@ const totMax = totalHours * RATE_MAX;
     <p class="qt-intro">
       This offer covers the consulting activities required to separate Tennis Club Ambrosiano’s
       digital infrastructure from the Aspria Holdings perimeter, as per the shared Carve-Out Roadmap.
-      Prices are <strong>fixed per workstream</strong>, calculated on a reference hourly rate of
-      €{RATE_MIN}&ndash;{RATE_MAX}/hour; the final amount of each workstream is locked at order
-      confirmation within the indicated range.
+      Prices are <strong>fixed per workstream</strong> (reference hourly rate €{RATE_MIN}&ndash;{RATE_MAX}/hour),
+      for a total of <strong>{eur(totalPrice)}</strong> for the carve-out phase. The rebuild of the
+      website is offered as a separate add-on and is not included in this total.
     </p>
 
     <!-- ── WORKSTREAMS ── -->
@@ -141,7 +158,7 @@ const totMax = totalHours * RATE_MAX;
             </div>
             <div class="qt-stream-price">
               <span class="qt-hours">{w.hours} hours</span>
-              <span class="qt-price">{eur(w.hours * RATE_MIN)} &ndash; {eur(w.hours * RATE_MAX)}</span>
+              <span class="qt-price">{eur(w.price)}</span>
             </div>
           </header>
           <ul class="qt-items">
@@ -161,10 +178,28 @@ const totMax = totalHours * RATE_MAX;
     <div class="qt-total">
       <div class="qt-total-label">
         Carve-out phase total
-        <span>{totalHours} estimated hours · fixed price per workstream</span>
+        <span>{totalHours} estimated hours · fixed price per workstream · website rebuild excluded</span>
       </div>
-      <div class="qt-total-price">{eur(totMin)} &ndash; {eur(totMax)}</div>
+      <div class="qt-total-price">{eur(totalPrice)}</div>
     </div>
+
+    <!-- ── ADD-ON ── -->
+    <section class="qt-addon">
+      <header class="qt-addon-head">
+        <div class="qt-addon-name">
+          <span class="qt-addon-badge">Add-On · Not included in the total</span>
+          <h2>{addon.name}</h2>
+          <span class="qt-stream-sub">{addon.subtitle}</span>
+        </div>
+        <div class="qt-stream-price">
+          <span class="qt-price">{eur(addon.price)}</span>
+        </div>
+      </header>
+      <ul class="qt-items">
+        {addon.items.map(it => <li>{it.label}</li>)}
+      </ul>
+      <p class="qt-caveat">{addon.rationale}</p>
+    </section>
 
     <!-- ── EXCLUSIONS & TERMS ── -->
     <div class="qt-terms">
@@ -172,7 +207,7 @@ const totMax = totalHours * RATE_MAX;
         <h3>Exclusions</h3>
         <ul>
           <li>Physical devices (PCs &amp; Wi-Fi): assigned to an external on-site IT partner, out of scope</li>
-          <li>Full website rebuild (Option B): priced separately</li>
+          <li>Website rebuild: offered only as the dedicated add-on above, not part of the carve-out total</li>
           <li>Third-party licenses and fees (Google Workspace, migration tools, N8N hosting, Perfect Gym, etc.)</li>
           <li>Activities beyond the described scope: assessed and quoted separately</li>
         </ul>
@@ -451,6 +486,44 @@ const totMax = totalHours * RATE_MAX;
     font-size: clamp(22px, 2.2vw, 32px);
     font-weight: 800;
     white-space: nowrap;
+  }
+
+  /* ── ADD-ON ── */
+  .qt-addon {
+    margin-top: 24px;
+    border: 2px dashed rgba(139,26,26,0.35);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .qt-addon-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 22px 14px;
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .qt-addon-badge {
+    display: inline-block;
+    font-family: var(--fd);
+    font-size: clamp(9px, 0.65vw, 11px);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--red);
+    background: rgba(139,26,26,0.07);
+    border: 1px solid rgba(139,26,26,0.25);
+    border-radius: 3px;
+    padding: 3px 9px;
+    margin-bottom: 8px;
+  }
+  .qt-addon-name h2 {
+    font-family: var(--fd);
+    font-size: clamp(17px, 1.4vw, 21px);
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text);
+    line-height: 1.1;
   }
 
   /* ── TERMS ── */
