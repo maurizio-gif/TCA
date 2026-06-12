@@ -446,6 +446,9 @@ const fees = [
   function unlock() {
     gate.setAttribute('hidden', '');
     content.removeAttribute('hidden');
+    if (new URLSearchParams(location.search).has('print')) {
+      setTimeout(() => window.print(), 350);
+    }
   }
 
   if (sessionStorage.getItem(KEY) === HASH) {

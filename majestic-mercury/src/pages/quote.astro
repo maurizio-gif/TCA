@@ -96,6 +96,7 @@ const addon = {
 
 const totalPrice = workstreams.reduce((s, w) => s + w.price, 0);
 const eur = (n: number) => '€' + n.toLocaleString('en-US');
+const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/') ? b : b + '/'; })();
 ---
 
 <BaseLayout title="TCA · Carve-Out Quote" initialHeaderDark={true} noindex={true}>
@@ -117,7 +118,10 @@ const eur = (n: number) => '€' + n.toLocaleString('en-US');
   <main class="qt-page" id="qt-content" hidden>
 
     <div class="qt-header">
-      <span class="eyebrow eyebrow--grey">Confidential · Commercial Offer</span>
+      <div class="qt-topbar">
+        <span class="eyebrow eyebrow--grey">Confidential · Commercial Offer</span>
+        <a class="qt-contract-btn" href={`${base}contract/?print=1`}>Print contract (PDF)</a>
+      </div>
       <h1 class="qt-title">Quote &mdash; <em>Carve-Out Phase</em></h1>
       <div class="qt-meta">
         <div class="qt-meta-item"><span>Client</span>Tennis Club Ambrosiano</div>
@@ -301,6 +305,28 @@ const eur = (n: number) => '€' + n.toLocaleString('en-US');
   }
 
   .qt-header { margin-bottom: 3vh; }
+  .qt-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .qt-contract-btn {
+    font-family: var(--fd);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--red);
+    border-radius: 4px;
+    padding: 9px 18px;
+    text-decoration: none;
+    transition: background 0.15s;
+    margin-bottom: 0.8vh;
+  }
+  .qt-contract-btn:hover { background: var(--red-dark); }
   .qt-title {
     font-family: var(--fd);
     font-size: clamp(2rem, 4vw, 4rem);
