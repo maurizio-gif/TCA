@@ -127,6 +127,100 @@ const rows: Row[] = [
       {
         text: 'Final timeline and costs depend on Thomas Sander\'s response regarding admin access.',
       },
+      {
+        heading: 'Migration Roadmap — Microsoft 365 (Aspria) → Google Workspace',
+        text: 'Migration of approximately 10 user accounts from the Microsoft 365 tenant managed by Aspria Holdings to a new, fully independent Google Workspace environment. Scope: email, calendars, contacts, OneDrive files, aliases and shared mailboxes/groups where applicable. The consultant is not an administrator of the source tenant, so the plan is structured to keep Aspria IT involvement to an absolute minimum.',
+      },
+      {
+        heading: 'Phase 1 · Initial Assessment & Scope Definition',
+        options: [
+          { label: 'Objective',    text: 'Freeze the exact migration perimeter: accounts, data types and volumes.' },
+          { label: 'Activities',   text: 'Inventory of the ~10 mailboxes, aliases, shared mailboxes/groups and OneDrive volumes; identify the domain(s) in use; define success criteria and target timeline.' },
+          { label: 'Aspria input', text: 'Written confirmation of the user list, aliases, groups and domain ownership — no call required.' },
+          { label: 'Output',       text: 'Signed-off scope document and user/data inventory matrix.' },
+          { label: 'Risks',        text: 'Hidden aliases or shared mailboxes discovered late in the project; incomplete volume estimates.' },
+        ],
+      },
+      {
+        heading: 'Phase 2 · Google Workspace Setup',
+        options: [
+          { label: 'Objective',    text: 'Stand up the new independent tenant, production-ready before any data moves.' },
+          { label: 'Activities',   text: 'Create the Google Workspace tenant, select edition and licensing, verify the domain, configure the security baseline (2FA, admin roles) and prepare the shared Drive structure.' },
+          { label: 'Aspria input', text: 'None — fully independent. At most one DNS TXT record for domain verification if Aspria controls the DNS zone.' },
+          { label: 'Output',       text: 'Verified, configured Google Workspace tenant ready to receive data.' },
+          { label: 'Risks',        text: 'Control of the DNS zone must be clarified early — it determines who executes verification and the final cutover.' },
+        ],
+      },
+      {
+        heading: 'Phase 3 · User, Alias & Group Mapping',
+        options: [
+          { label: 'Objective',    text: 'Map every source object to its Google Workspace counterpart.' },
+          { label: 'Activities',   text: 'Build the M365 → Workspace mapping table; convert aliases; map shared mailboxes to Google Groups (collaborative inbox) or delegated accounts; define onboarding credentials.' },
+          { label: 'Aspria input', text: 'Asynchronous validation of the mapping table (email approval is sufficient).' },
+          { label: 'Output',       text: 'Final mapping table that drives all migration tooling.' },
+          { label: 'Risks',        text: 'A missed alias means misrouted or bounced mail after cutover — the mapping is the single source of truth.' },
+        ],
+      },
+      {
+        heading: 'Phase 4 · Technical Coordination with Aspria IT',
+        options: [
+          { label: 'Objective',    text: 'Secure minimal, time-boxed migration access to the source tenant.' },
+          { label: 'Activities',   text: 'One short technical call with Aspria IT (Thomas Sander) to request temporary, scoped admin or app-level (OAuth) access for the migration tool, and to agree the cutover window; validate access with a connectivity test.' },
+          { label: 'Aspria input', text: 'Temporary scoped credentials or app consent on the source tenant; agreement on the cutover date.' },
+          { label: 'Output',       text: 'Working, tested migration access to the M365 tenant.' },
+          { label: 'Risks',        text: 'This is the critical dependency of the whole project: if access is refused, the fallback is the per-account manual track, with higher time and cost.' },
+        ],
+      },
+      {
+        heading: 'Phase 5 · Migration Pilot',
+        options: [
+          { label: 'Objective',    text: 'Validate the end-to-end process on 1–2 accounts before committing the full batch.' },
+          { label: 'Activities',   text: 'Migrate pilot mailboxes (mail, calendar, contacts) and OneDrive content; verify data integrity, folder structure and permissions; measure real per-account throughput; collect pilot-user feedback.' },
+          { label: 'Aspria input', text: 'None — uses the access already granted in Phase 4.' },
+          { label: 'Output',       text: 'Validated migration runbook with realistic per-account timings.' },
+          { label: 'Risks',        text: 'Source-tenant throttling or item-type incompatibilities (recurring events, mail rules) surfacing only at scale.' },
+        ],
+      },
+      {
+        heading: 'Phase 6 · Full Migration',
+        options: [
+          { label: 'Objective',    text: 'Migrate all remaining accounts’ historical data with zero user disruption.' },
+          { label: 'Activities',   text: 'Batch migration of all mailboxes, calendars, contacts and OneDrive files while mail continues to flow to Microsoft 365; monitor logs and re-run failed items.' },
+          { label: 'Aspria input', text: 'None — runs entirely in the background.' },
+          { label: 'Output',       text: 'The vast majority of historical data already in Workspace ahead of cutover.' },
+          { label: 'Risks',        text: 'Large mailboxes or OneDrive archives extending the migration window; API throttling on the source side.' },
+        ],
+      },
+      {
+        heading: 'Phase 7 · Delta Migration & DNS Cutover',
+        options: [
+          { label: 'Objective',    text: 'Switch mail flow to Google Workspace and close the residual data gap.' },
+          { label: 'Activities',   text: 'Update MX, SPF, DKIM and DMARC records; run the final delta pass for items received during the migration; activate aliases and groups; verify inbound and outbound mail flow.' },
+          { label: 'Aspria input', text: 'Execute or approve the DNS / mail-routing changes if the zone is under Aspria’s control.' },
+          { label: 'Output',       text: 'All mail delivered to Google Workspace; data gap reduced to zero.' },
+          { label: 'Risks',        text: 'DNS propagation delays — cutover is scheduled in a low-traffic window (evening or weekend).' },
+        ],
+      },
+      {
+        heading: 'Phase 8 · Post-Migration Support & Final Validation',
+        options: [
+          { label: 'Objective',    text: 'Confirm completeness and hand over a stable, independent environment.' },
+          { label: 'Activities',   text: 'Per-user validation checklist (mail, calendar, contacts, files); reconfigure mobile and desktop devices; short Gmail/Drive onboarding; revoke temporary access; agree the M365 decommission date with Aspria; final closure report.' },
+          { label: 'Aspria input', text: 'Confirm revocation of temporary access and decommission the M365 licenses.' },
+          { label: 'Output',       text: 'Signed-off migration closure report and a fully independent Google Workspace environment.' },
+          { label: 'Risks',        text: 'Late discovery of missing items — source data should stay readable for an agreed retention window before decommission.' },
+        ],
+      },
+      {
+        heading: 'Minimising Aspria IT Involvement',
+        text: 'The plan deliberately concentrates everything that can be done independently — tenant setup, mapping, tooling, pilot, migration runs, validation and user support — on the consultant’s side. Aspria IT is limited to four touchpoints:',
+        bullets: [
+          'Confirming the list of users and data to migrate (written, asynchronous)',
+          'Providing or approving temporary, scoped and revocable migration access',
+          'Participating in one short technical call (~30 minutes) to agree access and the cutover window',
+          'Supporting the final DNS / mail-routing cutover, only if the DNS zone is under their control',
+        ],
+      },
     ],
   },
   {
