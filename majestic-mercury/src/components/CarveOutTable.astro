@@ -449,14 +449,14 @@ const rows: Row[] = [
     }
     .row-main[aria-expanded="false"] { border-radius: 6px; }
 
-    .sco-table td { display: block; width: 100%; padding: 10px 14px; font-size: 14px; border-bottom: 1px solid var(--grey-light); }
+    .sco-table td { display: block; width: 100%; padding: 12px 14px; font-size: 16px; border-bottom: 1px solid var(--grey-light); }
     .sco-table td:last-child { border-bottom: none; }
 
     .sco-table td::before {
       content: attr(data-label);
       display: block;
       font-family: var(--fd);
-      font-size: 9px;
+      font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -474,8 +474,8 @@ const rows: Row[] = [
       align-items: center;
     }
     .row-main td:first-child::before { display: none; }
-    .row-main td:first-child strong { color: #fff; font-size: 17px; }
-    .row-main td:first-child :global(.note) { color: rgba(255,255,255,0.65); font-size: 11px; }
+    .row-main td:first-child strong { color: #fff; font-size: 19px; }
+    .row-main td:first-child :global(.note) { color: rgba(255,255,255,0.65); font-size: 13px; }
 
     .row-detail td { display: block; padding: 0; }
     .row-detail td::before { display: none; }
@@ -484,11 +484,13 @@ const rows: Row[] = [
       padding: 18px 16px 20px;
       border-left-width: 3px;
     }
-    .detail-block { flex: none; padding: 0 0 14px; }
-    .detail-text, .detail-bullets li, .option-text { font-size: 13px; }
+    .detail-block { flex: none; padding: 0 0 16px; }
+    .detail-heading { font-size: 13px; }
+    .detail-text, .detail-bullets li, .option-text { font-size: 15px; }
+    .option-label { font-size: 11px; }
 
-    .badge { font-size: 11px; }
-    .note  { font-size: 12px; }
+    .badge { font-size: 13px; }
+    .note  { font-size: 14px; }
 
     .row-main[aria-expanded="true"] {
       border-radius: 6px 6px 0 0;
