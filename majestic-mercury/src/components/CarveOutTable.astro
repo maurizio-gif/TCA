@@ -464,7 +464,7 @@ const rows: Row[] = [
     }
     .td-expand { display: none; }
 
-    .sco-table td:first-child {
+    .row-main td:first-child {
       background: var(--red);
       color: #fff;
       padding: 12px 14px;
@@ -472,11 +472,12 @@ const rows: Row[] = [
       justify-content: space-between;
       align-items: center;
     }
-    .sco-table td:first-child::before { display: none; }
-    .sco-table td:first-child strong { color: #fff; font-size: 17px; }
-    .sco-table td:first-child :global(.note) { color: rgba(255,255,255,0.65); font-size: 11px; }
+    .row-main td:first-child::before { display: none; }
+    .row-main td:first-child strong { color: #fff; font-size: 17px; }
+    .row-main td:first-child :global(.note) { color: rgba(255,255,255,0.65); font-size: 11px; }
 
-    .row-detail td { display: block; }
+    .row-detail td { display: block; padding: 0; }
+    .row-detail td::before { display: none; }
     .detail-panel {
       flex-direction: column;
       padding: 18px 16px 20px;
