@@ -1,0 +1,447 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/') ? b : b + '/'; })();
+---
+
+<BaseLayout title="TCA · Website Development Agreement" initialHeaderDark={true} noindex={true}>
+
+  <!-- ── PASSWORD GATE ── -->
+  <div class="gate" id="gate">
+    <form class="gate-box" id="gate-form" autocomplete="off">
+      <span class="eyebrow eyebrow--grey">Confidential document</span>
+      <h2 class="gate-title">Website <em>Agreement</em></h2>
+      <p class="gate-text">Enter the password to access the document.</p>
+      <div class="gate-row">
+        <input type="password" id="gate-pass" class="gate-input" placeholder="Password" aria-label="Password" required />
+        <button type="submit" class="gate-btn">Unlock</button>
+      </div>
+      <p class="gate-error" id="gate-error" hidden>Incorrect password.</p>
+    </form>
+  </div>
+
+  <main class="ct-page" id="ct-content" hidden>
+
+    <div class="ct-toolbar">
+      <span class="eyebrow eyebrow--grey">Confidential · For signature</span>
+      <button class="ct-print-btn" id="ct-print">Print / Save as PDF</button>
+    </div>
+
+    <article class="ct-doc">
+
+      <header class="ct-head">
+        <h1>Website Development Agreement</h1>
+        <p class="ct-subtitle">New Website — Add-On to the Carve-Out Programme</p>
+      </header>
+
+      <!-- ── PARTIES ── -->
+      <section class="ct-section">
+        <h2>Between</h2>
+        <div class="ct-party">
+          <p><strong>Ready 2 Digital Srl</strong> (the “Supplier”)</p>
+          <p>Registered office: Via Ugo Ojetti 134, Roma, Italy</p>
+          <p>VAT no.: 16573891005</p>
+          <p>Website: www.ready2digital.it</p>
+          <p>Email: maurizio@ready2digital.it</p>
+        </div>
+        <h2>And</h2>
+        <div class="ct-party">
+          <p><strong>Tennis Club Ambrosiano</strong> (the “Client”)</p>
+          <p class="ct-fill">Registered office: <span></span></p>
+          <p class="ct-fill">VAT no. / Tax code: <span></span></p>
+          <p class="ct-fill">Represented by (name and surname): <span></span></p>
+          <p class="ct-fill">In the capacity of (role): <span></span></p>
+          <p class="ct-fill">Email / PEC: <span></span></p>
+        </div>
+        <p>jointly referred to as the “Parties”.</p>
+      </section>
+
+      <!-- ── RECITALS ── -->
+      <section class="ct-section">
+        <h2>Whereas</h2>
+        <ol type="a">
+          <li>The Client is carrying out the separation of its digital infrastructure from the Aspria Holdings perimeter (the “Carve-Out”), assisted by Maurizio Taruggi under a separate consulting agreement;</li>
+          <li>The commercial offer dated June 12, 2026 (the “Quote”) includes, as a separate add-on, the rebuild of the Client’s website on a new platform; following feedback from the Client’s team, the current platform (Prismic) is not suited to day-to-day operational management and does not produce structured leads;</li>
+          <li>The Client wishes to entrust the development of the new website to the Supplier, under the terms and conditions set out below.</li>
+        </ol>
+      </section>
+
+      <!-- ── 1 SUBJECT ── -->
+      <section class="ct-section">
+        <h2>1. Subject</h2>
+        <p>1.1 The Supplier shall design and develop the Client’s new website, including:</p>
+        <ol type="i">
+          <li>development in custom HTML/CSS on an Astro architecture, with Decap CMS for in-house content management;</li>
+          <li>SEO optimisation targeted at the activities offered by the Client;</li>
+          <li>an events section with booking forms included, whose event pages will be editable by the Client’s internal team via the CMS;</li>
+          <li>a structured lead-generation architecture, natively integrated with the Client’s new forms and N8N → Perfect Gym automations;</li>
+          <li>content migration and SEO continuity from the current site.</li>
+        </ol>
+      </section>
+
+      <!-- ── 2 FEES ── -->
+      <section class="ct-section">
+        <h2>2. Fees</h2>
+        <p>2.1 As consideration for the services under art. 1, the Client shall pay the Supplier a fixed, all-inclusive fee of <strong>€4,000</strong> (four thousand euros).</p>
+        <p>2.2 The fee is subject to <strong>VAT at the statutory rate of 22%</strong>.</p>
+        <p>2.3 Third-party licenses and fees (hosting, domain, external services) are excluded and shall be borne by the Client.</p>
+      </section>
+
+      <!-- ── 3 INVOICING ── -->
+      <section class="ct-section">
+        <h2>3. Invoicing and Payment</h2>
+        <p>3.1 The fee shall be invoiced as follows: <strong>50%</strong> upon signature of this Agreement; <strong>50%</strong> upon go-live of the new website.</p>
+        <p>3.2 Invoices are payable within 30 days from the invoice date by bank transfer to the account indicated by the Supplier.</p>
+      </section>
+
+      <!-- ── 4 TIMELINE ── -->
+      <section class="ct-section">
+        <h2>4. Timeline</h2>
+        <p>4.1 The development plan and go-live date shall be agreed at kick-off, in coordination with the Carve-Out programme. The Supplier shall use its best efforts to meet the agreed dates; delays attributable to third parties or to late delivery of content and approvals by the Client shall not constitute a breach by the Supplier.</p>
+      </section>
+
+      <!-- ── 5 CLIENT OBLIGATIONS ── -->
+      <section class="ct-section">
+        <h2>5. Client Obligations</h2>
+        <p>5.1 The Client shall provide in a timely manner the content, materials, accesses and approvals reasonably required for the development, and shall designate a contact person empowered to approve deliverables.</p>
+      </section>
+
+      <!-- ── 6 CONFIDENTIALITY & DATA PROTECTION ── -->
+      <section class="ct-section">
+        <h2>6. Confidentiality and Data Protection</h2>
+        <p>6.1 Each Party shall keep confidential all non-public information received from the other Party in connection with this Agreement and use it solely for its performance. This obligation survives for 3 years after termination.</p>
+        <p>6.2 Each Party shall comply with applicable data protection laws, including Regulation (EU) 2016/679 (GDPR); where required, the Parties shall execute a data processing agreement pursuant to art. 28 GDPR.</p>
+      </section>
+
+      <!-- ── 7 LIABILITY ── -->
+      <section class="ct-section">
+        <h2>7. Liability</h2>
+        <p>7.1 Except in cases of wilful misconduct or gross negligence, the Supplier’s aggregate liability under this Agreement shall not exceed the total fees actually paid by the Client under art. 2.</p>
+      </section>
+
+      <!-- ── 8 TERMINATION ── -->
+      <section class="ct-section">
+        <h2>8. Withdrawal and Termination</h2>
+        <p>8.1 Either Party may terminate this Agreement for material breach not cured within 15 days of written notice.</p>
+        <p>8.2 The Client may withdraw at any time upon written notice, paying the Supplier the fees for the activities performed up to the date of withdrawal.</p>
+      </section>
+
+      <!-- ── 9 GENERAL ── -->
+      <section class="ct-section">
+        <h2>9. Final Provisions</h2>
+        <p>9.1 This Agreement constitutes the entire agreement between the Parties on its subject matter. Amendments are valid only if made in writing.</p>
+        <p>9.2 The Parties agree that this Agreement may be executed by exchange of signed copies (including scanned copies exchanged by email or certified email/PEC), each of which shall be deemed an original.</p>
+        <p>9.3 This Agreement is governed by Italian law. Any dispute shall be subject to the exclusive jurisdiction of the Court of Rome.</p>
+      </section>
+
+      <!-- ── SIGNATURES ── -->
+      <section class="ct-section ct-signatures">
+        <div class="ct-sign-row">
+          <div class="ct-sign-block">
+            <p class="ct-sign-role">The Supplier — Ready 2 Digital Srl</p>
+            <p class="ct-fill">Place and date: <span></span></p>
+            <div class="ct-sign-line ct-sign-line--signed">
+              <img src={`${base}firma-mt.png`} alt="Signature" class="ct-sign-img" />
+            </div>
+            <p class="ct-sign-name">Maurizio Taruggi</p>
+          </div>
+          <div class="ct-sign-block">
+            <p class="ct-sign-role">The Client — Tennis Club Ambrosiano</p>
+            <p class="ct-fill">Place and date: <span></span></p>
+            <div class="ct-sign-line"></div>
+            <p class="ct-fill ct-sign-name">Name and role: <span></span></p>
+          </div>
+        </div>
+
+        <p class="ct-2702">Pursuant to articles 1341 and 1342 of the Italian Civil Code, the Client expressly approves the following clauses: art. 4.1 (timeline and dependencies), art. 7 (liability), art. 8 (withdrawal and termination), art. 9.3 (governing law and jurisdiction).</p>
+
+        <div class="ct-sign-row">
+          <div class="ct-sign-block">
+            <p class="ct-sign-role">The Client — for express approval</p>
+            <div class="ct-sign-line"></div>
+            <p class="ct-fill ct-sign-name">Name and role: <span></span></p>
+          </div>
+        </div>
+      </section>
+
+      <footer class="ct-foot">
+        <p class="ct-conf">Confidential · Tennis Club Ambrosiano · 2026</p>
+      </footer>
+
+    </article>
+
+  </main>
+
+</BaseLayout>
+
+<style>
+  :global(body) { background: #f0eeeb; }
+
+  /* ── GATE ── */
+  .gate {
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    padding: 24px;
+  }
+  .gate[hidden] { display: none; }
+  .gate-box {
+    width: min(420px, 100%);
+    border: 1px solid var(--grey-light);
+    border-top: 3px solid var(--red);
+    border-radius: 6px;
+    padding: 36px 32px;
+    background: #fff;
+  }
+  .gate-title {
+    font-family: var(--fd);
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .gate-title em { color: var(--red); font-style: normal; }
+  .gate-text { font-size: 14px; font-weight: 300; color: var(--text-light); margin-bottom: 18px; }
+  .gate-row { display: flex; gap: 8px; }
+  .gate-input {
+    flex: 1;
+    font-family: var(--fb);
+    font-size: 14px;
+    padding: 10px 12px;
+    border: 1px solid var(--grey-light);
+    border-radius: 4px;
+    outline: none;
+  }
+  .gate-input:focus { border-color: var(--red); }
+  .gate-btn {
+    font-family: var(--fd);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--red);
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .gate-btn:hover { background: var(--red-dark); }
+  .gate-error { margin-top: 12px; font-size: 13px; color: var(--red); }
+
+  /* ── PAGE & TOOLBAR ── */
+  .ct-page {
+    padding: calc(var(--header-h) + 3vh) clamp(12px, 4vw, 48px) 6vh;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .ct-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .ct-print-btn {
+    font-family: var(--fd);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--red);
+    border: none;
+    border-radius: 4px;
+    padding: 9px 18px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .ct-print-btn:hover { background: var(--red-dark); }
+
+  /* ── DOCUMENT ── */
+  .ct-doc {
+    background: #fff;
+    border: 1px solid var(--grey-light);
+    border-radius: 4px;
+    padding: clamp(28px, 6vw, 64px);
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1.65;
+  }
+
+  .ct-head { text-align: center; margin-bottom: 28px; }
+  .ct-head h1 {
+    font-family: var(--fd);
+    font-size: clamp(1.6rem, 3.2vw, 2.2rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.05;
+  }
+  .ct-subtitle {
+    font-size: 13px;
+    font-style: italic;
+    color: var(--text-light);
+    margin-top: 6px;
+  }
+
+  .ct-section { margin-bottom: 20px; }
+  .ct-section h2 {
+    font-family: var(--fd);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 8px;
+  }
+  .ct-section p { margin-bottom: 7px; }
+  .ct-section ol { padding-left: 22px; }
+  .ct-section ol li { margin-bottom: 5px; }
+
+  .ct-party { margin-bottom: 12px; }
+  .ct-fill span {
+    display: inline-block;
+    min-width: 260px;
+    border-bottom: 1px dotted #999;
+    height: 1em;
+    vertical-align: bottom;
+  }
+
+  /* ── SIGNATURES ── */
+  .ct-signatures { margin-top: 34px; }
+  .ct-sign-row {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+  .ct-sign-block { flex: 1 1 280px; }
+  .ct-sign-role {
+    font-family: var(--fd);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .ct-sign-line {
+    border-bottom: 1px solid var(--text);
+    height: 52px;
+    margin-bottom: 6px;
+  }
+  .ct-sign-line--signed {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    height: 72px;
+    overflow: visible;
+  }
+  .ct-sign-img {
+    height: 86px;
+    margin-bottom: -10px;
+    display: none; /* signature appears only in the printed PDF */
+  }
+  .ct-sign-name { font-size: 13px; }
+  .ct-2702 {
+    font-size: 12px;
+    color: var(--text-light);
+    margin: 18px 0;
+  }
+
+  .ct-foot {
+    margin-top: 28px;
+    border-top: 1px solid var(--grey-light);
+    padding-top: 12px;
+    font-size: 12px;
+    color: var(--text-light);
+  }
+  .ct-conf {
+    font-family: var(--fd);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    margin-top: 8px;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    .ct-doc { font-size: 15px; }
+    .ct-sign-row { gap: 24px; }
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    :global(body) { background: #fff !important; }
+    :global(.g-header), :global(.g-menu), .ct-toolbar, .gate { display: none !important; }
+    .ct-sign-img { display: block; }
+    .ct-page { padding: 0; max-width: none; }
+    .ct-page[hidden] { display: none; }
+    .ct-doc {
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      font-size: 11pt;
+      line-height: 1.5;
+      color: #000;
+    }
+    .ct-section h2, .ct-head h1 { color: #000; }
+    .ct-section { break-inside: avoid-page; }
+    .ct-signatures { break-inside: avoid-page; }
+    .ct-fill span { border-bottom-color: #555; }
+    a { text-decoration: none; color: inherit; }
+    @page { size: A4; margin: 18mm 16mm; }
+  }
+</style>
+
+<script>
+  const HASH = '480fa9a2765c43cc4430a13124ecef83ae0f63ff6cc842f1aaf9d868c530f0c6';
+  const KEY  = 'tca-quote-auth';
+
+  const gate    = document.getElementById('gate')!;
+  const content = document.getElementById('ct-content')!;
+  const form    = document.getElementById('gate-form')!;
+  const input   = document.getElementById('gate-pass') as HTMLInputElement;
+  const error   = document.getElementById('gate-error')!;
+
+  async function sha256(text: string): Promise<string> {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function unlock() {
+    gate.setAttribute('hidden', '');
+    content.removeAttribute('hidden');
+    if (new URLSearchParams(location.search).has('print')) {
+      setTimeout(() => window.print(), 350);
+    }
+  }
+
+  if (sessionStorage.getItem(KEY) === HASH) {
+    unlock();
+  } else {
+    input.focus();
+  }
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const h = await sha256(input.value);
+    if (h === HASH) {
+      sessionStorage.setItem(KEY, h);
+      error.setAttribute('hidden', '');
+      unlock();
+    } else {
+      error.removeAttribute('hidden');
+      input.select();
+    }
+  });
+
+  document.getElementById('ct-print')!.addEventListener('click', () => window.print());
+</script>
