@@ -101,34 +101,20 @@ const method = [
       ))}
     </ol>
 
-    <!-- ── DOCUMENT INDEX ── -->
-    <h2 class="hub-section-title">05 · Project <em>Contents</em></h2>
-    <div class="doc-grid">
-      <a href={`${base}presentation/`} class="doc-card">
-        <span class="doc-tag">Presentation</span>
-        <span class="doc-title">Digital Transformation Proposal</span>
-        <span class="doc-text">Maurizio Taruggi's presentation: the opportunity window, the operating model and the expected outcomes for TCA.</span>
-        <span class="doc-cta">Open →</span>
-      </a>
-      <a href={`${base}carve-out/`} class="doc-card">
-        <span class="doc-tag">Operational Plan</span>
-        <span class="doc-title">Carve-Out Roadmap</span>
-        <span class="doc-text">The live status of every carve-out scope — Perfect Gym, website, HubSpot, Microsoft, devices — with owners, next steps and dates.</span>
-        <span class="doc-cta">Open →</span>
-      </a>
-      <a href={`${base}accounting-analysis/`} class="doc-card">
-        <span class="doc-tag">Analysis</span>
-        <span class="doc-title">Cloud Accounting Software</span>
-        <span class="doc-text">Comparative API analysis of cloud accounting platforms for Italy, with finalists and recommendation for the December migration.</span>
-        <span class="doc-cta">Open →</span>
-      </a>
-      <div class="doc-card doc-card--soon">
-        <span class="doc-tag">Minutes</span>
-        <span class="doc-title">Meeting Minutes</span>
-        <span class="doc-text">The minutes of all project meetings will be published in this section as the meetings take place.</span>
-        <span class="doc-cta">Coming soon</span>
-      </div>
+    <!-- ── BOOK A CALL ── -->
+    <h2 class="hub-section-title">05 · Book a <em>Call</em></h2>
+    <p class="hub-prose">
+      Want to discuss the project directly? Pick a slot and we'll talk through
+      where things stand, what's coming next, or anything on your mind.
+    </p>
+    <div class="calendly-wrap">
+      <div
+        class="calendly-inline-widget"
+        data-url="https://calendly.com/ready2digital/1-hour"
+        style="min-width:320px;height:700px;"
+      ></div>
     </div>
+    <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
 
     <p class="hub-footer">Confidential · Tennis Club Ambrosiano · Independence Project</p>
 
@@ -307,59 +293,13 @@ const method = [
     max-width: 95ch;
   }
 
-  /* ── DOCUMENT INDEX ── */
-  .doc-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
+  /* ── CALENDLY ── */
+  .calendly-wrap {
     margin: 2vh 0;
-  }
-  .doc-card {
     border: 1px solid var(--grey-light);
-    background: #fff;
-    padding: 22px 22px;
-    text-decoration: none;
-    color: var(--text);
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    transition: border-color 0.2s, background 0.2s;
+    border-radius: 4px;
+    overflow: hidden;
   }
-  .doc-card:hover { border-color: var(--red); background: var(--off-white); }
-  .doc-tag {
-    font-family: var(--fd);
-    font-size: clamp(10px, 0.75vw, 13px);
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--red);
-  }
-  .doc-title {
-    font-family: var(--fd);
-    font-size: clamp(1.1rem, 1.6vw, 1.6rem);
-    font-weight: 800;
-    text-transform: uppercase;
-    line-height: 1.15;
-  }
-  .doc-text {
-    font-size: clamp(13px, 0.92vw, 15px);
-    font-weight: 300;
-    color: var(--text-light);
-    line-height: 1.6;
-  }
-  .doc-cta {
-    margin-top: auto;
-    padding-top: 10px;
-    font-family: var(--fd);
-    font-size: clamp(11px, 0.8vw, 14px);
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--red);
-  }
-  .doc-card--soon { opacity: 0.65; }
-  .doc-card--soon:hover { border-color: var(--grey-light); background: #fff; }
-  .doc-card--soon .doc-cta { color: var(--grey-mid); }
 
   /* ── FOOTER ── */
   .hub-footer {
@@ -379,7 +319,6 @@ const method = [
     .hub-page { padding: 28px 16px 48px; }
     .obj-grid { grid-template-columns: 1fr; }
     .team-grid { grid-template-columns: 1fr 1fr; }
-    .doc-grid { grid-template-columns: 1fr; }
     .method-list li { padding: 16px 16px; gap: 14px; }
   }
 </style>
