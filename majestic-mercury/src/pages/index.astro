@@ -40,6 +40,7 @@ const method = [
         The single shared workspace for TCA's independence project: every analysis, every decision,
         every meeting — published here, always up to date, always one click away.
       </p>
+      <p class="hub-hero__contact-label">Maurizio Taruggi · Project Lead · Digital</p>
       <div class="hub-hero__actions">
         <a href="#book-a-call" class="btn btn-red">Schedule a Call</a>
         <a href="tel:+393409237059" class="btn btn-outline">Call</a>
@@ -154,11 +155,20 @@ const method = [
     line-height: 1.7;
     max-width: 65ch;
   }
+  .hub-hero__contact-label {
+    font-family: var(--fd);
+    font-size: clamp(10px, 0.8vw, 12px);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-top: 3vh;
+    margin-bottom: 10px;
+  }
   .hub-hero__actions {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    margin-top: 3vh;
   }
 
   /* ── MAIN ── */
