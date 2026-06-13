@@ -79,6 +79,19 @@ const workstreams: Workstream[] = [
       { label: 'Periodic progress reporting to ownership' },
     ],
   },
+  {
+    id: '06',
+    name: 'Operational Audit',
+    subtitle: 'Processes, organisation & personnel cost structure',
+    price: 0,
+    items: [
+      { label: 'Mapping and review of current operational processes across the key club functions' },
+      { label: 'Analysis of the organisational structure, reporting lines and decision-making model' },
+      { label: 'Review of the personnel cost structure — headcount, contracts and cost allocation' },
+      { label: 'Diagnostic output with findings, open issues and a clear recommendation for the next phase of engagement' },
+    ],
+    caveat: 'Included in the scope above. The audit is a prerequisite for defining and sizing the next phase of work — no separate fee applies.',
+  },
 ];
 
 const addon = {
@@ -152,7 +165,7 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
               </div>
             </div>
             <div class="qt-stream-price">
-              <span class="qt-price">{eur(w.price)}</span>
+              <span class="qt-price">{w.price === 0 ? 'Included' : eur(w.price)}</span>
             </div>
           </header>
           <ul class="qt-items">
