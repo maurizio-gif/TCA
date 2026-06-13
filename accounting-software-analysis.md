@@ -86,13 +86,10 @@ The only option that starts as accounting and can grow into a **full ERP — mul
 - **Implementation (one-time):** partner-led project — Italian localization, data migration, training, and any custom modules: **€10,000–25,000**. Total Year 1: ~€12,000–27,500.
 - **The scalability path (key differentiator):**
   - Phase 1 — Custom SaaS: accounting + SDI, Odoo hosts everything. All 50+ modules available to activate.
-  - Phase 2 — activate HR, member management, events, POS with RT fiscal printers.
-  - Phase 3 — multi-company: new entities on the same database, same COA, same dashboards.
-  - Phase 4 — Odoo.sh (developer PaaS): for custom Python modules (e.g. native regime 398/91 engine). +€25–115/mese infrastructure.
-  - Phase 5 — on-premise: full control, no per-user licensing after perpetual license.
+  - Phase 2+ (hypothetical, outside current scope): HR, multi-company, multi-country, custom modules — all on the same platform without a system migration.
 - **Multi-country:** 100+ official localizations — if the parent group has foreign entities, one Odoo instance handles all.
 - **API:** XML-RPC/JSON-RPC over the full ORM — most powerful data access available. No extra cost on Custom plan.
-- **Italian compliance:** `l10n_it_edi` — FatturaPA via SDI proxy K95IV18, withholding, Ri.Ba., DDT; POS + RT printers.
+- **Italian accounting compliance:** `l10n_it_edi` — FatturaPA via SDI proxy K95IV18, withholding, Ri.Ba., DDT, VAT export. Fiscal receipts (corrispettivi) via direct AdE connection — no RT printer required.
 - **Regime 398/91 — not native:** forfettario VAT, rendiconto, Modello EAS all require a partner-built custom module.
 
 ### 2.3 Head-to-head: CiC vs Odoo
@@ -134,12 +131,7 @@ This is more complex but is the architecture most Italian sports clubs with data
 1. **TeamSystem CiC** — first choice for cost, simplicity, and documented REST API (~€540–700/anno, users unlimited, no partner needed).
 2. **Odoo Custom SaaS** — second choice if TCA needs ERP scalability, multi-company, or multi-country capabilities. Justified when Phase 2-3 expansion is planned; Year 1 cost ~€12,000–27,500.
 
-**When Odoo's higher cost is justified:**
-- TCA plans to add a second entity (new club, new country) to the same system.
-- HR/payroll management is needed in-house.
-- POS with RT fiscal printers is required.
-- The parent group standardizes on one ERP across multiple entities.
-- Long-term: Year 2+ Odoo cost (~€2,300/anno for 5 users) is competitive once implementation is amortized.
+**When Odoo's higher cost is justified (hypothetical — outside current scope):** if TCA eventually needs to manage additional entities on the same platform, integrate across multiple countries, or expand beyond pure accounting — Odoo avoids a future system migration. Year 2+ cost (~€2,300/anno for 5 users) is competitive once the Year 1 implementation is amortized. If TCA stays a single accounting entity, CiC is decisively more cost-effective at ~€540–700/anno.
 
 ---
 

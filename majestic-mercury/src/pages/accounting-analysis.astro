@@ -251,17 +251,10 @@ const rows = [
         <ul class="fin-points">
           <li><strong>Pricing — Custom plan, hosted by Odoo (SaaS):</strong> ~€34–42/utente/mese (Custom plan, billed annually; exact EUR via <a href="https://www.odoo.com/pricing-configurator" target="_blank" rel="noopener">odoo.com/pricing-configurator</a>). For 5 users: ~€170–210/mese → <strong>~€2,000–2,500/anno</strong> in licenze. The Custom plan (not Standard) is required for API access and multi-company — the Standard plan (~€22–28/utente/mese) lacks both.</li>
           <li><strong>Implementation cost (one-time):</strong> partner-led project required — Italian localization, data migration, training, and any custom modules: estimate <strong>€10,000–25,000</strong> depending on scope. Total Year 1: ~€12,000–27,500.</li>
-          <li><strong>The scalability path — the key differentiator:</strong>
-            Phase 1 (now): Custom SaaS hosted by Odoo — accounting + SDI, zero infrastructure management, all other Odoo modules already available to activate. ·
-            Phase 2: add HR, member management (custom or OCA module), events, POS with RT fiscal printers. ·
-            Phase 3: multi-company — a second legal entity (new club, new country) on the same database, same chart of accounts, same dashboards. ·
-            Phase 4: move to Odoo.sh (PaaS developer hosting) when custom Python modules are needed (e.g. a native regime 398/91 engine). Odoo.sh adds ~€25–115/mese for infrastructure. ·
-            Phase 5: on-premise — full control, no per-user licensing after the perpetual license purchase.
-          </li>
-          <li><strong>Multi-country:</strong> 100+ official localizations — if TCA's parent group has entities in other countries, one Odoo instance handles all, with localized VAT, invoicing, and payroll.</li>
-          <li><strong>API:</strong> XML-RPC/JSON-RPC over the full ORM — most powerful data access available. Full trial balance, P&amp;L, all GL moves, per period — no extra cost on Custom plan.</li>
-          <li><strong>Italian compliance:</strong> <code>l10n_it_edi</code> — FatturaPA via SDI proxy K95IV18, withholding taxes, Ri.Ba., DDT; POS + RT fiscal printers.</li>
+          <li><strong>API:</strong> XML-RPC/JSON-RPC over the full ORM — most powerful data access available. Full trial balance, P&amp;L, all GL moves, per period — included in Custom plan at no extra cost.</li>
+          <li><strong>Italian accounting compliance:</strong> <code>l10n_it_edi</code> — FatturaPA via SDI proxy K95IV18, withholding taxes, Ri.Ba., DDT, VAT export; liquidazioni IVA. Fiscal receipts (corrispettivi) are outside scope — TCA connects directly to Agenzia delle Entrate, no RT printer.</li>
           <li><strong>Regime 398/91 — not native:</strong> forfettario VAT, rendiconto format, and Modello EAS all require a custom partner-built module. Main barrier for an ASD/SSD without a dedicated IT budget.</li>
+          <li><strong>Future scalability (hypothetical):</strong> if TCA ever needs HR, multi-company, multi-country, or additional modules on the same platform, Odoo can expand without a system migration — but this is outside the current accounting scope.</li>
         </ul>
       </div>
       <div class="fin-card fin-card--alt">
@@ -373,9 +366,9 @@ const rows = [
             <td>100+ localizations included</td>
           </tr>
           <tr>
-            <td><strong>ERP expansion</strong></td>
-            <td>Accounting only — no growth path</td>
-            <td>Full ERP suite (HR, CRM, POS, Inventory, Events…)</td>
+            <td><strong>Future ERP expansion</strong><div class="aa-note">hypothetical — out of current scope</div></td>
+            <td>Not possible — accounting ceiling</td>
+            <td>Full ERP suite available (HR, CRM, Inventory, multi-company…) without platform change</td>
           </tr>
           <tr>
             <td><strong>Free trial</strong></td>
@@ -396,7 +389,7 @@ const rows = [
       </table>
     </div>
     <div class="pricing-caveat">
-      <strong>When Odoo's higher cost is justified:</strong> if TCA plans to expand to additional club entities, add HR/payroll, manage a POS with fiscal printers, or integrate with a parent group operating in multiple countries — Odoo's Year 2+ cost per user can be lower than replacing CiC with a new system. The break-even depends on how many modules and entities are activated. If TCA remains a single accounting entity with no ERP ambitions, TeamSystem CiC is decisively more cost-effective.
+      <strong>When Odoo's higher cost is justified:</strong> if TCA plans to manage additional club entities on the same platform, integrate with a parent group in multiple countries, or eventually expand beyond pure accounting — Odoo's Year 2+ cost (~€2,300/anno for 5 users) is competitive once the Year 1 implementation is amortized. If TCA remains a single accounting entity with no ERP ambitions, TeamSystem CiC is decisively more cost-effective at ~€540–700/anno.
     </div>
 
     <!-- ── NEXT STEPS ── -->
