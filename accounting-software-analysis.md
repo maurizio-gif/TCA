@@ -1,86 +1,156 @@
 # Tennis Club Ambrosiano — Cloud Accounting Software Analysis (carve-out, migration by December)
 
-**Analysis date:** 12 June 2026
+**Analysis date:** 13 June 2026 *(rev. 2 — pricing, features, and scalability comparison added)*
 **Key requirements:**
 1. **Import (POST)** of revenue data from the club's management system, broken down by **general-ledger account** and **payment type/method** (ideally also by revenue center).
 2. **Extraction (GET)** of consolidated data (account balances, aggregated income/expenses, trial balance, payment schedule) to feed **dynamic external dashboards** (Power BI, Looker Studio, custom apps).
-3. Italian tax compliance: SDI electronic invoicing, VAT, telematic receipts; the **398/91 regime** is relevant if the club operates as an ASD/SSD (e-invoicing mandatory since 1 Jan 2024; from 1 Jan 2026 the shift from VAT exclusion to VAT exemption brings new obligations).
+3. Italian tax compliance: SDI electronic invoicing, VAT, telematic receipts; the **398/91 regime** is the decisive filter if TCA operates as an ASD/SSD (e-invoicing mandatory since 1 Jan 2024; from 1 Jan 2026 shift from VAT exclusion to VAT exemption for sports activities).
 
-**Scope note:** the requirement is **true general-ledger accounting** (chart of accounts, double-entry, balances). Products that only handle invoicing/receipts on a cash basis — most notably **Fatture in Cloud** — do not qualify as the accounting system itself; they are assessed here only as possible complementary tools.
+**Scope note:** the requirement is **true general-ledger accounting** (chart of accounts, double-entry, balances). Products that only handle invoicing/receipts on a cash basis — most notably **Fatture in Cloud** — do not qualify as the accounting system itself.
+
+---
+
+## 0. Critical pre-condition: regime 398/91
+
+Before any software decision, confirm with the accountant whether TCA operates under **Legge 398/1991**. Virtually every Italian amateur sports club (circolo tennis included) qualifies if commercial revenues are below €400,000/year. This regime changes the entire accounting architecture required:
+
+- **Forfettario VAT:** pay only 1/3 of collected VAT on commercial income — standard accounting software calculates full VAT and does not support this mechanism natively.
+- **Simplified bookkeeping:** a *registro IVA minori* is legally sufficient (full double-entry not mandatory, though advisable for control).
+- **Rendiconto economico-finanziario:** the financial statement format for enti non commerciali differs from the standard Italian *bilancio d'esercizio*. Most general-purpose tools produce the latter.
+- **Modello EAS:** annual declaration for non-commercial entities under D.Lgs. 36/2021 (Riforma dello Sport). No generic accounting software generates this.
+- **Compensi sportivi dilettantistici:** athlete/coach payments below €10,000 are IRPEF-exempt — must be tracked per individual.
 
 ---
 
 ## 1. Comparison table
 
-| Software | True general-ledger accounting | Public documented API | POST revenue with account + payment method | GET consolidated data (balances/trial balance) | Italian compliance | Verdict |
-|---|---|---|---|---|---|---|
-| **TeamSystem Contabilità in Cloud** (ex Reviso) | ✅ | ✅ Documented REST API | ✅ POST vouchers/invoices onto a real chart of accounts | ✅ `accounts` resource exposes `balance`; entries by period | ✅ Italian TeamSystem product | **Finalist #1** |
-| **Odoo** (Enterprise, l10n_it) | ✅ | ✅ XML-RPC/JSON-RPC over the whole ORM | ✅ `account.move` (full journal entries), `account.payment` with journal | ✅ `read_group` on `account.move.line` → trial balance, P&L | ✅ Native SDI (proxy code K95IV18), withholding, Ri.Ba., DDT | **Finalist #2** |
-| **TeamSystem Enterprise** (TSE in Cloud) | ✅ | ✅ Developer portal incl. accounting API | ✅ likely ("accounting movements" services) | To be verified | ✅ | Possible but an over-sized ERP for a club |
-| **Passepartout Passcom/Mexal** | ✅ | ⚠️ WebAPI documented (EduPass) but standard resources are document/master-data oriented | ⚠️ Via PassBuilder/Sprix customization built by a partner | ⚠️ Same | ✅ | Possible, but partner-dependent custom development |
-| Fatture in Cloud (TeamSystem) | ❌ **Not accounting** — invoicing/receipts/cash, no chart of accounts, no double-entry | ✅ Excellent (OpenAPI, SDKs, webhooks) | ✅ (but onto categories/revenue centers, not GL accounts) | ❌ No balances/trial balance; lists only | ✅ SDI via API | Excluded as the accounting system; possible complementary invoicing/receipts layer |
-| Zucchetti (Digital Hub, Tieni il Conto) | ✅/⚠️ | ❌ Docs only via sales/partner channel | ❌ Not publicly documented | ❌ | ✅ (DH = SDI only) | Excluded — API opacity |
-| Aruba Electronic Invoicing | ❌ (SDI channel only) | ✅ Public apidoc | ❌ XML upload to SDI only | ❌ Invoice/notification search only | ✅ (SDI only) | SDI channel only, not an accounting backend |
-| Wolters Kluwer Genya | ✅ | ❌ No public API found (Excel/XML import only) | ❌ | ❌ | ✅ | Excluded |
-| Dylog / Datev Koinos / B.Point | ✅ | ❌ (file tracts or e-invoicing API only) | ❌ | ❌ | ✅ | Excluded; Koinos/B.Point are accountant-side tools |
-| Sibill / Tot / Qonto / Agicap | ❌ Fintech/treasury, not accounting | ⚠️ Some good APIs (Qonto, Agicap) | ❌ | ❌ | ⚠️ | Wrong category; complementary at most |
-| Xero | ✅ | ✅ Excellent (Reports API: TrialBalance, P&L) | ✅ | ✅ | ❌ **No SDI/Italy support** ("no sights for Italy") | Excluded |
-| QuickBooks Online | ✅ | ✅ Excellent (Reports API) | ✅ | ✅ | ⚠️ Only via third-party add-on (FOR S.r.l.); Intuit withdrew from France in 2023 | Double-vendor risk: not recommended |
-| Holded | ✅ (Spain) | ⚠️ API key, no consolidated report endpoints | ✅ partial | ❌ | ❌ Spain only (Veri*factu/AEAT) | Excluded |
+| Software | True GL | Public API | POST (account + payment) | GET (balances/trial balance) | Italian compliance | **Regime 398/91** | Verdict |
+|---|---|---|---|---|---|---|---|
+| **TeamSystem Sport** (Sportivi in Cloud) | ✅ GL + club mgmt | ⚠️ Partial — TeamSystem ecosystem | ✅ Native club workflows | ✅ ASD/SSD rendiconto | ✅ Full ASD/SSD | ✅ **Native support** | **Sports Specialist** |
+| **TeamSystem Contabilità in Cloud** (ex Reviso) | ✅ | ✅ Documented REST API | ✅ POST vouchers/invoices onto real COA | ✅ `accounts.balance` + entries by period | ✅ Italian TeamSystem product | ⚠️ Requires configuration | **Finalist #1** |
+| **Odoo** (Enterprise, l10n_it) | ✅ | ✅ XML-RPC/JSON-RPC over whole ORM | ✅ `account.move` (full journal entries), `account.payment` with journal | ✅ `read_group` on `account.move.line` → trial balance, P&L | ✅ Native SDI (proxy K95IV18), withholding, Ri.Ba., DDT | ❌ **Not native** — custom dev required | **Finalist #2*** |
+| **TeamSystem Enterprise** (TSE in Cloud) | ✅ | ✅ Developer portal incl. accounting | ✅ likely ("accounting movements" services) | To be verified | ✅ | ⚠️ Requires configuration | Fallback — oversized ERP |
+| **Passepartout Passcom/Mexal** | ✅ | ⚠️ WebAPI documented but resources are document/master-data oriented | ⚠️ Via PassBuilder/Sprix partner build | ⚠️ Same | ✅ | ⚠️ Via partner configuration | Fallback — partner-dependent |
+| Fatture in Cloud (TeamSystem) | ❌ No chart of accounts, no double-entry | ✅ Excellent (OpenAPI, SDKs, webhooks) | ✅ (onto categories/revenue centers, not GL accounts) | ❌ Lists only, no balances | ✅ SDI via API | N/A | Complementary invoicing layer only |
+| Zucchetti, Aruba, WK Genya, Dylog, etc. | Partial/No | ❌ API opacity or SDI-only | ❌ | ❌ | ✅ (SDI only for some) | N/A | Excluded |
+| Xero, QuickBooks, Holded | ✅ (non-Italian) | ✅ Excellent APIs | ✅ | ✅ | ❌ No Italy/SDI support | N/A | Excluded |
+
+*\* Odoo is only a realistic option if TCA is an SSD s.r.l. with commercial revenues above the €400,000 regime 398/91 threshold, or if a custom partner-built 398/91 module is budgeted.*
 
 ---
 
 ## 2. The finalists in detail
 
-### 2.1 TeamSystem Contabilità in Cloud (ex Reviso) — Finalist #1
+### 2.0 TeamSystem Sport (Sportivi in Cloud) — Sports Specialist (first choice for ASD/SSD)
 
-A **true cloud general ledger** with a documented REST API ([api-docs.reviso.com](https://api-docs.reviso.com/), [Italian docs](https://www.reviso.com/it/assistenza/articoli/rest-api/)).
+Purpose-built for Italian sports associations ([TeamSystem Sport](https://www.teamsystem.com/sport/sportivi-in-cloud/)).
 
-- **POST (requirement 1):** journal entries and invoices created via vouchers (official example: [`POST /vouchers/drafts/customer-invoices`](https://www.reviso.com/it/assistenza/articoli/restful-api-esempio-crea-fattura-manuale/)) onto a **real, customizable chart of accounts** — revenue can be posted to the right account with the relevant counterpart (cash, bank, POS), which covers the payment-type breakdown.
-- **GET (requirement 2):** the `accounts` resource exposes `accountNumber`, `accountType` and **`balance`**, plus entries per fiscal year/period (`GET /accounts/:n/accounting-years/:y/periods/:p/vouchers`) — effectively a **trial balance via API**, ready for external dashboards.
-- **Auth:** dual token (`X-AppSecretToken` + `X-AgreementGrantToken`); free demo environment (`?demo=true`, GET only).
-- **Open issue to resolve before signing:** Reviso was rebranded "Contabilità in Cloud" and is sold on the TeamSystem Store ([rebranding notice](https://www.reviso.com/it/assistenza/articoli/reviso-diventa-contabilita-in-cloud/), [product page](https://www.teamsystem.com/store/contabilita-in-cloud/funzionalita/registrazioni-contabili/)) — **confirm the product roadmap with TeamSystem** given the December deadline.
+- **Regime 398/91 native:** handles IVA forfettaria (1/3 of collected VAT on commercial income), produces the *rendiconto economico-finanziario* required for non-commercial entities, manages quote associative as non-taxable, and tracks *compensi sportivi dilettantistici* within IRPEF exemption thresholds.
+- **2024-2026 compliance:** covers mandatory e-invoicing for ASD/SSD (since Jan 2024) and the 2026 shift from VAT exclusion to VAT exemption for sports activities; D.Lgs. 36/2021 Riforma dello Sport.
+- **Caveat:** standalone public REST API is less mature than Reviso/Odoo — verify dashboard integration depth. If Power BI / Looker Studio connectivity is essential, consider the two-layer architecture below.
 
-### 2.2 Odoo Enterprise + Italian localization — Finalist #2
+### 2.1 TeamSystem Contabilità in Cloud (ex Reviso) — Finalist #1 (GL + API)
 
-- **Compliance:** mature native Italian localization ([official docs](https://www.odoo.com/documentation/18.0/applications/finance/fiscal_localizations/italy.html)): `l10n_it_edi` sends/receives FatturaPA **through Odoo's accredited SDI proxy** (recipient code `K95IV18`); withholding taxes, Ri.Ba., DDT, VAT XML export; telematic receipts via Odoo PoS + certified RT printers.
-- **API** ([External API](https://www.odoo.com/documentation/18.0/developer/reference/external_api.html)): XML-RPC/JSON-RPC with API keys over the entire ORM — `create` on `account.move` (any journal entry, lines per GL account) and `account.payment` (journal = payment method/account); `read_group`/`search_read` on `account.move.line` for balances, trial balance and P&L per period. No rate limits when on Odoo.sh/self-hosted.
-- **Caveats:** on Odoo Online (SaaS) the External API is available **only on Custom plans** (alternatively Odoo.sh or self-hosted); implementation normally requires a partner and a real project — weigh against the December deadline.
+A **true cloud general ledger** with a documented REST API ([api-docs.reviso.com](https://api-docs.reviso.com/)).
 
-### 2.3 Fallback options
+**Pricing (per transaction volume — users unlimited):**
+| Plan | Price | Annual entries |
+|---|---|---|
+| Base | ~€25–29/mese | ~6,000 voci/anno |
+| Medium | ~€45–59/mese | ~15,000 voci/anno |
+| Advanced | on request | unlimited |
 
-- **TeamSystem Enterprise (TSE in Cloud):** public developer portal ([tse.docs.teamsystem.cloud](https://tse.docs.teamsystem.cloud/)) including an accounting API reference with "accounting movements" services — a real candidate on paper, but it is a full mid-market ERP: licensing and complexity are likely oversized for a tennis club. Requires being a TSE customer.
-- **Passepartout Passcom/Mexal:** true accounting with a documented WebAPI ([EduPass](https://www.edupass.it/manuali/manualistica-passcom/manuale-prodotto?a=manuale-passweb-ecommerce%2Fconfigurazione%2Fpasscom--configurazione-gestionale%2Fweb-api-passcom)), but journal-entry POST and balance GET would almost certainly go through a PassBuilder/Sprix customization built by a Passepartout partner — feasible, with vendor lock-in and custom development to budget.
+*Figures indicative; confirm at teamsystem.com/store/contabilita-in-cloud/prezzi.*
 
-### 2.4 Where Fatture in Cloud still fits (complementary only)
+- **Users:** unlimited included — no per-user cost. The whole TCA team at the same flat rate.
+- **Typical TCA cost:** ~€45–59/mese → ~€540–700/anno. Implementation: guided self-setup, no partner required (€0–2,000).
+- **POST:** journal entries and invoices via vouchers onto a real, customizable chart of accounts — revenue posted per GL account with correct counterpart (cash, bank, POS).
+- **GET:** `accounts` resource exposes `balance` plus entries by fiscal year/period — trial balance via REST API, ready for Power BI / Looker Studio.
+- **Italian compliance:** native IVA, SDI/FatturaPA via TeamSystem ecosystem, export to studio commercialista.
+- **Regime 398/91:** not native; requires COA configuration and manual processes for forfettario VAT.
+- **Ceiling:** accounting only — no HR, CRM, member management, multi-company, or ERP expansion path.
+- **Open issue:** confirm product roadmap with TeamSystem before the December deadline.
 
-Fatture in Cloud has the best-documented API on the Italian market ([developers.fattureincloud.it](https://developers.fattureincloud.it/), OpenAPI spec on [GitHub](https://github.com/fattureincloud/openapi-fattureincloud), 8 official SDKs, webhooks, API included in every paid plan) and natively supports `POST /receipts` and `POST /issued_documents` with `payment_account`, `rc_center` and line categories. But it has **no chart of accounts, no double-entry, no balance/trial-balance endpoints**: it is an invoicing/receipts/cash tool. If the chosen GL system lacks a good SDI front-end, FIC could serve as the invoicing/receipts layer feeding the GL — otherwise it drops out of the architecture entirely.
+### 2.2 Odoo Enterprise + Italian localization — Finalist #2 (conditional — but uniquely scalable)
+
+The only option that starts as accounting and can grow into a **full ERP — multi-module, multi-company, multi-country — without changing platform**.
+
+**Pricing (Custom plan, SaaS hosted by Odoo):**
+| Users | Monthly (Custom SaaS) | Annual |
+|---|---|---|
+| 5 users | ~€170–210/mese | ~€2,000–2,500 |
+| 10 users | ~€340–420/mese | ~€4,000–5,000 |
+
+*~€34–42/utente/mese indicativo per l'Italia (exact EUR: odoo.com/pricing-configurator). The Standard plan (~€22–28/utente/mese) excludes the external API and multi-company — Custom is required.*
+
+- **Implementation (one-time):** partner-led project — Italian localization, data migration, training, and any custom modules: **€10,000–25,000**. Total Year 1: ~€12,000–27,500.
+- **The scalability path (key differentiator):**
+  - Phase 1 — Custom SaaS: accounting + SDI, Odoo hosts everything. All 50+ modules available to activate.
+  - Phase 2+ (hypothetical, outside current scope): HR, multi-company, multi-country, custom modules — all on the same platform without a system migration.
+- **Multi-country:** 100+ official localizations — if the parent group has foreign entities, one Odoo instance handles all.
+- **API:** XML-RPC/JSON-RPC over the full ORM — most powerful data access available. No extra cost on Custom plan.
+- **Italian accounting compliance:** `l10n_it_edi` — FatturaPA via SDI proxy K95IV18, withholding, Ri.Ba., DDT, VAT export. Fiscal receipts (corrispettivi) via direct AdE connection — no RT printer required.
+- **Regime 398/91 — not native:** forfettario VAT, rendiconto, Modello EAS all require a partner-built custom module.
+
+### 2.3 Head-to-head: CiC vs Odoo
+
+| Dimension | TeamSystem CiC | Odoo Custom SaaS |
+|---|---|---|
+| **Pricing model** | Per transaction volume, users unlimited | Per user/month |
+| **Year 1 total cost** | ~€540–2,700 | ~€12,300–27,500 |
+| **Year 2+ annual** | ~€540–700 | ~€2,300 (5 users) |
+| **API** | REST, documented, all plans | XML-RPC/JSON-RPC, Custom plan only |
+| **Multi-company** | No | Yes (Custom plan) |
+| **Multi-country** | Italy only | 100+ localizations |
+| **ERP modules** | None | Full suite (HR, CRM, POS, Inventory…) |
+| **Setup complexity** | Low — self-service | Medium-High — partner required |
+| **Regime 398/91** | Config required | Custom module required |
+| **Growth path** | Accounting ceiling | Full ERP, multi-entity |
+
+### 2.3 Two-layer architecture (recommended for API + regime 398/91 coverage)
+
+If TCA needs both native regime 398/91 support **and** a full REST API for external dashboards:
+
+1. **Layer 1 — club management + regime 398/91:** TeamSystem Sport (or Wansport / Golee) handles membership, courts, forfettario VAT, rendiconto.
+2. **Layer 2 — GL + API:** TeamSystem Contabilità in Cloud receives aggregated journal entries from layer 1 and exposes the full REST API for Power BI / Looker Studio.
+
+This is more complex but is the architecture most Italian sports clubs with data ambitions end up with.
 
 ---
 
 ## 3. Recommendation
 
-1. **First choice: TeamSystem Contabilità in Cloud (ex Reviso)** — the only Italian-native cloud product that satisfies both requirements through a publicly documented API (POST onto a real chart of accounts; GET account balances), at SME-friendly cost. Condition: written confirmation of the product roadmap from TeamSystem.
-2. **Second choice: Odoo Enterprise with Italian localization** — the most powerful and most future-proof option (full GL API, native SDI, built-in dashboards), at the price of a partner-led implementation; choose it if the carve-out budget and timeline allow a proper project before December.
-3. **Fallbacks:** TeamSystem Enterprise (if the group is standardizing on TeamSystem ERP anyway) or Passepartout via a partner POC.
+**Step 0 (before anything):** confirm with the accountant whether TCA operates under regime 398/91. This is the single most important decision gate.
 
-**Suggested next steps (December deadline):**
-1. Confirm with the accountant the post-carve-out accounting perimeter (full double-entry in-house vs. cash-basis management with the GL at the firm) — this validates the requirement assumption above.
-2. Open test accounts: Contabilità in Cloud/Reviso demo + an Odoo trial with `l10n_it`.
-3. Two-week proof of concept: POST one real day of revenue (courts, bar, membership fees) with accounts and payment methods + GET balances into a prototype dashboard (Power BI/Looker Studio).
-4. Obtain TeamSystem's roadmap commitment for Contabilità in Cloud before contract signature.
+**If ASD/SSD in regime 398/91 (most likely):**
+1. **TeamSystem Sport** as the primary system (native 398/91 + club management).
+2. If Power BI / Looker Studio integration is critical and TeamSystem Sport's API is insufficient: two-layer architecture — TeamSystem Sport + **TeamSystem CiC** as the GL/API layer.
+3. Odoo: not recommended without a custom 398/91 module. Could be scoped for a Phase 2 if TCA plans multi-entity expansion.
+
+**If SSD s.r.l. above €400,000 (full commercial accounting, no 398/91):**
+1. **TeamSystem CiC** — first choice for cost, simplicity, and documented REST API (~€540–700/anno, users unlimited, no partner needed).
+2. **Odoo Custom SaaS** — second choice if TCA needs ERP scalability, multi-company, or multi-country capabilities. Justified when Phase 2-3 expansion is planned; Year 1 cost ~€12,000–27,500.
+
+**When Odoo's higher cost is justified (hypothetical — outside current scope):** if TCA eventually needs to manage additional entities on the same platform, integrate across multiple countries, or expand beyond pure accounting — Odoo avoids a future system migration. Year 2+ cost (~€2,300/anno for 5 users) is competitive once the Year 1 implementation is amortized. If TCA stays a single accounting entity, CiC is decisively more cost-effective at ~€540–700/anno.
 
 ---
 
-## 4. Main sources
+## 4. Suggested next steps (December deadline)
 
-- Contabilità in Cloud / Reviso: [api-docs.reviso.com](https://api-docs.reviso.com/) · [REST API (IT)](https://www.reviso.com/it/assistenza/articoli/rest-api/) · [Invoice creation example](https://www.reviso.com/it/assistenza/articoli/restful-api-esempio-crea-fattura-manuale/) · [Authentication](https://www.reviso.com/authentication/) · [Rebranding](https://www.reviso.com/it/assistenza/articoli/reviso-diventa-contabilita-in-cloud/) · [TeamSystem Store](https://www.teamsystem.com/store/contabilita-in-cloud/funzionalita/registrazioni-contabili/)
+1. Confirm with the accountant: ASD vs. SSD, and whether regime 398/91 applies (revenues vs. €400,000).
+2. Demo TeamSystem Sport: verify regime 398/91 coverage and API/export capabilities.
+3. Open a Reviso/CiC test account and run a two-week proof of concept: POST one real day of revenue + GET balances into a prototype dashboard.
+4. If two-layer architecture: model the integration between the club system and CiC.
+5. Obtain TeamSystem's written roadmap commitment for the chosen product before signing.
+
+---
+
+## 5. Main sources
+
+- Contabilità in Cloud / Reviso: [api-docs.reviso.com](https://api-docs.reviso.com/) · [REST API (IT)](https://www.reviso.com/it/assistenza/articoli/rest-api/) · [Rebranding](https://www.reviso.com/it/assistenza/articoli/reviso-diventa-contabilita-in-cloud/)
 - Odoo: [Italian localization 18.0](https://www.odoo.com/documentation/18.0/applications/finance/fiscal_localizations/italy.html) · [External API](https://www.odoo.com/documentation/18.0/developer/reference/external_api.html) · [OCA l10n-italy](https://github.com/OCA/l10n-italy)
-- TeamSystem Enterprise: [tse.docs.teamsystem.cloud](https://tse.docs.teamsystem.cloud/) · TS Digital: [TS Digital Invoice API](https://www.teamsystem.com/store/ts-digital-invoice/funzionalita/api/)
-- Fatture in Cloud: [developers.fattureincloud.it](https://developers.fattureincloud.it/) · [API Reference](https://developers.fattureincloud.it/api-reference/) · [OpenAPI spec (GitHub)](https://github.com/fattureincloud/openapi-fattureincloud) · [Authentication](https://developers.fattureincloud.it/docs/authentication/) · [Limits & quotas](https://developers.fattureincloud.it/docs/basics/limits-and-quotas/) · [Webhooks](https://developers.fattureincloud.it/docs/webhooks/) · [E-invoice](https://developers.fattureincloud.it/docs/guides/e-invoice-management/) · [API included in licenses](https://help.fattureincloud.it/help/articolo/666-integra-altri-software-fatture-cloud)
-- Passepartout: [Passcom WebAPI (EduPass)](https://www.edupass.it/manuali/manualistica-passcom/manuale-prodotto?a=manuale-passweb-ecommerce%2Fconfigurazione%2Fpasscom--configurazione-gestionale%2Fweb-api-passcom) · [Accounting](https://www.passepartout.net/software/imprese/gestione-contabilita)
-- Zucchetti: [Digital Hub third-party integration](https://help.zucchetti.it/cms/kb/soluzioni/fatturazione-elettronica/digital-hub/scopri-e-informati/faq/integrazioni/non-ho-gestionale-zucchetti-come-posso-integrarmi-con-digital-hub.html) · [Tieni il Conto PRO](https://www.zucchetti.it/website/cms/prodotto/8310-tieni-il-conto-pro.html)
-- Aruba: [apidoc v1](https://fatturazioneelettronica.aruba.it/apidoc/docs.html) · [apidoc v2](https://fatturazioneelettronica.aruba.it/apidoc/v2/docs.html)
-- Xero: [Reports API](https://developer.xero.com/documentation/api/accounting/reports) · [No Italy (community)](https://community.xero.com/business/discussion/115295423) — QuickBooks: [Reports API](https://developer.intuit.com/app/developer/qbo/docs/workflows/run-reports) · [FOR:QUICKBOOKS](https://www.quickbooksitalia.com/) · [France discontinuation](https://blogs.intuit.com/2023/06/12/discontinuation-of-quickbooks-in-france/) — Holded: [API](https://developers.holded.com/reference)
-- ASD/SSD 398/91 regime: [TeamSystem Magazine](https://www.teamsystem.com/magazine/sport-e-wellness/regime-forfettario-asd-ssd/) · [2026 changes](https://fatturapro.click/associazioni-sportive-dilettantistiche-regime-398-91-e-novita-2026/) · [Mandatory e-invoicing for ASD since 2024](https://www.aruba.it/magazine/fatturazione-elettronica/associazioni-sportive-dilettantistiche-fattura-elettronica-obbligatoria-dal-1-gennaio-2024.aspx)
-- Sports verticals: [TeamSystem Sportivi in Cloud](https://www.teamsystem.com/sport/sportivi-in-cloud/) · [Wansport](https://wansport.com/gestionale-per-tennis-club/) · [Golee](https://golee.it/gestionale-per-circoli/)
+- TeamSystem Enterprise: [tse.docs.teamsystem.cloud](https://tse.docs.teamsystem.cloud/)
+- Fatture in Cloud: [developers.fattureincloud.it](https://developers.fattureincloud.it/) · [OpenAPI spec (GitHub)](https://github.com/fattureincloud/openapi-fattureincloud)
+- Passepartout: [Passcom WebAPI (EduPass)](https://www.edupass.it/manuali/manualistica-passcom/manuale-prodotto?a=manuale-passweb-ecommerce%2Fconfigurazione%2Fpasscom--configurazione-gestionale%2Fweb-api-passcom)
+- ASD/SSD 398/91: [regime forfettario (TeamSystem Magazine)](https://www.teamsystem.com/magazine/sport-e-wellness/regime-forfettario-asd-ssd/) · [2026 changes](https://fatturapro.click/associazioni-sportive-dilettantistiche-regime-398-91-e-novita-2026/) · [mandatory e-invoicing since 2024](https://www.aruba.it/magazine/fatturazione-elettronica/associazioni-sportive-dilettantistiche-fattura-elettronica-obbligatoria-dal-1-gennaio-2024.aspx)
+- Sports verticals: [TeamSystem Sportivi in Cloud](https://www.teamsystem.com/sport/sportivi-in-cloud/) · [Wansport tennis](https://wansport.com/gestionale-per-tennis-club/) · [Golee circoli](https://golee.it/gestionale-per-circoli/)

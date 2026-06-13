@@ -4,6 +4,18 @@ import PhotoBand from '../components/PhotoBand.astro';
 
 const rows = [
   {
+    sports: true,
+    sw: 'TeamSystem Sport',
+    swNote: 'Sportivi in Cloud',
+    gl: 'Yes — GL integrated with club management',
+    api: 'Partial — TeamSystem ecosystem; no standalone public REST spec',
+    post: 'Yes — native club workflows (courts, membership fees, bar)',
+    get: 'Yes — sector-specific reports (ASD/SSD rendiconto)',
+    it: 'Yes — full ASD/SSD compliance',
+    regime398: 'Native support',
+    verdict: 'Sports Specialist', vClass: 'sport', vNote: 'Purpose-built for ASD/SSD in regime 398/91; evaluate API depth vs. dashboard requirements',
+  },
+  {
     finalist: true,
     sw: 'TeamSystem Contabilità in Cloud',
     swNote: 'ex Reviso',
@@ -12,6 +24,7 @@ const rows = [
     post: 'Yes — vouchers/invoices onto a real chart of accounts',
     get: 'Yes — accounts.balance, entries by period',
     it: 'Yes',
+    regime398: 'Requires configuration',
     verdict: 'Finalist #1', vClass: 'ok', vNote: 'Confirm product roadmap with TeamSystem',
   },
   {
@@ -23,7 +36,8 @@ const rows = [
     post: 'Yes — account.move journal entries, payments per journal',
     get: 'Yes — trial balance & P&L via read_group',
     it: 'Yes — native SDI proxy, withholding, Ri.Ba.',
-    verdict: 'Finalist #2', vClass: 'ok', vNote: 'API on Custom plans / Odoo.sh / self-hosted; partner-led project',
+    regime398: 'Not native — custom dev required',
+    verdict: 'Finalist #2*', vClass: 'warn', vNote: '* For ASD/SSD only if custom regime 398/91 module is built; API on Custom plans / Odoo.sh / self-hosted',
   },
   {
     sw: 'TeamSystem Enterprise',
@@ -33,6 +47,7 @@ const rows = [
     post: 'Likely ("accounting movements" services)',
     get: 'To be verified',
     it: 'Yes',
+    regime398: 'Requires configuration',
     verdict: 'Fallback', vClass: 'warn', vNote: 'Over-sized mid-market ERP for a club',
   },
   {
@@ -43,6 +58,7 @@ const rows = [
     post: 'Via partner-built PassBuilder/Sprix customization',
     get: 'Via the same customization',
     it: 'Yes',
+    regime398: 'Via partner configuration',
     verdict: 'Fallback', vClass: 'warn', vNote: 'Partner-dependent custom development',
   },
   {
@@ -53,6 +69,7 @@ const rows = [
     post: 'Yes, but onto categories/revenue centers, not GL accounts',
     get: 'No — lists only, no balances',
     it: 'Yes — SDI via API',
+    regime398: 'N/A',
     verdict: 'Not accounting', vClass: 'no', vNote: 'Complementary invoicing layer at most',
   },
   {
@@ -63,6 +80,7 @@ const rows = [
     post: 'Not publicly documented',
     get: 'No',
     it: 'Yes (DH = SDI only)',
+    regime398: 'N/A',
     verdict: 'Excluded', vClass: 'no', vNote: 'API opacity',
   },
   {
@@ -72,6 +90,7 @@ const rows = [
     post: 'No — XML upload to SDI only',
     get: 'No — invoice/notification search only',
     it: 'Yes (SDI only)',
+    regime398: 'N/A',
     verdict: 'Excluded', vClass: 'no',
   },
   {
@@ -81,6 +100,7 @@ const rows = [
     post: 'No',
     get: 'No',
     it: 'Yes',
+    regime398: 'N/A',
     verdict: 'Excluded', vClass: 'no', vNote: 'Koinos/B.Point are accountant-side tools',
   },
   {
@@ -90,6 +110,7 @@ const rows = [
     post: 'No',
     get: 'No',
     it: 'Partial',
+    regime398: 'N/A',
     verdict: 'Wrong category', vClass: 'no',
   },
   {
@@ -99,6 +120,7 @@ const rows = [
     post: 'Yes',
     get: 'Yes',
     it: 'No SDI / Italy support',
+    regime398: 'N/A',
     verdict: 'Excluded', vClass: 'no',
   },
   {
@@ -108,6 +130,7 @@ const rows = [
     post: 'Yes',
     get: 'Yes',
     it: 'Only via third-party add-on (FOR S.r.l.)',
+    regime398: 'N/A',
     verdict: 'Not recommended', vClass: 'no', vNote: 'Double-vendor risk; Intuit withdrew from France in 2023',
   },
   {
@@ -117,6 +140,7 @@ const rows = [
     post: 'Partial',
     get: 'No',
     it: 'No — Spain only (Veri*factu/AEAT)',
+    regime398: 'N/A',
     verdict: 'Excluded', vClass: 'no',
   },
 ];
@@ -166,18 +190,20 @@ const rows = [
             <th>POST Revenue<br />(account + payment)</th>
             <th>GET Balances /<br />Trial Balance</th>
             <th>Italian Compliance</th>
+            <th>Regime 398/91<br />(ASD/SSD)</th>
             <th>Verdict</th>
           </tr>
         </thead>
         <tbody>
           {rows.map((r) => (
-            <tr class={r.finalist ? 'row-finalist' : ''}>
+            <tr class={r.finalist ? 'row-finalist' : r.sports ? 'row-sports' : ''}>
               <td>{r.sw}{r.swNote && <div class="aa-note">{r.swNote}</div>}</td>
               <td>{r.gl}</td>
               <td>{r.api}</td>
               <td>{r.post}</td>
               <td>{r.get}</td>
               <td>{r.it}</td>
+              <td>{r.regime398 ?? '—'}</td>
               <td>
                 <span class={`aa-badge aa-badge--${r.vClass}`}>{r.verdict}</span>
                 {r.vNote && <div class="aa-note">{r.vNote}</div>}
@@ -191,26 +217,44 @@ const rows = [
     <!-- ── FINALISTS ── -->
     <h2 class="aa-section-title">02 · The <em>Finalists</em></h2>
     <div class="fin-grid">
-      <div class="fin-card">
-        <div class="fin-tag">Finalist #1 · First Choice</div>
-        <div class="fin-title">TeamSystem Contabilità in Cloud (ex Reviso)</div>
-        <p class="fin-text">The only Italian-native cloud product that satisfies <strong>both requirements through a publicly documented REST API</strong>, at SME-friendly cost.</p>
+      <div class="fin-card fin-card--sport">
+        <div class="fin-tag fin-tag--sport">Sports Specialist · Sector First Choice</div>
+        <div class="fin-title">TeamSystem Sport (Sportivi in Cloud)</div>
+        <p class="fin-text">The only option with <strong>native regime 398/91 support</strong> — the forfettario VAT mechanism, ASD/SSD rendiconto format, and member management are built in, not bolted on.</p>
         <ul class="fin-points">
-          <li><strong>POST:</strong> journal entries and invoices via vouchers onto a real, customizable chart of accounts — revenue posted per account with the right counterpart (cash, bank, POS) covers the payment-type breakdown.</li>
-          <li><strong>GET:</strong> the <code>accounts</code> resource exposes <code>balance</code> per account plus entries by fiscal year/period — a trial balance via API, ready for dashboards.</li>
-          <li><strong>Auth:</strong> dual token (AppSecret + AgreementGrant); free demo environment.</li>
-          <li><strong>Condition:</strong> obtain written confirmation of the product roadmap from TeamSystem (the product is the rebranded Reviso) before signing.</li>
+          <li><strong>Regime 398/91:</strong> handles IVA forfettaria (1/3 of collected VAT on commercial income) natively; produces the <em>rendiconto economico-finanziario</em> required for non-commercial entities.</li>
+          <li><strong>Membership:</strong> quote associative tracked as non-taxable; <em>compensi sportivi dilettantistici</em> managed within the IRPEF exemption thresholds.</li>
+          <li><strong>Compliance 2024-2026:</strong> covers the mandatory e-invoicing obligation for ASD/SSD (since Jan 2024) and the 2026 shift from VAT exclusion to VAT exemption for sports activities.</li>
+          <li><strong>Caveat:</strong> standalone public REST API less mature than Reviso or Odoo — verify dashboard integration depth before committing.</li>
         </ul>
       </div>
       <div class="fin-card">
-        <div class="fin-tag">Finalist #2 · Most Powerful</div>
-        <div class="fin-title">Odoo Enterprise + Italian Localization</div>
-        <p class="fin-text">The most powerful and future-proof option: full GL API, native SDI e-invoicing, built-in dashboards — at the price of a partner-led implementation.</p>
+        <div class="fin-tag">Finalist #1 · GL + API First Choice</div>
+        <div class="fin-title">TeamSystem Contabilità in Cloud (ex Reviso)</div>
+        <p class="fin-text">Italian-native cloud GL with a <strong>publicly documented REST API</strong> and a flat, predictable pricing model based on transaction volume — not per user. Best fit as the GL layer in a two-layer architecture (specialist club system + CiC for dashboards).</p>
         <ul class="fin-points">
-          <li><strong>Compliance:</strong> mature <code>l10n_it_edi</code> — FatturaPA through Odoo's accredited SDI proxy, withholding, Ri.Ba., DDT, VAT export; receipts via PoS + RT printers.</li>
-          <li><strong>POST:</strong> <code>account.move</code> (any journal entry, lines per GL account) and <code>account.payment</code> (journal = payment method/account).</li>
-          <li><strong>GET:</strong> <code>read_group</code> on <code>account.move.line</code> for balances, trial balance and P&amp;L per period.</li>
-          <li><strong>Caveat:</strong> External API only on Custom plans (or Odoo.sh / self-hosted); weigh the implementation project against the December deadline.</li>
+          <li><strong>Pricing — per transaction volume, users unlimited:</strong> plans are sized by annual accounting entries. Entry plan: ~€25–29/mese (~6,000 entries/year); medium plan: ~€45–59/mese (~15,000 entries/year). All + IVA, billed annually. No per-user cost — the entire TCA team can access at the same price. <em>Note: confirm exact current figures at teamsystem.com/store/contabilita-in-cloud/prezzi.</em></li>
+          <li><strong>Typical TCA cost:</strong> ~€45–59/mese → <strong>~€540–700/anno</strong> in licenze. Implementation: guided self-setup, no partner required (~€0–2,000 onboarding).</li>
+          <li><strong>POST:</strong> journal entries and invoices via vouchers onto a real, customizable chart of accounts — revenue posted per GL account with the correct counterpart (cash, bank, POS) covers the payment-type breakdown.</li>
+          <li><strong>GET:</strong> the <code>accounts</code> resource exposes <code>balance</code> per account plus entries by fiscal year/period — a trial balance via API, ready for Power BI / Looker Studio.</li>
+          <li><strong>Italian compliance:</strong> native IVA, SDI/FatturaPA via TeamSystem ecosystem, export to studio commercialista, liquidazioni IVA.</li>
+          <li><strong>Setup:</strong> fast — Italian product, no partner required, 14-day free trial, guided onboarding.</li>
+          <li><strong>Regime 398/91:</strong> not native, requires manual COA configuration and accountant-side processes for forfettario VAT.</li>
+          <li><strong>Ceiling:</strong> accounting only — no HR, no CRM, no member management, no multi-company, no ERP expansion path. If TCA grows beyond a single tennis club, this means switching systems.</li>
+          <li><strong>Condition:</strong> confirm product roadmap with TeamSystem (the product is the rebranded Reviso) before signing.</li>
+        </ul>
+      </div>
+      <div class="fin-card fin-card--caution">
+        <div class="fin-tag fin-tag--caution">Finalist #2 · Conditional — but uniquely scalable</div>
+        <div class="fin-title">Odoo Enterprise + Italian Localization</div>
+        <p class="fin-text">The only option that starts as an accounting system and can grow into a <strong>full ERP — multi-module, multi-company, multi-country — without changing platform</strong>. If TCA's ambitions extend beyond a single tennis club entity, Odoo is the only finalist that keeps pace. The trade-off: higher Year 1 cost and a regime 398/91 gap that requires custom development.</p>
+        <ul class="fin-points">
+          <li><strong>Pricing — Custom plan, hosted by Odoo (SaaS):</strong> ~€34–42/utente/mese (Custom plan, billed annually; exact EUR via <a href="https://www.odoo.com/pricing-configurator" target="_blank" rel="noopener">odoo.com/pricing-configurator</a>). For 5 users: ~€170–210/mese → <strong>~€2,000–2,500/anno</strong> in licenze. The Custom plan (not Standard) is required for API access and multi-company — the Standard plan (~€22–28/utente/mese) lacks both.</li>
+          <li><strong>Implementation cost (one-time):</strong> partner-led project required — Italian localization, data migration, training, and any custom modules: estimate <strong>€10,000–25,000</strong> depending on scope. Total Year 1: ~€12,000–27,500.</li>
+          <li><strong>API:</strong> XML-RPC/JSON-RPC over the full ORM — most powerful data access available. Full trial balance, P&amp;L, all GL moves, per period — included in Custom plan at no extra cost.</li>
+          <li><strong>Italian accounting compliance:</strong> <code>l10n_it_edi</code> — FatturaPA via SDI proxy K95IV18, withholding taxes, Ri.Ba., DDT, VAT export; liquidazioni IVA. Fiscal receipts (corrispettivi) are outside scope — TCA connects directly to Agenzia delle Entrate, no RT printer.</li>
+          <li><strong>Regime 398/91 — not native:</strong> forfettario VAT, rendiconto format, and Modello EAS all require a custom partner-built module. Main barrier for an ASD/SSD without a dedicated IT budget.</li>
+          <li><strong>Future scalability (hypothetical):</strong> if TCA ever needs HR, multi-company, multi-country, or additional modules on the same platform, Odoo can expand without a system migration — but this is outside the current accounting scope.</li>
         </ul>
       </div>
       <div class="fin-card fin-card--alt">
@@ -225,17 +269,141 @@ const rows = [
       </div>
     </div>
 
+    <!-- ── REGIME 398/91 ── -->
+    <h2 class="aa-section-title">03 · Why Regime 398/91 <em>Changes Everything</em></h2>
+    <div class="regime-alert">
+      <div class="regime-alert-title">Critical question before choosing any software: is TCA an ASD or SSD operating under regime 398/91?</div>
+      <p class="regime-alert-text">Virtually every Italian amateur sports club (circolo tennis included) qualifies for and uses <strong>Legge 398/1991</strong> if commercial revenues are below €400,000/year. This regime is not a minor tax detail — it changes the <em>entire accounting architecture</em> required.</p>
+    </div>
+    <div class="regime-grid">
+      <div class="regime-card">
+        <div class="regime-card-title">What regime 398/91 requires</div>
+        <ul class="regime-list">
+          <li><strong>Forfettario VAT:</strong> instead of collecting and remitting full VAT, the entity pays only 1/3 of the VAT shown on commercial invoices. Standard accounting software calculates full VAT — this mechanism must be built in or manually overridden.</li>
+          <li><strong>Simplified bookkeeping:</strong> a <em>registro IVA minori</em> (simplified VAT register) is legally sufficient. Full double-entry is not mandatory — though it remains best practice for control.</li>
+          <li><strong>Rendiconto economico-finanziario:</strong> the financial statement format is different from a standard Italian <em>bilancio d'esercizio</em> (OIC/IFRS). Most general-purpose accounting software produces the latter.</li>
+          <li><strong>Institutional vs. commercial separation:</strong> revenues from institutional activities (membership fees, grants) are entirely outside IRES and VAT. This must be enforced at chart-of-accounts level.</li>
+          <li><strong>Modello EAS:</strong> annual fiscal declaration for non-commercial entities (D.Lgs. 36/2021 Riforma dello Sport). No generic accounting software generates this.</li>
+          <li><strong>Compensi sportivi dilettantistici:</strong> payments to athletes/coaches below €10,000 are IRPEF-exempt; the software must track individuals and thresholds.</li>
+        </ul>
+      </div>
+      <div class="regime-card">
+        <div class="regime-card-title">What each finalist handles</div>
+        <ul class="regime-list">
+          <li><strong>TeamSystem Sport:</strong> all of the above natively — purpose-built for this regime.</li>
+          <li><strong>TeamSystem Contabilità in Cloud:</strong> handles double-entry accounting and Italian compliance; regime 398/91 requires configuration of the chart of accounts and manual processes for forfettario VAT — feasible but not automatic.</li>
+          <li><strong>Odoo:</strong> none of the above natively. The forfettario VAT engine, rendiconto format, Modello EAS, and exempt-compensation tracking all require custom partner-built modules. This is a significant implementation cost on top of an already partner-heavy deployment.</li>
+        </ul>
+        <div class="regime-card-title" style="margin-top:16px">Two architecture paths for TCA</div>
+        <ul class="regime-list">
+          <li><strong>Integrated path:</strong> TeamSystem Sport as the single system (club management + GL + regime 398/91 + SDI). Simpler, lower cost, less API flexibility.</li>
+          <li><strong>Two-layer path:</strong> specialist club management system (Wansport, Golee, or TeamSystem Sport) for membership/courts/regime 398/91 + TeamSystem Contabilità in Cloud as the GL backend with full REST API for dashboards. More complex but gives the API power needed for Power BI / Looker Studio.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ── PRICING COMPARISON ── -->
+    <h2 class="aa-section-title">04 · Pricing <em>Comparison</em></h2>
+    <p class="pricing-note">Figures below are indicative based on publicly available data (June 2026). Verify exact EUR amounts with each vendor before signing.</p>
+    <div class="table-wrap">
+      <table class="aa-table">
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>TeamSystem Contabilità in Cloud</th>
+            <th>Odoo Enterprise — Custom SaaS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Pricing model</strong></td>
+            <td>Per transaction volume (accounting entries/year) — users unlimited</td>
+            <td>Per user / per month — all 50+ modules included</td>
+          </tr>
+          <tr>
+            <td><strong>Entry plan</strong></td>
+            <td>~€25–29/mese (piano base, ~6,000 voci/anno)</td>
+            <td>~€34–42/utente/mese (Custom plan, 1+ users)</td>
+          </tr>
+          <tr>
+            <td><strong>Typical TCA cost</strong><div class="aa-note">5 users, medium volume</div></td>
+            <td>~€45–59/mese → <strong>~€540–700/anno</strong></td>
+            <td>5 × ~€38/mese → ~€190/mese → <strong>~€2,300/anno</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Implementation (one-time)</strong></td>
+            <td>€0–2,000 — self-setup, no partner required</td>
+            <td>€10,000–25,000 — partner-led project (IT localization, migration, training)</td>
+          </tr>
+          <tr>
+            <td><strong>Hosting</strong></td>
+            <td>Included (TeamSystem cloud)</td>
+            <td>Included in Custom SaaS; Odoo.sh +€25–115/mese if custom dev needed</td>
+          </tr>
+          <tr>
+            <td><strong>Total Year 1 (est.)</strong></td>
+            <td class="price-good">~€540–2,700</td>
+            <td class="price-high">~€12,300–27,500</td>
+          </tr>
+          <tr>
+            <td><strong>Total from Year 2+</strong></td>
+            <td>~€540–700/anno</td>
+            <td>~€2,300/anno (licenze sole, 5 utenti)</td>
+          </tr>
+          <tr>
+            <td><strong>API access</strong></td>
+            <td>Included in all plans (REST)</td>
+            <td>Custom plan only — Standard plan excludes API</td>
+          </tr>
+          <tr>
+            <td><strong>Multi-company</strong></td>
+            <td>Not available</td>
+            <td>Included in Custom plan</td>
+          </tr>
+          <tr>
+            <td><strong>Multi-country</strong></td>
+            <td>Not available (Italy only)</td>
+            <td>100+ localizations included</td>
+          </tr>
+          <tr>
+            <td><strong>Future ERP expansion</strong><div class="aa-note">hypothetical — out of current scope</div></td>
+            <td>Not possible — accounting ceiling</td>
+            <td>Full ERP suite available (HR, CRM, Inventory, multi-company…) without platform change</td>
+          </tr>
+          <tr>
+            <td><strong>Free trial</strong></td>
+            <td>14 giorni</td>
+            <td>Free trial at odoo.com</td>
+          </tr>
+          <tr>
+            <td><strong>Setup complexity</strong></td>
+            <td>Low — Italian product, guided onboarding</td>
+            <td>Medium-High — requires Italian partner for initial configuration</td>
+          </tr>
+          <tr>
+            <td><strong>Regime 398/91</strong></td>
+            <td>Config required — manual process</td>
+            <td>Custom module required — partner build</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pricing-caveat">
+      <strong>When Odoo's higher cost is justified:</strong> if TCA plans to manage additional club entities on the same platform, integrate with a parent group in multiple countries, or eventually expand beyond pure accounting — Odoo's Year 2+ cost (~€2,300/anno for 5 users) is competitive once the Year 1 implementation is amortized. If TCA remains a single accounting entity with no ERP ambitions, TeamSystem CiC is decisively more cost-effective at ~€540–700/anno.
+    </div>
+
     <!-- ── NEXT STEPS ── -->
-    <h2 class="aa-section-title">03 · Next <em>Steps</em></h2>
+    <h2 class="aa-section-title">05 · Next <em>Steps</em></h2>
     <ol class="steps-list">
-      <li><span><strong>Confirm the accounting perimeter</strong> with the accountant: full double-entry in-house vs. cash-basis management with the GL at the firm — this validates the scoping assumption of this analysis.</span></li>
-      <li><span><strong>Open test accounts:</strong> Contabilità in Cloud / Reviso demo + an Odoo trial with the Italian localization.</span></li>
-      <li><span><strong>Two-week proof of concept:</strong> POST one real day of revenue (courts, bar, membership fees) with accounts and payment methods, then GET balances into a prototype Power BI / Looker Studio dashboard.</span></li>
-      <li><span><strong>Obtain TeamSystem's roadmap commitment</strong> for Contabilità in Cloud before contract signature.</span></li>
+      <li><span><strong>Confirm TCA's legal form and regime</strong> with the accountant: ASD vs. SSD, and whether the club operates under regime 398/91 (commercial revenues vs. €400,000 threshold). This is the single most important filter before any software decision.</span></li>
+      <li><span><strong>If ASD/SSD in regime 398/91:</strong> evaluate TeamSystem Sport (Sportivi in Cloud) as the primary candidate; assess whether its API integration is sufficient for Power BI / Looker Studio, or whether a two-layer architecture (TeamSystem Sport + TeamSystem CiC) is needed.</span></li>
+      <li><span><strong>If SSD s.r.l. above threshold (full commercial accounting):</strong> proceed with the original finalist analysis — TeamSystem Contabilità in Cloud as first choice for its documented REST API; Odoo only if a full ERP is warranted and partner budget allows.</span></li>
+      <li><span><strong>Two-week proof of concept</strong> on the chosen system: POST one real day of revenue (courts, bar, membership fees) with GL accounts and payment methods, then GET balances into a prototype dashboard.</span></li>
+      <li><span><strong>Obtain TeamSystem's roadmap commitment</strong> for the chosen product before contract signature (December deadline).</span></li>
     </ol>
 
     <!-- ── SOURCES ── -->
-    <h2 class="aa-section-title">04 · Main <em>Sources</em></h2>
+    <h2 class="aa-section-title">06 · Main <em>Sources</em></h2>
     <p class="sources">
       <strong>Contabilità in Cloud / Reviso:</strong>
       <a href="https://api-docs.reviso.com/" target="_blank" rel="noopener">API docs</a> ·
@@ -270,10 +438,15 @@ const rows = [
       <a href="https://developers.holded.com/reference" target="_blank" rel="noopener">API reference</a><br />
       <strong>ASD/SSD 398/91:</strong>
       <a href="https://fatturapro.click/associazioni-sportive-dilettantistiche-regime-398-91-e-novita-2026/" target="_blank" rel="noopener">2026 changes</a> ·
-      <a href="https://www.aruba.it/magazine/fatturazione-elettronica/associazioni-sportive-dilettantistiche-fattura-elettronica-obbligatoria-dal-1-gennaio-2024.aspx" target="_blank" rel="noopener">mandatory e-invoicing since 2024</a>
+      <a href="https://www.aruba.it/magazine/fatturazione-elettronica/associazioni-sportive-dilettantistiche-fattura-elettronica-obbligatoria-dal-1-gennaio-2024.aspx" target="_blank" rel="noopener">mandatory e-invoicing since 2024</a> ·
+      <a href="https://www.teamsystem.com/magazine/sport-e-wellness/regime-forfettario-asd-ssd/" target="_blank" rel="noopener">regime 398/91 forfettario (TeamSystem)</a><br />
+      <strong>Sports verticals:</strong>
+      <a href="https://www.teamsystem.com/sport/sportivi-in-cloud/" target="_blank" rel="noopener">TeamSystem Sportivi in Cloud</a> ·
+      <a href="https://wansport.com/gestionale-per-tennis-club/" target="_blank" rel="noopener">Wansport tennis</a> ·
+      <a href="https://golee.it/gestionale-per-circoli/" target="_blank" rel="noopener">Golee circoli sportivi</a>
     </p>
 
-    <p class="aa-footer">Confidential · Tennis Club Ambrosiano · Analysis date: 12 June 2026</p>
+    <p class="aa-footer">Confidential · Tennis Club Ambrosiano · Analysis date: 13 June 2026 (rev. 2 — ASD/SSD regime 398/91 suitability + detailed pricing &amp; scalability comparison added)</p>
 
   </main>
 
@@ -532,6 +705,30 @@ const rows = [
   .sources a:hover { color: var(--red); }
   .sources strong { font-weight: 600; color: #777; }
 
+  /* ── PRICING ── */
+  .pricing-note {
+    font-size: clamp(11px, 0.82vw, 14px);
+    font-weight: 400;
+    color: #777;
+    font-style: italic;
+    margin-bottom: 1.5vh;
+    max-width: 80ch;
+  }
+  .pricing-caveat {
+    font-size: clamp(12px, 0.88vw, 15px);
+    font-weight: 300;
+    color: #555;
+    line-height: 1.7;
+    max-width: 90ch;
+    margin-top: 1.5vh;
+    padding: 14px 18px;
+    background: #f8f8f8;
+    border-left: 3px solid var(--grey-light);
+  }
+  .pricing-caveat strong { font-weight: 600; color: var(--text); }
+  .price-good { color: #1E6B2E; font-weight: 600; }
+  .price-high { color: #B46000; font-weight: 600; }
+
   /* ── FOOTER ── */
   .aa-footer {
     margin-top: 4vh;
@@ -544,10 +741,85 @@ const rows = [
     text-transform: uppercase;
   }
 
+  /* ── SPORTS SPECIALIST ── */
+  .aa-badge--sport { background: rgba(0,110,150,0.08); color: #006E96; border: 1px solid rgba(0,110,150,0.3); }
+  .aa-table tbody tr.row-sports { background: rgba(0,110,150,0.04); }
+  .aa-table tbody tr.row-sports:hover { background: rgba(0,110,150,0.09); }
+
+  .fin-card--sport { border-top-color: #006E96; }
+  .fin-tag--sport { color: #006E96; }
+
+  .fin-card--caution { border-top-color: #B46000; }
+  .fin-tag--caution { color: #B46000; }
+
+  /* ── REGIME 398/91 SECTION ── */
+  .regime-alert {
+    background: #FFF8E7;
+    border: 1px solid #E8C84A;
+    border-left: 4px solid #B46000;
+    padding: 18px 22px;
+    margin: 2vh 0 2vh;
+    max-width: 95ch;
+  }
+  .regime-alert-title {
+    font-family: var(--fd);
+    font-size: clamp(12px, 0.9vw, 15px);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #7A4200;
+    margin-bottom: 6px;
+  }
+  .regime-alert-text {
+    font-size: clamp(13px, 0.95vw, 16px);
+    font-weight: 300;
+    color: #5A3A00;
+    line-height: 1.7;
+  }
+  .regime-alert-text strong { font-weight: 600; }
+
+  .regime-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 1.5vh 0 2vh;
+  }
+  .regime-card {
+    border: 1px solid var(--grey-light);
+    border-top: 3px solid #B46000;
+    padding: 22px 24px;
+    background: #fff;
+  }
+  .regime-card-title {
+    font-family: var(--fd);
+    font-size: clamp(11px, 0.8vw, 14px);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #B46000;
+    margin-bottom: 10px;
+  }
+  .regime-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0;
+  }
+  .regime-list li {
+    font-size: clamp(12px, 0.9vw, 15px);
+    font-weight: 300;
+    color: #444;
+    padding-left: 12px;
+    border-left: 2px solid var(--grey-light);
+    line-height: 1.55;
+  }
+  .regime-list li strong { font-weight: 600; color: var(--text); }
+
   /* ── MOBILE ── */
   @media (max-width: 768px) {
     .aa-page { padding: calc(var(--header-h) + 20px) 16px 40px; }
-    .req-grid, .fin-grid { grid-template-columns: 1fr; }
+    .req-grid, .fin-grid, .regime-grid { grid-template-columns: 1fr; }
     .aa-footer { font-size: 12px; }
   }
 </style>
