@@ -7,21 +7,7 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
 
 <BaseLayout title="TCA · Website Development Agreement" initialHeaderDark={true} noindex={true}>
 
-  <!-- ── PASSWORD GATE ── -->
-  <div class="gate" id="gate">
-    <form class="gate-box" id="gate-form" autocomplete="off">
-      <span class="eyebrow eyebrow--grey">Confidential document</span>
-      <h2 class="gate-title">Website <em>Agreement</em></h2>
-      <p class="gate-text">Enter the password to access the document.</p>
-      <div class="gate-row">
-        <input type="password" id="gate-pass" class="gate-input" placeholder="Password" aria-label="Password" required />
-        <button type="submit" class="gate-btn">Unlock</button>
-      </div>
-      <p class="gate-error" id="gate-error" hidden>Incorrect password.</p>
-    </form>
-  </div>
-
-  <main class="ct-page" id="ct-content" hidden>
+  <main class="ct-page">
 
     <div class="ct-toolbar">
       <span class="eyebrow eyebrow--grey">Confidential · For signature</span>
@@ -181,63 +167,6 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
 <style>
   :global(body) { background: #f0eeeb; }
 
-  /* ── GATE ── */
-  .gate {
-    position: fixed;
-    inset: 0;
-    z-index: 400;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #fff;
-    padding: 24px;
-  }
-  .gate[hidden] { display: none; }
-  .gate-box {
-    width: min(420px, 100%);
-    border: 1px solid var(--grey-light);
-    border-top: 3px solid var(--red);
-    border-radius: 6px;
-    padding: 36px 32px;
-    background: #fff;
-  }
-  .gate-title {
-    font-family: var(--fd);
-    font-size: clamp(1.8rem, 3vw, 2.4rem);
-    font-weight: 800;
-    text-transform: uppercase;
-    line-height: 1;
-    margin-bottom: 10px;
-  }
-  .gate-title em { color: var(--red); font-style: normal; }
-  .gate-text { font-size: 14px; font-weight: 300; color: var(--text-light); margin-bottom: 18px; }
-  .gate-row { display: flex; gap: 8px; }
-  .gate-input {
-    flex: 1;
-    font-family: var(--fb);
-    font-size: 14px;
-    padding: 10px 12px;
-    border: 1px solid var(--grey-light);
-    border-radius: 4px;
-    outline: none;
-  }
-  .gate-input:focus { border-color: var(--red); }
-  .gate-btn {
-    font-family: var(--fd);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #fff;
-    background: var(--red);
-    border: none;
-    border-radius: 4px;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .gate-btn:hover { background: var(--red-dark); }
-  .gate-error { margin-top: 12px; font-size: 13px; color: var(--red); }
 
   /* ── PAGE & TOOLBAR ── */
   .ct-page {
@@ -386,7 +315,7 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
   /* ── PRINT ── */
   @media print {
     :global(body) { background: #fff !important; }
-    :global(.g-header), :global(.g-menu), .ct-toolbar, .gate, .screen-only { display: none !important; }
+    :global(.g-header), :global(.g-menu), .ct-toolbar, .screen-only { display: none !important; }
     .print-only { display: block; }
     .ct-sign-img { display: block; }
     .ct-page { padding: 0; max-width: none; }
@@ -409,46 +338,9 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith('/')
 </style>
 
 <script>
-  const HASH = '480fa9a2765c43cc4430a13124ecef83ae0f63ff6cc842f1aaf9d868c530f0c6';
-  const KEY  = 'tca-quote-auth';
-
-  const gate    = document.getElementById('gate')!;
-  const content = document.getElementById('ct-content')!;
-  const form    = document.getElementById('gate-form')!;
-  const input   = document.getElementById('gate-pass') as HTMLInputElement;
-  const error   = document.getElementById('gate-error')!;
-
-  async function sha256(text: string): Promise<string> {
-    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
-    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  if (new URLSearchParams(location.search).has('print')) {
+    setTimeout(() => window.print(), 350);
   }
-
-  function unlock() {
-    gate.setAttribute('hidden', '');
-    content.removeAttribute('hidden');
-    if (new URLSearchParams(location.search).has('print')) {
-      setTimeout(() => window.print(), 350);
-    }
-  }
-
-  if (sessionStorage.getItem(KEY) === HASH) {
-    unlock();
-  } else {
-    input.focus();
-  }
-
-  form.addEventListener('submit', async e => {
-    e.preventDefault();
-    const h = await sha256(input.value);
-    if (h === HASH) {
-      sessionStorage.setItem(KEY, h);
-      error.setAttribute('hidden', '');
-      unlock();
-    } else {
-      error.removeAttribute('hidden');
-      input.select();
-    }
-  });
 
   document.getElementById('ct-print')!.addEventListener('click', () => window.print());
 
