@@ -1,6 +1,6 @@
 # Tennis Club Ambrosiano — Cloud Accounting Software Analysis (carve-out, migration by December)
 
-**Analysis date:** 13 June 2026 *(revised — ASD/SSD regime 398/91 suitability added)*
+**Analysis date:** 13 June 2026 *(rev. 2 — pricing, features, and scalability comparison added)*
 **Key requirements:**
 1. **Import (POST)** of revenue data from the club's management system, broken down by **general-ledger account** and **payment type/method** (ideally also by revenue center).
 2. **Extraction (GET)** of consolidated data (account balances, aggregated income/expenses, trial balance, payment schedule) to feed **dynamic external dashboards** (Power BI, Looker Studio, custom apps).
@@ -53,19 +53,62 @@ Purpose-built for Italian sports associations ([TeamSystem Sport](https://www.te
 
 A **true cloud general ledger** with a documented REST API ([api-docs.reviso.com](https://api-docs.reviso.com/)).
 
-- **POST:** journal entries and invoices via vouchers onto a real, customizable chart of accounts — covers the payment-type breakdown.
-- **GET:** `accounts` resource exposes `balance` plus entries by fiscal year/period — effectively a trial balance via API, ready for dashboards.
-- **Regime 398/91:** not native; requires configuration of the chart of accounts to separate institutional from commercial activity, and manual processes for forfettario VAT. Feasible but not automatic.
-- **Open issue:** confirm product roadmap with TeamSystem (the product is the rebranded Reviso) before the December deadline.
+**Pricing (per transaction volume — users unlimited):**
+| Plan | Price | Annual entries |
+|---|---|---|
+| Base | ~€25–29/mese | ~6,000 voci/anno |
+| Medium | ~€45–59/mese | ~15,000 voci/anno |
+| Advanced | on request | unlimited |
 
-### 2.2 Odoo Enterprise + Italian localization — Finalist #2 (conditional)
+*Figures indicative; confirm at teamsystem.com/store/contabilita-in-cloud/prezzi.*
 
-Only viable if TCA is an **SSD s.r.l. above the €400,000 threshold** (standard commercial accounting applies) or if a custom regime 398/91 module is in scope.
+- **Users:** unlimited included — no per-user cost. The whole TCA team at the same flat rate.
+- **Typical TCA cost:** ~€45–59/mese → ~€540–700/anno. Implementation: guided self-setup, no partner required (€0–2,000).
+- **POST:** journal entries and invoices via vouchers onto a real, customizable chart of accounts — revenue posted per GL account with correct counterpart (cash, bank, POS).
+- **GET:** `accounts` resource exposes `balance` plus entries by fiscal year/period — trial balance via REST API, ready for Power BI / Looker Studio.
+- **Italian compliance:** native IVA, SDI/FatturaPA via TeamSystem ecosystem, export to studio commercialista.
+- **Regime 398/91:** not native; requires COA configuration and manual processes for forfettario VAT.
+- **Ceiling:** accounting only — no HR, CRM, member management, multi-company, or ERP expansion path.
+- **Open issue:** confirm product roadmap with TeamSystem before the December deadline.
 
-- **Compliance:** mature `l10n_it_edi` — FatturaPA through Odoo's accredited SDI proxy (recipient code `K95IV18`); withholding, Ri.Ba., DDT, VAT XML export; receipts via PoS + RT printers.
-- **API:** XML-RPC/JSON-RPC with API keys over the entire ORM. No rate limits on Odoo.sh/self-hosted.
-- **Regime 398/91 — not native:** the forfettario VAT mechanism, *rendiconto* format, Modello EAS, and exempt-compensation tracking are all absent; a partner-built module and careful COA setup are required. This adds significant cost to an already partner-heavy deployment.
-- **Caveats:** External API available only on Custom plans, Odoo.sh, or self-hosted; partner-led implementation required.
+### 2.2 Odoo Enterprise + Italian localization — Finalist #2 (conditional — but uniquely scalable)
+
+The only option that starts as accounting and can grow into a **full ERP — multi-module, multi-company, multi-country — without changing platform**.
+
+**Pricing (Custom plan, SaaS hosted by Odoo):**
+| Users | Monthly (Custom SaaS) | Annual |
+|---|---|---|
+| 5 users | ~€170–210/mese | ~€2,000–2,500 |
+| 10 users | ~€340–420/mese | ~€4,000–5,000 |
+
+*~€34–42/utente/mese indicativo per l'Italia (exact EUR: odoo.com/pricing-configurator). The Standard plan (~€22–28/utente/mese) excludes the external API and multi-company — Custom is required.*
+
+- **Implementation (one-time):** partner-led project — Italian localization, data migration, training, and any custom modules: **€10,000–25,000**. Total Year 1: ~€12,000–27,500.
+- **The scalability path (key differentiator):**
+  - Phase 1 — Custom SaaS: accounting + SDI, Odoo hosts everything. All 50+ modules available to activate.
+  - Phase 2 — activate HR, member management, events, POS with RT fiscal printers.
+  - Phase 3 — multi-company: new entities on the same database, same COA, same dashboards.
+  - Phase 4 — Odoo.sh (developer PaaS): for custom Python modules (e.g. native regime 398/91 engine). +€25–115/mese infrastructure.
+  - Phase 5 — on-premise: full control, no per-user licensing after perpetual license.
+- **Multi-country:** 100+ official localizations — if the parent group has foreign entities, one Odoo instance handles all.
+- **API:** XML-RPC/JSON-RPC over the full ORM — most powerful data access available. No extra cost on Custom plan.
+- **Italian compliance:** `l10n_it_edi` — FatturaPA via SDI proxy K95IV18, withholding, Ri.Ba., DDT; POS + RT printers.
+- **Regime 398/91 — not native:** forfettario VAT, rendiconto, Modello EAS all require a partner-built custom module.
+
+### 2.3 Head-to-head: CiC vs Odoo
+
+| Dimension | TeamSystem CiC | Odoo Custom SaaS |
+|---|---|---|
+| **Pricing model** | Per transaction volume, users unlimited | Per user/month |
+| **Year 1 total cost** | ~€540–2,700 | ~€12,300–27,500 |
+| **Year 2+ annual** | ~€540–700 | ~€2,300 (5 users) |
+| **API** | REST, documented, all plans | XML-RPC/JSON-RPC, Custom plan only |
+| **Multi-company** | No | Yes (Custom plan) |
+| **Multi-country** | Italy only | 100+ localizations |
+| **ERP modules** | None | Full suite (HR, CRM, POS, Inventory…) |
+| **Setup complexity** | Low — self-service | Medium-High — partner required |
+| **Regime 398/91** | Config required | Custom module required |
+| **Growth path** | Accounting ceiling | Full ERP, multi-entity |
 
 ### 2.3 Two-layer architecture (recommended for API + regime 398/91 coverage)
 
@@ -80,14 +123,23 @@ This is more complex but is the architecture most Italian sports clubs with data
 
 ## 3. Recommendation
 
-1. **First confirm TCA's legal form and regime** with the accountant before any software decision.
-2. **If ASD/SSD in regime 398/91 (most likely):**
-   - **Primary choice:** TeamSystem Sport — evaluate API depth vs. dashboard requirements.
-   - **If API is insufficient:** two-layer architecture (TeamSystem Sport + TeamSystem CiC).
-   - Odoo: not recommended without a custom 398/91 module.
-3. **If SSD s.r.l. above €400,000 (commercial entity, standard accounting):**
-   - **First choice:** TeamSystem Contabilità in Cloud (ex Reviso) — the only Italian-native cloud GL with a publicly documented REST API at SME-friendly cost.
-   - **Second choice:** Odoo Enterprise with Italian localization — most powerful, at the price of a partner-led project.
+**Step 0 (before anything):** confirm with the accountant whether TCA operates under regime 398/91. This is the single most important decision gate.
+
+**If ASD/SSD in regime 398/91 (most likely):**
+1. **TeamSystem Sport** as the primary system (native 398/91 + club management).
+2. If Power BI / Looker Studio integration is critical and TeamSystem Sport's API is insufficient: two-layer architecture — TeamSystem Sport + **TeamSystem CiC** as the GL/API layer.
+3. Odoo: not recommended without a custom 398/91 module. Could be scoped for a Phase 2 if TCA plans multi-entity expansion.
+
+**If SSD s.r.l. above €400,000 (full commercial accounting, no 398/91):**
+1. **TeamSystem CiC** — first choice for cost, simplicity, and documented REST API (~€540–700/anno, users unlimited, no partner needed).
+2. **Odoo Custom SaaS** — second choice if TCA needs ERP scalability, multi-company, or multi-country capabilities. Justified when Phase 2-3 expansion is planned; Year 1 cost ~€12,000–27,500.
+
+**When Odoo's higher cost is justified:**
+- TCA plans to add a second entity (new club, new country) to the same system.
+- HR/payroll management is needed in-house.
+- POS with RT fiscal printers is required.
+- The parent group standardizes on one ERP across multiple entities.
+- Long-term: Year 2+ Odoo cost (~€2,300/anno for 5 users) is competitive once implementation is amortized.
 
 ---
 
