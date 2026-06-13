@@ -55,7 +55,8 @@ const rows: Row[] = [
   {
     scope:       'Website',
     owner:       'Maurizio Taruggi',
-    people:      'Laura Giardini & Thomas Sander',
+    people:      'Laura Giardini, Thomas Sander & Alice Bartoli',
+    peopleNote:  'Alice Bartoli: usage details + co-defines features & architecture',
     status:      'todo',
     statusLabel: 'To call',
     nextStep:    'Call Laura Giardini',
@@ -77,8 +78,8 @@ const rows: Row[] = [
   {
     scope:       'HubSpot & JotForm',
     owner:       'Maurizio Taruggi',
-    people:      '—',
-    peopleNote:  'No external contact required',
+    people:      'Alice Bartoli',
+    peopleNote:  'Usage details + co-defines features & architecture',
     status:      'prep',
     statusLabel: 'Independent',
     nextStep:    'Analyze forms & automations',
@@ -106,7 +107,8 @@ const rows: Row[] = [
     scope:       'Microsoft',
     scopeNote:   'Outlook & OneDrive',
     owner:       'Maurizio Taruggi',
-    people:      'Alice & Thomas Sander',
+    people:      'Alice Bartoli & Thomas Sander',
+    peopleNote:  'Alice Bartoli: usage details',
     status:      'wip',
     statusLabel: 'In preparation',
     nextStep:    'Internal Inventory with Alice',
@@ -221,7 +223,8 @@ const rows: Row[] = [
     scopeNote:   'PCs & Wi-Fi',
     owner:       'TBD',
     ownerNote:   'External on-site partner',
-    people:      'Thomas Sander',
+    people:      'Thomas Sander & Alice Bartoli',
+    peopleNote:  'Alice Bartoli: usage details',
     status:      'todo',
     statusLabel: 'To call',
     nextStep:    'Call Thomas Sander',
@@ -274,9 +277,8 @@ const rows: Row[] = [
               {row.ownerNote && <span class="note">{row.ownerNote}</span>}
             </td>
             <td data-label="Other People">
-              {row.peopleNote
-                ? <span class="note">{row.peopleNote}</span>
-                : row.people}
+              {row.people}
+              {row.peopleNote && <span class="note">{row.peopleNote}</span>}
             </td>
             <td data-label="Status">
               <span class={`badge badge--${row.status}`}>{row.statusLabel}</span>
