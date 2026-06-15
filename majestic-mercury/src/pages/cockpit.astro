@@ -584,16 +584,6 @@ const bBars  = BAL_DATA.map((v, i) => {
       <p>No membership funnel data for this Business Unit.</p>
     </div>
 
-    <!-- NARRATIVE -->
-    <div class="cp-section cp-section--narrative">
-      <p class="cp-narrative">
-        Inquiries have grown <strong>+{(((D.inq.mtd - D.inq.prior) / D.inq.prior) * 100).toFixed(0)}%</strong> month-on-month, driving a corresponding uplift in new memberships.
-        The inquiry-to-membership conversion rate of <strong>{D.conv.mtd}%</strong> remains above the 50% target.
-        Staff cost sits at <strong>{D.staff.mtd}%</strong> of revenue — 1.8pp above the 40% target.
-        Net member base grew by <strong>+{D.net.mtd}</strong> this month, bringing total active members to <strong>{D.active.mtd.toLocaleString('en')}</strong>.
-      </p>
-    </div>
-
   </div><!-- /cp-root -->
 
 </BaseLayout>
@@ -1291,20 +1281,6 @@ const bBars  = BAL_DATA.map((v, i) => {
     letter-spacing: 0.1em;
     text-transform: uppercase;
   }
-
-  /* NARRATIVE */
-  .cp-section--narrative {
-    padding-top: clamp(8px, 1.5vh, 16px);
-    padding-bottom: clamp(36px, 5vh, 64px);
-  }
-  .cp-narrative {
-    font-family: var(--fb);
-    font-size: clamp(17px, 1.5vw, 26px);
-    line-height: 1.6;
-    color: var(--text-light);
-    max-width: 920px;
-  }
-  .cp-narrative strong { color: var(--text); }
 
   /* RESPONSIVE */
   @media (max-width: 900px) {
