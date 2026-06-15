@@ -61,7 +61,11 @@ const ogUrl = Astro.url.href;
         <a href={`${base}presentation/`}            class="g-menu__link" data-close><em>02</em>Presentation</a>
         <a href={`${base}carve-out/`}               class="g-menu__link" data-close><em>03</em>Carve-Out Roadmap</a>
         <a href={`${base}accounting-analysis/`}     class="g-menu__link" data-close><em>04</em>Accounting Software Analysis</a>
-        <a href={`${base}quote/`} class="g-menu__link g-menu__link--accent" data-close><em>05</em>Quote</a>
+        <div class="g-menu__section g-menu__section--ops">
+          <span class="g-menu__section-label">Dashboard</span>
+          <a href={`${base}dashboard-revenue`} class="g-menu__link g-menu__link--sub" data-close><em>05</em>Revenue 2025–2026</a>
+        </div>
+        <a href={`${base}quote/`} class="g-menu__link g-menu__link--accent" data-close><em>06</em>Quote</a>
       </nav>
       <div class="g-menu__footer">
         Confidential &middot; Tennis Club Ambrosiano &middot; 2026
@@ -223,6 +227,13 @@ const ogUrl = Astro.url.href;
   }
   .g-menu__link:hover { color: #fff; transform: translateX(10px); }
   .g-menu__link:hover em { color: var(--red); }
+
+  .g-menu__link--sub {
+    font-size: clamp(1.3rem, 2.4vw, 2.8rem);
+    color: rgba(255,255,255,0.6);
+  }
+  .g-menu__link--sub em { color: rgba(255,255,255,0.18); }
+  .g-menu__link--sub:hover { color: #fff; }
 
   .g-menu__link--accent {
     color: var(--red);

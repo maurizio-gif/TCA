@@ -4,8 +4,14 @@
     {
       "name": "TCA Proposal",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "-l", "4321", "/Users/mauriziotaruggi/Documents/GitHub/TCA/majestic-mercury"],
+      "runtimeArgs": ["serve", "-l", "4321", "/Users/mauriziotaruggi/Documents/GitHub/TCA/majestic-mercury/dist"],
       "port": 4321
+    },
+    {
+      "name": "TCA Dashboard",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-l", "7899", "/Users/mauriziotaruggi/Documents/GitHub/TCA/.claude/worktrees/admiring-panini-62c824"],
+      "port": 7899
     }
   ]
 }
