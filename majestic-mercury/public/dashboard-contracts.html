@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Club Ambrosiano · New Contracts Dashboard 2025–2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap');
+
+  :root {
+    --bg: #0b0f1a;
+    --surface: #141927;
+    --surface2: #1c2438;
+    --border: #252f47;
+    --accent: #4f8ef7;
+    --accent2: #34d399;
+    --accent3: #f59e0b;
+    --accent4: #f87171;
+    --accent5: #a78bfa;
+    --text: #e8edf5;
+    --muted: #7a8aaa;
+    --gold: #f5c842;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  canvas { max-width: 100% !important; }
+  .chart-card, .chart-wrapper { min-width: 0; }
+  .grid-2 > *, .grid-3 > *, .grid-1-2 > *, .grid-2-1 > * { min-width: 0; }
+
+  header {
+    background: linear-gradient(135deg, #0d1526 0%, #111e3a 60%, #0a1020 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 40px 24px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .header-left h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: #fff;
+  }
+  .header-left h1 span { color: var(--accent); }
+  .header-left p { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  .header-badge {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: right;
+  }
+  .header-badge strong { color: var(--text); display: block; font-size: 15px; }
+
+  main { padding: 32px 40px; max-width: 1600px; margin: 0 auto; }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    height: 3px;
+    width: 100%;
+  }
+  .kpi-card.blue::after { background: var(--accent); }
+  .kpi-card.green::after { background: var(--accent2); }
+  .kpi-card.amber::after { background: var(--accent3); }
+  .kpi-card.red::after { background: var(--accent4); }
+  .kpi-card.purple::after { background: var(--accent5); }
+  .kpi-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 8px; }
+  .kpi-value { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; color: var(--text); line-height: 1; }
+  .kpi-sub { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .kpi-sub span { color: var(--accent2); font-weight: 600; }
+
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; }
+  .section-title .dot.green { background: var(--accent2); }
+  .section-title .dot.amber { background: var(--accent3); }
+  .section-title .dot.purple { background: var(--accent5); }
+  .section-title .dot.red { background: var(--accent4); }
+
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    height: 100%;
+  }
+  .chart-wrapper { position: relative; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .grid-1-2 { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; margin-bottom: 24px; }
+  .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .span-2 { grid-column: span 2; }
+
+  .table-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+  .count-tag { font-size: 12px; color: var(--muted); font-weight: 400; }
+  .sub-title { font-size: 12px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); margin-bottom: 12px; }
+  .sort-controls { display: flex; align-items: center; gap: 8px; }
+  .sort-label { font-size: 12px; color: var(--muted); }
+  .sort-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .sort-btn:hover { color: var(--text); border-color: var(--accent); }
+  .sort-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .th-sort { cursor: pointer; user-select: none; }
+  .th-sort:hover { color: var(--text); }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .data-table th {
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(37,47,71,0.5);
+    color: var(--text);
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: rgba(79,142,247,0.04); }
+
+  .legend { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .legend-item { display: flex; align-items: center; justify-content: space-between; }
+  .legend-label { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .legend-val { font-size: 12px; font-weight: 600; color: var(--text); }
+
+  .age-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 4px; }
+  .age-cell {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    text-align: center;
+  }
+  .age-cell .age-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+  .age-cell .age-rev { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: var(--text); }
+  .age-cell .age-count { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  footer {
+    text-align: center;
+    padding: 24px;
+    color: var(--muted);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+  }
+
+  @media (max-width: 1024px) {
+    header { padding: 22px 24px 20px; }
+    main { padding: 24px; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 680px) {
+    header { flex-direction: column; align-items: flex-start; gap: 14px; padding: 20px 16px 18px; }
+    .header-left h1 { font-size: 21px; }
+    .header-badge { text-align: left; align-self: stretch; }
+    main { padding: 16px; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+    .kpi-card { padding: 14px 16px; }
+    .kpi-value { font-size: 22px; }
+    .grid-2, .grid-3, .grid-1-2, .grid-2-1 { grid-template-columns: 1fr; gap: 16px; margin-bottom: 16px; }
+    .age-grid { grid-template-columns: repeat(2, 1fr); }
+    .table-head { flex-direction: column; align-items: flex-start; }
+    .data-table { font-size: 12px; min-width: 460px; }
+    .data-table th, .data-table td { padding: 8px 8px; white-space: nowrap; }
+    .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  }
+
+  @media (max-width: 400px) {
+    .kpi-grid { grid-template-columns: 1fr; }
+    .age-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1>Club Ambrosiano · <span>New Contracts Dashboard</span></h1>
+    <p>Period: June 1, 2025 – May 31, 2026 &nbsp;·&nbsp; Source: NewContracts Export</p>
+  </div>
+  <div class="header-badge">
+    <strong>2,375 contracts</strong>
+    Total memberships in period
+  </div>
+</header>
+
+<main>
+
+  <div class="kpi-grid">
+    <div class="kpi-card blue">
+      <div class="kpi-label">Total Contracts</div>
+      <div class="kpi-value">2,375</div>
+      <div class="kpi-sub">≈ 198 / month avg</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">New Members</div>
+      <div class="kpi-value">507</div>
+      <div class="kpi-sub"><span>21.3%</span> of contracts</div>
+    </div>
+    <div class="kpi-card purple">
+      <div class="kpi-label">Renewals</div>
+      <div class="kpi-value">427</div>
+      <div class="kpi-sub"><span>18.0%</span> of contracts</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-label">Reactivations</div>
+      <div class="kpi-value">223</div>
+      <div class="kpi-sub"><span>9.4%</span> of contracts</div>
+    </div>
+    <div class="kpi-card amber">
+      <div class="kpi-label">Conversions</div>
+      <div class="kpi-value">1,218</div>
+      <div class="kpi-sub"><span>51.3%</span> of contracts</div>
+    </div>
+  </div>
+
+  <div class="grid-2-1">
+    <div class="chart-card">
+      <div class="section-title"><span class="dot blue"></span>Monthly Contracts &amp; Revenue Trend</div>
+      <div class="chart-wrapper" style="height:260px"><canvas id="monthlyChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="section-title"><span class="dot green"></span>Online Registration vs Operator (Offline)</div>
+      <div class="chart-wrapper" style="height:200px"><canvas id="regTypeChart"></canvas></div>
+      <div class="legend" id="regTypeLegend"></div>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="chart-card">
+      <div class="section-title"><span class="dot amber"></span>Membership Status</div>
+      <div class="chart-wrapper" style="height:180px"><canvas id="statusChart"></canvas></div>
+      <div class="legend" id="statusLegend"></div>
+    </div>
+    <div class="chart-card">
+      <div class="section-title"><span class="dot purple"></span>Contract Type</div>
+      <div class="chart-wrapper" style="height:180px"><canvas id="contractTypeChart"></canvas></div>
+      <div class="legend" id="contractTypeLegend"></div>
+    </div>
+    <div class="chart-card">
+      <div class="section-title"><span class="dot green"></span>Product Category</div>
+      <div class="chart-wrapper" style="height:180px"><canvas id="categoryChart"></canvas></div>
+      <div class="legend" id="categoryLegend"></div>
+    </div>
+  </div>
+
+  <div class="chart-card" style="margin-bottom:24px">
+    <div class="section-title"><span class="dot blue"></span>Contract vs Course — Number &amp; Total Value</div>
+    <div class="grid-2" style="margin-bottom:0">
+      <div>
+        <div class="sub-title">By Number of Contracts</div>
+        <div class="chart-wrapper" style="height:210px"><canvas id="planTypeCntChart"></canvas></div>
+        <div class="legend" id="planTypeCntLegend"></div>
+      </div>
+      <div>
+        <div class="sub-title">By Total Value</div>
+        <div class="chart-wrapper" style="height:210px"><canvas id="planTypeRevChart"></canvas></div>
+        <div class="legend" id="planTypeRevLegend"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-card" style="margin-bottom:24px">
+    <div class="section-title"><span class="dot blue"></span>Top 12 Membership Plans by Number of Contracts</div>
+    <div class="chart-wrapper" style="height:240px"><canvas id="plansChart"></canvas></div>
+  </div>
+
+  <div class="chart-card" style="margin-bottom:24px; border-color: var(--accent5)">
+    <div class="section-title"><span class="dot purple"></span>Adult Memberships Focus · Silver / Gold / Platinum <span class="count-tag">(1,213 contracts)</span></div>
+    <div class="grid-3" style="margin-bottom:0">
+      <div>
+        <div class="sub-title">Distribution by Tier</div>
+        <div class="chart-wrapper" style="height:230px"><canvas id="adultTierChart"></canvas></div>
+        <div class="legend" id="adultTierLegend"></div>
+      </div>
+      <div>
+        <div class="sub-title">Monthly vs Annual by Tier</div>
+        <div class="chart-wrapper" style="height:230px"><canvas id="adultDurationChart"></canvas></div>
+        <div class="legend" id="adultDurationLegend"></div>
+      </div>
+      <div>
+        <div class="sub-title">Min Contract Time by Tier</div>
+        <div class="chart-wrapper" style="height:230px"><canvas id="adultMinTimeChart"></canvas></div>
+        <div class="legend" id="adultMinTimeLegend"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="chart-card">
+      <div class="section-title"><span class="dot amber"></span>Minimum Contract Duration</div>
+      <div class="chart-wrapper" style="height:200px"><canvas id="durationChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="section-title"><span class="dot purple"></span>Payment Interval</div>
+      <div class="chart-wrapper" style="height:200px"><canvas id="payIntervalChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="section-title"><span class="dot blue"></span>Payment Method</div>
+      <div class="chart-wrapper" style="height:160px"><canvas id="paymentMethodChart"></canvas></div>
+      <div class="legend" id="paymentMethodLegend"></div>
+    </div>
+  </div>
+
+  <div class="chart-card" style="margin-bottom:24px">
+    <div class="section-title"><span class="dot red"></span>Contracts &amp; Revenue by Age Bracket</div>
+    <div class="age-grid" id="ageGrid"></div>
+    <div class="chart-wrapper" style="height:200px; margin-top:20px"><canvas id="ageChart"></canvas></div>
+  </div>
+
+  <div class="grid-3">
+    <div class="chart-card">
+      <div class="section-title"><span class="dot blue"></span>Gender Distribution</div>
+      <div class="chart-wrapper" style="height:170px"><canvas id="genderChart"></canvas></div>
+      <div class="legend" id="genderLegend"></div>
+    </div>
+    <div class="chart-card">
+      <div class="section-title"><span class="dot green"></span>Discount Presence</div>
+      <div class="chart-wrapper" style="height:170px"><canvas id="discountChart"></canvas></div>
+      <div class="legend" id="discountLegend"></div>
+    </div>
+    <div class="chart-card">
+      <div class="section-title"><span class="dot amber"></span>Financial Status</div>
+      <div class="chart-wrapper" style="height:170px"><canvas id="financialChart"></canvas></div>
+      <div class="legend" id="financialLegend"></div>
+    </div>
+  </div>
+
+  <div class="chart-card" style="margin-bottom:24px">
+    <div class="table-head">
+      <div class="section-title" style="margin:0; border:none; padding:0"><span class="dot purple"></span>All Membership Plans <span class="count-tag" id="planCount"></span></div>
+      <div class="sort-controls">
+        <span class="sort-label">Sort by:</span>
+        <button class="sort-btn active" data-sort="cnt">Contracts</button>
+        <button class="sort-btn" data-sort="rev">Total Revenue</button>
+      </div>
+    </div>
+    <div class="table-scroll">
+    <table class="data-table" style="margin-top:16px">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Plan</th>
+          <th class="th-sort" data-sort="cnt">Contracts ▾</th>
+          <th>% of Contracts</th>
+          <th class="th-sort" data-sort="rev">Total Revenue</th>
+          <th>% of Revenue</th>
+        </tr>
+      </thead>
+      <tbody id="plansTableBody"></tbody>
+    </table>
+    </div>
+  </div>
+
+</main>
+
+<footer>Club Ambrosiano · Report generated from NewContracts data export 06/01/2025 – 05/31/2026 · 2,375 records</footer>
+
+<script>
+const C = {
+  blue:'#4f8ef7',green:'#34d399',amber:'#f59e0b',red:'#f87171',purple:'#a78bfa',
+  teal:'#22d3ee',pink:'#f472b6',orange:'#fb923c',lime:'#a3e635',indigo:'#818cf8',gold:'#f5c842',
+  bg:'#0b0f1a',surface:'#141927',border:'#252f47',text:'#e8edf5',muted:'#7a8aaa'
+};
+const palette=[C.blue,C.green,C.amber,C.purple,C.red,C.teal,C.pink,C.orange,C.lime,C.indigo];
+Chart.defaults.color=C.muted;Chart.defaults.borderColor=C.border;Chart.defaults.font.family='Inter';
+
+function baseOptions(legend=false){
+  return{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:legend},
+    tooltip:{backgroundColor:'#1c2438',borderColor:C.border,borderWidth:1,titleColor:C.text,bodyColor:C.muted,padding:10}}};
+}
+function makeLegend(id,labels,colors,values){
+  const el=document.getElementById(id);if(!el)return;
+  el.innerHTML=labels.map((l,i)=>`<div class="legend-item"><div class="legend-label"><span class="legend-dot" style="background:${colors[i]}"></span>${l}</div><div class="legend-val">${values[i]}</div></div>`).join('');
+}
+
+const months=['Jun 25','Jul 25','Aug 25','Sep 25','Oct 25','Nov 25','Dec 25','Jan 26','Feb 26','Mar 26','Apr 26','May 26'];
+const monthRev=[61871,224230,66946,955980,213792,63337,124859,78378,56116,44005,47336,42598];
+const monthCnt=[141,135,79,817,225,101,90,132,127,107,129,111];
+const statusLabels=['Converted','New','Renewed','Reactivated'];
+const statusCnt=[1218,507,427,223];
+const statusColors=[C.blue,C.green,C.amber,C.purple];
+const catLabels=['Gym','Tennis','Summer Camp','Other'];
+const catRev=[584738,1373790,24375,43615];
+const catCnt=[1213,964,101,97];
+const catColors=[C.blue,C.green,C.amber,C.muted];
+const durLabels=['Annual','Quarter','10 Months','5 Days','9 Months','2 Months','Month','2 Days'];
+const durCnt=[758,580,376,267,254,54,39,29];
+const payLabels=['Cash','Direct Debit','Credit Card'];
+const payCnt=[1253,837,285];
+const payColors=[C.amber,C.blue,C.green];
+const piLabels=['Monthly','10 Months','Annual','5 Days','9 Months','2 Months','Daily','2 Days'];
+const piCnt=[1076,376,301,267,254,54,14,29];
+const ageGroups=['< 18','18–25','26–35','36–45','46–55','56–65','65+'];
+const ageRev=[1201142,144750,293266,165285,142848,61217,18010];
+const ageCnt=[808,281,561,305,255,128,37];
+const ageColors=[C.blue,C.green,C.teal,C.amber,C.orange,C.red,C.purple];
+const genderLabels=['Male','Female'];
+const genderRev=[1311198,715320];
+const genderCnt=[1386,989];
+const genderColors=[C.blue,C.pink];
+const finLabels=['Ok','Debit','Credit'];
+const finCnt=[2139,192,44];
+const finColors=[C.green,C.red,C.amber];
+const ctLabels=['Contract','AddOn'];
+const ctCnt=[1259,1116];
+const ctColors=[C.amber,C.teal];
+
+const plansData=[
+  {name:'Gold Flex',cnt:224,rev:48858},{name:'Silver Flex',cnt:208,rev:39481},
+  {name:'Silver Jan 2023 p.m.',cnt:175,rev:92734},{name:'Gold Jan 2023 p.m.',cnt:169,rev:107842},
+  {name:'SAT-single-weekly-non members',cnt:168,rev:176400},{name:'Platinum Flex',cnt:148,rev:52823},
+  {name:'Tennis single-weekly members',cnt:117,rev:76050},{name:'SAT-bi-weekly-non members',cnt:111,rev:177600},
+  {name:'Tennis single-weekly non members',cnt:84,rev:71400},{name:'Silver Jan 2023 p.a.',cnt:82,rev:42116},
+  {name:'Platinum Jan 2023 p.m.',cnt:75,rev:88606},{name:'Gold Jan 2023 p.a.',cnt:64,rev:39846},
+  {name:'Racket & Fun Summercamp External',cnt:63,rev:148200},{name:'Platinum Jan 2023 p.a.',cnt:54,rev:61664},
+  {name:'Summer Camp - Non members',cnt:53,rev:15475},{name:'Minitennis single-weekly non members',cnt:51,rev:40290},
+  {name:'Summer Tennis School - Non members',cnt:48,rev:58720},{name:'Competitive Tri-weekly',cnt:39,rev:140400},
+  {name:'Competitive Bi-weekly',cnt:28,rev:75600},{name:'Summer Tennis - Members',cnt:26,rev:3120},
+  {name:'Summer Tennis Course - Non members',cnt:22,rev:5040},{name:'Racket & Fun Summercamp - SAT',cnt:21,rev:45920},
+  {name:'Summer Camp - SAT',cnt:20,rev:5330},{name:'SAT-tri-weekly-non members',cnt:18,rev:34200},
+  {name:'Junior Jan 2023 p.m.',cnt:18,rev:7191},{name:'Padel single-weekly members',cnt:17,rev:11050},
+  {name:'Padel single-weekly non members',cnt:16,rev:13600},{name:'Tennis camp',cnt:15,rev:36800},
+  {name:'Winter Tennis Camp 2 days - Members',cnt:15,rev:59950},{name:'Tennis bi-weekly members',cnt:14,rev:17500},
+  {name:'Summer Tennis Course - Members',cnt:14,rev:2520},{name:'Summer Tennis School - Members',cnt:13,rev:13480},
+  {name:'Summer Tennis - Non members',cnt:13,rev:2080},{name:'Child Jan 2023 p.m.',cnt:13,rev:2338},
+  {name:'Competitive Quad-weekly',cnt:12,rev:51600},{name:'Summer Padel Course - Non members',cnt:12,rev:2520},
+  {name:'SAT-single-weekly - Members',cnt:10,rev:9900},{name:'SAT-bi-weekly - Members',cnt:10,rev:15000},
+  {name:'Summer Tennis School',cnt:8,rev:15900},{name:'Intensive Summer Tennis School - Non members',cnt:7,rev:1750},
+  {name:'Summer Padel Course - Members',cnt:6,rev:1260},{name:'Easter Camp 1 day - Members',cnt:6,rev:360},
+  {name:'Tennis bi-weekly non members',cnt:6,rev:9300},{name:'Summer Competitive half-day',cnt:5,rev:14750},
+  {name:'Winter Tennis Camp 2 days - Non members',cnt:5,rev:24500},{name:'Child Jan 2023 p.a.',cnt:5,rev:1206},
+  {name:'Junior Jan 2023 p.a.',cnt:5,rev:2113},{name:'Friends & Family p.m.',cnt:5,rev:2337},
+  {name:'Easter Camp 3 days - Non members',cnt:4,rev:780},{name:'Easter Camp 2 days - Members',cnt:4,rev:440},
+  {name:'Minitennis single-weekly - Members',cnt:4,rev:3000},{name:'Summer Camp - Members',cnt:4,rev:1020},
+  {name:'Platinum p.a. welfare',cnt:4,rev:4800},{name:'Carnival Camp 1 day - Members',cnt:3,rev:180},
+  {name:'Intensive Summer Tennis School - SAT',cnt:3,rev:600},{name:'Gold p.a. welfare',cnt:3,rev:2008},
+  {name:'SAT-tri-weekly - Members',cnt:3,rev:5400},{name:'Carnival Camp 2 days - Members',cnt:2,rev:220},
+  {name:'Winter Tennis Camp 1 day - Members',cnt:2,rev:8280},{name:'Summer Competitive',cnt:2,rev:9500},
+  {name:'Intensive Summer Tennis School - Members',cnt:2,rev:400},{name:'Silver p.a. welfare',cnt:2,rev:1080},
+  {name:'Easter Camp 1 day - Non members',cnt:2,rev:150},{name:'Gold Contributor Jan 2023 p.m.',cnt:2,rev:1056},
+  {name:'Easter Camp 2 days - Non members',cnt:2,rev:280},{name:'Carnival Camp 2 days - Non members',cnt:1,rev:140},
+  {name:'Platinum Contributor Jan 2023 p.a.',cnt:1,rev:912},{name:'Minitennis bi-weekly-non members',cnt:1,rev:1200},
+  {name:'Summer Competitive half-day external',cnt:1,rev:2400},{name:'Gold Contributor Jan 2023 p.a.',cnt:1,rev:502},
+  {name:'Summer Competitive external',cnt:1,rev:9600},{name:'Racket & Fun Summercamp - Members TCA',cnt:1,rev:265},
+  {name:'Silver Contributor Jan 2023 p.a.',cnt:1,rev:410},{name:'Winter Tennis Camp 1 day - Non members',cnt:1,rev:5175},
+];
+
+// Age grid
+const ageGridEl=document.getElementById('ageGrid');
+ageGroups.forEach((g,i)=>{
+  ageGridEl.innerHTML+=`<div class="age-cell"><div class="age-label">${g}</div><div class="age-rev">${ageCnt[i]}</div><div class="age-count">contracts · €${(ageRev[i]/1000).toFixed(0)}K</div></div>`;
+});
+
+// Plans table
+const totalContracts=2375,totalRev=2026518;
+const tbody=document.getElementById('plansTableBody');
+document.getElementById('planCount').textContent=`(${plansData.length} plans)`;
+let currentSort='cnt';
+function renderPlansTable(sortKey){
+  const sorted=[...plansData].sort((a,b)=>b[sortKey]-a[sortKey]);
+  tbody.innerHTML=sorted.map((p,i)=>{
+    const ca=sortKey==='cnt';
+    return`<tr><td style="color:var(--muted)">${i+1}</td><td>${p.name}</td><td style="${ca?'color:var(--text);font-weight:600':'color:var(--muted)'}">${p.cnt}</td><td style="color:var(--muted)">${((p.cnt/totalContracts)*100).toFixed(1)}%</td><td style="${!ca?'color:var(--text);font-weight:600':'color:var(--muted)'}">€${p.rev.toLocaleString('en-US')}</td><td style="color:var(--muted)">${((p.rev/totalRev)*100).toFixed(1)}%</td></tr>`;
+  }).join('');
+  document.querySelectorAll('.th-sort').forEach(th=>{const k=th.dataset.sort;th.textContent=(k==='cnt'?'Contracts':'Total Revenue')+(k===sortKey?' ▾':'');});
+  document.querySelectorAll('.sort-btn').forEach(b=>b.classList.toggle('active',b.dataset.sort===sortKey));
+}
+document.querySelectorAll('.sort-btn,.th-sort').forEach(el=>el.addEventListener('click',()=>{currentSort=el.dataset.sort;renderPlansTable(currentSort);}));
+renderPlansTable(currentSort);
+
+// Monthly
+new Chart(document.getElementById('monthlyChart'),{type:'bar',data:{labels:months,datasets:[
+  {type:'bar',label:'Revenue (€)',data:monthRev,backgroundColor:'rgba(79,142,247,0.5)',borderColor:C.blue,borderWidth:1,yAxisID:'y'},
+  {type:'line',label:'Contracts',data:monthCnt,borderColor:C.green,backgroundColor:'rgba(52,211,153,0.1)',pointBackgroundColor:C.green,pointRadius:4,tension:0.3,fill:false,yAxisID:'y1'}
+]},options:{...baseOptions(),scales:{x:{grid:{color:C.border},ticks:{font:{size:11}}},y:{grid:{color:C.border},ticks:{callback:v=>'€'+(v/1000).toFixed(0)+'K',font:{size:11}},position:'left'},y1:{grid:{display:false},ticks:{font:{size:11}},position:'right'}},plugins:{...baseOptions().plugins,legend:{display:true,labels:{color:C.muted,font:{size:12},boxWidth:12}}}}});
+
+// Status
+new Chart(document.getElementById('statusChart'),{type:'doughnut',data:{labels:statusLabels,datasets:[{data:statusCnt,backgroundColor:statusColors,borderWidth:0,hoverOffset:6}]},options:{...baseOptions(),cutout:'65%'}});
+makeLegend('statusLegend',statusLabels,statusColors,statusCnt.map(v=>v.toLocaleString('en-US')));
+
+// Contract type
+new Chart(document.getElementById('contractTypeChart'),{type:'doughnut',data:{labels:ctLabels,datasets:[{data:ctCnt,backgroundColor:ctColors,borderWidth:0,hoverOffset:6}]},options:{...baseOptions(),cutout:'62%'}});
+makeLegend('contractTypeLegend',ctLabels,ctColors,ctCnt.map(v=>v.toLocaleString('en-US')));
+
+// Category
+new Chart(document.getElementById('categoryChart'),{type:'doughnut',data:{labels:catLabels,datasets:[{data:catCnt,backgroundColor:catColors,borderWidth:0,hoverOffset:6}]},options:{...baseOptions(),cutout:'60%'}});
+makeLegend('categoryLegend',catLabels,catColors,catCnt.map((v,i)=>`${v} (€${(catRev[i]/1000).toFixed(0)}K)`));
+
+// Plan type cnt/rev
+const ptLabels=['Contract','Course','Paid Course'];
+const ptCnt=[1259,941,175],ptRev=[599923,1296365,130230],ptColors=[C.amber,C.green,C.teal];
+new Chart(document.getElementById('planTypeCntChart'),{type:'doughnut',data:{labels:ptLabels,datasets:[{data:ptCnt,backgroundColor:ptColors,borderWidth:0,hoverOffset:6}]},options:{...baseOptions(),cutout:'58%'}});
+makeLegend('planTypeCntLegend',ptLabels,ptColors,ptCnt.map(v=>`${v.toLocaleString('en-US')} (${(v/2375*100).toFixed(1)}%)`));
+new Chart(document.getElementById('planTypeRevChart'),{type:'doughnut',data:{labels:ptLabels,datasets:[{data:ptRev,backgroundColor:ptColors,borderWidth:0,hoverOffset:6}]},options:{...baseOptions(),cutout:'58%'}});
+makeLegend('planTypeRevLegend',ptLabels,ptColors,ptRev.map(v=>`€${v.toLocaleString('en-US')} (${(v/2026518*100).toFixed(1)}%)`));
+
+// Top 12 plans
+const top12=[...plansData].sort((a,b)=>b.cnt-a.cnt).slice(0,12);
+new Chart(document.getElementById('plansChart'),{type:'bar',data:{labels:top12.map(p=>p.name.length>30?p.name.slice(0,30)+'…':p.name),datasets:[{label:'Contracts',data:top12.map(p=>p.cnt),backgroundColor:palette,borderRadius:4}]},options:{...baseOptions(),indexAxis:'y',scales:{x:{grid:{color:C.border},ticks:{font:{size:11}}},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
+
+// Adult tier
+const atLabels=['Silver','Gold','Platinum'],atCnt=[468,463,282],atRev=[175821,200112,208805],atColors=['#94a3b8',C.gold,'#c4b5fd'];
+new Chart(document.getElementById('adultTierChart'),{type:'doughnut',data:{labels:atLabels,datasets:[{data:atCnt,backgroundColor:atColors,borderWidth:0,hoverOffset:6}]},options:{...baseOptions(),cutout:'58%'}});
+makeLegend('adultTierLegend',atLabels,atColors,atCnt.map((v,i)=>`${v} (€${(atRev[i]/1000).toFixed(0)}K)`));
+
+// Adult duration
+new Chart(document.getElementById('adultDurationChart'),{type:'bar',data:{labels:atLabels,datasets:[{label:'Monthly',data:[383,395,223],backgroundColor:C.blue,borderRadius:4,stack:'s'},{label:'Annual',data:[85,68,59],backgroundColor:C.amber,borderRadius:4,stack:'s'}]},options:{...baseOptions(),scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:12}}},y:{stacked:true,grid:{color:C.border},ticks:{font:{size:11}}}},plugins:{...baseOptions().plugins,legend:{display:true,labels:{color:C.muted,font:{size:12},boxWidth:12}}}}});
+makeLegend('adultDurationLegend',['Monthly total','Annual total'],[C.blue,C.amber],['1,001 (82.5%)','212 (17.5%)']);
+
+// Adult min time
+new Chart(document.getElementById('adultMinTimeChart'),{type:'bar',data:{labels:atLabels,datasets:[{label:'Annual',data:[260,239,134],backgroundColor:C.green,borderRadius:4,stack:'m'},{label:'Quarter',data:[208,224,148],backgroundColor:C.purple,borderRadius:4,stack:'m'}]},options:{...baseOptions(),scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:12}}},y:{stacked:true,grid:{color:C.border},ticks:{font:{size:11}}}},plugins:{...baseOptions().plugins,legend:{display:true,labels:{color:C.muted,font:{size:12},boxWidth:12}}}}});
+makeLegend('adultMinTimeLegend',['Annual total','Quarter total'],[C.green,C.purple],['633 (52.2%)','580 (47.8%)']);
+
+// Duration
+new Chart(document.getElementById('durationChart'),{type:'bar',data:{labels:durLabels,datasets:[{label:'Contracts',data:durCnt,backgroundColor:durLabels.map((_,i)=>palette[i%palette.length]),borderRadius:4}]},options:{...baseOptions(),scales:{x:{grid:{display:false},ticks:{font:{size:11}}},y:{grid:{color:C.border},ticks:{font:{size:11}}}}}});
+
+// Pay method
+new Chart(document.getElementById('paymentMethodChart'),{type:'doughnut',data:{labels:payLabels,datasets:[{data:payCnt,backgroundColor:payColors,borderWidth:0,hoverOffset:6}]},options:{...baseOptions(),cutout:'62%'}});
+makeLegend('paymentMethodLegend',payLabels,payColors,payCnt.map(v=>v.toLocaleString('en-US')));
+
+// Pay interval
+new Chart(document.getElementById('payIntervalChart'),{type:'bar',data:{labels:piLabels,datasets:[{label:'Contracts',data:piCnt,backgroundColor:piLabels.map((_,i)=>palette[i%palette.length]),borderRadius:3}]},options:{...baseOptions(),indexAxis:'y',scales:{x:{grid:{color:C.border},ticks:{font:{size:10}}},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
+
+// Age chart
+new Chart(document.getElementById('ageChart'),{type:'bar',data:{labels:ageGroups,datasets:[{type:'bar',label:'Contracts',data:ageCnt,backgroundColor:ageColors.map(c=>c+'bb'),borderColor:ageColors,borderWidth:1,borderRadius:4,yAxisID:'y'},{type:'line',label:'Revenue (€)',data:ageRev,borderColor:C.gold,backgroundColor:'rgba(245,200,66,0.1)',pointBackgroundColor:C.gold,pointRadius:5,tension:0.3,yAxisID:'y1'}]},options:{...baseOptions(),scales:{x:{grid:{color:C.border}},y:{grid:{color:C.border},position:'left'},y1:{grid:{display:false},ticks:{callback:v=>'€'+(v/1000).toFixed(0)+'K'},position:'right'}},plugins:{...baseOptions().plugins,legend:{display:true,labels:{color:C.muted,font:{size:12},boxWidth:12}}}}});
+
+// Gender
+new Chart(document.getElementById('genderChart'),{type:'doughnut',data:{labels:genderLabels,datasets:[{data:genderCnt,backgroundColor:genderColors,borderWidth:0,hoverOffset:6}]},options:{...baseOptions(),cutout:'62%'}});
+makeLegend('genderLegend',genderLabels,genderColors,genderCnt.map((v,i)=>`${v} (€${(genderRev[i]/1000).toFixed(0)}K)`));
+
+// Discount
+new Chart(document.getElementById('discountChart'),{type:'doughnut',data:{labels:['With Discount','No Discount'],datasets:[{data:[768,1607],backgroundColor:[C.amber,C.border],borderWidth:0,hoverOffset:6}]},options:{...baseOptions(),cutout:'62%'}});
+makeLegend('discountLegend',['With Discount','No Discount'],[C.amber,C.muted],['768 (32.3%)','1,607 (67.7%)']);
+
+// Financial
+new Chart(document.getElementById('financialChart'),{type:'doughnut',data:{labels:finLabels,datasets:[{data:finCnt,backgroundColor:finColors,borderWidth:0,hoverOffset:6}]},options:{...baseOptions(),cutout:'62%'}});
+makeLegend('financialLegend',finLabels,finColors,finCnt.map(v=>v.toLocaleString('en-US')));
+
+// Online reg
+new Chart(document.getElementById('regTypeChart'),{type:'doughnut',data:{labels:['Online Registration','Operator (Offline)'],datasets:[{data:[36,2339],backgroundColor:[C.teal,C.blue],borderWidth:0,hoverOffset:6}]},options:{...baseOptions(),cutout:'60%'}});
+makeLegend('regTypeLegend',['Online Registration','Operator (Offline)'],[C.teal,C.blue],['36 (1.5%)','2,339 (98.5%)']);
+</script>
+</body>
+</html>
