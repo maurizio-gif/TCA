@@ -110,9 +110,9 @@ const rows: Row[] = [
     people:      'Alice Bartoli & Thomas Sander',
     peopleNote:  'Alice Bartoli: usage details',
     status:      'wip',
-    statusLabel: 'In preparation',
-    nextStep:    'Internal Inventory with Alice',
-    date:        'Jun 22–26',
+    statusLabel: 'Active — Jun 16',
+    nextStep:    'Google Workspace Setup + Email to Thomas Sander',
+    date:        'Jun 16',
     detail: [
       {
         heading: 'Two Objectives',
@@ -128,6 +128,7 @@ const rows: Row[] = [
           {
             title: 'Internal Inventory — with Alice (TCA)',
             fields: [
+              { label: 'Completed',    text: 'Monday 15 June 2026 ✓' },
               { label: 'Objective',    text: 'Build the complete migration perimeter entirely in-house: mailboxes, what they contain, and files.' },
               { label: 'Activities',   text: 'Working sessions with Alice to map the ~10 mailboxes, their contents and volumes, aliases, shared mailboxes/groups and OneDrive files; identify the domain(s) in use; define success criteria and target timeline.' },
               { label: 'Aspria input', text: 'None — done internally at TCA with Alice.' },
@@ -138,6 +139,7 @@ const rows: Row[] = [
           {
             title: 'Google Workspace Setup',
             fields: [
+              { label: 'Scheduled',    text: 'Tuesday 16 June 2026. In parallel: advance email to Thomas Sander to pre-announce the migration scope and flag what Aspria IT will be asked to provide.' },
               { label: 'Objective',    text: 'Stand up the new independent tenant, production-ready before any data moves.' },
               { label: 'Activities',   text: 'Create the Google Workspace tenant, select edition and licensing, verify the domain, configure the security baseline (2FA, admin roles) and prepare the shared Drive structure.' },
               { label: 'Aspria input', text: 'None — fully independent. At most one DNS TXT record for domain verification if Aspria controls the DNS zone.' },
@@ -208,12 +210,13 @@ const rows: Row[] = [
         ],
       },
       {
-        heading: 'Minimising Thomas Sander’s Involvement',
-        text: 'Everything that can be prepared in-house is done before contacting Aspria: the inventory of mailboxes, contents and files is built internally with Alice, and the mapping is validated internally too. Thomas Sander’s role shrinks to two touchpoints:',
+        heading: "Minimising Thomas Sander’s Involvement",
+        text: "Everything that can be prepared in-house is done before contacting Aspria: the inventory of mailboxes, contents and files is built internally with Alice, and the mapping is validated internally too. Thomas Sander is involved through two active touchpoints plus async wrap-up:",
         bullets: [
-          'One short technical call (~30 minutes) to grant temporary, scoped migration access and agree the cutover window — with inventory and mapping already done',
-          'Support on the final DNS / mail-routing cutover, only if the DNS zone is under Aspria’s control',
-          'Access revocation and M365 license decommission are handled asynchronously by email — no further calls',
+          "Advance email (Jun 16) — pre-announcement of the migration plan, the scope of work and what Aspria IT will be asked to provide; no action required at this stage",
+          "One short technical call (~30 minutes) — arriving with inventory and mapping already done: request temporary, scoped migration access and agree the cutover window; validate access with a connectivity test",
+          "DNS / mail-routing cutover support — only if the zone is under Aspria’s control",
+          "Access revocation and M365 license decommission — handled asynchronously by email, no further calls",
         ],
       },
     ],
