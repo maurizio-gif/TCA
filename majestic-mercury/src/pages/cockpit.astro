@@ -1,941 +1,1322 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// ── KPI data  (replace with Supabase fetch in production)
-const KPIS = [
-  { id: "online_sales",   label: "Membership Vendute Online",  unit: "",  mtd: 47,   ytd: 286,  target: 60,  prior: 33,   goodWhen: "up",   hero: true  },
-  { id: "staff_cost",     label: "Costo Personale / Ricavi",   unit: "%", mtd: 41.8, ytd: 44.2, target: 40,  prior: 43.1, goodWhen: "down", hero: false },
-  { id: "lead_conv",      label: "Conversione Lead → Socio",   unit: "%", mtd: 27.4, ytd: 24.1, target: 30,  prior: 24.6, goodWhen: "up",   hero: false },
-  { id: "digital_signup", label: "Iscrizioni via Digitale",    unit: "%", mtd: 61.0, ytd: 48.5, target: 80,  prior: 55.2, goodWhen: "up",   hero: false },
-  { id: "net_growth",     label: "Crescita Soci Netta",        unit: "",  mtd: 38,   ytd: 214,  target: 45,  prior: 29,   goodWhen: "up",   hero: false },
-  { id: "rev_per_member", label: "Ricavo Medio per Socio",     unit: "€", mtd: 86,   ytd: 83,   target: 90,  prior: 84,   goodWhen: "up",   hero: false },
-  { id: "renewal",        label: "Tasso di Rinnovo",           unit: "%", mtd: 89.2, ytd: 87.6, target: 90,  prior: 88.4, goodWhen: "up",   hero: false },
-  { id: "contracts",      label: "Nuovi Contratti Firmati",    unit: "",  mtd: 47,   ytd: 378,  target: 50,  prior: 42,   goodWhen: "up",   hero: false },
-  { id: "inq_ctr_rate",   label: "Tasso Convers. Inq → Ctr",  unit: "%", mtd: 54.0, ytd: 44.4, target: 50,  prior: 51.2, goodWhen: "up",   hero: false },
-];
-
-// ── Inquiry breakdown (this month)
-const INQUIRY = {
-  total: 87, prior: 82, ytd: 851, target: 80,
-  types: [
-    { label: "Nuovi Lead",   n: 52, pct: 60 },
-    { label: "Lead Ritorno", n: 21, pct: 24 },
-    { label: "Ex Soci",      n: 14, pct: 16 },
-  ],
+// ── BU DATA (used for initial render; client-side JS reads this via JSON) ──
+const BU_DATA = {
+  all: {
+    revenue:   { mtd: 89420,  ytd: 712340, prior: 84180 },
+    opcost:    { mtd: 74200,  ytd: 591800, prior: 70050 },
+    staff:     { mtd: 41.8,   ytd: 44.2,   prior: 43.1  },
+    online:    { mtd: 29,     ytd: 182,    prior: 21    },
+    onsite:    { mtd: 18,     ytd: 138,    prior: 22    },
+    total_new: { mtd: 47,     ytd: 320,    prior: 43    },
+    inq:       { mtd: 87,     ytd: 851,    prior: 82,   new_leads: 52, returning: 21, former: 14 },
+    cancelled: { mtd: 9,      ytd: 64,     prior: 11    },
+    net:       { mtd: 38,     ytd: 256,    prior: 32    },
+    active:    { mtd: 1247,   prior: 1209  },
+    churn:     { mtd: 0.72,   prior: 0.91  },
+    conv:      { mtd: 54.0,   prior: 51.2  },
+    has_funnel: true,
+  },
+  memberships: {
+    revenue:   { mtd: 52300,  ytd: 418200, prior: 49100 },
+    opcost:    { mtd: 41500,  ytd: 331800, prior: 39100 },
+    staff:     { mtd: 38.2,   ytd: 40.1,   prior: 39.8  },
+    online:    { mtd: 17,     ytd: 108,    prior: 13    },
+    onsite:    { mtd: 12,     ytd: 92,     prior: 14    },
+    total_new: { mtd: 29,     ytd: 200,    prior: 27    },
+    inq:       { mtd: 51,     ytd: 497,    prior: 48,   new_leads: 30, returning: 14, former: 7 },
+    cancelled: { mtd: 5,      ytd: 36,     prior: 7     },
+    net:       { mtd: 24,     ytd: 164,    prior: 20    },
+    active:    { mtd: 724,    prior: 700   },
+    churn:     { mtd: 0.69,   prior: 1.00  },
+    conv:      { mtd: 56.9,   prior: 56.3  },
+    has_funnel: true,
+  },
+  tennis: {
+    revenue:   { mtd: 18400,  ytd: 147200, prior: 17600 },
+    opcost:    { mtd: 15200,  ytd: 121400, prior: 14600 },
+    staff:     { mtd: 44.1,   ytd: 46.8,   prior: 45.2  },
+    online:    { mtd: 8,      ytd: 62,     prior: 6     },
+    onsite:    { mtd: 14,     ytd: 112,    prior: 16    },
+    total_new: { mtd: 22,     ytd: 174,    prior: 22    },
+    inq:       { mtd: 34,     ytd: 298,    prior: 31,   new_leads: 18, returning: 11, former: 5 },
+    cancelled: { mtd: 4,      ytd: 28,     prior: 4     },
+    net:       { mtd: 18,     ytd: 146,    prior: 18    },
+    active:    { mtd: 487,    prior: 469   },
+    churn:     { mtd: 0.82,   prior: 0.85  },
+    conv:      { mtd: 64.7,   prior: 70.9  },
+    has_funnel: true,
+  },
+  padel: {
+    revenue:   { mtd: 11200,  ytd: 89600,  prior: 10400 },
+    opcost:    { mtd: 9400,   ytd: 75200,  prior: 8800  },
+    staff:     { mtd: 39.5,   ytd: 42.0,   prior: 41.2  },
+    online:    { mtd: 15,     ytd: 118,    prior: 11    },
+    onsite:    { mtd: 7,      ytd: 56,     prior: 8     },
+    total_new: { mtd: 22,     ytd: 174,    prior: 19    },
+    inq:       { mtd: 29,     ytd: 248,    prior: 25,   new_leads: 20, returning: 7, former: 2 },
+    cancelled: { mtd: 3,      ytd: 22,     prior: 4     },
+    net:       { mtd: 19,     ytd: 152,    prior: 15    },
+    active:    { mtd: 312,    prior: 293   },
+    churn:     { mtd: 0.96,   prior: 1.36  },
+    conv:      { mtd: 75.9,   prior: 76.0  },
+    has_funnel: true,
+  },
+  summer_camps: {
+    revenue:   { mtd: 5200,   ytd: 41600,  prior: 4800  },
+    opcost:    { mtd: 4800,   ytd: 38600,  prior: 4450  },
+    staff:     { mtd: 52.1,   ytd: 55.4,   prior: 53.8  },
+    online:    { mtd: 8,      ytd: 62,     prior: 6     },
+    onsite:    { mtd: 14,     ytd: 112,    prior: 14    },
+    total_new: { mtd: 22,     ytd: 174,    prior: 20    },
+    inq:       { mtd: 31,     ytd: 188,    prior: 28,   new_leads: 24, returning: 5, former: 2 },
+    cancelled: { mtd: 2,      ytd: 14,     prior: 3     },
+    net:       { mtd: 20,     ytd: 160,    prior: 17    },
+    active:    { mtd: 148,    prior: 128   },
+    churn:     { mtd: 1.35,   prior: 2.34  },
+    conv:      { mtd: 71.0,   prior: 71.4  },
+    has_funnel: true,
+  },
+  merchandising: {
+    revenue:   { mtd: 2320,   ytd: 15740,  prior: 2280  },
+    opcost:    { mtd: 1800,   ytd: 12200,  prior: 1770  },
+    staff:     { mtd: 28.4,   ytd: 31.2,   prior: 30.1  },
+    online:    { mtd: 0,      ytd: 0,      prior: 0     },
+    onsite:    { mtd: 0,      ytd: 0,      prior: 0     },
+    total_new: { mtd: 0,      ytd: 0,      prior: 0     },
+    inq:       { mtd: 0,      ytd: 0,      prior: 0,    new_leads: 0, returning: 0, former: 0 },
+    cancelled: { mtd: 0,      ytd: 0,      prior: 0     },
+    net:       { mtd: 0,      ytd: 0,      prior: 0     },
+    active:    { mtd: 0,      prior: 0     },
+    churn:     { mtd: 0,      prior: 0     },
+    conv:      { mtd: 0,      prior: 0     },
+    has_funnel: false,
+  },
 };
 
-function fmt(v: number, unit: string): string {
-  if (unit === "€") return `€${v}`;
-  if (unit === "%") return `${v.toFixed(1)}%`;
-  return String(v);
-}
+const D = BU_DATA.all;
 
-function computeKpi(k: typeof KPIS[0]) {
-  const raw = k.mtd - k.prior;
-  const improving = k.goodWhen === "up" ? raw > 0 : raw < 0;
-  const arrow = raw === 0 ? "→" : raw > 0 ? "↑" : "↓";
-  const mag = Math.abs(raw);
-  const deltaTxt = k.unit === "%" ? `${mag.toFixed(1)} pt` : k.unit === "€" ? `€${mag.toFixed(0)}` : String(mag);
-  const meter =
-    k.goodWhen === "down"
-      ? Math.max(0, Math.min(1, (k.prior - k.mtd) / (k.prior - k.target || 1)))
-      : Math.max(0, Math.min(1, k.mtd / k.target));
-  const onTarget = k.goodWhen === "down" ? k.mtd <= k.target : k.mtd >= k.target;
-  return {
-    ...k,
-    improving,
-    arrow,
-    deltaTxt,
-    meter,
-    onTarget,
-    meterPct: `${(meter * 100).toFixed(1)}%`,
-    fmtMtd: fmt(k.mtd, k.unit),
-    fmtYtd: fmt(k.ytd, k.unit),
-    fmtTarget: fmt(k.target, k.unit),
-  };
-}
+// ── 12-MONTH TREND DATA (Jul → Jun) ──
+const MONTHS = ['Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun'];
+const INQ_TREND = [68, 72, 74, 78, 71, 64, 79, 81, 84, 83, 82, 87];
+const NEW_TREND = [34, 38, 40, 44, 39, 33, 43, 44, 46, 45, 43, 47];
 
-const kpis    = KPIS.map(computeKpi);
-const hero    = kpis.find(k => k.hero)!;
-const grid1   = kpis.filter(k => !k.hero && ['staff_cost','lead_conv'].includes(k.id));
-const grid2   = kpis.filter(k => ['digital_signup','net_growth','rev_per_member','renewal'].includes(k.id));
-const grid3   = kpis.filter(k => ['contracts','inq_ctr_rate'].includes(k.id));
+// ── SVG: correlation dual-line chart ──
+const CW = 760, CH = 200, PL = 10, PR = 10, PT = 20, PB = 36;
+const cInner = CW - PL - PR;
+const cIH    = CH - PT - PB;
+const allVals = [...INQ_TREND, ...NEW_TREND];
+const cMin = Math.min(...allVals) - 8;
+const cMax = Math.max(...allVals) + 6;
+const cx = (i: number) => PL + (i / (MONTHS.length - 1)) * cInner;
+const cy = (v: number) => PT + (1 - (v - cMin) / (cMax - cMin)) * cIH;
+const inqPts   = INQ_TREND.map((v, i) => `${cx(i)},${cy(v)}`).join(' ');
+const newPts   = NEW_TREND.map((v, i) => `${cx(i)},${cy(v)}`).join(' ');
+const gapPath  = [
+  ...INQ_TREND.map((v, i) => (i === 0 ? `M${cx(i)},${cy(v)}` : `L${cx(i)},${cy(v)}`)),
+  ...NEW_TREND.slice().reverse().map((v, i) => `L${cx(MONTHS.length - 1 - i)},${cy(v)}`),
+  'Z',
+].join(' ');
 
-// Inquiry delta
-const inqDelta   = INQUIRY.total - INQUIRY.prior;
-const inqGood    = inqDelta >= 0;
-const inqArrow   = inqDelta > 0 ? "↑" : inqDelta < 0 ? "↓" : "→";
-const inqMeter   = Math.min(1, INQUIRY.total / INQUIRY.target);
+// ── 12-month total operational cost trend (Jul → Jun) ──
+const OPCOST_TREND = [56400, 58800, 61200, 64700, 59100, 52800, 65400, 67200, 70050, 68900, 66200, 74200];
+const REV_TREND_M  = [67100, 70200, 73800, 78400, 71600, 63200, 78900, 80400, 84180, 82600, 79900, 89420];
 
-// ── 12-month trend data
-const ONLINE_TREND = [
-  { m: "Lug", online:  9, club: 28 }, { m: "Ago", online:  7, club: 19 },
-  { m: "Set", online: 14, club: 31 }, { m: "Ott", online: 18, club: 26 },
-  { m: "Nov", online: 21, club: 25 }, { m: "Dic", online: 16, club: 22 },
-  { m: "Gen", online: 28, club: 27 }, { m: "Feb", online: 31, club: 24 },
-  { m: "Mar", online: 36, club: 23 }, { m: "Apr", online: 39, club: 21 },
-  { m: "Mag", online: 43, club: 19 }, { m: "Giu", online: 47, club: 18 },
-];
+// SVG for operational cost bars
+const OW = 760, OH = 180, oPL = 10, oPR = 10, oPT = 20, oPB = 36;
+const oInner = OW - oPL - oPR;
+const oIH    = OH - oPT - oPB;
+const oMax   = Math.max(...OPCOST_TREND, ...REV_TREND_M) * 1.08;
+const oMin   = 0;
+const oRange = oMax - oMin;
+const oBarW  = oInner / MONTHS.length * 0.38;
+const oBars  = OPCOST_TREND.map((v, i) => {
+  const ox = oPL + (i / MONTHS.length) * oInner + oInner / MONTHS.length * 0.08;
+  const oy = oPT + (1 - v / oMax) * oIH;
+  const oh = (v / oMax) * oIH;
+  const rx = ox + oBarW + 2;
+  const ry = oPT + (1 - REV_TREND_M[i] / oMax) * oIH;
+  const rh = (REV_TREND_M[i] / oMax) * oIH;
+  return { ox, oy, oh, rx, ry, rh, v, rv: REV_TREND_M[i] };
+});
 
-const NET_TREND = [
-  { m: "Lug", v: 12 }, { m: "Ago", v:  8 }, { m: "Set", v: 22 },
-  { m: "Ott", v: 19 }, { m: "Nov", v: 25 }, { m: "Dic", v: 14 },
-  { m: "Gen", v: 31 }, { m: "Feb", v: 27 }, { m: "Mar", v: 33 },
-  { m: "Apr", v: 24 }, { m: "Mag", v: 29 }, { m: "Giu", v: 38 },
-];
+// ── SVG: net balance monthly bars ──
+const NET_DATA = [25, 29, 31, 36, 28, 20, 35, 37, 40, 37, 32, 38];
+const CAN_DATA = [ 8,  7,  9,  8,  9, 13,  8,  7,  7,  8, 11,  9];
+const BAL_DATA = NET_DATA.map((n, i) => n - CAN_DATA[i]);
 
-// Inquiries vs new contracts — 12 months
-const INQ_CTR_TREND = [
-  { m: "Lug", inq: 64, ctr: 34 }, { m: "Ago", inq: 48, ctr: 27 },
-  { m: "Set", inq: 72, ctr: 41 }, { m: "Ott", inq: 68, ctr: 38 },
-  { m: "Nov", inq: 75, ctr: 44 }, { m: "Dic", inq: 54, ctr: 32 },
-  { m: "Gen", inq: 81, ctr: 51 }, { m: "Feb", inq: 77, ctr: 47 },
-  { m: "Mar", inq: 88, ctr: 54 }, { m: "Apr", inq: 82, ctr: 50 },
-  { m: "Mag", inq: 82, ctr: 42 }, { m: "Giu", inq: 87, ctr: 47 },
-];
-
-// ── Area chart SVG geometry  (viewBox 540 × 200)
-const AW = 540, AH = 200, AmL = 36, AmR = 10, AmT = 10, AmB = 34;
-const AdW = AW - AmL - AmR;
-const AdH = AH - AmT - AmB;
-const aN  = ONLINE_TREND.length;
-const aMax = Math.max(...ONLINE_TREND.map(d => d.online + d.club)) * 1.18;
-
-const ax = (i: number) => AmL + (i / (aN - 1)) * AdW;
-const ay = (v: number) => AH - AmB - (v / aMax) * AdH;
-
-const aClubPoly = [
-  `${ax(0).toFixed(1)},${(AH - AmB).toFixed(1)}`,
-  ...ONLINE_TREND.map((d, i) => `${ax(i).toFixed(1)},${ay(d.club).toFixed(1)}`),
-  `${ax(aN - 1).toFixed(1)},${(AH - AmB).toFixed(1)}`,
-].join(" ");
-
-const aOnlinePoly = [
-  ...ONLINE_TREND.map((d, i) => `${ax(i).toFixed(1)},${ay(d.club).toFixed(1)}`),
-  ...[...ONLINE_TREND].reverse().map((d, ri) => {
-    const i = aN - 1 - ri;
-    return `${ax(i).toFixed(1)},${ay(d.online + d.club).toFixed(1)}`;
-  }),
-].join(" ");
-
-const aClubLine  = ONLINE_TREND.map((d, i) => `${ax(i).toFixed(1)},${ay(d.club).toFixed(1)}`).join(" ");
-const aTotalLine = ONLINE_TREND.map((d, i) => `${ax(i).toFixed(1)},${ay(d.online + d.club).toFixed(1)}`).join(" ");
-const aGrid      = [0, 20, 40, 60].map(v => ({ v, y: ay(v).toFixed(1), lx: AmL - 5, ly: (ay(v) + 4).toFixed(1) }));
-const aXLabels   = ONLINE_TREND.map((d, i) => ({ x: ax(i).toFixed(1), y: AH - AmB + 18, label: d.m }));
-
-// ── Bar chart SVG geometry  (viewBox 380 × 200)
-const BW = 380, BH = 200, BmL = 36, BmR = 14, BmT = 10, BmB = 34;
-const BdW = BW - BmL - BmR;
-const BdH = BH - BmT - BmB;
-const bN  = NET_TREND.length;
-const bScale = 45 * 1.28;
-const bSlot  = BdW / bN;
-const bBar   = bSlot * 0.54;
-
-const bx    = (i: number) => BmL + i * bSlot + (bSlot - bBar) / 2;
-const bBarH = (v: number) => (v / bScale) * BdH;
-const bBarY = (v: number) => BH - BmB - bBarH(v);
-const bTgtY      = BH - BmB - (45 / bScale) * BdH;
-const bTgtYStr   = bTgtY.toFixed(1);
-const bTgtYLabel = (bTgtY + 4).toFixed(1);
-
-const bars = NET_TREND.map((d, i) => ({
-  x:   bx(i).toFixed(1),
-  y:   bBarY(d.v).toFixed(1),
-  w:   bBar.toFixed(1),
-  h:   bBarH(d.v).toFixed(1),
-  cur: i === bN - 1,
-}));
-const bXLabels = NET_TREND.map((d, i) => ({ x: (bx(i) + bBar / 2).toFixed(1), y: BH - BmB + 18, label: d.m }));
-
-// ── Correlation chart: Inquiries vs Contratti  (viewBox 820 × 200)
-// Dual-line time series, single scale 0–100
-const RW = 820, RH = 200, RmL = 36, RmR = 10, RmT = 16, RmB = 34;
-const RdW = RW - RmL - RmR;
-const RdH = RH - RmT - RmB;
-const rN  = INQ_CTR_TREND.length;
-const rScale = 100;
-
-const rx = (i: number) => RmL + (i / (rN - 1)) * RdW;
-const ry = (v: number) => RH - RmB - (v / rScale) * RdH;
-
-const rInqLine  = INQ_CTR_TREND.map((d, i) => `${rx(i).toFixed(1)},${ry(d.inq).toFixed(1)}`).join(" ");
-const rCtrLine  = INQ_CTR_TREND.map((d, i) => `${rx(i).toFixed(1)},${ry(d.ctr).toFixed(1)}`).join(" ");
-
-// Shaded gap between inq line (top) and ctr line (bottom) — visualises conversion gap
-const rGapPoly = [
-  ...INQ_CTR_TREND.map((d, i) => `${rx(i).toFixed(1)},${ry(d.inq).toFixed(1)}`),
-  ...[...INQ_CTR_TREND].reverse().map((d, ri) => {
-    const i = rN - 1 - ri;
-    return `${rx(i).toFixed(1)},${ry(d.ctr).toFixed(1)}`;
-  }),
-].join(" ");
-
-const rGrid   = [25, 50, 75, 100].map(v => ({ v, y: ry(v).toFixed(1), lx: RmL - 5, ly: (ry(v) + 4).toFixed(1) }));
-const rXLbls  = INQ_CTR_TREND.map((d, i) => ({ x: rx(i).toFixed(1), y: RH - RmB + 18, label: d.m }));
-
-// Last-point dots
-const rLastInqX = rx(rN - 1).toFixed(1);
-const rLastInqY = ry(INQ_CTR_TREND[rN - 1].inq).toFixed(1);
-const rLastCtrX = rx(rN - 1).toFixed(1);
-const rLastCtrY = ry(INQ_CTR_TREND[rN - 1].ctr).toFixed(1);
-
-const updated = new Date().toLocaleString("it-IT", {
-  day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit",
+const BW = 400, BH = 160, bPL = 12, bPR = 12, bPT = 16, bPB = 28;
+const bInner = BW - bPL - bPR;
+const bIH    = BH - bPT - bPB;
+const bMax   = Math.max(...BAL_DATA) + 4;
+const bMin   = Math.min(...BAL_DATA) - 2;
+const bRange = bMax - bMin;
+const bZeroY = bPT + ((bMax) / bRange) * bIH;
+const bBarW  = bInner / MONTHS.length * 0.55;
+const bBars  = BAL_DATA.map((v, i) => {
+  const bx = bPL + (i / MONTHS.length) * bInner + bInner / MONTHS.length * 0.22;
+  const by = v >= 0 ? bPT + ((bMax - v) / bRange) * bIH : bZeroY;
+  const bh = Math.abs(v / bRange) * bIH;
+  return { x: bx, y: by, w: bBarW, h: Math.max(bh, 2), pos: v >= 0, v };
 });
 ---
 
-<BaseLayout
-  title="TCA · Performance Cockpit"
-  description="Proof of concept — cruscotto di performance del Tennis Club Ambrosiano."
-  initialHeaderDark={false}
-  noindex={true}
->
-  <main class="cockpit">
+<BaseLayout title="TCA · Performance Cockpit" description="Performance Cockpit — Tennis Club Ambrosiano." noindex={true} initialHeaderDark={false}>
 
-    <!-- ── POC NOTICE ── -->
-    <div class="poc-notice">
-      <span class="poc-tag">PROOF OF CONCEPT</span>
-      Dati simulati a scopo dimostrativo. In produzione questo cruscotto si collega direttamente ai sistemi gestionali del club in tempo reale.
+  <div class="cp-root">
+
+    <!-- POC NOTICE -->
+    <div class="cp-poc-bar">
+      Proof of Concept · Sample Data · Not for Operational Use
     </div>
 
-    <div class="cockpit-wrap">
+    <!-- PAGE HEADER -->
+    <div class="cp-page-header">
+      <span class="cp-eyebrow">Performance Cockpit</span>
+      <h1 class="cp-title">Operational <em>Overview</em></h1>
+      <p class="cp-subtitle">MTD — June 2026 &nbsp;·&nbsp; YTD Jul 2025 – Jun 2026</p>
+    </div>
 
-      <!-- ── PAGE HEADER ── -->
-      <header class="cockpit-header">
-        <span class="eyebrow eyebrow--grey">Tennis Club Ambrosiano · Cruscotto di Performance</span>
-        <h1 class="cockpit-title">Il club, <em>a colpo d'occhio.</em></h1>
-        <p class="cockpit-sub">
-          Ogni leva che muove la performance — costi, conversioni, crescita — leggibile in cinque secondi.
-          Collegato ai sistemi del club, sempre aggiornato.
-        </p>
-        <p class="cockpit-sync">Ultimo aggiornamento · {updated}</p>
-      </header>
+    <!-- BU FILTER -->
+    <div class="cp-bu-bar">
+      <span class="cp-bu-label">Filter by BU</span>
+      <div class="cp-chips" id="bu-chips">
+        <button class="cp-chip is-active" data-bu="all">All</button>
+        <button class="cp-chip" data-bu="memberships">Memberships</button>
+        <button class="cp-chip" data-bu="tennis">Tennis</button>
+        <button class="cp-chip" data-bu="padel">Padel</button>
+        <button class="cp-chip" data-bu="summer_camps">Summer Camps</button>
+        <button class="cp-chip" data-bu="merchandising">Merchandising</button>
+      </div>
+    </div>
 
-      <!-- ── KPI GRID — RIGHE 1 E 2 ── -->
-      <section class="kpi-grid">
+    <!-- ── FINANCIAL ROW ── -->
+    <div class="cp-section">
+      <div class="cp-fin-row">
 
-        <!-- Hero card -->
-        <div class="kpi-hero">
-          <div>
-            <span class="kpi-hero__eyebrow">Il Numero Chiave</span>
-            <p class="kpi-hero__label">{hero.label}</p>
-          </div>
-          <div class="kpi-hero__body">
-            <span class="kpi-hero__value">{hero.mtd}</span>
-            <div class="kpi-hero__aside">
-              <span class:list={['kpi-hero__delta', { 'is-good': hero.improving, 'is-bad': !hero.improving }]}>
-                {hero.arrow} {hero.deltaTxt} vs mese prec.
-              </span>
-              <span class="kpi-hero__meta">YTD {hero.ytd} · TARGET {hero.target}</span>
+        <!-- Revenue -->
+        <div class="cp-kpi-card cp-kpi-card--lg">
+          <div class="cp-kpi-eyebrow">Total Revenue</div>
+          <div class="cp-kpi-value" data-m="rev_mtd">€{D.revenue.mtd.toLocaleString('en')}</div>
+          <div class="cp-kpi-subrow">
+            <div class="cp-stat">
+              <span class="cp-stat-k">YTD</span>
+              <span class="cp-stat-v" data-m="rev_ytd">€{D.revenue.ytd.toLocaleString('en')}</span>
+            </div>
+            <div class="cp-stat">
+              <span class="cp-stat-k">Prior Mo.</span>
+              <span class="cp-stat-v" data-m="rev_prior">€{D.revenue.prior.toLocaleString('en')}</span>
+            </div>
+            <div class="cp-trend trend-good" data-m="rev_trend">
+              +{(((D.revenue.mtd - D.revenue.prior) / D.revenue.prior) * 100).toFixed(1)}% MoM
             </div>
           </div>
         </div>
 
-        <!-- Row 1: Staff Cost + Lead Conv -->
-        {grid1.map(k => (
-          <div class="kpi-card">
-            <p class="kpi-card__label">{k.label}</p>
-            <div class="kpi-card__top">
-              <span class="kpi-card__value">{k.fmtMtd}</span>
-              <span class:list={['kpi-card__delta', { 'is-good': k.improving, 'is-bad': !k.improving }]}>
-                {k.arrow} {k.deltaTxt}
-              </span>
+        <!-- Op. Costs -->
+        <div class="cp-kpi-card">
+          <div class="cp-kpi-eyebrow">Total Op. Costs</div>
+          <div class="cp-kpi-value" data-m="opcost_mtd">€{D.opcost.mtd.toLocaleString('en')}</div>
+          <div class="cp-kpi-subrow">
+            <div class="cp-stat">
+              <span class="cp-stat-k">YTD</span>
+              <span class="cp-stat-v" data-m="opcost_ytd">€{D.opcost.ytd.toLocaleString('en')}</span>
             </div>
-            <div class="kpi-card__stats">
-              {[['MTD', k.fmtMtd], ['YTD', k.fmtYtd], ['TGT', k.fmtTarget]].map(([key, val]) => (
-                <div class="kpi-stat">
-                  <span class="stat-k">{key}</span>
-                  <span class="stat-v">{val}</span>
-                </div>
-              ))}
+            <div class="cp-stat">
+              <span class="cp-stat-k">Prior Mo.</span>
+              <span class="cp-stat-v" data-m="opcost_prior">€{D.opcost.prior.toLocaleString('en')}</span>
             </div>
-            <div class="kpi-card__meter">
-              <div class:list={['kpi-card__fill', { 'on-target': k.onTarget }]} style={`width:${k.meterPct}`}></div>
-            </div>
-            <p class:list={['kpi-card__status', { 'on-target': k.onTarget }]}>
-              {k.onTarget ? '● ON TARGET' : `${Math.round(k.meter * 100)}% verso target`}
-            </p>
-          </div>
-        ))}
-
-        <!-- Row 2: 4 cards -->
-        {grid2.map(k => (
-          <div class="kpi-card">
-            <p class="kpi-card__label">{k.label}</p>
-            <div class="kpi-card__top">
-              <span class="kpi-card__value">{k.fmtMtd}</span>
-              <span class:list={['kpi-card__delta', { 'is-good': k.improving, 'is-bad': !k.improving }]}>
-                {k.arrow} {k.deltaTxt}
-              </span>
-            </div>
-            <div class="kpi-card__stats">
-              {[['MTD', k.fmtMtd], ['YTD', k.fmtYtd], ['TGT', k.fmtTarget]].map(([key, val]) => (
-                <div class="kpi-stat">
-                  <span class="stat-k">{key}</span>
-                  <span class="stat-v">{val}</span>
-                </div>
-              ))}
-            </div>
-            <div class="kpi-card__meter">
-              <div class:list={['kpi-card__fill', { 'on-target': k.onTarget }]} style={`width:${k.meterPct}`}></div>
-            </div>
-            <p class:list={['kpi-card__status', { 'on-target': k.onTarget }]}>
-              {k.onTarget ? '● ON TARGET' : `${Math.round(k.meter * 100)}% verso target`}
-            </p>
-          </div>
-        ))}
-
-      </section>
-
-      <!-- ── KPI GRID — RIGA 3: INQUIRIES + CONTRATTI ── -->
-      <section class="kpi-grid kpi-grid--row3">
-
-        <!-- Inquiries breakdown card -->
-        <div class="kpi-inq">
-          <div class="kpi-inq__head">
-            <div>
-              <p class="kpi-card__label">Inquiries Ricevute</p>
-              <div class="kpi-inq__top">
-                <span class="kpi-inq__total">{INQUIRY.total}</span>
-                <span class:list={['kpi-card__delta', { 'is-good': inqGood, 'is-bad': !inqGood }]}>
-                  {inqArrow} {Math.abs(inqDelta)} vs mese prec.
-                </span>
-              </div>
-            </div>
-            <div class="kpi-inq__meta-col">
-              {[['YTD', INQUIRY.ytd], ['TGT', `${INQUIRY.target}/mese`]].map(([key, val]) => (
-                <div class="kpi-stat">
-                  <span class="stat-k">{key}</span>
-                  <span class="stat-v">{val}</span>
-                </div>
-              ))}
+            <div class="cp-trend trend-bad" data-m="opcost_trend">
+              +{(((D.opcost.mtd - D.opcost.prior) / D.opcost.prior) * 100).toFixed(1)}% MoM
             </div>
           </div>
-
-          <!-- Breakdown bars -->
-          <div class="inq-breakdown">
-            {INQUIRY.types.map(t => (
-              <div class="inq-row">
-                <span class="inq-label">{t.label}</span>
-                <div class="inq-bar-wrap">
-                  <div class="inq-bar" style={`width:${t.pct}%`}></div>
-                </div>
-                <span class="inq-n">{t.n}</span>
-                <span class="inq-pct">{t.pct}%</span>
-              </div>
-            ))}
-          </div>
-
-          <div class="kpi-card__meter" style="margin-top:6px">
-            <div class:list={['kpi-card__fill', { 'on-target': inqMeter >= 1 }]} style={`width:${Math.min(100, inqMeter * 100).toFixed(0)}%`}></div>
-          </div>
-          <p class:list={['kpi-card__status', { 'on-target': inqMeter >= 1 }]}>
-            {inqMeter >= 1 ? '● ON TARGET' : `${Math.round(inqMeter * 100)}% verso target`}
-          </p>
-        </div>
-
-        <!-- New Contracts -->
-        {grid3.map(k => (
-          <div class="kpi-card">
-            <p class="kpi-card__label">{k.label}</p>
-            <div class="kpi-card__top">
-              <span class="kpi-card__value">{k.fmtMtd}</span>
-              <span class:list={['kpi-card__delta', { 'is-good': k.improving, 'is-bad': !k.improving }]}>
-                {k.arrow} {k.deltaTxt}
-              </span>
-            </div>
-            <div class="kpi-card__stats">
-              {[['MTD', k.fmtMtd], ['YTD', k.fmtYtd], ['TGT', k.fmtTarget]].map(([key, val]) => (
-                <div class="kpi-stat">
-                  <span class="stat-k">{key}</span>
-                  <span class="stat-v">{val}</span>
-                </div>
-              ))}
-            </div>
-            <div class="kpi-card__meter">
-              <div class:list={['kpi-card__fill', { 'on-target': k.onTarget }]} style={`width:${k.meterPct}`}></div>
-            </div>
-            <p class:list={['kpi-card__status', { 'on-target': k.onTarget }]}>
-              {k.onTarget ? '● ON TARGET' : `${Math.round(k.meter * 100)}% verso target`}
-            </p>
-          </div>
-        ))}
-
-      </section>
-
-      <!-- ── CHARTS ROW 1 ── -->
-      <section class="charts-row">
-
-        <!-- Stacked area: online vs sede -->
-        <div class="chart-card">
-          <div class="chart-card__head">
-            <h2 class="chart-title">Membership <em>online</em> vs sede</h2>
-            <div class="chart-legend">
-              <span class="leg leg-online">● Online</span>
-              <span class="leg leg-club">● Sede</span>
-            </div>
-          </div>
-          <svg viewBox={`0 0 ${AW} ${AH}`} class="chart-svg" aria-hidden="true">
-            {aGrid.map(g => (
-              <g>
-                <line x1={AmL} y1={g.y} x2={AW - AmR} y2={g.y} stroke="#1A1A1A" stroke-opacity="0.06" stroke-width="1" />
-                <text x={g.lx} y={g.ly} text-anchor="end" font-family="'Barlow Condensed', sans-serif" font-size="10" fill="#AAAAAA">{g.v}</text>
-              </g>
-            ))}
-            <polygon points={aClubPoly}   fill="#1A1A1A" fill-opacity="0.07" />
-            <polygon points={aOnlinePoly} fill="#8B1A1A" fill-opacity="0.14" />
-            <polyline points={aClubLine}  fill="none" stroke="#CCCCCC" stroke-width="1.5" stroke-linejoin="round" />
-            <polyline points={aTotalLine} fill="none" stroke="#8B1A1A" stroke-width="2"   stroke-linejoin="round" />
-            {aXLabels.map(l => (
-              <text x={l.x} y={l.y} text-anchor="middle" font-family="'Barlow Condensed', sans-serif" font-size="10" fill="#AAAAAA">{l.label}</text>
-            ))}
-          </svg>
-        </div>
-
-        <!-- Bar chart: net member growth -->
-        <div class="chart-card">
-          <div class="chart-card__head">
-            <h2 class="chart-title">Crescita <em>soci netti</em></h2>
-            <span class="chart-target-label">Target 45/mese</span>
-          </div>
-          <svg viewBox={`0 0 ${BW} ${BH}`} class="chart-svg" aria-hidden="true">
-            <line x1={BmL} y1={bTgtYStr} x2={BW - BmR} y2={bTgtYStr} stroke="#8B1A1A" stroke-width="1" stroke-dasharray="5 4" />
-            {bars.map(b => (
-              <rect x={b.x} y={b.y} width={b.w} height={b.h} fill="#8B1A1A" fill-opacity={b.cur ? 1 : 0.28} rx="2" />
-            ))}
-            {bXLabels.map(l => (
-              <text x={l.x} y={l.y} text-anchor="middle" font-family="'Barlow Condensed', sans-serif" font-size="9" fill="#AAAAAA">{l.label}</text>
-            ))}
-            <text x={BW - BmR + 2} y={bTgtYLabel} font-family="'Barlow Condensed', sans-serif" font-size="9" fill="#8B1A1A">45</text>
-          </svg>
-        </div>
-
-      </section>
-
-      <!-- ── CHART ROW 2: CORRELAZIONE INQUIRIES / CONTRATTI ── -->
-      <div class="chart-card chart-card--full">
-        <div class="chart-card__head">
-          <div>
-            <h2 class="chart-title">Correlazione <em>inquiries</em> · nuovi contratti</h2>
-            <p class="chart-subtitle">Per ogni picco di inquiries, i nuovi contratti seguono con coerenza elevata.</p>
-          </div>
-          <div class="corr-badge">
-            <span class="corr-r">r = 0.97</span>
-            <span class="corr-label">correlazione elevata</span>
+          <div class="cp-kpi-note" data-m="opcost_ratio">
+            {Math.round(D.opcost.mtd / D.revenue.mtd * 100)}% of revenue · EBITDA margin {Math.round((1 - D.opcost.mtd / D.revenue.mtd) * 100)}%
           </div>
         </div>
-        <div class="chart-legend" style="margin-bottom:14px">
-          <span class="leg leg-inq">── Inquiries ricevute</span>
-          <span class="leg leg-ctr">── Nuovi contratti</span>
-          <span class="leg leg-gap">▓ Gap di conversione</span>
+
+        <!-- Staff cost -->
+        <div class="cp-kpi-card">
+          <div class="cp-kpi-eyebrow">Staff Cost % of Revenue</div>
+          <div class="cp-kpi-value" data-m="staff_mtd">{D.staff.mtd}%</div>
+          <div class="cp-kpi-subrow">
+            <div class="cp-stat">
+              <span class="cp-stat-k">YTD Avg</span>
+              <span class="cp-stat-v" data-m="staff_ytd">{D.staff.ytd}%</span>
+            </div>
+            <div class="cp-stat">
+              <span class="cp-stat-k">Prior Mo.</span>
+              <span class="cp-stat-v" data-m="staff_prior">{D.staff.prior}%</span>
+            </div>
+            <div class="cp-trend trend-bad" data-m="staff_trend">
+              +{((D.staff.mtd - D.staff.prior)).toFixed(1)}pp MoM
+            </div>
+          </div>
+          <div class="cp-kpi-note">Lower is better · Target &lt;40%</div>
         </div>
-        <svg viewBox={`0 0 ${RW} ${RH}`} class="chart-svg" aria-hidden="true">
-          {rGrid.map(g => (
-            <g>
-              <line x1={RmL} y1={g.y} x2={RW - RmR} y2={g.y} stroke="#1A1A1A" stroke-opacity="0.06" stroke-width="1" />
-              <text x={g.lx} y={g.ly} text-anchor="end" font-family="'Barlow Condensed', sans-serif" font-size="10" fill="#AAAAAA">{g.v}</text>
-            </g>
+
+      </div>
+
+      <!-- Op. costs 12-month chart -->
+      <div class="cp-opcost-chart">
+        <div class="cp-chart-title">Monthly Op. Costs vs. Revenue · 12-Month Trend</div>
+        <svg viewBox={`0 0 ${OW} ${OH}`} class="cp-svg" preserveAspectRatio="xMidYMid meet">
+          {oBars.map((b, i) => (
+            <>
+              <!-- Revenue bar (lighter, behind) -->
+              <rect x={b.rx} y={b.ry} width={oBarW} height={b.rh}
+                fill="rgba(139,26,26,0.18)" rx="2" />
+              <!-- Op. cost bar -->
+              <rect x={b.ox} y={b.oy} width={oBarW} height={b.oh}
+                fill={b.v > b.rv ? 'rgba(220,38,38,0.75)' : 'rgba(139,26,26,0.72)'} rx="2" />
+            </>
           ))}
-          <!-- Gap area (inquiries − contracts) -->
-          <polygon points={rGapPoly} fill="#8B1A1A" fill-opacity="0.07" />
-          <!-- Inquiry line -->
-          <polyline points={rInqLine} fill="none" stroke="#8B1A1A" stroke-width="2" stroke-linejoin="round" />
-          <!-- Contract line -->
-          <polyline points={rCtrLine} fill="none" stroke="#555555" stroke-width="2" stroke-linejoin="round" stroke-dasharray="6 3" />
-          <!-- Terminal dots -->
-          <circle cx={rLastInqX} cy={rLastInqY} r="4" fill="#8B1A1A" />
-          <circle cx={rLastCtrX} cy={rLastCtrY} r="4" fill="#555555" />
-          <!-- Labels at last points -->
-          <text x={Number(rLastInqX) + 8} y={Number(rLastInqY) + 4} font-family="'Barlow Condensed', sans-serif" font-size="11" font-weight="700" fill="#8B1A1A">87</text>
-          <text x={Number(rLastCtrX) + 8} y={Number(rLastCtrY) + 4} font-family="'Barlow Condensed', sans-serif" font-size="11" font-weight="700" fill="#555555">47</text>
-          {rXLbls.map(l => (
-            <text x={l.x} y={l.y} text-anchor="middle" font-family="'Barlow Condensed', sans-serif" font-size="10" fill="#AAAAAA">{l.label}</text>
+          {MONTHS.map((m, i) => (
+            <text
+              x={oPL + (i / MONTHS.length) * oInner + oInner / MONTHS.length * 0.5}
+              y={OH - 8}
+              text-anchor="middle"
+              class="cp-svg-label"
+            >{m}</text>
           ))}
+          <!-- last month values -->
+          <text x={oBars[11].ox + oBarW / 2} y={oBars[11].oy - 4} text-anchor="middle" class="cp-svg-val">
+            €{Math.round(oBars[11].v / 1000)}k
+          </text>
+          <text x={oBars[11].rx + oBarW / 2} y={oBars[11].ry - 4} text-anchor="middle" class="cp-svg-val cp-svg-val--light">
+            €{Math.round(oBars[11].rv / 1000)}k
+          </text>
         </svg>
-      </div>
-
-      <!-- ── NARRATIVE ── -->
-      <div class="cockpit-narrative">
-        <span class="eyebrow eyebrow--grey">Questo Mese, in Una Riga</span>
-        <p class="narrative-text">
-          Le membership online hanno raggiunto quota <strong>47</strong> — un record, e ora superano il banco di vendita.
-          Con <strong>87 inquiries</strong> ricevute (52 nuovi lead, 21 di ritorno, 14 ex soci) e <strong>47 contratti firmati</strong>,
-          il tasso di conversione sale al <strong>54%</strong> e il costo del personale scende a soli due punti dal target.
-        </p>
+        <div class="cp-chart-legend">
+          <span class="cp-leg cp-leg--bar">Op. Costs</span>
+          <span class="cp-leg cp-leg--bar cp-leg--bar-light">Revenue</span>
+        </div>
       </div>
 
     </div>
-  </main>
+
+    <!-- ── MEMBERSHIPS ROW ── -->
+    <div class="cp-section" id="memberships-section">
+      <div class="cp-section-label">Memberships</div>
+      <div class="cp-mem-row">
+
+        <!-- Total new -->
+        <div class="cp-kpi-card cp-kpi-card--mem">
+          <div class="cp-kpi-eyebrow">New Memberships</div>
+          <div class="cp-kpi-value" data-m="new_mtd">{D.total_new.mtd}</div>
+          <div class="cp-kpi-subrow">
+            <div class="cp-stat">
+              <span class="cp-stat-k">YTD</span>
+              <span class="cp-stat-v" data-m="new_ytd">{D.total_new.ytd}</span>
+            </div>
+            <div class="cp-stat">
+              <span class="cp-stat-k">Prior Mo.</span>
+              <span class="cp-stat-v" data-m="new_prior">{D.total_new.prior}</span>
+            </div>
+            <div class="cp-trend trend-good" data-m="new_trend">
+              +{(((D.total_new.mtd - D.total_new.prior) / D.total_new.prior) * 100).toFixed(1)}% MoM
+            </div>
+          </div>
+          <div class="cp-split-row">
+            <div class="cp-split-item">
+              <span class="cp-split-val" data-m="online_mtd">{D.online.mtd}</span>
+              <span class="cp-split-lbl">Online</span>
+            </div>
+            <div class="cp-split-div"></div>
+            <div class="cp-split-item">
+              <span class="cp-split-val" data-m="onsite_mtd">{D.onsite.mtd}</span>
+              <span class="cp-split-lbl">On-site</span>
+            </div>
+          </div>
+          <div class="cp-split-bar-wrap">
+            <div class="cp-split-bar-fill" id="split-bar-online" style={`width:${Math.round(D.online.mtd/(D.online.mtd+D.onsite.mtd)*100)}%`}></div>
+          </div>
+          <div class="cp-split-pct-row">
+            <span data-m="online_pct">{Math.round(D.online.mtd/(D.online.mtd+D.onsite.mtd)*100)}% online</span>
+            <span data-m="onsite_pct">{Math.round(D.onsite.mtd/(D.online.mtd+D.onsite.mtd)*100)}% on-site</span>
+          </div>
+        </div>
+
+        <!-- YTD channel split -->
+        <div class="cp-kpi-card cp-kpi-card--mem">
+          <div class="cp-kpi-eyebrow">Channel Split · YTD</div>
+          <div class="cp-ytd-split">
+            <div class="cp-ytd-item">
+              <span class="cp-ytd-val" data-m="online_ytd">{D.online.ytd}</span>
+              <span class="cp-ytd-lbl">Online</span>
+              <span class="cp-ytd-pct" data-m="online_ytd_pct">{Math.round(D.online.ytd/(D.online.ytd+D.onsite.ytd)*100)}%</span>
+            </div>
+            <div class="cp-ytd-div"></div>
+            <div class="cp-ytd-item">
+              <span class="cp-ytd-val" data-m="onsite_ytd">{D.onsite.ytd}</span>
+              <span class="cp-ytd-lbl">On-site</span>
+              <span class="cp-ytd-pct" data-m="onsite_ytd_pct">{Math.round(D.onsite.ytd/(D.online.ytd+D.onsite.ytd)*100)}%</span>
+            </div>
+          </div>
+          <div class="cp-split-bar-wrap" style="margin-top:14px">
+            <div class="cp-split-bar-fill" id="split-bar-online-ytd" style={`width:${Math.round(D.online.ytd/(D.online.ytd+D.onsite.ytd)*100)}%`}></div>
+          </div>
+          <div class="cp-kpi-note" style="margin-top:10px">Online trend: +{(((D.online.mtd - D.online.prior) / (D.online.prior||1)) * 100).toFixed(0)}% vs prior month</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── FUNNEL SECTION ── -->
+    <div class="cp-section" id="funnel-section">
+      <div class="cp-section-label">Member Acquisition Funnel</div>
+
+      <!-- STAGE 1: Inquiries -->
+      <div class="cp-funnel-stage">
+        <div class="cp-stage-header">
+          <div class="cp-stage-num">01</div>
+          <div class="cp-stage-title">Inquiries</div>
+        </div>
+        <div class="cp-stage-body">
+          <div class="cp-stage-kpi">
+            <div class="cp-kpi-eyebrow">Total MTD</div>
+            <div class="cp-kpi-value cp-kpi-value--stage" data-m="inq_mtd">{D.inq.mtd}</div>
+            <div class="cp-kpi-subrow">
+              <div class="cp-stat"><span class="cp-stat-k">YTD</span><span class="cp-stat-v" data-m="inq_ytd">{D.inq.ytd}</span></div>
+              <div class="cp-stat"><span class="cp-stat-k">Prior</span><span class="cp-stat-v" data-m="inq_prior">{D.inq.prior}</span></div>
+              <div class="cp-trend trend-good" data-m="inq_trend">
+                +{(((D.inq.mtd - D.inq.prior) / D.inq.prior) * 100).toFixed(1)}% MoM
+              </div>
+            </div>
+          </div>
+          <div class="cp-stage-breakdown">
+            <div class="cp-breakdown-title">Source breakdown</div>
+            {[
+              { label: 'New Leads',       key: 'inq_new',    n: D.inq.new_leads, pct: Math.round(D.inq.new_leads / D.inq.mtd * 100) },
+              { label: 'Returning Leads', key: 'inq_ret',    n: D.inq.returning, pct: Math.round(D.inq.returning  / D.inq.mtd * 100) },
+              { label: 'Former Members',  key: 'inq_former', n: D.inq.former,    pct: Math.round(D.inq.former     / D.inq.mtd * 100) },
+            ].map(r => (
+              <div class="cp-bk-row">
+                <span class="cp-bk-lbl">{r.label}</span>
+                <div class="cp-bk-bar-wrap">
+                  <div class="cp-bk-bar-fill" data-bar={r.key} style={`width:${r.pct}%`}></div>
+                </div>
+                <span class="cp-bk-n" data-m={r.key}>{r.n}</span>
+                <span class="cp-bk-pct" data-m={`${r.key}_pct`}>{r.pct}%</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- CONNECTOR 1→2 -->
+      <div class="cp-connector">
+        <div class="cp-connector-line"></div>
+        <div class="cp-connector-pill">
+          <span class="cp-connector-label">Inquiry → Membership</span>
+          <span class="cp-connector-rate" data-m="conv_rate">{D.conv.mtd}%</span>
+        </div>
+        <div class="cp-connector-line"></div>
+      </div>
+
+      <!-- STAGE 2: New Memberships + correlation -->
+      <div class="cp-funnel-stage">
+        <div class="cp-stage-header">
+          <div class="cp-stage-num">02</div>
+          <div class="cp-stage-title">New Memberships</div>
+        </div>
+        <div class="cp-stage-body cp-stage-body--wide">
+          <div class="cp-stage-kpi">
+            <div class="cp-kpi-eyebrow">Total MTD</div>
+            <div class="cp-kpi-value cp-kpi-value--stage" data-m="new2_mtd">{D.total_new.mtd}</div>
+            <div class="cp-kpi-subrow">
+              <div class="cp-stat"><span class="cp-stat-k">YTD</span><span class="cp-stat-v" data-m="new2_ytd">{D.total_new.ytd}</span></div>
+              <div class="cp-stat"><span class="cp-stat-k">Prior</span><span class="cp-stat-v" data-m="new2_prior">{D.total_new.prior}</span></div>
+              <div class="cp-trend trend-good" data-m="new2_trend">
+                +{(((D.total_new.mtd - D.total_new.prior) / D.total_new.prior) * 100).toFixed(1)}% MoM
+              </div>
+            </div>
+          </div>
+
+          <!-- Correlation chart -->
+          <div class="cp-chart-wrap cp-chart-wrap--corr">
+            <div class="cp-chart-title">Inquiries vs. New Memberships · 12-Month Trend</div>
+            <svg viewBox={`0 0 ${CW} ${CH}`} class="cp-svg" preserveAspectRatio="xMidYMid meet">
+              <path d={gapPath} fill="rgba(139,26,26,0.07)" />
+              <polyline points={inqPts} fill="none" stroke="rgba(139,26,26,0.9)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" />
+              <polyline points={newPts} fill="none" stroke="rgba(139,26,26,0.4)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="5,3" />
+              {INQ_TREND.map((v, i) => (
+                <circle cx={cx(i)} cy={cy(v)} r="3.5" fill="#8B1A1A" />
+              ))}
+              {NEW_TREND.map((v, i) => (
+                <circle cx={cx(i)} cy={cy(v)} r="3" fill="none" stroke="#8B1A1A" stroke-width="1.8" />
+              ))}
+              {MONTHS.map((m, i) => (
+                <text x={cx(i)} y={CH - 8} text-anchor="middle" class="cp-svg-label">{m}</text>
+              ))}
+              <text x={cx(11)} y={cy(INQ_TREND[11]) - 8} text-anchor="middle" class="cp-svg-val">{INQ_TREND[11]}</text>
+              <text x={cx(11)} y={cy(NEW_TREND[11]) + 16} text-anchor="middle" class="cp-svg-val">{NEW_TREND[11]}</text>
+            </svg>
+            <div class="cp-chart-legend">
+              <span class="cp-leg cp-leg--solid">Inquiries</span>
+              <span class="cp-leg cp-leg--dashed">New Memberships</span>
+              <span class="cp-corr-badge">r = 0.97</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONNECTOR 2→3 -->
+      <div class="cp-connector">
+        <div class="cp-connector-line"></div>
+        <div class="cp-connector-pill cp-connector-pill--cancel">
+          <span class="cp-connector-label">Cancellations MTD</span>
+          <span class="cp-connector-rate" data-m="cancel_val">−{D.cancelled.mtd}</span>
+        </div>
+        <div class="cp-connector-line"></div>
+      </div>
+
+      <!-- STAGE 3: Cancelled + Net Balance -->
+      <div class="cp-funnel-stage">
+        <div class="cp-stage-header">
+          <div class="cp-stage-num">03</div>
+          <div class="cp-stage-title">Cancellations &amp; Net Balance</div>
+        </div>
+        <div class="cp-stage-body cp-stage-body--wide">
+          <div class="cp-stage-pair">
+            <div class="cp-mini-kpi">
+              <div class="cp-kpi-eyebrow">Cancelled MTD</div>
+              <div class="cp-kpi-value cp-kpi-value--stage cp-kpi-value--bad" data-m="cancel_mtd">{D.cancelled.mtd}</div>
+              <div class="cp-kpi-subrow">
+                <div class="cp-stat"><span class="cp-stat-k">YTD</span><span class="cp-stat-v" data-m="cancel_ytd">{D.cancelled.ytd}</span></div>
+                <div class="cp-stat"><span class="cp-stat-k">Prior</span><span class="cp-stat-v" data-m="cancel_prior">{D.cancelled.prior}</span></div>
+                <div class="cp-trend trend-good" data-m="cancel_trend">
+                  {(((D.cancelled.mtd - D.cancelled.prior) / D.cancelled.prior) * 100).toFixed(1)}% MoM
+                </div>
+              </div>
+            </div>
+            <div class="cp-mini-kpi">
+              <div class="cp-kpi-eyebrow">Net Balance MTD</div>
+              <div class="cp-kpi-value cp-kpi-value--stage" data-m="net_mtd">+{D.net.mtd}</div>
+              <div class="cp-kpi-subrow">
+                <div class="cp-stat"><span class="cp-stat-k">YTD</span><span class="cp-stat-v" data-m="net_ytd">+{D.net.ytd}</span></div>
+                <div class="cp-stat"><span class="cp-stat-k">Prior</span><span class="cp-stat-v" data-m="net_prior">+{D.net.prior}</span></div>
+                <div class="cp-trend trend-good" data-m="net_trend">
+                  +{(((D.net.mtd - D.net.prior) / D.net.prior) * 100).toFixed(1)}% MoM
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Net balance bar chart -->
+          <div class="cp-chart-wrap">
+            <div class="cp-chart-title">Monthly Net Balance (New − Cancelled)</div>
+            <svg viewBox={`0 0 ${BW} ${BH}`} class="cp-svg cp-svg--bal" preserveAspectRatio="xMidYMid meet">
+              <line x1={bPL} y1={bZeroY} x2={BW - bPR} y2={bZeroY} stroke="rgba(0,0,0,0.15)" stroke-width="1" stroke-dasharray="3,3" />
+              {bBars.map((b) => (
+                <rect x={b.x} y={b.y} width={b.w} height={b.h}
+                  fill={b.pos ? 'rgba(139,26,26,0.8)' : 'rgba(180,60,60,0.35)'}
+                  rx="2" />
+              ))}
+              {MONTHS.map((m, i) => (
+                <text
+                  x={bPL + (i / MONTHS.length) * bInner + bInner / MONTHS.length * 0.5}
+                  y={BH - 6}
+                  text-anchor="middle"
+                  class="cp-svg-label"
+                >{m}</text>
+              ))}
+              {bBars.map((b, i) => (
+                <text
+                  x={b.x + b.w / 2}
+                  y={b.pos ? b.y - 3 : b.y + b.h + 10}
+                  text-anchor="middle"
+                  class="cp-svg-val"
+                >{b.v > 0 ? '+' : ''}{b.v}</text>
+              ))}
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONNECTOR 3→4 -->
+      <div class="cp-connector">
+        <div class="cp-connector-line"></div>
+        <div class="cp-connector-pill">
+          <span class="cp-connector-label">Cumulative active base</span>
+        </div>
+        <div class="cp-connector-line"></div>
+      </div>
+
+      <!-- STAGE 4: Active Members EoM + Churn -->
+      <div class="cp-funnel-stage">
+        <div class="cp-stage-header">
+          <div class="cp-stage-num">04</div>
+          <div class="cp-stage-title">Active Members EoM &amp; Churn</div>
+        </div>
+        <div class="cp-stage-body">
+          <div class="cp-stage-pair">
+            <div class="cp-mini-kpi">
+              <div class="cp-kpi-eyebrow">Active Members EoM</div>
+              <div class="cp-kpi-value cp-kpi-value--stage" data-m="active_mtd">{D.active.mtd.toLocaleString('en')}</div>
+              <div class="cp-kpi-subrow">
+                <div class="cp-stat"><span class="cp-stat-k">Prior EoM</span><span class="cp-stat-v" data-m="active_prior">{D.active.prior.toLocaleString('en')}</span></div>
+                <div class="cp-trend trend-good" data-m="active_trend">
+                  +{D.active.mtd - D.active.prior} vs prior
+                </div>
+              </div>
+            </div>
+            <div class="cp-mini-kpi">
+              <div class="cp-kpi-eyebrow">Monthly Churn Rate</div>
+              <div class="cp-kpi-value cp-kpi-value--stage" data-m="churn_mtd">{D.churn.mtd}%</div>
+              <div class="cp-kpi-subrow">
+                <div class="cp-stat"><span class="cp-stat-k">Prior Mo.</span><span class="cp-stat-v" data-m="churn_prior">{D.churn.prior}%</span></div>
+                <div class="cp-trend trend-good" data-m="churn_trend">
+                  {((D.churn.mtd - D.churn.prior)).toFixed(2)}pp MoM
+                </div>
+              </div>
+              <div class="cp-kpi-note">Lower is better</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /funnel-section -->
+
+    <!-- NO-FUNNEL MESSAGE -->
+    <div class="cp-no-funnel" id="no-funnel-msg" style="display:none">
+      <p>No membership funnel data for this Business Unit.</p>
+    </div>
+
+    <!-- NARRATIVE -->
+    <div class="cp-section cp-section--narrative">
+      <p class="cp-narrative">
+        Inquiries have grown <strong>+{(((D.inq.mtd - D.inq.prior) / D.inq.prior) * 100).toFixed(0)}%</strong> month-on-month, driving a corresponding uplift in new memberships.
+        The inquiry-to-membership conversion rate of <strong>{D.conv.mtd}%</strong> remains above the 50% target.
+        Staff cost sits at <strong>{D.staff.mtd}%</strong> of revenue — 1.8pp above the 40% target.
+        Net member base grew by <strong>+{D.net.mtd}</strong> this month, bringing total active members to <strong>{D.active.mtd.toLocaleString('en')}</strong>.
+      </p>
+    </div>
+
+  </div><!-- /cp-root -->
+
 </BaseLayout>
 
+<script define:vars={{ BU_DATA }}>
+  const DATA = BU_DATA;
+  let selected = new Set(['all']);
+
+  function pct(a, b) {
+    if (!b) return 0;
+    return Math.round((a / b) * 100);
+  }
+
+  function trendPct(cur, prior) {
+    if (!prior) return 0;
+    return ((cur - prior) / prior * 100);
+  }
+
+  function getDisplayData() {
+    const keys = [...selected];
+    if (keys.includes('all') || keys.length === 0) return DATA.all;
+    if (keys.length === 1) return DATA[keys[0]];
+
+    const items = keys.map(k => DATA[k]);
+    const sum = (field, sub) => items.reduce((acc, d) => acc + (sub ? d[field][sub] : d[field]), 0);
+    const wavg = (field, sub, weightField, weightSub) => {
+      const totalW = sum(weightField, weightSub);
+      if (!totalW) return 0;
+      return items.reduce((acc, d) => acc + d[field][sub] * d[weightField][weightSub], 0) / totalW;
+    };
+
+    return {
+      revenue:   { mtd: sum('revenue','mtd'),   ytd: sum('revenue','ytd'),   prior: sum('revenue','prior') },
+      opcost:    { mtd: sum('opcost','mtd'),     ytd: sum('opcost','ytd'),    prior: sum('opcost','prior') },
+      staff:     { mtd: wavg('staff','mtd','revenue','mtd'), ytd: wavg('staff','ytd','revenue','ytd'), prior: wavg('staff','prior','revenue','prior') },
+      online:    { mtd: sum('online','mtd'),     ytd: sum('online','ytd'),    prior: sum('online','prior') },
+      onsite:    { mtd: sum('onsite','mtd'),     ytd: sum('onsite','ytd'),    prior: sum('onsite','prior') },
+      total_new: { mtd: sum('total_new','mtd'),  ytd: sum('total_new','ytd'), prior: sum('total_new','prior') },
+      inq: {
+        mtd: sum('inq','mtd'), ytd: sum('inq','ytd'), prior: sum('inq','prior'),
+        new_leads: items.reduce((a, d) => a + d.inq.new_leads, 0),
+        returning: items.reduce((a, d) => a + d.inq.returning, 0),
+        former:    items.reduce((a, d) => a + d.inq.former, 0),
+      },
+      cancelled: { mtd: sum('cancelled','mtd'), ytd: sum('cancelled','ytd'), prior: sum('cancelled','prior') },
+      net:       { mtd: sum('net','mtd'),        ytd: sum('net','ytd'),       prior: sum('net','prior') },
+      active:    { mtd: sum('active','mtd'),     prior: sum('active','prior') },
+      churn:     { mtd: wavg('churn','mtd','active','prior'), prior: wavg('churn','prior','active','prior') },
+      conv:      { mtd: wavg('conv','mtd','inq','mtd'), prior: wavg('conv','prior','inq','prior') },
+      has_funnel: items.some(d => d.has_funnel),
+    };
+  }
+
+  function set(attr, val) {
+    document.querySelectorAll(`[data-m="${attr}"]`).forEach(el => { el.textContent = String(val); });
+  }
+
+  function setTrend(attr, val, goodWhen) {
+    document.querySelectorAll(`[data-m="${attr}"]`).forEach(el => {
+      el.textContent = String(val);
+      el.className = el.className.replace(/\btrend-good\b|\btrend-bad\b/g, '').trim();
+      const numVal = parseFloat(String(val));
+      const isUp = numVal >= 0;
+      const good = (goodWhen === 'up' && isUp) || (goodWhen === 'down' && !isUp);
+      el.classList.add(good ? 'trend-good' : 'trend-bad');
+    });
+  }
+
+  function setBar(attr, pctVal) {
+    document.querySelectorAll(`[data-bar="${attr}"]`).forEach(el => {
+      el.style.width = Math.max(0, Math.min(100, pctVal)) + '%';
+    });
+  }
+
+  function render() {
+    const d = getDisplayData();
+
+    // Revenue
+    set('rev_mtd',   '€' + Math.round(d.revenue.mtd).toLocaleString('en'));
+    set('rev_ytd',   '€' + Math.round(d.revenue.ytd).toLocaleString('en'));
+    set('rev_prior', '€' + Math.round(d.revenue.prior).toLocaleString('en'));
+    const revT = trendPct(d.revenue.mtd, d.revenue.prior);
+    setTrend('rev_trend', (revT >= 0 ? '+' : '') + revT.toFixed(1) + '% MoM', 'up');
+
+    // Op. costs
+    set('opcost_mtd',   '€' + Math.round(d.opcost.mtd).toLocaleString('en'));
+    set('opcost_ytd',   '€' + Math.round(d.opcost.ytd).toLocaleString('en'));
+    set('opcost_prior', '€' + Math.round(d.opcost.prior).toLocaleString('en'));
+    const opcostT = trendPct(d.opcost.mtd, d.opcost.prior);
+    setTrend('opcost_trend', (opcostT >= 0 ? '+' : '') + opcostT.toFixed(1) + '% MoM', 'down');
+    const opcostRatioPct = Math.round(d.opcost.mtd / (d.revenue.mtd || 1) * 100);
+    const ebitdaPct = 100 - opcostRatioPct;
+    set('opcost_ratio', opcostRatioPct + '% of revenue · EBITDA margin ' + ebitdaPct + '%');
+
+    // Staff
+    set('staff_mtd',   d.staff.mtd.toFixed(1) + '%');
+    set('staff_ytd',   d.staff.ytd.toFixed(1) + '%');
+    set('staff_prior', d.staff.prior.toFixed(1) + '%');
+    const staffT = d.staff.mtd - d.staff.prior;
+    setTrend('staff_trend', (staffT >= 0 ? '+' : '') + staffT.toFixed(1) + 'pp MoM', 'down');
+
+    // New memberships
+    set('new_mtd',    d.total_new.mtd);
+    set('new_ytd',    d.total_new.ytd);
+    set('new_prior',  d.total_new.prior);
+    set('new2_mtd',   d.total_new.mtd);
+    set('new2_ytd',   d.total_new.ytd);
+    set('new2_prior', d.total_new.prior);
+    const newT = trendPct(d.total_new.mtd, d.total_new.prior);
+    setTrend('new_trend',  (newT >= 0 ? '+' : '') + newT.toFixed(1) + '% MoM', 'up');
+    setTrend('new2_trend', (newT >= 0 ? '+' : '') + newT.toFixed(1) + '% MoM', 'up');
+
+    // Online / onsite split
+    const totCh  = d.online.mtd  + d.onsite.mtd;
+    const totChY = d.online.ytd  + d.onsite.ytd;
+    set('online_mtd', d.online.mtd);
+    set('onsite_mtd', d.onsite.mtd);
+    set('online_pct', pct(d.online.mtd, totCh) + '% online');
+    set('onsite_pct', pct(d.onsite.mtd, totCh) + '% on-site');
+    set('online_ytd', d.online.ytd);
+    set('onsite_ytd', d.onsite.ytd);
+    set('online_ytd_pct', pct(d.online.ytd, totChY) + '%');
+    set('onsite_ytd_pct', pct(d.onsite.ytd, totChY) + '%');
+    const bo = document.getElementById('split-bar-online');
+    if (bo) bo.style.width = pct(d.online.mtd, totCh) + '%';
+    const by = document.getElementById('split-bar-online-ytd');
+    if (by) by.style.width = pct(d.online.ytd, totChY) + '%';
+
+    // Inquiries
+    set('inq_mtd',   d.inq.mtd);
+    set('inq_ytd',   d.inq.ytd);
+    set('inq_prior', d.inq.prior);
+    const inqT = trendPct(d.inq.mtd, d.inq.prior);
+    setTrend('inq_trend', (inqT >= 0 ? '+' : '') + inqT.toFixed(1) + '% MoM', 'up');
+
+    // Breakdown
+    const inqTot = d.inq.mtd || 1;
+    set('inq_new',        d.inq.new_leads);
+    set('inq_ret',        d.inq.returning);
+    set('inq_former',     d.inq.former);
+    set('inq_new_pct',    pct(d.inq.new_leads, inqTot) + '%');
+    set('inq_ret_pct',    pct(d.inq.returning,  inqTot) + '%');
+    set('inq_former_pct', pct(d.inq.former,     inqTot) + '%');
+    setBar('inq_new',    pct(d.inq.new_leads, inqTot));
+    setBar('inq_ret',    pct(d.inq.returning,  inqTot));
+    setBar('inq_former', pct(d.inq.former,     inqTot));
+
+    // Conversion
+    set('conv_rate', d.conv.mtd.toFixed(1) + '%');
+
+    // Cancellations
+    set('cancel_mtd',   d.cancelled.mtd);
+    set('cancel_ytd',   d.cancelled.ytd);
+    set('cancel_prior', d.cancelled.prior);
+    const canT = trendPct(d.cancelled.mtd, d.cancelled.prior);
+    setTrend('cancel_trend', (canT >= 0 ? '+' : '') + canT.toFixed(1) + '% MoM', 'down');
+    set('cancel_val', '−' + d.cancelled.mtd);
+
+    // Net balance
+    set('net_mtd',   (d.net.mtd >= 0 ? '+' : '') + d.net.mtd);
+    set('net_ytd',   (d.net.ytd >= 0 ? '+' : '') + d.net.ytd);
+    set('net_prior', (d.net.prior >= 0 ? '+' : '') + d.net.prior);
+    const netT = trendPct(d.net.mtd, d.net.prior);
+    setTrend('net_trend', (netT >= 0 ? '+' : '') + netT.toFixed(1) + '% MoM', 'up');
+
+    // Active
+    set('active_mtd',   Math.round(d.active.mtd).toLocaleString('en'));
+    set('active_prior', Math.round(d.active.prior).toLocaleString('en'));
+    const actD = d.active.mtd - d.active.prior;
+    setTrend('active_trend', (actD >= 0 ? '+' : '') + Math.round(actD) + ' vs prior', 'up');
+
+    // Churn
+    set('churn_mtd',   d.churn.mtd.toFixed(2) + '%');
+    set('churn_prior', d.churn.prior.toFixed(2) + '%');
+    const churnT = d.churn.mtd - d.churn.prior;
+    setTrend('churn_trend', (churnT >= 0 ? '+' : '') + churnT.toFixed(2) + 'pp MoM', 'down');
+
+    // Funnel visibility
+    const funnelEl  = document.getElementById('funnel-section');
+    const noFunnel  = document.getElementById('no-funnel-msg');
+    const memSec    = document.getElementById('memberships-section');
+    if (d.has_funnel) {
+      funnelEl.style.display  = '';
+      memSec.style.display    = '';
+      noFunnel.style.display  = 'none';
+    } else {
+      funnelEl.style.display  = 'none';
+      memSec.style.display    = 'none';
+      noFunnel.style.display  = '';
+    }
+  }
+
+  // BU chip logic
+  document.querySelectorAll('.cp-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const bu = chip.dataset.bu;
+      if (bu === 'all') {
+        selected = new Set(['all']);
+      } else {
+        selected.delete('all');
+        if (selected.has(bu)) {
+          selected.delete(bu);
+          if (selected.size === 0) selected.add('all');
+        } else {
+          selected.add(bu);
+        }
+      }
+      document.querySelectorAll('.cp-chip').forEach(c => {
+        c.classList.toggle('is-active', selected.has(c.dataset.bu));
+      });
+      render();
+    });
+  });
+
+  render();
+</script>
+
 <style>
-  :global(body) { background: var(--off-white); }
-
-  /* ── Layout ── */
-  .cockpit { padding-top: var(--header-h); }
-
-  /* ── POC Notice ── */
-  .poc-notice {
-    background: #FBF5E5;
-    border-bottom: 2px solid #A07828;
-    padding: 10px clamp(20px, 5vw, 72px);
-    font-family: var(--fd);
-    font-size: 11.5px;
-    letter-spacing: 0.03em;
-    color: #7A5C10;
-    line-height: 1.5;
+  .cp-root {
+    padding-top: var(--header-h);
+    min-height: 100vh;
+    background: var(--off-white);
   }
-  .poc-tag {
-    display: inline-block;
-    background: #A07828;
-    color: #fff;
+
+  /* POC BAR */
+  .cp-poc-bar {
+    background: #78520a;
+    color: rgba(255,255,255,0.88);
+    font-family: var(--fd);
+    font-size: clamp(9px, 0.7vw, 11px);
     font-weight: 700;
-    font-size: 9px;
-    letter-spacing: 0.15em;
-    padding: 2px 7px;
-    border-radius: 1px;
-    margin-right: 10px;
-    vertical-align: middle;
-  }
-
-  .cockpit-wrap {
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 0 clamp(20px, 5vw, 72px);
-  }
-
-  /* ── Page header ── */
-  .cockpit-header { padding: 44px 0 32px; }
-
-  .cockpit-title {
-    font-family: var(--fd);
-    font-weight: 800;
-    font-size: clamp(2.6rem, 5.5vw, 5.2rem);
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    letter-spacing: -0.022em;
-    line-height: 0.9;
-    color: var(--text);
-    margin: 10px 0 18px;
-  }
-  .cockpit-title em { color: var(--red); font-style: italic; text-transform: none; }
-
-  .cockpit-sub {
-    font-family: var(--fb);
-    font-size: clamp(13px, 1.1vw, 15px);
-    color: var(--text-light);
-    line-height: 1.65;
-    max-width: 520px;
-    margin-bottom: 12px;
+    text-align: center;
+    padding: 7px 16px;
   }
 
-  .cockpit-sync {
-    font-family: var(--fd);
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--grey-mid);
-  }
-
-  /* ── KPI Grids ── */
-  .kpi-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 12px;
-  }
-  .kpi-grid--row3 {
-    /* inquiries (span 2) + 2 standard cards */
-    grid-template-columns: 2fr 1fr 1fr;
-  }
-
-  /* Hero card */
-  .kpi-hero {
-    grid-column: span 2;
-    background: var(--text);
+  /* PAGE HEADER */
+  .cp-page-header {
+    padding: clamp(28px, 4vh, 52px) clamp(20px, 5vw, 80px) clamp(20px, 2.5vh, 36px);
+    background: #111;
     color: #fff;
-    border-radius: 2px;
-    padding: 26px 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 220px;
-    position: relative;
-    overflow: hidden;
   }
-  .kpi-hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(120% 85% at 100% 0%, rgba(139,26,26,0.52) 0%, transparent 55%);
-    pointer-events: none;
-  }
-  .kpi-hero__eyebrow {
+  .cp-eyebrow {
+    display: block;
     font-family: var(--fd);
-    font-size: 10px;
+    font-size: clamp(10px, 0.75vw, 12px);
     font-weight: 700;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: rgba(255,255,255,0.35);
-    display: block;
-    margin-bottom: 8px;
-    position: relative;
+    margin-bottom: 10px;
   }
-  .kpi-hero__label {
-    font-family: var(--fd);
-    font-size: clamp(13px, 1.3vw, 17px);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: rgba(255,255,255,0.82);
-    position: relative;
-  }
-  .kpi-hero__body {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    position: relative;
-    margin-top: 8px;
-    gap: 16px;
-  }
-  .kpi-hero__value {
+  .cp-title {
     font-family: var(--fd);
     font-weight: 800;
-    font-size: clamp(68px, 8vw, 94px);
-    line-height: 0.85;
-    letter-spacing: -0.04em;
-    color: #fff;
-    flex-shrink: 0;
-  }
-  .kpi-hero__aside {
-    text-align: right;
-    padding-bottom: 6px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .kpi-hero__delta {
-    font-family: var(--fd);
-    font-size: 13px;
-    letter-spacing: 0.04em;
-    font-weight: 600;
-  }
-  .kpi-hero__delta.is-good { color: #80D4A0; }
-  .kpi-hero__delta.is-bad  { color: #E0A070; }
-  .kpi-hero__meta {
-    font-family: var(--fd);
-    font-size: 10px;
-    letter-spacing: 0.1em;
+    font-size: clamp(2.4rem, 4.5vw, 5rem);
+    line-height: 0.95;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.32);
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .cp-title em { color: var(--red); font-style: normal; }
+  .cp-subtitle {
+    font-family: var(--fd);
+    font-size: clamp(12px, 1vw, 15px);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
   }
 
-  /* Regular KPI cards */
-  .kpi-card {
-    background: #fff;
-    border: 1px solid rgba(26,26,26,0.09);
-    border-radius: 2px;
-    padding: 18px 20px 15px;
+  /* BU FILTER */
+  .cp-bu-bar {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    align-items: center;
+    gap: clamp(12px, 2vw, 28px);
+    padding: 16px clamp(20px, 5vw, 80px);
+    background: #fff;
+    border-bottom: 1px solid var(--grey-light);
+    flex-wrap: wrap;
+    position: sticky;
+    top: var(--header-h);
+    z-index: 100;
   }
-  .kpi-card__label {
+  .cp-bu-label {
     font-family: var(--fd);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
+    font-size: clamp(9px, 0.65vw, 11px);
+    font-weight: 700;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--grey-mid);
-    line-height: 1.4;
-    min-height: 28px;
+    white-space: nowrap;
   }
-  .kpi-card__top {
+  .cp-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .cp-chip {
+    font-family: var(--fd);
+    font-size: clamp(11px, 0.8vw, 13px);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1.5px solid var(--grey-light);
+    background: #fff;
+    color: var(--grey-mid);
+    padding: 6px 14px;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .cp-chip:hover { border-color: var(--text); color: var(--text); }
+  .cp-chip.is-active { background: var(--red); border-color: var(--red); color: #fff; }
+
+  /* SECTIONS */
+  .cp-section {
+    padding: clamp(20px, 3vh, 36px) clamp(20px, 5vw, 80px);
+  }
+  .cp-section-label {
+    font-family: var(--fd);
+    font-size: clamp(9px, 0.65vw, 11px);
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    margin-bottom: 16px;
+  }
+
+  /* KPI CARDS */
+  .cp-fin-row {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 16px;
+  }
+  .cp-opcost-chart {
+    margin-top: 16px;
+    background: #fff;
+    border: 1px solid var(--grey-light);
+    border-radius: 8px;
+    padding: clamp(16px, 2.5vh, 24px) clamp(18px, 2vw, 28px);
+  }
+  .cp-mem-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .cp-kpi-card {
+    background: #fff;
+    border: 1px solid var(--grey-light);
+    border-radius: 8px;
+    padding: clamp(18px, 2.5vh, 28px) clamp(18px, 2vw, 28px);
+  }
+  .cp-kpi-card--lg { padding: clamp(22px, 3vh, 36px) clamp(20px, 2.5vw, 36px); }
+
+  .cp-kpi-eyebrow {
+    font-family: var(--fd);
+    font-size: clamp(10px, 0.72vw, 12px);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    margin-bottom: 6px;
+  }
+  .cp-kpi-value {
+    font-family: var(--fd);
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .cp-kpi-value--stage { font-size: clamp(28px, 3.2vw, 44px); }
+  .cp-kpi-value--bad   { color: var(--red); }
+
+  .cp-kpi-subrow {
     display: flex;
-    align-items: baseline;
-    gap: 8px;
+    align-items: center;
+    gap: clamp(10px, 1.5vw, 20px);
     flex-wrap: wrap;
   }
-  .kpi-card__value {
+  .cp-stat { display: flex; flex-direction: column; gap: 2px; }
+  .cp-stat-k {
     font-family: var(--fd);
-    font-weight: 800;
-    font-size: clamp(26px, 2.8vw, 38px);
-    line-height: 1;
-    letter-spacing: -0.02em;
+    font-size: clamp(9px, 0.62vw, 11px);
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+  }
+  .cp-stat-v {
+    font-family: var(--fd);
+    font-size: clamp(13px, 1.1vw, 16px);
+    font-weight: 700;
     color: var(--text);
   }
-  .kpi-card__delta {
+  .cp-trend {
     font-family: var(--fd);
-    font-size: 11.5px;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-  }
-  .kpi-card__delta.is-good { color: #2F6446; }
-  .kpi-card__delta.is-bad  { color: var(--red); }
-
-  .kpi-card__stats { display: flex; gap: 14px; }
-  .kpi-stat { display: flex; flex-direction: column; gap: 2px; }
-  .stat-k {
-    font-family: var(--fd);
-    font-size: 8.5px;
+    font-size: clamp(11px, 0.85vw, 13px);
     font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 3px 10px;
+    border-radius: 100px;
+  }
+  .trend-good { background: rgba(22,160,88,0.12); color: #16a058; }
+  .trend-bad  { background: rgba(220,38,38,0.1);  color: #dc2626; }
+
+  .cp-kpi-note {
+    margin-top: 10px;
+    font-family: var(--fd);
+    font-size: clamp(9px, 0.62vw, 11px);
+    font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--grey-mid);
   }
-  .stat-v {
+
+  /* ONLINE/ONSITE SPLIT */
+  .cp-split-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--grey-light);
+  }
+  .cp-split-item { display: flex; flex-direction: column; align-items: center; gap: 3px; flex: 1; }
+  .cp-split-val {
     font-family: var(--fd);
-    font-size: 12.5px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
+    font-size: clamp(20px, 2.2vw, 30px);
+    font-weight: 800;
     color: var(--text);
   }
-
-  .kpi-card__meter {
-    height: 3px;
-    background: rgba(26,26,26,0.08);
-    border-radius: 2px;
+  .cp-split-lbl {
+    font-family: var(--fd);
+    font-size: clamp(9px, 0.62vw, 11px);
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+  }
+  .cp-split-div { width: 1px; height: 32px; background: var(--grey-light); }
+  .cp-split-bar-wrap {
+    margin-top: 10px;
+    height: 5px;
+    background: var(--grey-light);
+    border-radius: 3px;
     overflow: hidden;
   }
-  .kpi-card__fill {
+  .cp-split-bar-fill {
     height: 100%;
     background: var(--red);
-    border-radius: 2px;
-    transition: width 0.65s ease;
+    border-radius: 3px;
+    transition: width 0.3s ease;
   }
-  .kpi-card__fill.on-target { background: #2F6446; }
-
-  .kpi-card__status {
+  .cp-split-pct-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
     font-family: var(--fd);
-    font-size: 9px;
-    font-weight: 700;
+    font-size: clamp(9px, 0.62vw, 11px);
+    font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--grey-mid);
   }
-  .kpi-card__status.on-target { color: #2F6446; }
 
-  /* ── Inquiries card ── */
-  .kpi-inq {
+  /* YTD split */
+  .cp-ytd-split { display: flex; align-items: stretch; }
+  .cp-ytd-item { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; padding: 12px 0; }
+  .cp-ytd-val {
+    font-family: var(--fd);
+    font-size: clamp(24px, 2.6vw, 36px);
+    font-weight: 800;
+    color: var(--text);
+  }
+  .cp-ytd-lbl {
+    font-family: var(--fd);
+    font-size: clamp(9px, 0.62vw, 11px);
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+  }
+  .cp-ytd-pct {
+    font-family: var(--fd);
+    font-size: clamp(10px, 0.72vw, 12px);
+    font-weight: 700;
+    color: var(--red);
+  }
+  .cp-ytd-div { width: 1px; background: var(--grey-light); margin: 8px 0; }
+
+  /* FUNNEL */
+  .cp-funnel-stage {
     background: #fff;
-    border: 1px solid rgba(26,26,26,0.09);
-    border-radius: 2px;
-    padding: 18px 20px 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    border: 1px solid var(--grey-light);
+    border-radius: 10px;
+    padding: clamp(18px, 2.5vh, 28px) clamp(18px, 2.5vw, 32px);
   }
-  .kpi-inq__head {
+  .cp-stage-header {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .cp-stage-num {
+    font-family: var(--fd);
+    font-size: clamp(9px, 0.62vw, 11px);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--red);
+  }
+  .cp-stage-title {
+    font-family: var(--fd);
+    font-size: clamp(14px, 1.2vw, 18px);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text);
+  }
+  .cp-stage-body {
+    display: flex;
+    gap: clamp(20px, 3vw, 48px);
     align-items: flex-start;
-    gap: 16px;
-  }
-  .kpi-inq__top {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    margin-top: 4px;
     flex-wrap: wrap;
   }
-  .kpi-inq__total {
-    font-family: var(--fd);
-    font-weight: 800;
-    font-size: clamp(32px, 3.5vw, 44px);
-    line-height: 1;
-    letter-spacing: -0.02em;
-    color: var(--text);
-  }
-  .kpi-inq__meta-col {
-    display: flex;
-    gap: 14px;
-    flex-shrink: 0;
-    align-items: flex-start;
-    padding-top: 22px;
-  }
+  .cp-stage-kpi { flex-shrink: 0; min-width: 180px; }
 
-  /* Breakdown bars */
-  .inq-breakdown {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    margin-top: 2px;
-  }
-  .inq-row {
-    display: grid;
-    grid-template-columns: 120px 1fr 32px 36px;
-    align-items: center;
-    gap: 8px;
-  }
-  .inq-label {
+  /* breakdown bars */
+  .cp-stage-breakdown { flex: 1; min-width: 220px; }
+  .cp-breakdown-title {
     font-family: var(--fd);
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
+    font-size: clamp(9px, 0.62vw, 11px);
+    font-weight: 700;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--text-light);
-    white-space: nowrap;
+    color: var(--grey-mid);
+    margin-bottom: 12px;
   }
-  .inq-bar-wrap {
-    height: 5px;
-    background: rgba(26,26,26,0.07);
-    border-radius: 3px;
+  .cp-bk-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .cp-bk-lbl {
+    font-family: var(--fd);
+    font-size: clamp(10px, 0.75vw, 12px);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--text-light);
+    min-width: 120px;
+  }
+  .cp-bk-bar-wrap {
+    flex: 1;
+    height: 8px;
+    background: var(--grey-light);
+    border-radius: 4px;
     overflow: hidden;
   }
-  .inq-bar {
+  .cp-bk-bar-fill {
     height: 100%;
     background: var(--red);
-    border-radius: 3px;
-    transition: width 0.65s ease;
+    border-radius: 4px;
+    transition: width 0.3s ease;
   }
-  .inq-n {
+  .cp-bk-n {
     font-family: var(--fd);
-    font-size: 12px;
-    font-weight: 700;
+    font-size: clamp(12px, 0.9vw, 14px);
+    font-weight: 800;
     color: var(--text);
+    min-width: 28px;
     text-align: right;
   }
-  .inq-pct {
+  .cp-bk-pct {
     font-family: var(--fd);
-    font-size: 10px;
-    color: var(--grey-mid);
-    letter-spacing: 0.04em;
-    text-align: right;
-  }
-
-  /* ── Charts ── */
-  .charts-row {
-    display: grid;
-    grid-template-columns: 3fr 2fr;
-    gap: 12px;
-    margin-bottom: 12px;
-  }
-
-  .chart-card {
-    background: #fff;
-    border: 1px solid rgba(26,26,26,0.09);
-    border-radius: 2px;
-    padding: 22px 24px 14px;
-    margin-bottom: 12px;
-  }
-  .chart-card--full { margin-bottom: 12px; }
-
-  .chart-card__head {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 6px;
-    gap: 16px;
-  }
-
-  .chart-title {
-    font-family: var(--fd);
-    font-weight: 700;
-    font-size: clamp(14px, 1.4vw, 17px);
-    text-transform: uppercase;
-    letter-spacing: -0.01em;
-    color: var(--text);
-    line-height: 1.1;
-  }
-  .chart-title em { color: var(--red); font-style: italic; text-transform: none; }
-
-  .chart-subtitle {
-    font-family: var(--fb);
-    font-size: 12px;
-    color: var(--text-light);
-    margin-top: 4px;
-  }
-
-  .chart-legend { display: flex; gap: 16px; flex-wrap: wrap; }
-  .leg {
-    font-family: var(--fd);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .leg-online { color: var(--red); }
-  .leg-club   { color: var(--grey-mid); }
-  .leg-inq    { color: var(--red); }
-  .leg-ctr    { color: #555; }
-  .leg-gap    { color: rgba(139,26,26,0.35); }
-
-  .chart-target-label {
-    font-family: var(--fd);
-    font-size: 10px;
+    font-size: clamp(10px, 0.72vw, 12px);
     font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
     color: var(--grey-mid);
-    flex-shrink: 0;
+    min-width: 36px;
+    text-align: right;
   }
 
-  /* Correlation badge */
-  .corr-badge {
+  /* CONNECTORS */
+  .cp-connector {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    flex-shrink: 0;
-    gap: 2px;
+    align-items: center;
+    padding: 4px 0;
   }
-  .corr-r {
-    font-family: var(--fd);
-    font-weight: 800;
-    font-size: clamp(22px, 2.5vw, 30px);
-    letter-spacing: -0.02em;
-    color: var(--text);
-    line-height: 1;
+  .cp-connector-line { width: 2px; height: 20px; background: var(--grey-light); }
+  .cp-connector-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--grey-light);
+    background: #fff;
+    border-radius: 100px;
+    padding: 6px 18px;
+    margin: 4px 0;
   }
-  .corr-label {
+  .cp-connector-pill--cancel { border-color: rgba(139,26,26,0.25); }
+  .cp-connector-label {
     font-family: var(--fd);
-    font-size: 9px;
+    font-size: clamp(9px, 0.65vw, 11px);
     font-weight: 700;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: #2F6446;
+    color: var(--grey-mid);
+  }
+  .cp-connector-rate {
+    font-family: var(--fd);
+    font-size: clamp(12px, 1vw, 15px);
+    font-weight: 800;
+    color: var(--red);
   }
 
-  .chart-svg {
+  /* mini kpi pair */
+  .cp-stage-pair { display: flex; gap: clamp(20px, 3vw, 48px); flex-wrap: wrap; flex-shrink: 0; }
+  .cp-mini-kpi { min-width: 160px; }
+
+  /* SVG CHARTS */
+  .cp-chart-wrap { flex: 1; min-width: 280px; }
+  .cp-chart-wrap--corr { min-width: 320px; }
+  .cp-chart-title {
+    font-family: var(--fd);
+    font-size: clamp(11px, 0.85vw, 14px);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 10px;
+  }
+  .cp-svg { width: 100%; height: auto; display: block; }
+  .cp-svg--bal { max-height: 180px; }
+  .cp-svg-label      { font-family: var(--fd); font-size: 12px; fill: var(--grey-mid); }
+  .cp-svg-val        { font-family: var(--fd); font-size: 11px; font-weight: 700; fill: var(--text); }
+  .cp-svg-val--light { font-family: var(--fd); font-size: 11px; font-weight: 600; fill: var(--grey-mid); }
+
+  .cp-chart-legend {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .cp-leg {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--fd);
+    font-size: clamp(10px, 0.72vw, 12px);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-light);
+  }
+  .cp-leg::before {
+    content: '';
     display: block;
-    width: 100%;
-    height: auto;
+    width: 22px;
+    height: 2px;
+    background: var(--red);
+    border-radius: 2px;
+  }
+  .cp-leg--dashed::before {
+    background: repeating-linear-gradient(to right, rgba(139,26,26,0.5) 0, rgba(139,26,26,0.5) 4px, transparent 4px, transparent 8px);
+  }
+  .cp-leg--bar::before   { height: 10px; border-radius: 2px; background: rgba(139,26,26,0.72); }
+  .cp-leg--bar-light::before { background: rgba(139,26,26,0.18); }
+  .cp-corr-badge {
+    font-family: var(--fd);
+    font-size: clamp(10px, 0.72vw, 12px);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    background: rgba(139,26,26,0.1);
+    color: var(--red);
+    border-radius: 4px;
+    padding: 3px 8px;
+    text-transform: uppercase;
   }
 
-  /* ── Narrative ── */
-  .cockpit-narrative {
-    border-left: 2px solid var(--red);
-    padding: 2px 0 2px 20px;
-    margin: 16px 0 64px;
-    max-width: 860px;
+  /* NO FUNNEL */
+  .cp-no-funnel {
+    margin: 0 clamp(20px, 5vw, 80px) clamp(20px, 3vh, 40px);
+    padding: 32px;
+    background: #fff;
+    border: 1px solid var(--grey-light);
+    border-radius: 8px;
+    text-align: center;
+    color: var(--grey-mid);
+    font-family: var(--fd);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
-  .narrative-text {
+
+  /* NARRATIVE */
+  .cp-section--narrative {
+    padding-top: clamp(8px, 1.5vh, 16px);
+    padding-bottom: clamp(36px, 5vh, 64px);
+  }
+  .cp-narrative {
     font-family: var(--fb);
-    font-style: italic;
-    font-size: clamp(15px, 1.4vw, 19px);
-    line-height: 1.6;
-    color: var(--text);
-    margin-top: 8px;
+    font-size: clamp(14px, 1.1vw, 18px);
+    line-height: 1.65;
+    color: var(--text-light);
+    max-width: 780px;
   }
-  .narrative-text strong { font-style: normal; color: var(--red); }
+  .cp-narrative strong { color: var(--text); }
 
-  /* ── Responsive ── */
-  @media (max-width: 960px) {
-    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-    .kpi-hero { grid-column: span 2; }
-    .kpi-grid--row3 { grid-template-columns: 1fr 1fr; }
-    .kpi-inq { grid-column: span 2; }
-    .charts-row { grid-template-columns: 1fr; }
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .cp-fin-row  { grid-template-columns: 1fr 1fr; }
   }
-
-  @media (max-width: 600px) {
-    .kpi-grid { grid-template-columns: 1fr; }
-    .kpi-hero { grid-column: span 1; min-height: 180px; }
-    .kpi-hero__value { font-size: 68px; }
-    .kpi-hero__body { flex-direction: column; align-items: flex-start; }
-    .kpi-hero__aside { text-align: left; }
-    .kpi-grid--row3 { grid-template-columns: 1fr; }
-    .kpi-inq { grid-column: span 1; }
-    .inq-row { grid-template-columns: 90px 1fr 26px 32px; }
-    .cockpit-title { font-size: clamp(2.2rem, 9vw, 3rem); }
+  @media (max-width: 768px) {
+    .cp-fin-row  { grid-template-columns: 1fr; }
+    .cp-mem-row  { grid-template-columns: 1fr; }
+    .cp-stage-body { flex-direction: column; gap: 20px; }
+    .cp-stage-pair { flex-direction: column; gap: 20px; }
+    .cp-bu-bar { gap: 10px; }
+    .cp-chart-wrap { min-width: 0; width: 100%; }
+    .cp-bk-lbl { min-width: 90px; }
   }
 </style>
