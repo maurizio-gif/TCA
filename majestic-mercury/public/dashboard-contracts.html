@@ -27,6 +27,7 @@
 
   body {
     background: var(--bg);
+    padding-top: 60px;
     color: var(--text);
     font-family: 'Inter', sans-serif;
     font-size: 14px;
@@ -227,8 +228,72 @@
     .age-grid { grid-template-columns: 1fr; }
   }
 </style>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+/* ── TCA GLOBAL HEADER ── */
+.tca-header{position:fixed;top:0;left:0;right:0;z-index:1000;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,2.5vw,40px);background:rgba(255,255,255,0.97);border-bottom:1px solid #EBEBEB;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
+.tca-header__logo{display:flex;align-items:center;text-decoration:none;}
+.tca-header__logo img{height:46px;width:auto;display:block;}
+.tca-header__burger{display:flex;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:10px;border-radius:4px;transition:background .15s;}
+.tca-header__burger:hover{background:rgba(0,0,0,.06);}
+.tca-burger-bar{display:block;width:22px;height:2px;background:#1A1A1A;border-radius:2px;transition:transform .28s ease,opacity .2s ease;}
+body.tca-menu-open .b1{transform:translateY(7px) rotate(45deg);}
+body.tca-menu-open .b2{opacity:0;transform:scaleX(0);}
+body.tca-menu-open .b3{transform:translateY(-7px) rotate(-45deg);}
+.tca-menu{position:fixed;inset:0;z-index:999;background:#0f1013;pointer-events:none;visibility:hidden;opacity:0;transition:opacity .32s ease,visibility .32s ease;}
+.tca-menu.is-open{pointer-events:all;visibility:visible;opacity:1;}
+.tca-menu__inner{display:flex;flex-direction:column;height:100%;padding:calc(60px + 4.5vh) clamp(24px,6vw,100px) 5vh;overflow-y:auto;}
+.tca-menu__nav{display:flex;flex-direction:column;gap:4.5vh;flex:1;}
+.tca-menu__link{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.9rem,3.6vw,3.8rem);font-weight:800;text-transform:uppercase;letter-spacing:-.01em;color:rgba(255,255,255,.5);text-decoration:none;line-height:1.1;display:flex;align-items:baseline;gap:.55em;padding:.25vh 0;transition:color .18s,transform .2s ease;}
+.tca-menu__link em{font-style:normal;font-size:.38em;font-weight:600;letter-spacing:.1em;color:rgba(255,255,255,.18);min-width:3em;transition:color .18s;}
+.tca-menu__link:hover{color:#fff;transform:translateX(10px);}
+.tca-menu__link:hover em{color:#8B1A1A;}
+.tca-menu__section{display:flex;flex-direction:column;padding-top:3.5vh;border-top:1px solid rgba(255,255,255,.07);}
+.tca-menu__section-label{font-family:'Barlow Condensed',sans-serif;font-size:clamp(9px,.6vw,11px);font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.22);display:block;margin-bottom:1vh;}
+.tca-menu__link--sub{font-size:clamp(1.3rem,2.4vw,2.8rem);color:rgba(255,255,255,.6);}
+.tca-menu__link--sub em{color:rgba(255,255,255,.18);}
+.tca-menu__link--sub:hover{color:#fff;}
+.tca-menu__link--accent{color:#8B1A1A;font-size:clamp(1.3rem,2.2vw,2.6rem);margin-top:1vh;}
+.tca-menu__link--accent em{color:rgba(139,26,26,.5);min-width:2em;}
+.tca-menu__link--accent:hover{color:#d43535;}
+.tca-menu__link--accent:hover em{color:#d43535;}
+.tca-menu__footer{font-family:'Barlow Condensed',sans-serif;font-size:clamp(9px,.6vw,10px);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.12);margin-top:3vh;padding-top:2vh;border-top:1px solid rgba(255,255,255,.05);}
+@media(max-width:768px){.tca-menu__link{font-size:clamp(1.8rem,9vw,2.8rem);}.tca-menu__link--accent{font-size:clamp(1.3rem,6.5vw,1.9rem);}.tca-menu__inner{padding:calc(60px + 3vh) 24px 5vh;}.tca-menu__nav{gap:3.5vh;}}
+</style>
 </head>
 <body>
+
+<!-- ── TCA GLOBAL HEADER ── -->
+<header class="tca-header" id="g-header">
+  <a href="/TCA/" class="tca-header__logo">
+    <img src="/TCA/logo tca.png" alt="Tennis Club Ambrosiano" />
+  </a>
+  <button class="tca-header__burger" id="g-burger" aria-label="Open menu" aria-expanded="false">
+    <span class="tca-burger-bar b1"></span>
+    <span class="tca-burger-bar b2"></span>
+    <span class="tca-burger-bar b3"></span>
+  </button>
+</header>
+<!-- ── TCA MENU OVERLAY ── -->
+<div class="tca-menu" id="g-menu" aria-hidden="true">
+  <div class="tca-menu__inner">
+    <nav class="tca-menu__nav">
+      <a href="/TCA/"                                 class="tca-menu__link" data-close><em>01</em>Project Hub</a>
+      <a href="/TCA/presentation/"                    class="tca-menu__link" data-close><em>02</em>Presentation</a>
+      <a href="/TCA/carve-out/"                       class="tca-menu__link" data-close><em>03</em>Carve-Out Roadmap</a>
+      <a href="/TCA/accounting-analysis/"             class="tca-menu__link" data-close><em>04</em>Accounting Software Analysis</a>
+      <div class="tca-menu__section">
+        <span class="tca-menu__section-label">Tools</span>
+        <a href="/TCA/workspace/"          class="tca-menu__link tca-menu__link--sub" data-close><em>05</em>Shared Workspace</a>
+        <a href="/TCA/dashboard-revenue"   class="tca-menu__link tca-menu__link--sub" data-close><em>06</em>Revenue 2025&#8211;2026</a>
+        <a href="/TCA/dashboard-contracts" class="tca-menu__link tca-menu__link--sub" data-close><em>07</em>New Contracts 2025&#8211;2026</a>
+      </div>
+      <a href="/TCA/quote/"                           class="tca-menu__link tca-menu__link--accent" data-close><em>08</em>Quote</a>
+    </nav>
+    <div class="tca-menu__footer">Confidential &middot; Tennis Club Ambrosiano &middot; 2026</div>
+  </div>
+</div>
+
 
 <header>
   <div class="header-left">
@@ -597,6 +662,17 @@ makeLegend('financialLegend',finLabels,finColors,finCnt.map(v=>v.toLocaleString(
 // Online reg
 new Chart(document.getElementById('regTypeChart'),{type:'doughnut',data:{labels:['Online Registration','Operator (Offline)'],datasets:[{data:[36,2339],backgroundColor:[C.teal,C.blue],borderWidth:0,hoverOffset:6}]},options:{...baseOptions(),cutout:'60%'}});
 makeLegend('regTypeLegend',['Online Registration','Operator (Offline)'],[C.teal,C.blue],['36 (1.5%)','2,339 (98.5%)']);
+</script>
+
+<script>
+(function(){
+  var burger=document.getElementById('g-burger'),menu=document.getElementById('g-menu');
+  function openMenu(){menu.classList.add('is-open');menu.setAttribute('aria-hidden','false');burger.setAttribute('aria-expanded','true');document.body.classList.add('tca-menu-open');document.body.style.overflow='hidden';}
+  function closeMenu(){menu.classList.remove('is-open');menu.setAttribute('aria-hidden','true');burger.setAttribute('aria-expanded','false');document.body.classList.remove('tca-menu-open');document.body.style.overflow='';}
+  burger.addEventListener('click',function(){menu.classList.contains('is-open')?closeMenu():openMenu();});
+  menu.querySelectorAll('[data-close]').forEach(function(el){el.addEventListener('click',closeMenu);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu();});
+})();
 </script>
 </body>
 </html>

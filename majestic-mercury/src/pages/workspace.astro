@@ -90,6 +90,7 @@ const openUrl  = `https://docs.google.com/spreadsheets/d/${active.id}/edit?usp=s
     display: flex;
     flex-direction: column;
     height: 100vh;
+    height: 100dvh;
     padding-top: var(--header-h);
     background: #f5f5f5;
   }
@@ -204,24 +205,27 @@ const openUrl  = `https://docs.google.com/spreadsheets/d/${active.id}/edit?usp=s
 
   /* ── MOBILE ── */
   @media (max-width: 640px) {
+    /* Keep full-screen layout — toolbar compressed to single row */
     .ws-toolbar {
-      height: auto;
-      min-height: 50px;
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 10px 16px 0;
-      gap: 0;
+      height: 44px;
+      padding: 0 12px;
+      gap: 8px;
     }
-    .ws-toolbar-left { width: 100%; }
     .ws-eyebrow { display: none; }
-    .ws-toolbar-right {
-      width: 100%;
-      padding: 8px 0;
-      border-top: 1px solid var(--grey-light);
+    .ws-toolbar-left { gap: 6px; }
+    .ws-files { height: 44px; }
+    .ws-file-tab {
+      padding: 0 10px;
+      font-size: 10px;
+      gap: 5px;
     }
-    .ws-open-btn { font-size: 10px; }
-    :global(body) { overflow: auto; }
-    .ws-root { height: auto; }
-    .ws-frame-wrap { height: 80vh; position: relative; }
+    .ws-file-icon { width: 12px; height: 12px; }
+    .ws-open-btn {
+      font-size: 9px;
+      padding: 4px 10px;
+      letter-spacing: 0.08em;
+      gap: 4px;
+    }
+    .ws-open-btn svg { width: 11px; height: 11px; }
   }
 </style>
