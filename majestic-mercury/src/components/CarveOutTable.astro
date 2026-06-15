@@ -57,11 +57,15 @@ const rows: Row[] = [
     owner:       'Maurizio Taruggi',
     people:      'Laura Giardini, Thomas Sander & Alice Bartoli',
     peopleNote:  'Alice Bartoli: usage details + co-defines features & architecture',
-    status:      'todo',
-    statusLabel: 'To call',
-    nextStep:    'Call Laura Giardini',
-    date:        'Jun 15–19',
+    status:      'wip',
+    statusLabel: 'Call confirmed — Jun 16, 14:30',
+    nextStep:    'Call Laura Giardini — Jun 16, 14:30',
+    date:        'Jun 16, 14:30',
     detail: [
+      {
+        heading: 'Call Confirmed',
+        text: 'Call with Laura Giardini scheduled for Tuesday 16 June 2026 at 14:30. Objective: align on current Prismic setup, pain points and strategic direction for the site rebuild.',
+      },
       {
         heading: 'Current State',
         text: 'The site runs on Prismic (CMS + marketing). Feedback from Laura Giardini and Alice on the platform has been negative. If the goal is to internalise digital functions, rebuilding the site from scratch should be seriously considered.',
@@ -110,8 +114,8 @@ const rows: Row[] = [
     people:      'Alice Bartoli & Thomas Sander',
     peopleNote:  'Alice Bartoli: usage details',
     status:      'wip',
-    statusLabel: 'Active — Jun 16',
-    nextStep:    'Google Workspace Setup + Email to Thomas Sander',
+    statusLabel: 'Active — Email sent to Thomas Sander',
+    nextStep:    'Google Workspace Setup',
     date:        'Jun 16',
     detail: [
       {
@@ -139,7 +143,7 @@ const rows: Row[] = [
           {
             title: 'Google Workspace Setup',
             fields: [
-              { label: 'Scheduled',    text: 'Tuesday 16 June 2026. In parallel: advance email to Thomas Sander to pre-announce the migration scope and flag what Aspria IT will be asked to provide.' },
+              { label: 'Scheduled',    text: 'Tuesday 16 June 2026. Advance email to Thomas Sander sent ✓ — account list, admin account for email/OneDrive migration, and TCA domain credentials requested.' },
               { label: 'Objective',    text: 'Stand up the new independent tenant, production-ready before any data moves.' },
               { label: 'Activities',   text: 'Create the Google Workspace tenant, select edition and licensing, verify the domain, configure the security baseline (2FA, admin roles) and prepare the shared Drive structure.' },
               { label: 'Aspria input', text: 'None — fully independent. At most one DNS TXT record for domain verification if Aspria controls the DNS zone.' },
@@ -213,7 +217,7 @@ const rows: Row[] = [
         heading: "Minimising Thomas Sander’s Involvement",
         text: "Everything that can be prepared in-house is done before contacting Aspria: the inventory of mailboxes, contents and files is built internally with Alice, and the mapping is validated internally too. Thomas Sander is involved through two active touchpoints plus async wrap-up:",
         bullets: [
-          "Advance email (Jun 16) — pre-announcement of the migration plan, the scope of work and what Aspria IT will be asked to provide; no action required at this stage",
+          "Advance email (Jun 16) ✓ SENT — account list, admin account for email/OneDrive migration, and TCA domain credentials requested from Thomas Sander",
           "One short technical call (~30 minutes) — arriving with inventory and mapping already done: request temporary, scoped migration access and agree the cutover window; validate access with a connectivity test",
           "DNS / mail-routing cutover support — only if the zone is under Aspria’s control",
           "Access revocation and M365 license decommission — handled asynchronously by email, no further calls",

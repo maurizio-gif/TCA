@@ -27,7 +27,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 hr.divider{border:none;border-top:1px solid var(--border);margin:12px 0}
 .reset-btn{background:none;border:1px solid rgba(99,102,241,.4);color:var(--accent);border-radius:5px;padding:5px 10px;cursor:pointer;font-size:11px;width:100%}
 .main{flex:1;overflow:auto}
-.header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:60px;z-index:10}
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
 .header-left{display:flex;align-items:center;gap:14px}
 .logo-box{background:var(--accent);color:#fff;border-radius:10px;padding:8px 12px;font-weight:800;font-size:16px}
 .header h1{font-size:20px;font-weight:800}
@@ -85,7 +85,7 @@ tr:hover td{background:rgba(99,102,241,.05)}
   .sidebar.collapsed{width:260px;padding:14px 12px;}
   .sidebar-backdrop.is-open{display:block;}
   .main{width:100%;min-width:0;overflow:visible;}
-  .header{padding:10px 14px;gap:8px;}
+  .header{padding:10px 14px;gap:8px;top:60px;}
   .header-left{gap:8px;min-width:0;flex:1;}
   .logo-box{display:none;}
   .header h1{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
