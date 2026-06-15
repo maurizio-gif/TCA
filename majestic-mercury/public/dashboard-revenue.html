@@ -75,11 +75,44 @@ tr:hover td{background:rgba(99,102,241,.05)}
 .split-badge.epm{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.4);color:#6ee7b7}
 .split-badge.tot{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.4);color:#fcd34d}
 @media(max-width:900px){.chart-card.col-7,.chart-card.col-5,.chart-card.col-6,.chart-card.col-4{grid-column:span 12}}
+.sidebar-backdrop{display:none;position:fixed;inset:0;z-index:299;background:rgba(0,0,0,.65);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);}
+.filter-badge{display:none;background:#fff;color:var(--accent);border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:800;align-items:center;justify-content:center;line-height:1;flex-shrink:0;}
+.filter-badge.has-filters{display:inline-flex;}
+@media(max-width:768px){
+  body{display:block;}
+  .sidebar{position:fixed;top:0;left:-275px;width:260px;height:100%;z-index:300;transition:left .3s cubic-bezier(.4,0,.2,1);box-shadow:6px 0 28px rgba(0,0,0,.6);overflow-y:auto;padding:14px 12px;}
+  .sidebar.is-open{left:0;}
+  .sidebar.collapsed{width:260px;padding:14px 12px;}
+  .sidebar-backdrop.is-open{display:block;}
+  .main{width:100%;min-width:0;}
+  .header{padding:10px 14px;gap:8px;}
+  .header-left{gap:8px;min-width:0;flex:1;}
+  .logo-box{display:none;}
+  .header h1{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .header-sub{display:none;}
+  .toggle-btn{background:var(--accent);border:none;color:#fff;font-weight:700;padding:9px 18px;border-radius:22px;font-size:13px;white-space:nowrap;display:flex;align-items:center;gap:7px;flex-shrink:0;box-shadow:0 2px 12px rgba(99,102,241,.45);}
+  .toggle-btn:active{background:#4f52d9;transform:scale(.97);}
+  .content{padding:12px 12px;}
+  .kpi-grid{grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+  .kpi{padding:11px 12px;}
+  .kpi-val{font-size:16px;}
+  .kpi-icon{font-size:14px;margin-bottom:3px;}
+  .kpi-label{font-size:9px;}
+  .kpi-sub{font-size:10px;}
+  .tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;gap:0;scrollbar-width:none;padding-bottom:2px;}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{padding:8px 10px;font-size:11px;white-space:nowrap;}
+  .split-badges{flex-direction:column;gap:6px;}
+  .tbl-controls{flex-direction:column;align-items:flex-start;}
+  .tbl-input{width:100%;}
+  .tbl-info{margin-left:0;}
+}
 
 </style>
 </head>
 <body>
 
+<div class="sidebar-backdrop" id="sidebar-backdrop" onclick="closeSidebar()"></div>
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-logo"><span>TCA</span> Filters</div>
   <div class="filter-section">
@@ -111,7 +144,7 @@ tr:hover td{background:rgba(99,102,241,.05)}
         <div class="header-sub">Tennis Club Ambrosiano &middot; Jun 2025 &ndash; May 2026 &middot; POS + E-Payments</div>
       </div>
     </div>
-    <button class="toggle-btn" onclick="document.getElementById('sidebar').classList.toggle('collapsed')">&#9776; Filters</button>
+    <button class="toggle-btn" id="filter-toggle-btn" onclick="toggleSidebar()">&#9776; Filtri <span class="filter-badge" id="filter-badge"></span></button>
   </header>
 
   <div class="content">
@@ -328,13 +361,40 @@ let activeMethods=new Set(Object.keys(RAW.payment_method_rev));
 let activeSources=new Set(Object.keys(RAW.source_rev));
 let charts={};
 
+function isMobile(){return window.innerWidth<=768;}
+function toggleSidebar(){
+  const s=document.getElementById('sidebar');
+  const bd=document.getElementById('sidebar-backdrop');
+  if(isMobile()){
+    const open=s.classList.toggle('is-open');
+    bd.classList.toggle('is-open',open);
+    document.body.style.overflow=open?'hidden':'';
+  } else {
+    s.classList.toggle('collapsed');
+  }
+}
+function closeSidebar(){
+  const s=document.getElementById('sidebar');
+  const bd=document.getElementById('sidebar-backdrop');
+  s.classList.remove('is-open');
+  bd.classList.remove('is-open');
+  document.body.style.overflow='';
+}
+function updateFilterBadge(){
+  const deselected=document.querySelectorAll('.month-btn:not(.active),.filter-btn:not(.active)').length;
+  const badge=document.getElementById('filter-badge');
+  if(!badge)return;
+  if(deselected>0){badge.textContent=deselected;badge.classList.add('has-filters');}
+  else{badge.textContent='';badge.classList.remove('has-filters');}
+}
+window.addEventListener('resize',()=>{if(!isMobile())closeSidebar();});
 function buildSidebar(){
   const mg=document.getElementById('month-filters');
   RAW.months.forEach(m=>{
     const btn=document.createElement('div');
     btn.className='month-btn active';btn.dataset.month=m;
     btn.textContent=RAW.labels[RAW.months.indexOf(m)];
-    btn.onclick=()=>{if(activeMonths.has(m)){activeMonths.delete(m);btn.classList.remove('active');}else{activeMonths.add(m);btn.classList.add('active');}updateCharts();};
+    btn.onclick=()=>{if(activeMonths.has(m)){activeMonths.delete(m);btn.classList.remove('active');}else{activeMonths.add(m);btn.classList.add('active');}updateCharts();updateFilterBadge();};
     mg.appendChild(btn);
   });
   buildGroup('cat-filters','cat-grid',Object.keys(RAW.category_rev),activeCats,PALETTE.cat);
@@ -347,7 +407,7 @@ function buildGroup(id,gridCls,items,activeSet,colorMap){
     const btn=document.createElement('button');btn.className='filter-btn active';btn.dataset.val=item;
     const color=(colorMap&&colorMap[item])||COLORS[i%COLORS.length];
     btn.innerHTML=`<span class="filter-dot" style="background:${color}"></span>${item}`;
-    btn.onclick=()=>{if(activeSet.has(item)){activeSet.delete(item);btn.classList.remove('active');}else{activeSet.add(item);btn.classList.add('active');}updateCharts();};
+    btn.onclick=()=>{if(activeSet.has(item)){activeSet.delete(item);btn.classList.remove('active');}else{activeSet.add(item);btn.classList.add('active');}updateCharts();updateFilterBadge();};
     el.appendChild(btn);
   });
 }
@@ -355,7 +415,7 @@ function resetFilters(){
   activeMonths=new Set(RAW.months);activeCats=new Set(Object.keys(RAW.category_rev));
   activeMethods=new Set(Object.keys(RAW.payment_method_rev));activeSources=new Set(Object.keys(RAW.source_rev));
   document.querySelectorAll('.month-btn,.filter-btn').forEach(b=>b.classList.add('active'));
-  updateCharts();
+  updateCharts();updateFilterBadge();
 }
 function switchTab(btn){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
