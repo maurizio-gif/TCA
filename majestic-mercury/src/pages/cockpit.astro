@@ -5,6 +5,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const BU_DATA = {
   all: {
     revenue:   { mtd: 89420,  ytd: 712340, prior: 84180 },
+    opcost:    { mtd: 74200,  ytd: 591800, prior: 70050 },
     staff:     { mtd: 41.8,   ytd: 44.2,   prior: 43.1  },
     online:    { mtd: 29,     ytd: 182,    prior: 21    },
     onsite:    { mtd: 18,     ytd: 138,    prior: 22    },
@@ -19,6 +20,7 @@ const BU_DATA = {
   },
   memberships: {
     revenue:   { mtd: 52300,  ytd: 418200, prior: 49100 },
+    opcost:    { mtd: 41500,  ytd: 331800, prior: 39100 },
     staff:     { mtd: 38.2,   ytd: 40.1,   prior: 39.8  },
     online:    { mtd: 17,     ytd: 108,    prior: 13    },
     onsite:    { mtd: 12,     ytd: 92,     prior: 14    },
@@ -33,6 +35,7 @@ const BU_DATA = {
   },
   tennis: {
     revenue:   { mtd: 18400,  ytd: 147200, prior: 17600 },
+    opcost:    { mtd: 15200,  ytd: 121400, prior: 14600 },
     staff:     { mtd: 44.1,   ytd: 46.8,   prior: 45.2  },
     online:    { mtd: 8,      ytd: 62,     prior: 6     },
     onsite:    { mtd: 14,     ytd: 112,    prior: 16    },
@@ -47,6 +50,7 @@ const BU_DATA = {
   },
   padel: {
     revenue:   { mtd: 11200,  ytd: 89600,  prior: 10400 },
+    opcost:    { mtd: 9400,   ytd: 75200,  prior: 8800  },
     staff:     { mtd: 39.5,   ytd: 42.0,   prior: 41.2  },
     online:    { mtd: 15,     ytd: 118,    prior: 11    },
     onsite:    { mtd: 7,      ytd: 56,     prior: 8     },
@@ -61,6 +65,7 @@ const BU_DATA = {
   },
   summer_camps: {
     revenue:   { mtd: 5200,   ytd: 41600,  prior: 4800  },
+    opcost:    { mtd: 4800,   ytd: 38600,  prior: 4450  },
     staff:     { mtd: 52.1,   ytd: 55.4,   prior: 53.8  },
     online:    { mtd: 8,      ytd: 62,     prior: 6     },
     onsite:    { mtd: 14,     ytd: 112,    prior: 14    },
@@ -75,6 +80,7 @@ const BU_DATA = {
   },
   merchandising: {
     revenue:   { mtd: 2320,   ytd: 15740,  prior: 2280  },
+    opcost:    { mtd: 1800,   ytd: 12200,  prior: 1770  },
     staff:     { mtd: 28.4,   ytd: 31.2,   prior: 30.1  },
     online:    { mtd: 0,      ytd: 0,      prior: 0     },
     onsite:    { mtd: 0,      ytd: 0,      prior: 0     },
@@ -112,6 +118,28 @@ const gapPath  = [
   ...NEW_TREND.slice().reverse().map((v, i) => `L${cx(MONTHS.length - 1 - i)},${cy(v)}`),
   'Z',
 ].join(' ');
+
+// ── 12-month total operational cost trend (Jul → Jun) ──
+const OPCOST_TREND = [56400, 58800, 61200, 64700, 59100, 52800, 65400, 67200, 70050, 68900, 66200, 74200];
+const REV_TREND_M  = [67100, 70200, 73800, 78400, 71600, 63200, 78900, 80400, 84180, 82600, 79900, 89420];
+
+// SVG for operational cost bars
+const OW = 760, OH = 180, oPL = 10, oPR = 10, oPT = 20, oPB = 36;
+const oInner = OW - oPL - oPR;
+const oIH    = OH - oPT - oPB;
+const oMax   = Math.max(...OPCOST_TREND, ...REV_TREND_M) * 1.08;
+const oMin   = 0;
+const oRange = oMax - oMin;
+const oBarW  = oInner / MONTHS.length * 0.38;
+const oBars  = OPCOST_TREND.map((v, i) => {
+  const ox = oPL + (i / MONTHS.length) * oInner + oInner / MONTHS.length * 0.08;
+  const oy = oPT + (1 - v / oMax) * oIH;
+  const oh = (v / oMax) * oIH;
+  const rx = ox + oBarW + 2;
+  const ry = oPT + (1 - REV_TREND_M[i] / oMax) * oIH;
+  const rh = (REV_TREND_M[i] / oMax) * oIH;
+  return { ox, oy, oh, rx, ry, rh, v, rv: REV_TREND_M[i] };
+});
 
 // ── SVG: net balance monthly bars ──
 const NET_DATA = [25, 29, 31, 36, 28, 20, 35, 37, 40, 37, 32, 38];
@@ -186,6 +214,28 @@ const bBars  = BAL_DATA.map((v, i) => {
           </div>
         </div>
 
+        <!-- Op. Costs -->
+        <div class="cp-kpi-card">
+          <div class="cp-kpi-eyebrow">Total Op. Costs</div>
+          <div class="cp-kpi-value" data-m="opcost_mtd">€{D.opcost.mtd.toLocaleString('en')}</div>
+          <div class="cp-kpi-subrow">
+            <div class="cp-stat">
+              <span class="cp-stat-k">YTD</span>
+              <span class="cp-stat-v" data-m="opcost_ytd">€{D.opcost.ytd.toLocaleString('en')}</span>
+            </div>
+            <div class="cp-stat">
+              <span class="cp-stat-k">Prior Mo.</span>
+              <span class="cp-stat-v" data-m="opcost_prior">€{D.opcost.prior.toLocaleString('en')}</span>
+            </div>
+            <div class="cp-trend trend-bad" data-m="opcost_trend">
+              +{(((D.opcost.mtd - D.opcost.prior) / D.opcost.prior) * 100).toFixed(1)}% MoM
+            </div>
+          </div>
+          <div class="cp-kpi-note" data-m="opcost_ratio">
+            {Math.round(D.opcost.mtd / D.revenue.mtd * 100)}% of revenue · EBITDA margin {Math.round((1 - D.opcost.mtd / D.revenue.mtd) * 100)}%
+          </div>
+        </div>
+
         <!-- Staff cost -->
         <div class="cp-kpi-card">
           <div class="cp-kpi-eyebrow">Staff Cost % of Revenue</div>
@@ -207,6 +257,43 @@ const bBars  = BAL_DATA.map((v, i) => {
         </div>
 
       </div>
+
+      <!-- Op. costs 12-month chart -->
+      <div class="cp-opcost-chart">
+        <div class="cp-chart-title">Monthly Op. Costs vs. Revenue · 12-Month Trend</div>
+        <svg viewBox={`0 0 ${OW} ${OH}`} class="cp-svg" preserveAspectRatio="xMidYMid meet">
+          {oBars.map((b, i) => (
+            <>
+              <!-- Revenue bar (lighter, behind) -->
+              <rect x={b.rx} y={b.ry} width={oBarW} height={b.rh}
+                fill="rgba(139,26,26,0.18)" rx="2" />
+              <!-- Op. cost bar -->
+              <rect x={b.ox} y={b.oy} width={oBarW} height={b.oh}
+                fill={b.v > b.rv ? 'rgba(220,38,38,0.75)' : 'rgba(139,26,26,0.72)'} rx="2" />
+            </>
+          ))}
+          {MONTHS.map((m, i) => (
+            <text
+              x={oPL + (i / MONTHS.length) * oInner + oInner / MONTHS.length * 0.5}
+              y={OH - 8}
+              text-anchor="middle"
+              class="cp-svg-label"
+            >{m}</text>
+          ))}
+          <!-- last month values -->
+          <text x={oBars[11].ox + oBarW / 2} y={oBars[11].oy - 4} text-anchor="middle" class="cp-svg-val">
+            €{Math.round(oBars[11].v / 1000)}k
+          </text>
+          <text x={oBars[11].rx + oBarW / 2} y={oBars[11].ry - 4} text-anchor="middle" class="cp-svg-val cp-svg-val--light">
+            €{Math.round(oBars[11].rv / 1000)}k
+          </text>
+        </svg>
+        <div class="cp-chart-legend">
+          <span class="cp-leg cp-leg--bar">Op. Costs</span>
+          <span class="cp-leg cp-leg--bar cp-leg--bar-light">Revenue</span>
+        </div>
+      </div>
+
     </div>
 
     <!-- ── MEMBERSHIPS ROW ── -->
@@ -540,6 +627,7 @@ const bBars  = BAL_DATA.map((v, i) => {
 
     return {
       revenue:   { mtd: sum('revenue','mtd'),   ytd: sum('revenue','ytd'),   prior: sum('revenue','prior') },
+      opcost:    { mtd: sum('opcost','mtd'),     ytd: sum('opcost','ytd'),    prior: sum('opcost','prior') },
       staff:     { mtd: wavg('staff','mtd','revenue','mtd'), ytd: wavg('staff','ytd','revenue','ytd'), prior: wavg('staff','prior','revenue','prior') },
       online:    { mtd: sum('online','mtd'),     ytd: sum('online','ytd'),    prior: sum('online','prior') },
       onsite:    { mtd: sum('onsite','mtd'),     ytd: sum('onsite','ytd'),    prior: sum('onsite','prior') },
@@ -589,6 +677,16 @@ const bBars  = BAL_DATA.map((v, i) => {
     set('rev_prior', '€' + Math.round(d.revenue.prior).toLocaleString('en'));
     const revT = trendPct(d.revenue.mtd, d.revenue.prior);
     setTrend('rev_trend', (revT >= 0 ? '+' : '') + revT.toFixed(1) + '% MoM', 'up');
+
+    // Op. costs
+    set('opcost_mtd',   '€' + Math.round(d.opcost.mtd).toLocaleString('en'));
+    set('opcost_ytd',   '€' + Math.round(d.opcost.ytd).toLocaleString('en'));
+    set('opcost_prior', '€' + Math.round(d.opcost.prior).toLocaleString('en'));
+    const opcostT = trendPct(d.opcost.mtd, d.opcost.prior);
+    setTrend('opcost_trend', (opcostT >= 0 ? '+' : '') + opcostT.toFixed(1) + '% MoM', 'down');
+    const opcostRatioPct = Math.round(d.opcost.mtd / (d.revenue.mtd || 1) * 100);
+    const ebitdaPct = 100 - opcostRatioPct;
+    set('opcost_ratio', opcostRatioPct + '% of revenue · EBITDA margin ' + ebitdaPct + '%');
 
     // Staff
     set('staff_mtd',   d.staff.mtd.toFixed(1) + '%');
@@ -826,8 +924,15 @@ const bBars  = BAL_DATA.map((v, i) => {
   /* KPI CARDS */
   .cp-fin-row {
     display: grid;
-    grid-template-columns: 1.6fr 1fr;
+    grid-template-columns: 1.4fr 1fr 1fr;
     gap: 16px;
+  }
+  .cp-opcost-chart {
+    margin-top: 16px;
+    background: #fff;
+    border: 1px solid var(--grey-light);
+    border-radius: 8px;
+    padding: clamp(16px, 2.5vh, 24px) clamp(18px, 2vw, 28px);
   }
   .cp-mem-row {
     display: grid;
@@ -1124,8 +1229,9 @@ const bBars  = BAL_DATA.map((v, i) => {
   }
   .cp-svg { width: 100%; height: auto; display: block; }
   .cp-svg--bal { max-height: 180px; }
-  .cp-svg-label { font-family: var(--fd); font-size: 12px; fill: var(--grey-mid); }
-  .cp-svg-val   { font-family: var(--fd); font-size: 11px; font-weight: 700; fill: var(--text); }
+  .cp-svg-label      { font-family: var(--fd); font-size: 12px; fill: var(--grey-mid); }
+  .cp-svg-val        { font-family: var(--fd); font-size: 11px; font-weight: 700; fill: var(--text); }
+  .cp-svg-val--light { font-family: var(--fd); font-size: 11px; font-weight: 600; fill: var(--grey-mid); }
 
   .cp-chart-legend {
     display: flex;
@@ -1156,6 +1262,8 @@ const bBars  = BAL_DATA.map((v, i) => {
   .cp-leg--dashed::before {
     background: repeating-linear-gradient(to right, rgba(139,26,26,0.5) 0, rgba(139,26,26,0.5) 4px, transparent 4px, transparent 8px);
   }
+  .cp-leg--bar::before   { height: 10px; border-radius: 2px; background: rgba(139,26,26,0.72); }
+  .cp-leg--bar-light::before { background: rgba(139,26,26,0.18); }
   .cp-corr-badge {
     font-family: var(--fd);
     font-size: clamp(10px, 0.72vw, 12px);
@@ -1199,6 +1307,9 @@ const bBars  = BAL_DATA.map((v, i) => {
   .cp-narrative strong { color: var(--text); }
 
   /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .cp-fin-row  { grid-template-columns: 1fr 1fr; }
+  }
   @media (max-width: 768px) {
     .cp-fin-row  { grid-template-columns: 1fr; }
     .cp-mem-row  { grid-template-columns: 1fr; }
