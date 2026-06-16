@@ -635,23 +635,6 @@ const uTotalMTD = DAY_TOT.reduce((a, b) => a + b, 0);
             <div class="cp-trend trend-good">+7.2% MoM</div>
           </div>
         </div>
-        <div class="cp-kpi-card">
-          <div class="cp-kpi-eyebrow">Busiest Day</div>
-          <div class="cp-kpi-value">{DAYS[uPeakDay]}</div>
-          <div class="cp-kpi-subrow">
-            <div class="cp-stat"><span class="cp-stat-k">Interactions</span><span class="cp-stat-v">{DAY_TOT[uPeakDay]}</span></div>
-            <div class="cp-stat"><span class="cp-stat-k">Quietest</span><span class="cp-stat-v">{DAYS[DAY_TOT.indexOf(Math.min(...DAY_TOT))]}</span></div>
-          </div>
-        </div>
-        <div class="cp-kpi-card">
-          <div class="cp-kpi-eyebrow">Peak Hour</div>
-          <div class="cp-kpi-value">{HOURS[uPeakHour]}:00</div>
-          <div class="cp-kpi-subrow">
-            <div class="cp-stat"><span class="cp-stat-k">Interactions</span><span class="cp-stat-v">{HOUR_TOT[uPeakHour]}</span></div>
-            <div class="cp-stat"><span class="cp-stat-k">Off-peak</span><span class="cp-stat-v">{HOURS[HOUR_TOT.indexOf(Math.min(...HOUR_TOT))]}:00</span></div>
-          </div>
-          <div class="cp-kpi-note">Source: access logs &amp; booking system</div>
-        </div>
       </div>
 
       <!-- Weekly bar chart -->
