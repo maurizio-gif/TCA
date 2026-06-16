@@ -17,6 +17,13 @@ import PhotoBand from '../components/PhotoBand.astro';
 
     <PhotoBand img="club-players.jpeg" eyebrow="Step by Step" blur={3} line="One workstream at a time — fully independent by July 31st." />
 
+    <div class="preview-links" id="preview-links">
+      <div class="preview-links__label">Site &amp; Forms — Preview Links</div>
+      <p class="preview-links__note">Preview links will appear here as soon as they are available. You will be able to view and test the new site and forms directly from this page before the DNS cutover.</p>
+      <!-- Add preview links here as they become available -->
+      <!-- <a class="preview-link" href="…" target="_blank" rel="noopener">Preview: Homepage</a> -->
+    </div>
+
     <CarveOutTable />
 
     <p class="co-footer">Confidential · Tennis Club Ambrosiano · 2026</p>
@@ -65,6 +72,31 @@ import PhotoBand from '../components/PhotoBand.astro';
     border-radius: 3px;
     margin-top: 0.5vh;
     width: fit-content;
+  }
+
+  .preview-links {
+    margin: 3vh 0 2.5vh;
+    padding: 18px 24px;
+    border: 1px solid rgba(139,26,26,0.2);
+    border-left: 4px solid var(--red);
+    border-radius: 4px;
+    background: rgba(139,26,26,0.03);
+  }
+  .preview-links__label {
+    font-family: var(--fd);
+    font-size: clamp(9px, 0.65vw, 11px);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 8px;
+  }
+  .preview-links__note {
+    font-size: clamp(12px, 0.85vw, 13px);
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.7;
+    margin: 0;
   }
 
   .co-footer {

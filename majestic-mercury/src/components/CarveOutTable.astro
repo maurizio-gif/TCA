@@ -55,27 +55,32 @@ const rows: Row[] = [
   {
     scope:       'Website',
     owner:       'Maurizio Taruggi',
-    people:      'Laura Giardini, Thomas Sander & Alice Bartoli',
+    people:      'Laura Giardini & Alice Bartoli',
     peopleNote:  'Alice Bartoli: usage details + co-defines features & architecture',
     status:      'wip',
-    statusLabel: 'Call confirmed — Jun 16, 14:30',
-    nextStep:    'Call Laura Giardini — Jun 16, 14:30',
-    date:        'Jun 16, 14:30',
+    statusLabel: 'Decision made — New site',
+    nextStep:    'Transfer domain to Cloudflare',
+    date:        'TBD — DNS',
     detail: [
       {
-        heading: 'Call Confirmed',
-        text: 'Call with Laura Giardini scheduled for Tuesday 16 June 2026 at 14:30. Objective: align on current Prismic setup, pain points and strategic direction for the site rebuild.',
+        heading: 'Decision Confirmed — New Site',
+        text: 'The strategic decision has been made to build a completely new website from scratch. The existing Prismic setup will not be carried forward.',
       },
       {
-        heading: 'Current State',
-        text: 'The site runs on Prismic (CMS + marketing). Feedback from Laura Giardini and Alice on the platform has been negative. If the goal is to internalise digital functions, rebuilding the site from scratch should be seriously considered.',
+        heading: 'Site + Forms — One Workstream',
+        text: 'The new site and the form replacement (HubSpot & JotForm) are a single, unified workstream. They will be designed and built together. Once live, the site will host the custom forms that replace HubSpot and JotForm entirely.',
       },
       {
-        heading: 'Open Strategic Decision',
-        options: [
-          { label: 'Option A', text: 'Keep Prismic, replace forms only' },
-          { label: 'Option B', text: 'Rebuild the entire site on a new platform' },
-        ],
+        heading: 'Only External Dependency: DNS',
+        text: 'Both the site and the forms can be built and tested independently without any dependency on Aspria. The only blocker before going live is DNS control: the domain must be transferred to Cloudflare first. All remaining work can proceed in parallel.',
+      },
+      {
+        heading: 'Preview Links',
+        text: 'Live preview links for early review will be published at the top of this page as they become available, so the site and forms can be tested before the DNS cutover.',
+      },
+      {
+        heading: 'Visual Assets',
+        text: 'The site will use free stock photos and the photos currently available from Tennis Club Ambrosiano.',
       },
     ],
   },
@@ -84,11 +89,15 @@ const rows: Row[] = [
     owner:       'Maurizio Taruggi',
     people:      'Alice Bartoli',
     peopleNote:  'Usage details + co-defines features & architecture',
-    status:      'prep',
-    statusLabel: 'Independent',
-    nextStep:    'Analyze forms & automations',
-    date:        'Jun 22–26',
+    status:      'wip',
+    statusLabel: 'Merged into Website workstream',
+    nextStep:    'Transfer domain to Cloudflare',
+    date:        'TBD — DNS',
     detail: [
+      {
+        heading: 'Merged with Website Workstream',
+        text: 'Forms and site are now a single build. The replacement of HubSpot & JotForm is part of the new website project — they ship together.',
+      },
       {
         heading: 'Approach',
         text: 'All existing forms will be fully replaced with custom HTML/CSS forms connected via N8N to Perfect Gym. This is not a 1:1 replacement — it is a complete rebuild with a restructured form logic.',
@@ -114,9 +123,9 @@ const rows: Row[] = [
     people:      'Alice Bartoli & Thomas Sander',
     peopleNote:  'Alice Bartoli: usage details',
     status:      'wip',
-    statusLabel: 'Active — Email sent to Thomas Sander',
-    nextStep:    'Google Workspace Setup',
-    date:        'Jun 16',
+    statusLabel: 'Accounts list received — domain transfer pending',
+    nextStep:    'Transfer domain to Cloudflare',
+    date:        'TBD — DNS',
     detail: [
       {
         heading: 'Two Objectives',
@@ -127,28 +136,39 @@ const rows: Row[] = [
       },
       {
         heading: 'Migration Roadmap — Microsoft 365 (Aspria) → Google Workspace',
-        text: 'Migration of approximately 10 user accounts from the Microsoft 365 tenant managed by Aspria Holdings to a new, fully independent Google Workspace environment. Scope: email, calendars, contacts, OneDrive files, aliases and shared mailboxes/groups where applicable. The inventory of mailboxes, their contents and files is carried out internally with Alice, so that Aspria IT (Thomas Sander) is involved as little as possible.',
+        text: 'Migration of a large number of user accounts from the Microsoft 365 tenant managed by Aspria Holdings to a new, fully independent Google Workspace environment. Thomas Sander has provided the complete list of accounts to be cleaned up — the volume is significant. Scope: email, calendars, contacts, OneDrive files, aliases and shared mailboxes/groups where applicable.',
         phases: [
+          {
+            title: 'Domain Transfer to Cloudflare — Prerequisite',
+            fields: [
+              { label: 'Status',       text: 'Required before any other step can proceed' },
+              { label: 'Objective',    text: 'Take full control of DNS by transferring the domain registration to Cloudflare. Currently the domain is registered centrally alongside all other Aspria Holdings domains.' },
+              { label: 'Why it matters', text: 'Without DNS control it is not possible to activate Google Workspace (domain verification requires adding a DNS TXT record) or perform the MX/SPF/DKIM cutover. This also unblocks the new website.' },
+              { label: 'Activities',   text: 'Initiate domain transfer from the current registrar to Cloudflare; confirm transfer completion; verify DNS resolution is stable before proceeding to next phases.' },
+              { label: 'Output',       text: 'TCA domain fully under Cloudflare DNS management, independent from Aspria Holdings.' },
+              { label: 'Risks',        text: 'Transfer approval must come from whoever holds the current registrar account. Transfers can take up to 7 days depending on the registrar.' },
+            ],
+          },
           {
             title: 'Internal Inventory — with Alice (TCA)',
             fields: [
               { label: 'Completed',    text: 'Monday 15 June 2026 ✓' },
               { label: 'Objective',    text: 'Build the complete migration perimeter entirely in-house: mailboxes, what they contain, and files.' },
-              { label: 'Activities',   text: 'Working sessions with Alice to map the ~10 mailboxes, their contents and volumes, aliases, shared mailboxes/groups and OneDrive files; identify the domain(s) in use; define success criteria and target timeline.' },
-              { label: 'Aspria input', text: 'None — done internally at TCA with Alice.' },
+              { label: 'Activities',   text: 'Working sessions with Alice to map all mailboxes (list received from Thomas Sander), their contents and volumes, aliases, shared mailboxes/groups and OneDrive files; identify the domain(s) in use; define success criteria and target timeline.' },
+              { label: 'Aspria input', text: 'Account list provided by Thomas Sander ✓' },
               { label: 'Output',       text: 'Signed-off inventory and user/data matrix, validated by the people who use the mailboxes every day.' },
-              { label: 'Risks',        text: 'Hidden aliases or shared mailboxes — mitigated by reviewing real daily usage with Alice rather than relying on tenant exports.' },
+              { label: 'Risks',        text: 'Large number of accounts increases scope — prioritise active accounts and archive or decommission dormant ones before migration.' },
             ],
           },
           {
             title: 'Google Workspace Setup',
             fields: [
-              { label: 'Scheduled',    text: 'Tuesday 16 June 2026. Advance email to Thomas Sander sent ✓ — account list, admin account for email/OneDrive migration, and TCA domain credentials requested.' },
+              { label: 'Prerequisite', text: 'Domain transferred to Cloudflare (Phase 1)' },
               { label: 'Objective',    text: 'Stand up the new independent tenant, production-ready before any data moves.' },
-              { label: 'Activities',   text: 'Create the Google Workspace tenant, select edition and licensing, verify the domain, configure the security baseline (2FA, admin roles) and prepare the shared Drive structure.' },
-              { label: 'Aspria input', text: 'None — fully independent. At most one DNS TXT record for domain verification if Aspria controls the DNS zone.' },
+              { label: 'Activities',   text: 'Create the Google Workspace tenant, select edition and licensing, verify the domain via Cloudflare DNS TXT record, configure the security baseline (2FA, admin roles) and prepare the shared Drive structure.' },
+              { label: 'Aspria input', text: 'None — fully independent once DNS is under Cloudflare.' },
               { label: 'Output',       text: 'Verified, configured Google Workspace tenant ready to receive data.' },
-              { label: 'Risks',        text: 'Control of the DNS zone must be clarified early — it determines who executes verification and the final cutover.' },
+              { label: 'Risks',        text: 'Domain verification is instant once Cloudflare DNS is in control — no Aspria coordination needed at this stage.' },
             ],
           },
           {
@@ -196,7 +216,7 @@ const rows: Row[] = [
             fields: [
               { label: 'Objective',    text: 'Switch mail flow to Google Workspace and close the residual data gap.' },
               { label: 'Activities',   text: 'Update MX, SPF, DKIM and DMARC records; run the final delta pass for items received during the migration; activate aliases and groups; verify inbound and outbound mail flow.' },
-              { label: 'Aspria input', text: 'Execute or approve the DNS / mail-routing changes, only if the zone is under Aspria’s control.' },
+              { label: ‘Aspria input’, text: ‘None — DNS is under Cloudflare control at this point.’ },
               { label: 'Output',       text: 'All mail delivered to Google Workspace; data gap reduced to zero.' },
               { label: 'Risks',        text: 'DNS propagation delays — cutover is scheduled in a low-traffic window (evening or weekend).' },
             ],
@@ -214,12 +234,12 @@ const rows: Row[] = [
         ],
       },
       {
-        heading: "Minimising Thomas Sander’s Involvement",
-        text: "Everything that can be prepared in-house is done before contacting Aspria: the inventory of mailboxes, contents and files is built internally with Alice, and the mapping is validated internally too. Thomas Sander is involved through two active touchpoints plus async wrap-up:",
+        heading: "Thomas Sander — Touchpoints",
+        text: "Thomas Sander has already provided the full list of accounts to clean up. Everything else that can be prepared in-house is done before the next contact. Remaining touchpoints:",
         bullets: [
-          "Advance email (Jun 16) ✓ SENT — account list, admin account for email/OneDrive migration, and TCA domain credentials requested from Thomas Sander",
+          "Accounts list received ✓ — Thomas Sander provided the complete list of accounts to be cleaned up; volume is significant and will be triaged with Alice",
+          "Domain transfer — coordination required to release the domain from the current central registrar (held by Aspria Holdings)",
           "One short technical call (~30 minutes) — arriving with inventory and mapping already done: request temporary, scoped migration access and agree the cutover window; validate access with a connectivity test",
-          "DNS / mail-routing cutover support — only if the zone is under Aspria’s control",
           "Access revocation and M365 license decommission — handled asynchronously by email, no further calls",
         ],
       },
