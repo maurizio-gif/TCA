@@ -160,6 +160,42 @@ const bBars  = BAL_DATA.map((v, i) => {
   const bh = Math.abs(v / bRange) * bIH;
   return { x: bx, y: by, w: bBarW, h: Math.max(bh, 2), pos: v >= 0, v };
 });
+
+// ── FACILITY USAGE DATA (accesses + bookings aggregated) ──
+const DAYS     = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const DAY_TOT  = [560, 508, 593, 657, 740, 834, 690]; // accesses + bookings by day of week
+
+const HOURS    = ['8','9','10','11','12','13','14','15','16','17','18','19','20','21'];
+const HOUR_TOT = [20, 50, 83, 116, 146, 159, 174, 164, 139, 126, 106, 134, 156, 131]; // accesses + bookings by hour
+
+// Weekly SVG
+const UW = 760, UH = 180, uPL = 10, uPR = 10, uPT = 24, uPB = 36;
+const uInner = UW - uPL - uPR;
+const uIH    = UH - uPT - uPB;
+const uMax   = Math.max(...DAY_TOT) * 1.14;
+const uBarW  = uInner / DAYS.length * 0.55;
+const uDayBars = DAYS.map((_, i) => {
+  const x = uPL + (i / DAYS.length) * uInner + uInner / DAYS.length * 0.22;
+  const y = uPT + (1 - DAY_TOT[i] / uMax) * uIH;
+  const h = (DAY_TOT[i] / uMax) * uIH;
+  return { x, y, h, v: DAY_TOT[i] };
+});
+const uPeakDay = DAY_TOT.indexOf(Math.max(...DAY_TOT));
+
+// Hourly SVG
+const HW = 760, HH = 180, hPL = 10, hPR = 10, hPT = 24, hPB = 36;
+const hInner = HW - hPL - hPR;
+const hIH    = HH - hPT - hPB;
+const hMax   = Math.max(...HOUR_TOT) * 1.14;
+const hBarW  = hInner / HOURS.length * 0.55;
+const uHourBars = HOURS.map((_, i) => {
+  const x = hPL + (i / HOURS.length) * hInner + hInner / HOURS.length * 0.22;
+  const y = hPT + (1 - HOUR_TOT[i] / hMax) * hIH;
+  const h = (HOUR_TOT[i] / hMax) * hIH;
+  return { x, y, h, v: HOUR_TOT[i] };
+});
+const uPeakHour = HOUR_TOT.indexOf(Math.max(...HOUR_TOT));
+const uTotalMTD = DAY_TOT.reduce((a, b) => a + b, 0);
 ---
 
 <BaseLayout title="TCA · Performance Cockpit" description="Performance Cockpit — Tennis Club Ambrosiano." noindex={true} initialHeaderDark={false}>
@@ -466,22 +502,22 @@ const bBars  = BAL_DATA.map((v, i) => {
       <div class="cp-connector">
         <div class="cp-connector-line"></div>
         <div class="cp-connector-pill cp-connector-pill--cancel">
-          <span class="cp-connector-label">Cancellations MTD</span>
+          <span class="cp-connector-label">Leavers MTD</span>
           <span class="cp-connector-rate" data-m="cancel_val">−{D.cancelled.mtd}</span>
         </div>
         <div class="cp-connector-line"></div>
       </div>
 
-      <!-- STAGE 3: Cancelled + Net Balance -->
+      <!-- STAGE 3: Leavers + Net Balance -->
       <div class="cp-funnel-stage">
         <div class="cp-stage-header">
           <div class="cp-stage-num">03</div>
-          <div class="cp-stage-title">Cancellations &amp; Net Balance</div>
+          <div class="cp-stage-title">Leavers &amp; Net Balance</div>
         </div>
         <div class="cp-stage-body cp-stage-body--wide">
           <div class="cp-stage-pair">
             <div class="cp-mini-kpi">
-              <div class="cp-kpi-eyebrow">Cancelled MTD</div>
+              <div class="cp-kpi-eyebrow">Leavers MTD</div>
               <div class="cp-kpi-value cp-kpi-value--stage cp-kpi-value--bad" data-m="cancel_mtd">{D.cancelled.mtd}</div>
               <div class="cp-kpi-subrow">
                 <div class="cp-stat"><span class="cp-stat-k">YTD</span><span class="cp-stat-v" data-m="cancel_ytd">{D.cancelled.ytd}</span></div>
@@ -506,7 +542,7 @@ const bBars  = BAL_DATA.map((v, i) => {
 
           <!-- Net balance bar chart -->
           <div class="cp-chart-wrap">
-            <div class="cp-chart-title">Monthly Net Balance (New − Cancelled)</div>
+            <div class="cp-chart-title">Monthly Net Balance (New − Leavers)</div>
             <svg viewBox={`0 0 ${BW} ${BH}`} class="cp-svg cp-svg--bal" preserveAspectRatio="xMidYMid meet">
               <line x1={bPL} y1={bZeroY} x2={BW - bPR} y2={bZeroY} stroke="rgba(0,0,0,0.15)" stroke-width="1" stroke-dasharray="3,3" />
               {bBars.map((b) => (
@@ -582,6 +618,86 @@ const bBars  = BAL_DATA.map((v, i) => {
     <!-- NO-FUNNEL MESSAGE -->
     <div class="cp-no-funnel" id="no-funnel-msg" style="display:none">
       <p>No membership funnel data for this Business Unit.</p>
+    </div>
+
+    <!-- ── FACILITY USAGE ── -->
+    <div class="cp-section">
+      <div class="cp-section-label">Facility Usage · Accesses &amp; Bookings</div>
+
+      <!-- KPI row -->
+      <div class="cp-usage-kpi-row">
+        <div class="cp-kpi-card">
+          <div class="cp-kpi-eyebrow">Total Interactions MTD</div>
+          <div class="cp-kpi-value">{uTotalMTD.toLocaleString('en')}</div>
+          <div class="cp-kpi-subrow">
+            <div class="cp-stat"><span class="cp-stat-k">Daily Avg</span><span class="cp-stat-v">{Math.round(uTotalMTD / DAYS.length)}</span></div>
+            <div class="cp-stat"><span class="cp-stat-k">Peak Day</span><span class="cp-stat-v">{DAYS[uPeakDay]}</span></div>
+            <div class="cp-trend trend-good">+7.2% MoM</div>
+          </div>
+        </div>
+        <div class="cp-kpi-card">
+          <div class="cp-kpi-eyebrow">Busiest Day</div>
+          <div class="cp-kpi-value">{DAYS[uPeakDay]}</div>
+          <div class="cp-kpi-subrow">
+            <div class="cp-stat"><span class="cp-stat-k">Interactions</span><span class="cp-stat-v">{DAY_TOT[uPeakDay]}</span></div>
+            <div class="cp-stat"><span class="cp-stat-k">Quietest</span><span class="cp-stat-v">{DAYS[DAY_TOT.indexOf(Math.min(...DAY_TOT))]}</span></div>
+          </div>
+        </div>
+        <div class="cp-kpi-card">
+          <div class="cp-kpi-eyebrow">Peak Hour</div>
+          <div class="cp-kpi-value">{HOURS[uPeakHour]}:00</div>
+          <div class="cp-kpi-subrow">
+            <div class="cp-stat"><span class="cp-stat-k">Interactions</span><span class="cp-stat-v">{HOUR_TOT[uPeakHour]}</span></div>
+            <div class="cp-stat"><span class="cp-stat-k">Off-peak</span><span class="cp-stat-v">{HOURS[HOUR_TOT.indexOf(Math.min(...HOUR_TOT))]}:00</span></div>
+          </div>
+          <div class="cp-kpi-note">Source: access logs &amp; booking system</div>
+        </div>
+      </div>
+
+      <!-- Weekly bar chart -->
+      <div class="cp-opcost-chart" style="margin-top:16px">
+        <div class="cp-chart-title">Interactions by Day of Week · Accesses + Bookings Aggregated</div>
+        <svg viewBox={`0 0 ${UW} ${UH}`} class="cp-svg" preserveAspectRatio="xMidYMid meet">
+          {uDayBars.map((b, i) => (
+            <rect x={b.x} y={b.y} width={uBarW} height={b.h}
+              fill={i === uPeakDay ? 'rgba(139,26,26,0.90)' : 'rgba(139,26,26,0.55)'} rx="2" />
+          ))}
+          {DAYS.map((d, i) => (
+            <text
+              x={uPL + (i / DAYS.length) * uInner + uInner / DAYS.length * 0.5}
+              y={UH - 8}
+              text-anchor="middle"
+              class="cp-svg-label"
+            >{d}</text>
+          ))}
+          <text x={uDayBars[uPeakDay].x + uBarW / 2} y={uDayBars[uPeakDay].y - 5} text-anchor="middle" class="cp-svg-val">
+            {uDayBars[uPeakDay].v}
+          </text>
+        </svg>
+      </div>
+
+      <!-- Hourly bar chart -->
+      <div class="cp-opcost-chart" style="margin-top:16px">
+        <div class="cp-chart-title">Interactions by Hour · Accesses + Bookings Aggregated (Avg Day)</div>
+        <svg viewBox={`0 0 ${HW} ${HH}`} class="cp-svg" preserveAspectRatio="xMidYMid meet">
+          {uHourBars.map((b, i) => (
+            <rect x={b.x} y={b.y} width={hBarW} height={b.h}
+              fill={i === uPeakHour ? 'rgba(139,26,26,0.90)' : 'rgba(139,26,26,0.55)'} rx="2" />
+          ))}
+          {HOURS.map((h, i) => (
+            <text
+              x={hPL + (i / HOURS.length) * hInner + hInner / HOURS.length * 0.5}
+              y={HH - 8}
+              text-anchor="middle"
+              class="cp-svg-label"
+            >{h}:00</text>
+          ))}
+          <text x={uHourBars[uPeakHour].x + hBarW / 2} y={uHourBars[uPeakHour].y - 5} text-anchor="middle" class="cp-svg-val">
+            {uHourBars[uPeakHour].v}
+          </text>
+        </svg>
+      </div>
+
     </div>
 
   </div><!-- /cp-root -->
@@ -734,7 +850,7 @@ const bBars  = BAL_DATA.map((v, i) => {
     // Conversion
     set('conv_rate', d.conv.mtd.toFixed(1) + '%');
 
-    // Cancellations
+    // Leavers
     set('cancel_mtd',   d.cancelled.mtd);
     set('cancel_ytd',   d.cancelled.ytd);
     set('cancel_prior', d.cancelled.prior);
@@ -1264,6 +1380,20 @@ const bBars  = BAL_DATA.map((v, i) => {
     border-radius: 4px;
     padding: 3px 8px;
     text-transform: uppercase;
+  }
+
+  /* FACILITY USAGE KPI ROW */
+  .cp-usage-kpi-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 0;
+  }
+  @media (max-width: 900px) {
+    .cp-usage-kpi-row { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .cp-usage-kpi-row { grid-template-columns: 1fr; }
   }
 
   /* NO FUNNEL */
