@@ -55,7 +55,13 @@ import PhotoBand from '../components/PhotoBand.astro';
     line-height: 1.0;
     color: var(--text);
   }
-  .co-title em { color: var(--red); font-style: normal; }
+  .co-title em {
+    color: var(--red);
+    font-style: italic;
+    font-weight: 400;
+    text-transform: lowercase;
+    letter-spacing: 0.01em;
+  }
 
   .deadline-badge {
     display: inline-flex;
