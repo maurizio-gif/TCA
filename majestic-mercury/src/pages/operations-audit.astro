@@ -1,0 +1,791 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PhotoBand from '../components/PhotoBand.astro';
+
+// ── Systems currently in play across the club ──
+const systems = [
+  'Perfect Gym', 'Playtomic', 'Stripe', 'GoCardless', 'Excel / SharePoint',
+  'Outlook', 'Coda', 'Tilby', 'DKLink / Datev', 'JotForm', 'n8n', 'WhatsApp',
+];
+
+// ── Interviewees ──
+const people = [
+  ['Edoardo', 'Sport Manager', 'Fitness, personal training, sports events, tennis operations'],
+  ['Rossana', 'Reception Supervisor', 'Front desk, customer journey, sales support, schools'],
+  ['Valerio Caimi', 'Membership Administrator', 'Payments, contracts, billing, debt collection, accounting'],
+];
+
+// ── Cross-cutting themes ──
+const themes = [
+  ['01', 'No Single Source of Truth', 'Perfect Gym, Playtomic, dozens of Excel files on SharePoint, Outlook, Coda, Tilby and WhatsApp groups all hold a slice of the truth. Nothing reconciles across them, and "we lose pieces" was said in every interview.'],
+  ['02', 'Manual by Default', 'Payments keyed in by hand, debt-collection pauses set one by one, Excel updated manually, reminders sent over WhatsApp. Slow, repetitive, and a high probability of human error.'],
+  ['03', 'Nothing Is Measured', 'Trials given vs. converted, lessons sold vs. members won, requests received vs. handled: there is almost no usable data today to steer decisions.'],
+  ['04', 'Staff Are the Pivot, Not the Safety Net', 'Reception and sales carry the entire journey on their shoulders. They should support a self-serve flow, not be the bottleneck the whole club depends on.'],
+  ['05', 'Payments Not Anchored to Contracts', 'Only ~32% of payments recur; the rest are chased by hand. This single gap drives most of the back-office load and most of the fiscal risk.'],
+  ['06', 'Built Around Habits, Not the Tool', 'Enrollment flows ignore what Perfect Gym already allows, then get patched on top. Simplify the offer first, layer technology second, and build a model that is replicable, not a bespoke suit.'],
+];
+
+// ── Findings by operational area ──
+// finding = [current state, impact ('High'|'Med'|'Low'), recommended direction]
+const areas = [
+  {
+    num: '01',
+    title: 'Payments & Billing',
+    owner: 'Valerio',
+    lead: 'The foundation of everything else. Today the mix is wrong, failures are caught late, and there is no automatic consequence for a failed payment.',
+    findings: [
+      ['Stripe ("Stral") underperforms; direct debits are run once a month on the first working day, so results only land around the 10th-15th. No automatic block on a failed payment.', 'High', 'Fix Stripe now. Run debits at least daily, with staged retries that exclude known-failed cards. Block booking and turnstile access on failure.'],
+      ['Only 31.9% of payments are recurring (Stripe + GoCardless). Roughly 50% of POS revenue is bank transfer; cash is small but still present.', 'High', 'Invert the mix toward recurring. Require a saved payment method on every contract, minimise bank transfers and phase out cash.'],
+      ['Combined contracts (monthly membership + adult course, or child + summer camp) break the debit, which is generated as a single total.', 'Med', 'Per-contract debit logic, so each agreement is charged on its own schedule independently.'],
+      ['Dunning emails often land in spam; the "save a new payment method" link does not work; the email download is insufficient.', 'Med', 'DNS / DKIM authentication (SendGrid / AWS) for deliverability. Reason-based recovery emails (insufficient funds vs. revoked mandate), in-app alerts, and an auto-generated link to save a new method.'],
+      ['1-click refunds on Perfect Gym are possible but have been blocked by IT support for months; they require a saved payment method.', 'Med', 'Unblock the refund permission. Once methods are saved, refunds become a single click.'],
+    ],
+  },
+  {
+    num: '02',
+    title: 'Membership Lifecycle',
+    owner: 'Valerio',
+    lead: 'Flex memberships, suspensions, renewals and leavers all generate manual work because the contract structure fights the software instead of using it.',
+    findings: [
+      ['Flex is sold to the member as "3 + 1 + 1" but built internally as "3 + 3". The member sees a 3+3 expiry in the app and is confused; each renewal creates a new contract to track.', 'High', 'A 3-month minimum commitment, then a single non-expiring subscription the member cancels with one button. One contract sold, full stop.'],
+      ['Suspensions break Perfect Gym - they add a second contract, extend the duration and double the cost; fixed by hand with free months and note-blocks.', 'High', 'Rebuild and test the suspension models per membership. Let members self-serve suspension, and consider a suspension service fee to discourage casual use.'],
+      ['Annual renewal emails need manual template upkeep and date edits, and frequently land in spam.', 'Med', 'Automate via n8n, add an in-app renewal alert, and keep a clean downloadable record.'],
+      ['Leavers - cancellation reasons are captured by manual sales calls. The qualitative feedback is valuable but inconsistent.', 'Med', 'Self-service cancellation in the app with a mandatory reason and note. Keep one human touchpoint for save attempts; feed structured data into strategy.'],
+      ['Debt collection is the only lever to find a debtor today, precisely because payment methods are not saved. Main pains: unwanted auto-renewal, and members withholding payment over real club issues.', 'High', 'Saved methods + automated reason-based dunning + 1-click call / payment request remove most of the manual burden.'],
+    ],
+  },
+  {
+    num: '03',
+    title: 'Courses & Schools',
+    owner: 'Valerio / Rossana',
+    lead: 'SAT, Agonistica, Summer Camp and adult courses run almost entirely on Excel, with manual workarounds that actively send members the wrong emails.',
+    findings: [
+      ['Entirely Excel-driven across multiple SharePoint files. JotForm enrollments are keyed into Perfect Gym by hand, then into Excel.', 'High', 'Online enrollment straight into a Perfect Gym account (no JotForm), with the contract and automation created on purchase.'],
+      ['A debt-collection pause must be set manually for each enrollee, because PG dunning follows the contract-entry date, not the agreed due date - so wrong payment reminders go out and members complain. Entering 114 names took ~3 hours.', 'High', 'A custom due-date scheme in PG (deposit now, installments later, auto-debited) removes the manual pause entirely.'],
+      ['Turnstile access for competitive players (agonisti) does not work, because the fee is split with a second installment in January.', 'Med', 'Model the installment correctly so access is granted without breaking the payment schedule.'],
+      ['Group assignment and level are set during a tryout and tracked in Excel.', 'Low', 'Tennis ops enroll players directly into the chosen group / slot; the coach sets the level at tryout, in the system.'],
+    ],
+  },
+  {
+    num: '04',
+    title: 'Tennis Lessons & Courts',
+    owner: 'Rossana / Edoardo',
+    lead: 'The single biggest prize. ~€217k/year in tennis lessons and ~70% of all enquiries, yet the whole flow runs on manual notes, a WhatsApp group and a second booking system that does not talk to Perfect Gym.',
+    findings: [
+      ['First 3 lessons are free for externals, tracked via manual notes in PG. Lead becomes guest, is assigned to a coach via a WhatsApp group, and the coach self-picks - many handovers fail.', 'High', 'Make the trial a purchasable product (a short membership containing one lesson, capped e.g. at 3 in 30 days) so the sales opportunity has a deadline; or issue a voucher / code.'],
+      ['A shared WhatsApp group assigns lessons, with one person guessing which coach is freest.', 'Med', 'A shared interface where coaches keep their own availability and self-assign, with full traceability - replacing the WhatsApp group.'],
+      ['Courts live on Playtomic (3-day window for externals), lessons on the coach: two systems, two payments. Playtomic does not talk to Perfect Gym; member tiers, packages and prices are maintained by hand.', 'High', 'Evaluate consolidating courts + lessons onto Perfect Gym: book court, then book lesson; price by membership tier; packages auto-decrement at booking; "my products" shows the residual. Externals book courts via an embedded PG calendar.'],
+      ['Lessons are paid at the desk before play; a member who passes the turnstile without paying is charged via cashless debit.', 'Med', 'Connect Stripe for online lesson payment, with auto-receipts and automatic payout / collection reports for coaches.'],
+    ],
+    note: 'Scaling is limited by court / slot availability and by the coach being central to every lesson. This redesign needs a single named owner and a cleaned-up price list before build.',
+  },
+  {
+    num: '05',
+    title: 'Fitness & Personal Training',
+    owner: 'Edoardo',
+    lead: 'Personal trainers are external partners who keep the weights room viable. The opportunity is visibility and a clean free-induction flow - without over-engineering an external relationship.',
+    findings: [
+      ['PTs are external partners (4 today, ~6 wanted). They keep their own agenda, take cash directly, and pay the club a monthly fee (€300-400) with or without free course hours.', 'Med', 'Keep PTs external and the model simple - do not over-engineer it. The bigger operational prize is tennis lessons.'],
+      ['PT visibility is poor: corridor photos, the in-club TV, and a static website section with no working call-to-action.', 'Med', 'A public PT page on the website: one contact form per trainer, tracked requests, and an easy way to add a new trainer (photo + description). Sales can share the link directly.'],
+      ['The free "gym induction" (45-60 min trial) is mediated: reception/sales to Edoardo to turn-based assignment to the PT. Many handovers, no feedback loop, no guarantee the free session is used only once.', 'High', 'A "Gym Induction" product in Perfect Gym with a residual-availability calendar (member books only when the PT has no PT session); first one free, capped to one via membership. Alternative: a voucher / code the PT "burns" via a simple interface, with live stats on codes generated vs. used.'],
+      ['PT underpins the weights room - members cannot really train unassisted on the current equipment.', 'Low', 'Treat PT as a strategic differentiator and give it real space on the new site.'],
+    ],
+  },
+  {
+    num: '06',
+    title: 'Reception, Customer Journey & Sales',
+    owner: 'Rossana',
+    lead: 'Online sign-up barely works and the journey is fully dependent on whoever is at the desk. The fix is to digitise the filter and let sales act fast only when it matters.',
+    findings: [
+      ['Online sign-up is nearly non-functional; mostly old members re-subscribe. The price brochure is the only material and is not immediately readable.', 'High', 'Clean up and redesign the offer, put the essentials on the website, and test the layout on non-experts before launch.'],
+      ['Reception (10-11 people on 4-5h shifts) is meant to filter then pass to sales, but effectively passes everyone - so sales becomes the pivot and the bottleneck.', 'High', 'Reception runs a digital "setting" (the filter); sales acts fast only when the opportunity is real; routine comms go automatic.'],
+      ['Promo codes exist but are not visible online; sales must hand them over. A banner hooks the member, but with no code to complete the purchase the funnel breaks and creates extra work afterwards.', 'Med', 'Make promotions self-serve via a landing page with the code applied, plus trackable links sales can send.'],
+      ['Work is compartmentalised (marketing / sales / operations) while the customer journey is transversal.', 'Med', 'Design around the journey: lead capture via QR into the CRM, automated follow-up, and a back-office pass that picks up non-converters.'],
+    ],
+  },
+  {
+    num: '07',
+    title: 'Revenue Registration, Accounting & Reporting',
+    owner: 'Valerio / Alice',
+    lead: 'Revenue is re-keyed from Perfect Gym into a separate tool one movement at a time. It is the longest, most error-prone task in the back office - and a fiscal risk.',
+    findings: [
+      ['Revenue is registered from Perfect Gym into Coda manually, one movement at a time - very long and error-prone. Spani consumes a full week.', 'High', 'Drop Coda / Spani for this. An automated revenue feed from what is sold, plus a BI dashboard for management control.'],
+      ['~50% of POS is bank transfer and payments are keyed in by hand, so reconciliation and cash-up are heavy and done after the fact.', 'Med', 'Verify the payment method at contract time (not whether the member paid). Push a daily revenue report to a cloud database connected to reporting.'],
+      ['Disordered payment handling is a fiscalization risk: receipts are issued immediately, and manual add / remove / change causes problems downstream.', 'High', 'Cleaning up payments (Area 01) directly de-risks fiscalization.'],
+      ['Invoicing is brand new (started 15/06/26, DKLink / Datev); volumes are low (welfare ~7-8/year, PTs monthly, some parents tax receipts already semi-automated in PG).', 'Low', 'Keep invoicing lean. The parent tax receipt is already a 1-click detail in PG.'],
+    ],
+  },
+];
+
+// ── App & member self-service suggestions ──
+const appIdeas = [
+  ['Book PT & tennis lessons', 'Let members request and book personal training and tennis lessons directly in the app.'],
+  ['Training card', 'A workout plan in the app - paid here (free in models such as Club 2D).'],
+  ['Self-service auto-renewal off', 'Deactivate tacit renewal in-app, with a mandatory reason and note - this alone would clear a large chunk of admin work.'],
+  ['Medical certificate gate', 'Turnstile block on an expired medical certificate (now active): an add-on membership auto-populates the dates, the member sees the expiry in their area, and an email goes out before it lapses.'],
+  ['FIT card gate', 'Same mechanism for the FIT federation card: auto-affiliation to the promotion body via FIT + PIN, storing the card code.'],
+  ['Lesson rating', 'A 1-5 star rating on the lesson just taken - being enabled.'],
+];
+
+// ── Administration: task & tooling inventory (from Valerio's mansionario) ──
+const tasks = [
+  ['Run DD / CC', 'Issue direct debits via PG; from mid-month, check failures and start credit recovery.', 'PG, Excel', 'Prepaid cards fail often; results only certain by the 10th-15th; crashes on double contracts (e.g. membership + adult course, or child + summer camp).'],
+  ['Renewed memberships', 'Check the month renewals and start credit recovery.', 'PG, Excel', ''],
+  ['Debtors', 'Check debtors and recover credit.', 'PG, Excel', ''],
+  ['Member management', 'Suspensions, interruptions, transfers and similar.', 'PG, Outlook', 'Inserting a suspension almost always errors the contract; worked around with free months + a note-block.'],
+  ['Renewal emails', 'Update / prepare / check renewal emails; manage and physically deactivate in PG.', 'PG, Outlook', 'Often land in spam; an in-app alert would help; the email download is insufficient.'],
+  ['Leavers', 'Manage leavers and capture the reason for disabling auto-renewal; weekly reports for management and for sales.', 'PG, Outlook, Excel', 'Self-service deactivation in the app (mandatory reason + note) would greatly cut this work.'],
+  ['Bank transfers', 'Receive from Laura and register; update payer status across many Excel files (debtors, failed DD/CC, SAT, Summer Camp, Adult Course, Agonistica).', 'Excel, PG', ''],
+  ['Cash register & day-book', 'Daily reception cash check; record into the day-book; manage the petty-cash safe; weekly bank deposits.', 'PG, various, Excel, Outlook', ''],
+  ['Pending sales', 'Check contracts and the points needed to complete sales; weekly report to colleagues.', 'PG, Excel, Outlook', ''],
+  ['Reception & sales support', 'Fix PG issues, correct contracts, cancel / correct takings, repair colleagues Excel edits, resolve cash discrepancies.', 'PG, Excel, various', ''],
+  ['Courses macro-area', 'SAT, Agonistica, Summer Camp, winter and summer adult courses: create / maintain Excel, check takings, set per-enrollee debt-collection pause.', 'PG, Excel', 'Manual entry; online enrollment would be ideal (today JotForm, then manual contract + Excel); turnstile access for agonisti broken; PG sends wrong reminders because they follow the entry date.'],
+  ['Refunds', 'Manage refunds, with Excel to track them.', 'PG, Excel', 'Could be handled in PG - waiting on IT support to enable it.'],
+  ['Welfare', 'Requests, portal entry, invoicing.', 'PG, Excel, various', ''],
+  ['Stationery purchases', 'Manage orders and entry.', 'Coda, Excel, Outlook', ''],
+  ['Revenue registration', 'Register revenue from PG into Coda, one by one; soon also the Tilby fiscal cash.', 'Excel, Coda, Tilby', 'Very long and time-consuming; high probability of human error given the volume and repetition.'],
+  ['Invoicing', 'Create and manage invoices (started 15/06/26).', 'DKLink, Datev, Excel, Outlook', 'Brand new, not yet running smoothly.'],
+  ['Private appointments calendar', 'Manage the private appointment calendar.', 'Outlook', ''],
+];
+
+const impactClass = { High: 'high', Med: 'med', Low: 'low' };
+---
+
+<BaseLayout
+  title="TCA · Operations Audit"
+  description="Operations audit of Tennis Club Ambrosiano based on staff interviews: findings, friction and opportunities across payments, memberships, courses, tennis, fitness, reception and reporting."
+  initialHeaderDark={true}
+  noindex={true}
+>
+
+  <main class="au-page">
+
+    <!-- ── HEADER ── -->
+    <div class="au-header">
+      <span class="eyebrow eyebrow--grey">Discovery · Staff Interviews</span>
+      <h1 class="au-title">
+        Operations Audit &mdash; <em>findings &amp; opportunities</em>
+      </h1>
+      <p class="au-intro">
+        A first read of how the club actually runs day to day, built from recorded interviews with the
+        operational team. The goal, in the owner's framing, is to surface <strong>opportunities, not problems</strong>:
+        to give each friction point a dimension and pair it with a concrete direction. This is a
+        <strong>living document</strong> &mdash; more interviews will be added as they happen.
+      </p>
+      <span class="au-status">&#9679;&nbsp; Living document &middot; updated as interviews are added</span>
+
+      <div class="au-systems">
+        <span class="au-systems__label">Systems in play today</span>
+        <div class="au-chips">
+          {systems.map((s) => <span class="au-chip">{s}</span>)}
+        </div>
+      </div>
+    </div>
+
+    <PhotoBand img="club-aerial.jpeg" eyebrow="The Real Engine Room" line="Mapping how the club really runs — before rebuilding it." />
+
+    <!-- ── INTERVIEWS ── -->
+    <h2 class="au-section-title">01 · Interviews <em>So Far</em></h2>
+    <div class="people-grid">
+      {people.map(([name, role, scope]) => (
+        <div class="person-card">
+          <div class="person-name">{name}</div>
+          <div class="person-role">{role}</div>
+          <p class="person-scope">{scope}</p>
+        </div>
+      ))}
+    </div>
+    <p class="au-prose au-prose--muted">More statements to be added in the coming days.</p>
+
+    <!-- ── CROSS-CUTTING THEMES ── -->
+    <h2 class="au-section-title">02 · Cross-Cutting <em>Themes</em></h2>
+    <p class="au-prose">
+      The same patterns surfaced in every conversation, independent of role. These are the systemic
+      causes behind the individual findings below &mdash; fix these, and most of the area-level pain eases on its own.
+    </p>
+    <div class="theme-grid">
+      {themes.map(([num, title, text]) => (
+        <div class="theme-card">
+          <div class="theme-num">{num}</div>
+          <div class="theme-title">{title}</div>
+          <p class="theme-text">{text}</p>
+        </div>
+      ))}
+    </div>
+
+    <PhotoBand img="club-players.jpeg" blur={3} eyebrow="One Journey" line="The member's path is transversal — the systems behind it must be too." />
+
+    <!-- ── FINDINGS BY AREA ── -->
+    <h2 class="au-section-title">03 · Findings by <em>Area</em></h2>
+    <p class="au-prose">
+      Each area below lists the current state, an estimated <strong>impact</strong> on time, money and
+      member experience, and the recommended direction. Impact is a first-pass judgement to help
+      sequencing, not a precise measurement &mdash; the numbers come next.
+    </p>
+
+    {areas.map((area) => (
+      <section class="area-block">
+        <div class="area-head">
+          <span class="area-num">{area.num}</span>
+          <div>
+            <h3 class="area-title">{area.title}</h3>
+            <span class="area-owner">Source: {area.owner}</span>
+          </div>
+        </div>
+        <p class="area-lead">{area.lead}</p>
+        <div class="table-wrap">
+          <table class="au-table">
+            <thead>
+              <tr>
+                <th style="width:42%">Current State</th>
+                <th style="width:8%">Impact</th>
+                <th style="width:50%">Recommended Direction</th>
+              </tr>
+            </thead>
+            <tbody>
+              {area.findings.map(([current, impact, solution]) => (
+                <tr>
+                  <td class="cell-current">{current}</td>
+                  <td><span class={`imp imp--${impactClass[impact]}`}>{impact}</span></td>
+                  <td class="cell-solution">{solution}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {area.note && <p class="area-note"><strong>Note &mdash;</strong> {area.note}</p>}
+      </section>
+    ))}
+
+    <!-- ── ADMIN TASK & TOOLING INVENTORY ── -->
+    <h2 class="au-section-title">04 · Administration &mdash; <em>Task &amp; Tooling Inventory</em></h2>
+    <p class="au-prose">
+      The membership administrator's own breakdown of the recurring back-office workload and the tools
+      each task touches. It is the clearest single picture of how much runs on Perfect Gym plus Excel,
+      and where the manual effort concentrates.
+    </p>
+    <div class="table-wrap">
+      <table class="au-table">
+        <thead>
+          <tr>
+            <th style="width:20%">Task</th>
+            <th style="width:34%">What It Involves</th>
+            <th style="width:16%">Tools</th>
+            <th style="width:30%">Pain Point</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tasks.map(([task, what, tools, pain]) => (
+            <tr>
+              <td class="cell-task">{task}</td>
+              <td class="cell-what">{what}</td>
+              <td class="cell-tools">{tools}</td>
+              <td class="cell-pain">{pain || '—'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── APP & SELF-SERVICE ── -->
+    <h2 class="au-section-title">05 · App &amp; Member <em>Self-Service</em></h2>
+    <p class="au-prose">
+      Forward-looking ideas raised for the member app. Most of these move work off the back office and
+      onto a self-serve flow the member actually prefers.
+    </p>
+    <div class="idea-grid">
+      {appIdeas.map(([title, text]) => (
+        <div class="idea-card">
+          <div class="idea-title">{title}</div>
+          <p class="idea-text">{text}</p>
+        </div>
+      ))}
+    </div>
+
+    <!-- ── PRIORITIES ── -->
+    <h2 class="au-section-title">06 · Priorities &amp; <em>Sequencing</em></h2>
+    <div class="prio-grid">
+      <div class="prio-col prio-col--now">
+        <div class="prio-head">Quick Wins &middot; Now</div>
+        <ul class="prio-list">
+          <li>Fix Stripe; run debits daily with staged retries; block booking / access on failure.</li>
+          <li>Email deliverability: DNS / DKIM authentication so dunning and renewals stop hitting spam.</li>
+          <li>Unblock 1-click refunds in Perfect Gym.</li>
+          <li>Enable the lesson rating in the app.</li>
+          <li>Ship the PT page with a contact form per trainer on the new site.</li>
+        </ul>
+      </div>
+      <div class="prio-col prio-col--later">
+        <div class="prio-head">Structural &middot; Post-September</div>
+        <ul class="prio-list">
+          <li>Saved payment method on every contract; redo contracts and enrollment per sector.</li>
+          <li>Flex redesign: 3-month commitment, then non-expiring with a self-cancel button.</li>
+          <li>Rebuild and test suspension models.</li>
+          <li>Courses off Excel: online enrollment + custom due-date schemes.</li>
+          <li>Tennis lessons + courts consolidated onto Perfect Gym (the €217k prize).</li>
+          <li>Revenue automation + BI dashboard; retire Coda / Spani.</li>
+          <li>Gym-induction product or voucher flow for personal training.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="principle">
+      <strong>Guiding principle &mdash;</strong> simplify the price list and processes <em>before</em> layering
+      technology on top; build a scalable, replicable model rather than a bespoke suit; and assign one
+      named owner to the tennis-lessons redesign, where the money and the complexity both concentrate.
+    </div>
+
+    <!-- ── NEXT STEPS ── -->
+    <h2 class="au-section-title">07 · Immediate Data Requests &amp; <em>Next Steps</em></h2>
+    <ol class="steps-list">
+      <li><span><strong>Collect every Excel file in use</strong>, plus a legend (file name, purpose, and who has SharePoint access). Needed both for the handover - SharePoint is going away - and for the simplification work.</span></li>
+      <li><span><strong>Migrate Excel into Google Sheets</strong> with a shared, agreed logic during the handover, before consolidating into the system.</span></li>
+      <li><span><strong>Rationalise email</strong> into a single account with aliases, to replace the scattered Outlook / SharePoint mailboxes.</span></li>
+      <li><span><strong>Quantify the friction:</strong> pull the numbers behind each finding (failure rates, time per task, trial-to-member conversion) so the audit moves from judgement to measurement.</span></li>
+      <li><span><strong>Continue the interviews</strong> and fold new statements into this page as they arrive.</span></li>
+    </ol>
+
+    <p class="au-footer">Confidential · Tennis Club Ambrosiano · Audit date: 22 June 2026 · Living document</p>
+
+  </main>
+
+</BaseLayout>
+
+<style>
+  :global(body) { background: #fff; }
+
+  .au-page {
+    padding: calc(var(--header-h) + 3.5vh) clamp(20px, 5vw, 72px) 6vh;
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+
+  .au-header { display: flex; flex-direction: column; gap: 0.8vh; }
+
+  .au-title {
+    font-family: var(--fd);
+    font-size: clamp(2rem, 4vw, 4rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.0;
+    color: var(--text);
+  }
+  .au-title em {
+    color: var(--red);
+    font-style: italic;
+    font-weight: 400;
+    text-transform: lowercase;
+    letter-spacing: 0.01em;
+  }
+
+  .au-intro {
+    font-size: clamp(14px, 1.05vw, 18px);
+    font-weight: 300;
+    color: #444;
+    line-height: 1.7;
+    max-width: 78ch;
+    margin: 0.5vh 0;
+  }
+  .au-intro strong { font-weight: 600; color: var(--text); }
+
+  .au-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--text);
+    color: #fff;
+    font-family: var(--fd);
+    font-size: clamp(10px, 0.75vw, 12px);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 7px 16px;
+    border-radius: 3px;
+    margin-top: 0.5vh;
+    width: fit-content;
+  }
+
+  /* ── SYSTEMS CHIPS ── */
+  .au-systems { margin-top: 2.5vh; }
+  .au-systems__label {
+    font-family: var(--fd);
+    font-size: clamp(9px, 0.65vw, 11px);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    display: block;
+    margin-bottom: 10px;
+  }
+  .au-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .au-chip {
+    font-family: var(--fd);
+    font-size: clamp(11px, 0.82vw, 14px);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--text-light);
+    background: var(--off-white);
+    border: 1px solid var(--grey-light);
+    border-radius: 100px;
+    padding: 5px 14px;
+  }
+
+  /* ── SECTION TITLES ── */
+  .au-section-title {
+    font-family: var(--fd);
+    font-size: clamp(1.4rem, 2.2vw, 2.4rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin: 5.5vh 0 1.2vh;
+    color: var(--text);
+  }
+  .au-section-title em { color: var(--red); font-style: normal; }
+
+  .au-prose {
+    font-size: clamp(13px, 0.98vw, 17px);
+    font-weight: 300;
+    color: #444;
+    line-height: 1.7;
+    max-width: 88ch;
+    margin-bottom: 1.5vh;
+  }
+  .au-prose strong { font-weight: 600; color: var(--text); }
+  .au-prose--muted { color: var(--grey-mid); font-style: italic; font-size: clamp(12px, 0.85vw, 14px); }
+
+  /* ── PEOPLE ── */
+  .people-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 1vh 0 1.5vh;
+  }
+  .person-card {
+    border: 1px solid var(--grey-light);
+    border-top: 3px solid var(--red);
+    background: #fff;
+    padding: 20px 18px;
+  }
+  .person-name {
+    font-family: var(--fd);
+    font-size: clamp(1.1rem, 1.6vw, 1.6rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .person-role {
+    font-family: var(--fd);
+    font-size: clamp(10px, 0.78vw, 13px);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--red);
+    display: block;
+    margin-bottom: 10px;
+  }
+  .person-scope {
+    font-size: clamp(12px, 0.9vw, 15px);
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.55;
+  }
+
+  /* ── THEME CARDS ── */
+  .theme-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--grey-light);
+    border: 1px solid var(--grey-light);
+    margin: 1.5vh 0;
+  }
+  .theme-card {
+    background: #fff;
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: background 0.2s;
+  }
+  .theme-card:hover { background: var(--off-white); }
+  .theme-num {
+    font-family: var(--fd);
+    font-size: clamp(1.6rem, 2.4vw, 2.4rem);
+    font-weight: 800;
+    color: var(--red);
+    line-height: 1;
+  }
+  .theme-title {
+    font-family: var(--fd);
+    font-size: clamp(1rem, 1.3vw, 1.3rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    line-height: 1.15;
+  }
+  .theme-text {
+    font-size: clamp(12px, 0.9vw, 15px);
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+
+  /* ── AREA BLOCKS ── */
+  .area-block { margin: 2.5vh 0 1vh; }
+  .area-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 0.6vh;
+  }
+  .area-num {
+    font-family: var(--fd);
+    font-size: clamp(1.4rem, 2.4vw, 2.4rem);
+    font-weight: 800;
+    color: var(--red);
+    line-height: 1;
+  }
+  .area-title {
+    font-family: var(--fd);
+    font-size: clamp(1.2rem, 1.8vw, 1.9rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    color: var(--text);
+  }
+  .area-owner {
+    font-family: var(--fd);
+    font-size: clamp(9px, 0.7vw, 12px);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+  }
+  .area-lead {
+    font-size: clamp(13px, 0.95vw, 16px);
+    font-weight: 300;
+    color: #444;
+    line-height: 1.65;
+    max-width: 95ch;
+    margin: 0.4vh 0 1vh;
+  }
+  .area-note {
+    font-size: clamp(12px, 0.88vw, 15px);
+    font-weight: 300;
+    color: #555;
+    line-height: 1.65;
+    max-width: 95ch;
+    margin-top: 1vh;
+    padding: 12px 16px;
+    background: #f8f8f8;
+    border-left: 3px solid var(--grey-light);
+  }
+  .area-note strong { font-weight: 600; color: var(--text); }
+
+  /* ── TABLES ── */
+  .table-wrap { overflow-x: auto; margin: 1vh 0 1vh; }
+  .au-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 720px;
+  }
+  .au-table thead tr { background: var(--red); }
+  .au-table th {
+    font-family: var(--fd);
+    font-size: clamp(11px, 0.82vw, 15px);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #fff;
+    padding: 12px 16px;
+    text-align: left;
+  }
+  .au-table tbody tr {
+    border-bottom: 1px solid var(--grey-light);
+    transition: background 0.15s;
+  }
+  .au-table tbody tr:hover { background: #f7f7f7; }
+  .au-table td {
+    font-size: clamp(12px, 0.9vw, 15px);
+    font-weight: 300;
+    color: #444;
+    padding: 13px 16px;
+    vertical-align: top;
+    line-height: 1.55;
+  }
+  .cell-current { color: var(--text); }
+  .cell-solution { color: var(--text-light); }
+  .cell-task {
+    font-family: var(--fd) !important;
+    font-size: clamp(13px, 1vw, 16px) !important;
+    font-weight: 700 !important;
+    color: var(--text) !important;
+  }
+  .cell-tools { font-size: clamp(11px, 0.82vw, 13px); color: var(--grey-mid); }
+  .cell-pain { color: #555; }
+  .cell-what { color: var(--text-light); }
+
+  /* ── IMPACT BADGES ── */
+  .imp {
+    display: inline-block;
+    font-family: var(--fd);
+    font-size: clamp(10px, 0.75vw, 13px);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .imp--high { background: rgba(139,26,26,0.08); color: var(--red); border: 1px solid rgba(139,26,26,0.28); }
+  .imp--med  { background: rgba(180,120,0,0.08); color: #8B6000; border: 1px solid rgba(180,120,0,0.25); }
+  .imp--low  { background: rgba(30,107,46,0.08); color: #1E6B2E; border: 1px solid rgba(30,107,46,0.28); }
+
+  /* ── APP IDEAS ── */
+  .idea-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 1vh 0;
+  }
+  .idea-card {
+    border: 1px solid var(--grey-light);
+    border-left: 3px solid var(--red);
+    background: #fff;
+    padding: 16px 18px;
+  }
+  .idea-title {
+    font-family: var(--fd);
+    font-size: clamp(0.95rem, 1.2vw, 1.2rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+  .idea-text {
+    font-size: clamp(12px, 0.88vw, 14px);
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.55;
+  }
+
+  /* ── PRIORITIES ── */
+  .prio-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 1vh 0 1.5vh;
+  }
+  .prio-col {
+    border: 1px solid var(--grey-light);
+    background: #fff;
+    padding: 0 0 14px;
+    overflow: hidden;
+  }
+  .prio-head {
+    font-family: var(--fd);
+    font-size: clamp(11px, 0.85vw, 14px);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    padding: 11px 18px;
+    margin-bottom: 10px;
+  }
+  .prio-col--now .prio-head { background: var(--red); }
+  .prio-col--later .prio-head { background: var(--text); }
+  .prio-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    padding: 0 18px;
+  }
+  .prio-list li {
+    position: relative;
+    padding-left: 18px;
+    font-size: clamp(12px, 0.92vw, 15px);
+    font-weight: 300;
+    color: #444;
+    line-height: 1.55;
+  }
+  .prio-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--red);
+  }
+  .prio-col--later .prio-list li::before { background: var(--text); }
+
+  .principle {
+    font-size: clamp(13px, 0.95vw, 16px);
+    font-weight: 300;
+    color: #444;
+    line-height: 1.7;
+    max-width: 95ch;
+    padding: 16px 20px;
+    background: rgba(139,26,26,0.03);
+    border: 1px solid rgba(139,26,26,0.2);
+    border-left: 4px solid var(--red);
+    border-radius: 4px;
+  }
+  .principle strong { font-weight: 600; color: var(--text); }
+  .principle em { font-style: italic; color: var(--red); }
+
+  /* ── STEPS ── */
+  .steps-list {
+    counter-reset: step;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 1.5vh 0;
+    max-width: 92ch;
+  }
+  .steps-list li {
+    counter-increment: step;
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+    font-size: clamp(13px, 0.98vw, 16px);
+    font-weight: 300;
+    color: #444;
+    line-height: 1.65;
+  }
+  .steps-list li::before {
+    content: counter(step, decimal-leading-zero);
+    font-family: var(--fd);
+    font-size: clamp(1.3rem, 1.9vw, 1.9rem);
+    font-weight: 800;
+    color: var(--red);
+    min-width: 2ch;
+  }
+  .steps-list li strong { font-weight: 600; color: var(--text); }
+
+  /* ── FOOTER ── */
+  .au-footer {
+    margin-top: 5vh;
+    border-top: 1px solid var(--grey-light);
+    padding-top: 2vh;
+    font-size: clamp(9px, 0.65vw, 11px);
+    color: var(--grey-mid);
+    font-family: var(--fd);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    .au-page { padding: calc(var(--header-h) + 20px) 16px 40px; }
+    .people-grid { grid-template-columns: 1fr; }
+    .theme-grid { grid-template-columns: 1fr; }
+    .idea-grid { grid-template-columns: 1fr; }
+    .prio-grid { grid-template-columns: 1fr; }
+    .au-footer { font-size: 12px; }
+  }
+</style>
