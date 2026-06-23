@@ -5,12 +5,16 @@ import PhotoBand from '../components/PhotoBand.astro';
 // ── Systems currently in play across the club ──
 const systems = [
   'Perfect Gym', 'Playtomic', 'Stripe', 'GoCardless', 'Excel / SharePoint',
-  'Outlook', 'Coda', 'Tilby', 'DKLink / Datev', 'JotForm', 'n8n', 'WhatsApp',
+  'Google Drive', 'Outlook', 'Coda', 'Tilby', 'DKLink / Datev', 'JotForm',
+  'n8n', 'WhatsApp', 'Paper notebooks',
 ];
 
 // ── Interviewees ──
 const people = [
-  ['Edoardo', 'Sport Manager', 'Fitness, personal training, sports events, tennis operations'],
+  ['Edoardo', 'Sport Manager', 'Fitness, personal training, sports events, tennis operations & coach supervision'],
+  ['Matteo', 'Head of Competitive Tennis', 'Agonistica: 79 athletes — acquisition, contracts, season planning and pricing'],
+  ['Paolo Agnelli', 'Head of Tennis School · SAT', 'On-court organisation of 460+ children: groups, levels, tryouts and progression'],
+  ['Francesca', 'Senior Sales Advisor', 'Memberships, lead handling and conversion — the club\'s historical memory since 2010'],
   ['Rossana', 'Reception Supervisor', 'Front desk, customer journey, sales support, schools'],
   ['Valerio Caimi', 'Membership Administrator', 'Payments, contracts, billing, debt collection, accounting'],
 ];
@@ -44,36 +48,44 @@ const areas = [
   {
     num: '02',
     title: 'Membership Lifecycle',
-    owner: 'Valerio',
-    lead: 'Flex memberships, suspensions, renewals and leavers all generate manual work because the contract structure fights the software instead of using it.',
+    owner: 'Valerio / Francesca',
+    lead: 'Flex memberships, suspensions, renewals and leavers all generate manual work because the contract structure fights the software instead of using it — and the tier ladder itself no longer holds together.',
     findings: [
       ['Flex is sold to the member as "3 + 1 + 1" but built internally as "3 + 3". The member sees a 3+3 expiry in the app and is confused; each renewal creates a new contract to track.', 'High', 'A 3-month minimum commitment, then a single non-expiring subscription the member cancels with one button. One contract sold, full stop.'],
       ['Suspensions break Perfect Gym - they add a second contract, extend the duration and double the cost; fixed by hand with free months and note-blocks.', 'High', 'Rebuild and test the suspension models per membership. Let members self-serve suspension, and consider a suspension service fee to discourage casual use.'],
       ['Annual renewal emails need manual template upkeep and date edits, and frequently land in spam.', 'Med', 'Automate via n8n, add an in-app renewal alert, and keep a clean downloadable record.'],
       ['Leavers - cancellation reasons are captured by manual sales calls. The qualitative feedback is valuable but inconsistent.', 'Med', 'Self-service cancellation in the app with a mandatory reason and note. Keep one human touchpoint for save attempts; feed structured data into strategy.'],
       ['Debt collection is the only lever to find a debtor today, precisely because payment methods are not saved. Main pains: unwanted auto-renewal, and members withholding payment over real club issues.', 'High', 'Saved methods + automated reason-based dunning + 1-click call / payment request remove most of the manual burden.'],
+      ['The Gold tier barely works in winter — a 7-day booking window against Platinum\'s 10 — driving a wave of Gold→Platinum upgrades, yet Platinum is congested too. The price list is opaque (members cannot tell the tiers apart) and tiny price deltas attract the wrong members.', 'Med', 'Rationalise the tiers (cap or retire the weakest) and simplify the list to "what do I pay / what can I do". Add a court-quota model: a flat booking allowance, then pay-per-use beyond it, so the last slice of court capacity carries a rising cost.'],
+      ['Upgrades are allowed anytime, downgrades only at renewal — all by hand — and even staff find the upfront single-payment maths (12 vs 13 months, the free month) unclear.', 'Low', 'Codify upgrade / downgrade and the upfront-vs-installment calculation in the system, so it is unambiguous and, where possible, self-serve.'],
     ],
   },
   {
     num: '03',
-    title: 'Courses & Schools',
-    owner: 'Valerio / Rossana',
-    lead: 'SAT, Agonistica, Summer Camp and adult courses run almost entirely on Excel, with manual workarounds that actively send members the wrong emails.',
+    title: 'Courses & Schools — SAT & Agonistica',
+    owner: 'Matteo / Paolo Agnelli / Valerio',
+    lead: 'The tennis school (464 children this year) and the competitive squad (79 athletes) are the club\'s operational heart — and they run on paper notebooks, Excel and WhatsApp. Both heads named the same root cause: tryout, enrollment and payment are three disconnected steps, so children are placed before they enrol, slots are held for families who never confirm, and reminders fire on the wrong dates.',
     findings: [
-      ['Entirely Excel-driven across multiple SharePoint files. JotForm enrollments are keyed into Perfect Gym by hand, then into Excel.', 'High', 'Online enrollment straight into a Perfect Gym account (no JotForm), with the contract and automation created on purchase.'],
-      ['A debt-collection pause must be set manually for each enrollee, because PG dunning follows the contract-entry date, not the agreed due date - so wrong payment reminders go out and members complain. Entering 114 names took ~3 hours.', 'High', 'A custom due-date scheme in PG (deposit now, installments later, auto-debited) removes the manual pause entirely.'],
-      ['Turnstile access for competitive players (agonisti) does not work, because the fee is split with a second installment in January.', 'Med', 'Model the installment correctly so access is granted without breaking the payment schedule.'],
-      ['Group assignment and level are set during a tryout and tracked in Excel.', 'Low', 'Tennis ops enroll players directly into the chosen group / slot; the coach sets the level at tryout, in the system.'],
+      ['The three core steps — tryout (level assignment), online enrollment and payment — are disconnected, and nothing is signed: a child is placed in a group before enrolling, no record confirms the tryout happened, payment arrives "whenever I remember", and the agreement is just a paper sheet with a day preference. The competitive head calls it his "Achilles heel"; across 460+ families it is a liability and the root of the reconciliation load.', 'High', 'One enabling chain: the tryout result unlocks a signed digital contract, the contract requires a saved payment method, and the held slot is auto-flagged "paid" — stored in the member\'s area, with the coach setting the level from his phone and neither sales nor admin re-keying anything.'],
+      ['Enrollment is entirely Excel- and JotForm-driven across multiple SharePoint files; JotForm submissions are keyed into Perfect Gym by hand, then into Excel.', 'High', 'Online enrollment straight into a Perfect Gym account (no JotForm), with the contract and automation created on purchase.'],
+      ['A debt-collection pause must be set by hand for each enrollee, because Perfect Gym dunning follows the contract-entry date, not the agreed due date — so wrong reminders go out and families complain. Entering 114 names took ~3 hours.', 'High', 'A custom due-date scheme in Perfect Gym (deposit now, installments later, auto-debited) removes the manual pause entirely.'],
+      ['Pre-enrollment ("prescrizione", €300) gives returning families pre-emption but guarantees no real slot — and capacity is per-course and per-day, not a single cap ("we don\'t have a counter at 460"). With more site traffic next season, the club risks taking pre-enrollments it cannot honour.', 'Med', 'Define real per-slot capacity in the system; route every enrollment through tennis-ops assignment, or expose live slot availability; make the assigned level the gate.'],
+      ['Levels are tracked by hand — a notebook and six A3 sheets, re-keyed nowhere. The federation ladder (red → orange → super-orange → green → super-green → yellow → agonistica) maps cleanly onto ball, court size and racket.', 'Med', 'Hold the level in Perfect Gym as the enrollment filter: a group is bookable only at its level, and the coach updates it through the season. Publish the ladder on the site so families self-qualify.'],
+      ['Agonistica is a 46-week winter + 10-week summer package (€2,700 for 2× a week up to €5,200 for 5×), paid as a ~€500 deposit then two installments (October, January). The athlete must never be entered as "in debt" — it breaks turnstile access and triggers the wrong reminders.', 'Med', 'Model the installment schedule so access is granted and reminders fire on the agreed dates; offer an upfront-discount vs. installment choice at enrollment.'],
+      ['Agonistica acquisition is informal: ~10 school children are promoted each year through coach-led tryouts, while externals reach the head coach via a phone number passed around — and every external must be seen on court. Nothing records who enquired versus who converted.', 'Med', 'A website form routed straight to the head coach, feeding a shared CRM that tracks enquiry → tryout → convert and routes "wrong level" cases back to the school.'],
     ],
+    note: 'Summer camp is a separate, low-margin "feeder" activity — week-to-week, with numbers unknown until the Monday morning — and should be modelled apart from the nine-month seasonal courses, where the real revenue and the real complexity sit.',
   },
   {
     num: '04',
     title: 'Tennis Lessons & Courts',
-    owner: 'Rossana / Edoardo',
-    lead: 'The single biggest prize. ~€217k/year in tennis lessons and ~70% of all enquiries, yet the whole flow runs on manual notes, a WhatsApp group and a second booking system that does not talk to Perfect Gym.',
+    owner: 'Edoardo / Rossana',
+    lead: 'The single biggest prize. ~€217k/year in tennis lessons (confirmed again in the second Sport-Manager interview) and ~70% of all enquiries, yet the whole flow runs on manual notes, a WhatsApp group and a second booking system that does not talk to Perfect Gym.',
     findings: [
       ['First 3 lessons are free for externals, tracked via manual notes in PG. Lead becomes guest, is assigned to a coach via a WhatsApp group, and the coach self-picks - many handovers fail.', 'High', 'Make the trial a purchasable product (a short membership containing one lesson, capped e.g. at 3 in 30 days) so the sales opportunity has a deadline; or issue a voucher / code.'],
       ['A shared WhatsApp group assigns lessons, with one person guessing which coach is freest.', 'Med', 'A shared interface where coaches keep their own availability and self-assign, with full traceability - replacing the WhatsApp group.'],
+      ['Lesson control is manual and gameable: coaches submit an Excel of hours that is cross-checked by hand against Playtomic. A lesson can be hidden (not marked in the booking) or two coaches booked on one slot — catching cash-work would need someone physically walking the courts.', 'High', 'Let coaches book the lesson themselves in one system — a Perfect Gym backend account — so the lesson, the court and the payment become a single record: no Excel cross-check, no blind spot, and lesson payment solved at the same time.'],
+      ['Court prep and lesson are booked separately, and members game the gap: book a court alone, then — two days out, with no partner — "come give me a lesson", slotting the coach in. Coach booking priority and member priority collide.', 'Med', 'Two clean lines: book a court to play, or book a coach for a lesson (the coach does the court prep contextually). One path each — no hybrid, and no lesson sold just to rescue an empty court.'],
       ['Courts live on Playtomic (3-day window for externals), lessons on the coach: two systems, two payments. Playtomic does not talk to Perfect Gym; member tiers, packages and prices are maintained by hand.', 'High', 'Evaluate consolidating courts + lessons onto Perfect Gym: book court, then book lesson; price by membership tier; packages auto-decrement at booking; "my products" shows the residual. Externals book courts via an embedded PG calendar.'],
       ['Lessons are paid at the desk before play; a member who passes the turnstile without paying is charged via cashless debit.', 'Med', 'Connect Stripe for online lesson payment, with auto-receipts and automatic payout / collection reports for coaches.'],
     ],
@@ -94,11 +106,14 @@ const areas = [
   {
     num: '06',
     title: 'Reception, Customer Journey & Sales',
-    owner: 'Rossana',
-    lead: 'Online sign-up barely works and the journey is fully dependent on whoever is at the desk. The fix is to digitise the filter and let sales act fast only when it matters.',
+    owner: 'Rossana / Francesca',
+    lead: 'Online sign-up barely works and the journey is fully dependent on whoever is at the desk. The fix is to digitise the filter, give sales a CRM they will actually use, and let them act fast only when it matters.',
     findings: [
       ['Online sign-up is nearly non-functional; mostly old members re-subscribe. The price brochure is the only material and is not immediately readable.', 'High', 'Clean up and redesign the offer, put the essentials on the website, and test the layout on non-experts before launch.'],
+      ['Lead routing is opaque: website inquiries land in personal Perfect Gym mailboxes under cryptic labels (TCA Guest, Digital Team, Existing Contact); a contact already in the system is invisible unless it hits the right inbox; the shared "Sales Team" box goes unread. Leads arrive unqualified, so sales burns time qualifying.', 'High', 'Route by activity-of-interest from the site form, dedupe by email against Perfect Gym, and deliver a pre-qualified lead — reason, activity, call-back window — into a single aliased inbox.'],
       ['Reception (10-11 people on 4-5h shifts) is meant to filter then pass to sales, but effectively passes everyone - so sales becomes the pivot and the bottleneck.', 'High', 'Reception runs a digital "setting" (the filter); sales acts fast only when the opportunity is real; routine comms go automatic.'],
+      ['Perfect Gym is rejected as a CRM ("macchinoso"): follow-up is entirely personal and untracked, the email-send module was set up years ago but never switched on, and the old "opportunities" were truncated or simply vanished.', 'High', 'A purpose-built CRM that logs every task (type, interest, reason-not-joined, outcome) and syncs actions back to Perfect Gym — opportunity-based, with a fixed evaluation window, zone-based handling so an inquiry is always answered, and the few metrics that matter (inquiries in, time-to-first-contact, conversion) pushed to a BI view.'],
+      ['Trials are booked in the salesperson\'s own name (a lead cannot book) with no tracing of requested → activated → converted, so nobody knows what a trial actually produces. Referrals have no flow at all.', 'Med', 'A purchasable trial (a short membership or promo code, activate-once, with a member-identical booking experience) and a referral flow (member invites a friend; €50 credit on conversion) — both feeding a measurable funnel.'],
       ['Promo codes exist but are not visible online; sales must hand them over. A banner hooks the member, but with no code to complete the purchase the funnel breaks and creates extra work afterwards.', 'Med', 'Make promotions self-serve via a landing page with the code applied, plus trackable links sales can send.'],
       ['Work is compartmentalised (marketing / sales / operations) while the customer journey is transversal.', 'Med', 'Design around the journey: lead capture via QR into the CRM, automated follow-up, and a back-office pass that picks up non-converters.'],
     ],
@@ -125,6 +140,9 @@ const appIdeas = [
   ['Medical certificate gate', 'Turnstile block on an expired medical certificate (now active): an add-on membership auto-populates the dates, the member sees the expiry in their area, and an email goes out before it lapses.'],
   ['FIT card gate', 'Same mechanism for the FIT federation card: auto-affiliation to the promotion body via FIT + PIN, storing the card code.'],
   ['Lesson rating', 'A 1-5 star rating on the lesson just taken - being enabled.'],
+  ['Competitive-athlete document area', 'Each agonista\'s contract, technical and competitive sheets and receipts in their member area - replacing the hand-built Google Drive folders - with a visible level-progression bar that keeps parents engaged.'],
+  ['Pre-enrollment with pre-emption', 'Open next season\'s courses early in-app, with returning-member pre-emption: families confirm and pay before externals, so groups are built on certainty, not guesswork.'],
+  ['Self-enroll by level', 'Families self-enroll into a course filtered by the level the coach assigned - higher levels locked, lower ones visible - paying and signing in a single flow.'],
 ];
 
 // ── Administration: task & tooling inventory (from Valerio's mansionario) ──
@@ -195,7 +213,7 @@ const impactClass = { High: 'high', Med: 'med', Low: 'low' };
         </div>
       ))}
     </div>
-    <p class="au-prose au-prose--muted">More statements to be added in the coming days.</p>
+    <p class="au-prose au-prose--muted">Six interviews in: coverage now spans the tennis school, the competitive squad and sales, alongside administration and reception. More statements will be folded in as they arrive.</p>
 
     <!-- ── CROSS-CUTTING THEMES ── -->
     <h2 class="au-section-title">02 · Cross-Cutting <em>Themes</em></h2>
@@ -313,6 +331,8 @@ const impactClass = { High: 'high', Med: 'med', Low: 'low' };
           <li>Unblock 1-click refunds in Perfect Gym.</li>
           <li>Enable the lesson rating in the app.</li>
           <li>Ship the PT page with a contact form per trainer on the new site.</li>
+          <li>Stand up the lead-routing form (activity-of-interest &rarr; aliased inbox) on the new site.</li>
+          <li>Publish the tennis-school level ladder so families self-qualify before they call.</li>
         </ul>
       </div>
       <div class="prio-col prio-col--later">
@@ -321,8 +341,11 @@ const impactClass = { High: 'high', Med: 'med', Low: 'low' };
           <li>Saved payment method on every contract; redo contracts and enrollment per sector.</li>
           <li>Flex redesign: 3-month commitment, then non-expiring with a self-cancel button.</li>
           <li>Rebuild and test suspension models.</li>
-          <li>Courses off Excel: online enrollment + custom due-date schemes.</li>
-          <li>Tennis lessons + courts consolidated onto Perfect Gym (the €217k prize).</li>
+          <li>Tennis-school enrollment chain: the tryout unlocks a signed contract + saved method, the slot auto-flags "paid", and the level lives in Perfect Gym as the filter.</li>
+          <li>Courses off Excel: online enrollment + custom due-date schemes; define real per-slot capacity before opening pre-enrollment.</li>
+          <li>Rationalise membership tiers and the price list; add a court-quota + pay-per-use model.</li>
+          <li>Replace the sales CRM: opportunity-based and zone-handled, with trials, referral and conversion tracking.</li>
+          <li>Tennis lessons + courts consolidated onto Perfect Gym, with coaches booking lessons directly (the €217k prize).</li>
           <li>Revenue automation + BI dashboard; retire Coda / Spani.</li>
           <li>Gym-induction product or voucher flow for personal training.</li>
         </ul>
@@ -340,11 +363,12 @@ const impactClass = { High: 'high', Med: 'med', Low: 'low' };
       <li><span><strong>Collect every Excel file in use</strong>, plus a legend (file name, purpose, and who has SharePoint access). Needed both for the handover - SharePoint is going away - and for the simplification work.</span></li>
       <li><span><strong>Migrate Excel into Google Sheets</strong> with a shared, agreed logic during the handover, before consolidating into the system.</span></li>
       <li><span><strong>Rationalise email</strong> into a single account with aliases, to replace the scattered Outlook / SharePoint mailboxes.</span></li>
-      <li><span><strong>Quantify the friction:</strong> pull the numbers behind each finding (failure rates, time per task, trial-to-member conversion) so the audit moves from judgement to measurement.</span></li>
+      <li><span><strong>Capture the tennis-school &amp; agonistica records</strong> - the notebook, the six A3 sheets and the course Excels - and define real per-slot capacity, so pre-enrollment can be capped honestly and the level can move into the system.</span></li>
+      <li><span><strong>Quantify the friction:</strong> pull the numbers behind each finding - failure rates, time per task, trial-to-member conversion - plus the data the heads can already provide: agonistica retention, SAT renewals (~50-60%) and sales conversion from the guest register.</span></li>
       <li><span><strong>Continue the interviews</strong> and fold new statements into this page as they arrive.</span></li>
     </ol>
 
-    <p class="au-footer">Confidential · Tennis Club Ambrosiano · Audit date: 22 June 2026 · Living document</p>
+    <p class="au-footer">Confidential · Tennis Club Ambrosiano · Audit dates: 22–23 June 2026 · Living document</p>
 
   </main>
 
