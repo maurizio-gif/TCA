@@ -1,126 +1,389 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import CarveOutTable from '../components/CarveOutTable.astro';
-import PhotoBand from '../components/PhotoBand.astro';
+
+const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith("/") ? b : b + "/"; })();
+const cover = encodeURI(`${base}club-aerial.jpeg`);
+const deadline = '31 July 2026';
+
+// One slide per topic. Each: status (where we are) + the single next move.
+const topics = [
+  {
+    n: '01', title: 'Perfect Gym', scope: 'Member platform',
+    tone: 'green', status: 'On Track', pct: 80, stage: 'Finalising',
+    owner: 'Maurizio Taruggi', partner: 'Nathan Dennis', date: 'by 31 Jul',
+    where: [
+      'Direct invoicing to TCA confirmed (Nathan Dennis, 22 Jun)',
+      'Company registry extract sent for billing setup',
+      'Discount on Success Plan + Sandbox in play (~€500/mo)',
+    ],
+    next: 'Receive Aspria sign-off detail → lock the contract before 31 Jul',
+    nextShort: 'Aspria sign-off',
+  },
+  {
+    n: '02', title: 'Website', scope: 'New site + forms',
+    tone: 'amber', status: 'In Progress', pct: 50, stage: 'Building',
+    owner: 'Maurizio Taruggi', partner: 'Laura Giardini + Alice Bartoli', date: 'TBD — DNS',
+    preview: 'https://maurizio-gif.github.io/WebSite-TCA/',
+    where: [
+      'New site ~50% built — fully bilingual, Italian / English (IT / EN)',
+      'Customer journeys + custom forms per business unit',
+      'HubSpot + JotForm folded into one workstream',
+    ],
+    next: 'Transfer the domain to Cloudflare — the only blocker to go live',
+    nextShort: 'Domain → Cloudflare',
+  },
+  {
+    n: '03', title: 'Social & Analytics', scope: 'Social, GTM, GSC, Analytics',
+    tone: 'grey', status: 'Not Started', pct: 20, stage: 'Awaiting data',
+    owner: 'Maurizio Taruggi', partner: 'Laura Giardini', date: 'TBD',
+    where: [
+      'Scope set: social + Google stack under TCA ownership',
+      'Laura Giardini already involved',
+    ],
+    next: 'Get the accounts and access from Geeta',
+    nextShort: 'Accounts from Geeta',
+  },
+  {
+    n: '04', title: 'Microsoft', scope: 'Outlook, OneDrive, SharePoint',
+    tone: 'amber', status: 'In Progress', pct: 40, stage: 'Mapping',
+    owner: 'Maurizio Taruggi', partner: 'Thomas Sander + Alice Bartoli', date: 'TBD — DNS',
+    where: [
+      'All mailboxes mapped (call with Thomas Sander)',
+      'SharePoint operational files being inventoried',
+    ],
+    next: 'Get the DNS config → transfer the domain to Cloudflare',
+    nextShort: 'DNS config',
+  },
+  {
+    n: '05', title: 'Physical Devices', scope: 'PCs & Wi-Fi',
+    tone: 'grey', status: 'Not Started', pct: 10, stage: 'To kick off',
+    owner: 'On-site partner (TBD)', partner: 'Thomas Sander + Alice Bartoli', date: 'Jun 22–26',
+    where: [
+      'Plan set: unlock, factory reset, storage to Google Drive',
+      'Local on-site IT company selected by Alice',
+    ],
+    next: 'Meet the local IT company selected by Alice to scope the on-site work',
+    nextShort: 'Meet local IT company',
+  },
+];
 ---
 
-<BaseLayout title="TCA · Carve-Out Roadmap" initialHeaderDark={true}>
+<BaseLayout title="TCA · Carve-Out Roadmap" description="Carve-Out Roadmap — one slide per workstream: where we are and the next move.">
 
-  <main class="co-page">
-    <div class="co-header">
-      <span class="eyebrow eyebrow--grey">Operational Plan</span>
-      <h1 class="co-title">
-        Carve-Out Roadmap &mdash; <em>Cut-Off July 31st</em>
-      </h1>
-      <span class="deadline-badge">&#9679;&nbsp; Hard Deadline: July 31, 2026</span>
+  <div class="slide-dots" id="dots"></div>
+
+  <!-- ── COVER · AT A GLANCE ── -->
+  <section class="cslide cslide--cover" data-header="dark">
+    <div class="cc-bg" style={`background-image: linear-gradient(105deg, rgba(20,20,22,0.92) 38%, rgba(139,26,26,0.42) 100%), url('${cover}')`}></div>
+    <div class="cc-watermark">TCA</div>
+    <div class="cc-inner">
+      <span class="eyebrow eyebrow--light">Carve-Out Roadmap</span>
+      <h1 class="cc-title">Where we are.<br /><em>The next move.</em></h1>
+      <span class="cc-deadline">&#9679;&nbsp; Hard deadline — {deadline}</span>
+
+      <div class="cc-board">
+        {topics.map((t) => (
+          <div class={`cc-cell cc-cell--${t.tone}`}>
+            <div class="cc-cell-head">
+              <span class="cc-cell-n">{t.n}</span>
+              <span class="cc-cell-title">{t.title}</span>
+            </div>
+            <div class="cc-bar"><span class={`cc-bar-fill bar--${t.tone}`} style={`width:${t.pct}%`}></span></div>
+            <div class="cc-cell-meta"><strong>{t.pct}%</strong> · {t.status}</div>
+            <div class="cc-cell-next"><em>Next</em> {t.nextShort}</div>
+          </div>
+        ))}
+      </div>
+
+      <span class="cc-hint">Use &uarr; &darr; / click the dots to move through the workstreams</span>
     </div>
+  </section>
 
-    <PhotoBand img="club-players.jpeg" eyebrow="Step by Step" blur={3} line="One workstream at a time — fully independent by July 31st." />
+  <!-- ── ONE SLIDE PER TOPIC ── -->
+  {topics.map((t) => (
+    <section class="cslide cslide--topic" data-header="light">
+      <span class="ct-watermark">{t.n}</span>
+      <div class="ct-inner">
 
-    <div class="preview-links" id="preview-links">
-      <div class="preview-links__label">Site &amp; Forms — Preview Links</div>
-      <p class="preview-links__note">Preview links will appear here as soon as they are available. You will be able to view and test the new site and forms directly from this page before the DNS cutover.</p>
-      <!-- Add preview links here as they become available -->
-      <!-- <a class="preview-link" href="…" target="_blank" rel="noopener">Preview: Homepage</a> -->
-    </div>
+        <div class="ct-head">
+          <span class="ct-eyebrow">Carve-Out · {t.n} / 0{topics.length}</span>
+          <div class="ct-titlerow">
+            <h2 class="ct-title">{t.title}</h2>
+            <span class="ct-scope">{t.scope}</span>
+          </div>
+        </div>
 
-    <CarveOutTable />
+        <div class="ct-statusrow">
+          <span class={`pill pill--${t.tone}`}>{t.status}</span>
+          <div class="ct-progress">
+            <div class="ct-bar"><span class={`ct-bar-fill bar--${t.tone}`} style={`width:${t.pct}%`}></span></div>
+            <div class="ct-progress-meta"><strong>{t.pct}%</strong> · {t.stage}</div>
+          </div>
+        </div>
 
-    <p class="co-footer">Confidential · Tennis Club Ambrosiano · 2026</p>
-  </main>
+        <div class="ct-cols">
+          <div class="ct-where">
+            <div class="ct-label">Where we are</div>
+            <ul>
+              {t.where.map((w) => <li>{w}</li>)}
+            </ul>
+            {t.preview && (
+              <a class="ct-preview" href={t.preview} target="_blank" rel="noopener">
+                View the live preview
+                <span class="ct-preview-arrow">&#8599;</span>
+              </a>
+            )}
+          </div>
+          <div class="ct-next">
+            <div class="ct-next-label">Next move</div>
+            <p class="ct-next-text">{t.next}</p>
+          </div>
+        </div>
+
+        <div class="ct-foot">
+          <span><em>Owner</em>{t.owner}</span>
+          <span><em>With</em>{t.partner}</span>
+          <span><em>Target</em>{t.date}</span>
+        </div>
+
+      </div>
+    </section>
+  ))}
 
 </BaseLayout>
 
-<style>
-  :global(body) { background: #fff; }
+<style is:global>
+  html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+  body { background: var(--text); }
 
-  .co-page {
-    padding: calc(var(--header-h) + 3.5vh) clamp(20px, 5vw, 72px) 6vh;
-    max-width: 1500px;
-    margin: 0 auto;
-  }
-
-  .co-header {
+  .cslide {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    scroll-snap-align: start;
     display: flex;
     flex-direction: column;
-    gap: 0.8vh;
-    margin-bottom: 3.5vh;
+    overflow: hidden;
   }
 
-  .co-title {
+  /* ── DOTS ── */
+  .slide-dots {
+    position: fixed;
+    right: clamp(12px, 1.4vw, 22px);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 9px; z-index: 200;
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; cursor: pointer; transition: background 0.25s, transform 0.25s; background: rgba(255,255,255,0.28); }
+  .dot-on-light { background: rgba(0,0,0,0.18); }
+  .dot.active { background: var(--red); transform: scale(1.5); }
+
+  /* ── shared progress bar fills ── */
+  .bar--green { background: #1E6B2E; }
+  .bar--amber { background: #B47800; }
+  .bar--grey  { background: var(--grey-mid); }
+
+  /* ══════════════ COVER ══════════════ */
+  .cslide--cover { background: var(--text); }
+  .cc-bg {
+    position: absolute; inset: 0;
+    background-position: center; background-size: cover; background-repeat: no-repeat;
+    filter: blur(1px); transform: scale(1.05);
+  }
+  .cc-watermark {
+    position: absolute; bottom: -4vw; right: 2vw;
+    font-family: var(--fd); font-size: clamp(140px, 18vw, 280px);
+    font-weight: 800; color: rgba(255,255,255,0.04);
+    line-height: 1; user-select: none; pointer-events: none;
+  }
+  .cc-inner {
+    position: relative; z-index: 2; flex: 1;
+    display: flex; flex-direction: column;
+    padding: calc(var(--header-h) + 4vh) clamp(24px, 5vw, 72px) 4vh;
+  }
+  .cc-title {
     font-family: var(--fd);
-    font-size: clamp(2rem, 4vw, 4rem);
-    font-weight: 800;
-    text-transform: uppercase;
-    line-height: 1.0;
-    color: var(--text);
+    font-size: clamp(2.6rem, 5.5vw, 5.5rem);
+    font-weight: 800; text-transform: uppercase; line-height: 0.92;
+    color: #fff; letter-spacing: -0.01em; margin: 0.4vh 0 1.6vh;
   }
-  .co-title em {
-    color: var(--red);
-    font-style: italic;
-    font-weight: 400;
-    text-transform: lowercase;
-    letter-spacing: 0.01em;
+  .cc-title em { color: #C0282A; font-style: normal; }
+  .cc-deadline {
+    display: inline-flex; align-items: center;
+    background: var(--red); color: #fff;
+    font-family: var(--fd); font-size: clamp(11px, 0.85vw, 14px);
+    font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 8px 18px; border-radius: 3px; width: fit-content;
   }
-
-  .deadline-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--red);
-    color: #fff;
-    font-family: var(--fd);
-    font-size: clamp(10px, 0.75vw, 12px);
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 7px 16px;
-    border-radius: 3px;
-    margin-top: 0.5vh;
-    width: fit-content;
+  .cc-board {
+    margin-top: auto;
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px;
   }
-
-  .preview-links {
-    margin: 3vh 0 2.5vh;
-    padding: 18px 24px;
-    border: 1px solid rgba(139,26,26,0.2);
-    border-left: 4px solid var(--red);
-    border-radius: 4px;
-    background: rgba(139,26,26,0.03);
+  .cc-cell {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-top: 3px solid var(--grey-mid);
+    padding: 16px 16px 18px;
+    display: flex; flex-direction: column; gap: 9px;
   }
-  .preview-links__label {
-    font-family: var(--fd);
-    font-size: clamp(9px, 0.65vw, 11px);
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--red);
-    margin-bottom: 8px;
-  }
-  .preview-links__note {
-    font-size: clamp(12px, 0.85vw, 13px);
-    font-weight: 300;
-    color: var(--text-light);
-    line-height: 1.7;
-    margin: 0;
+  .cc-cell--green { border-top-color: #2E9E45; }
+  .cc-cell--amber { border-top-color: #D89000; }
+  .cc-cell--grey  { border-top-color: rgba(255,255,255,0.3); }
+  .cc-cell-head { display: flex; align-items: baseline; gap: 8px; }
+  .cc-cell-n { font-family: var(--fd); font-size: clamp(13px, 1vw, 16px); font-weight: 800; color: rgba(255,255,255,0.35); }
+  .cc-cell-title { font-family: var(--fd); font-size: clamp(13px, 1.05vw, 18px); font-weight: 700; text-transform: uppercase; color: #fff; line-height: 1.05; }
+  .cc-bar { height: 6px; border-radius: 100px; background: rgba(255,255,255,0.14); overflow: hidden; }
+  .cc-bar-fill { display: block; height: 100%; border-radius: 100px; }
+  .cc-cell-meta { font-family: var(--fd); font-size: clamp(11px, 0.8vw, 13px); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(255,255,255,0.7); }
+  .cc-cell-meta strong { color: #fff; }
+  .cc-cell-next { font-size: clamp(11px, 0.82vw, 13px); font-weight: 300; color: rgba(255,255,255,0.62); line-height: 1.4; }
+  .cc-cell-next em { font-family: var(--fd); font-style: normal; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #C0282A; font-size: 0.82em; margin-right: 5px; }
+  .cc-hint {
+    margin-top: 2.4vh;
+    font-family: var(--fd); font-size: clamp(9px, 0.7vw, 11px);
+    font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
   }
 
-  .co-footer {
-    margin-top: 4vh;
-    border-top: 1px solid var(--grey-light);
-    padding-top: 2vh;
-    font-size: clamp(9px, 0.65vw, 11px);
-    color: var(--grey-mid);
-    font-family: var(--fd);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+  /* ══════════════ TOPIC SLIDE ══════════════ */
+  .cslide--topic { background: #fff; }
+  .ct-watermark {
+    position: absolute; top: 50%; right: -2vw; transform: translateY(-50%);
+    font-family: var(--fd); font-size: clamp(220px, 34vw, 540px);
+    font-weight: 800; color: var(--off-white); line-height: 0.8;
+    user-select: none; pointer-events: none; z-index: 0;
+  }
+  .ct-inner {
+    position: relative; z-index: 1; flex: 1;
+    display: flex; flex-direction: column; justify-content: center;
+    gap: clamp(14px, 2.6vh, 30px);
+    padding: calc(var(--header-h) + 3vh) clamp(24px, 5vw, 72px) 4vh;
+    max-width: 1500px; margin: 0 auto; width: 100%;
+  }
+  .ct-eyebrow {
+    font-family: var(--fd); font-size: clamp(10px, 0.8vw, 13px);
+    font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--grey-mid);
+  }
+  .ct-titlerow { display: flex; align-items: baseline; gap: clamp(12px, 1.6vw, 24px); flex-wrap: wrap; margin-top: 0.4vh; }
+  .ct-title {
+    font-family: var(--fd); font-size: clamp(2.4rem, 5vw, 4.6rem);
+    font-weight: 800; text-transform: uppercase; line-height: 0.95; color: var(--text);
+  }
+  .ct-scope {
+    font-family: var(--fd); font-size: clamp(11px, 1vw, 15px);
+    font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--red);
   }
 
+  /* status + progress */
+  .ct-statusrow { display: flex; align-items: center; gap: clamp(14px, 2vw, 28px); flex-wrap: wrap; }
+  .pill {
+    font-family: var(--fd); font-size: clamp(11px, 0.9vw, 14px);
+    font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 7px 16px; border-radius: 100px; white-space: nowrap;
+  }
+  .pill--green { color: #1E6B2E; background: rgba(30,107,46,0.1); border: 1px solid rgba(30,107,46,0.35); }
+  .pill--amber { color: #8B6000; background: rgba(180,120,0,0.1); border: 1px solid rgba(180,120,0,0.35); }
+  .pill--grey  { color: #666;    background: rgba(0,0,0,0.05);    border: 1px solid rgba(0,0,0,0.18); }
+  .ct-progress { flex: 1; min-width: 220px; display: flex; flex-direction: column; gap: 7px; }
+  .ct-bar { height: 10px; border-radius: 100px; background: var(--grey-light); overflow: hidden; }
+  .ct-bar-fill { display: block; height: 100%; border-radius: 100px; }
+  .ct-progress-meta { font-family: var(--fd); font-size: clamp(11px, 0.85vw, 14px); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--grey-mid); }
+  .ct-progress-meta strong { color: var(--text); font-size: 1.15em; }
+
+  /* two columns */
+  .ct-cols { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(16px, 2.5vw, 36px); align-items: stretch; }
+  .ct-label, .ct-next-label {
+    font-family: var(--fd); font-size: clamp(10px, 0.78vw, 12px);
+    font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 1.2vh;
+  }
+  .ct-label { color: var(--grey-mid); }
+  .ct-where ul { list-style: none; display: flex; flex-direction: column; gap: clamp(8px, 1.3vh, 14px); }
+  .ct-where li {
+    position: relative; padding-left: 22px;
+    font-size: clamp(14px, 1.15vw, 19px); font-weight: 300; color: #333; line-height: 1.5;
+  }
+  .ct-where li::before { content: ''; position: absolute; left: 0; top: 0.55em; width: 8px; height: 8px; border-radius: 50%; background: var(--red); }
+  .ct-preview {
+    display: inline-flex; align-items: center; gap: 9px;
+    margin-top: clamp(12px, 1.8vh, 22px); width: fit-content;
+    font-family: var(--fd); font-size: clamp(12px, 0.95vw, 15px);
+    font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #fff; background: var(--text); text-decoration: none;
+    padding: 11px 22px; border-radius: 100px;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .ct-preview:hover { background: var(--red); transform: translateX(3px); }
+  .ct-preview-arrow { font-size: 1.15em; line-height: 1; }
+  .ct-next {
+    background: var(--red); color: #fff;
+    border-radius: 6px; padding: clamp(18px, 2.6vh, 30px) clamp(20px, 2vw, 32px);
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .ct-next-label { color: rgba(255,255,255,0.6); }
+  .ct-next-text { font-family: var(--fd); font-size: clamp(1.3rem, 2.2vw, 2.4rem); font-weight: 700; line-height: 1.15; text-transform: uppercase; }
+
+  /* footer meta */
+  .ct-foot { display: flex; gap: clamp(20px, 3vw, 48px); flex-wrap: wrap; border-top: 1px solid var(--grey-light); padding-top: 2vh; }
+  .ct-foot span { font-size: clamp(12px, 0.95vw, 16px); font-weight: 400; color: #444; }
+  .ct-foot em { font-family: var(--fd); font-style: normal; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey-mid); font-size: 0.7em; display: block; margin-bottom: 3px; }
+
+  /* ══════════════ MOBILE ══════════════ */
   @media (max-width: 768px) {
-    .co-page { padding: calc(var(--header-h) + 20px) 16px 40px; }
-    .co-header :global(.eyebrow) { font-size: 13px; }
-    .co-title { font-size: clamp(2rem, 9vw, 2.8rem); }
-    .deadline-badge { font-size: 13px; padding: 7px 14px; }
-    .co-footer { font-size: 12px; }
+    html { scroll-snap-type: none; }
+    .cslide { height: auto; min-height: 100svh; }
+    .slide-dots { display: none; }
+
+    .cc-inner { padding: calc(var(--header-h) + 28px) 20px 36px; }
+    .cc-title { font-size: clamp(2.4rem, 12vw, 3.4rem); }
+    .cc-board { grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 28px; }
+    .cc-hint { display: none; }
+
+    .ct-inner { padding: calc(var(--header-h) + 24px) 20px 32px; gap: 18px; justify-content: flex-start; }
+    .ct-watermark { font-size: 200px; opacity: 0.6; }
+    .ct-title { font-size: clamp(2.2rem, 11vw, 3rem); }
+    .ct-cols { grid-template-columns: 1fr; gap: 16px; }
+    .ct-where li { font-size: 16px; }
+    .ct-next-text { font-size: 22px; }
   }
 </style>
+
+<script>
+  const slides = Array.from(document.querySelectorAll<HTMLElement>('.cslide'));
+  const dotsBox = document.getElementById('dots')!;
+  const header = document.getElementById('g-header');
+  const isLight = (s: HTMLElement) => s.dataset.header === 'light';
+
+  let current = 0;
+
+  slides.forEach((s, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (isLight(s) ? ' dot-on-light' : '') + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => s.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    dotsBox.appendChild(d);
+  });
+
+  if (slides[0]) header?.classList.toggle('g-header--dark', isLight(slides[0]));
+  const dots = () => Array.from(document.querySelectorAll('.dot'));
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting && e.intersectionRatio >= 0.5) {
+        current = slides.indexOf(e.target as HTMLElement);
+        dots().forEach((d, i) => d.classList.toggle('active', i === current));
+        header?.classList.toggle('g-header--dark', isLight(e.target as HTMLElement));
+      }
+    });
+  }, { threshold: 0.5 });
+  slides.forEach(s => observer.observe(s));
+
+  function go(dir: number) {
+    const next = Math.min(slides.length - 1, Math.max(0, current + dir));
+    if (next !== current) slides[next].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  document.addEventListener('keydown', (e) => {
+    if (['ArrowDown', 'ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); go(1); }
+    else if (['ArrowUp', 'ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); go(-1); }
+    else if (e.key === 'Home') { e.preventDefault(); slides[0].scrollIntoView({ behavior: 'smooth' }); }
+    else if (e.key === 'End') { e.preventDefault(); slides[slides.length - 1].scrollIntoView({ behavior: 'smooth' }); }
+  });
+</script>
