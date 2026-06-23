@@ -15,6 +15,7 @@ const people = [
   ['Matteo', 'Head of Competitive Tennis', 'Agonistica: 79 athletes — acquisition, contracts, season planning and pricing'],
   ['Paolo Agnelli', 'Head of Tennis School · SAT', 'On-court organisation of 460+ children: groups, levels, tryouts and progression'],
   ['Francesca', 'Senior Sales Advisor', 'Memberships, lead handling and conversion — the club\'s historical memory since 2010'],
+  ['Beatrice', 'Sales Advisor', 'Memberships and front-line lead handling — calls, walk-ins and the daily lead / event list; joined Aug 2025'],
   ['Rossana', 'Reception Supervisor', 'Front desk, customer journey, sales support, schools'],
   ['Valerio Caimi', 'Membership Administrator', 'Payments, contracts, billing, debt collection, accounting'],
 ];
@@ -56,7 +57,7 @@ const areas = [
       ['Annual renewal emails need manual template upkeep and date edits, and frequently land in spam.', 'Med', 'Automate via n8n, add an in-app renewal alert, and keep a clean downloadable record.'],
       ['Leavers - cancellation reasons are captured by manual sales calls. The qualitative feedback is valuable but inconsistent.', 'Med', 'Self-service cancellation in the app with a mandatory reason and note. Keep one human touchpoint for save attempts; feed structured data into strategy.'],
       ['Debt collection is the only lever to find a debtor today, precisely because payment methods are not saved. Main pains: unwanted auto-renewal, and members withholding payment over real club issues.', 'High', 'Saved methods + automated reason-based dunning + 1-click call / payment request remove most of the manual burden.'],
-      ['The Gold tier barely works in winter — a 7-day booking window against Platinum\'s 10 — driving a wave of Gold→Platinum upgrades, yet Platinum is congested too. The price list is opaque (members cannot tell the tiers apart) and tiny price deltas attract the wrong members.', 'Med', 'Rationalise the tiers (cap or retire the weakest) and simplify the list to "what do I pay / what can I do". Add a court-quota model: a flat booking allowance, then pay-per-use beyond it, so the last slice of court capacity carries a rising cost.'],
+      ['The Gold tier barely works in winter — a 7-day booking window against Platinum\'s 10 — driving a wave of Gold→Platinum upgrades, yet Platinum is congested too. Platinum runs ~€100/mo against Gold\'s ~€55 (nearly double) but does not pay for courts, and nobody has measured whether Platinum court usage justifies it — Playtomic cannot filter bookings by tier.', 'Med', 'Rationalise the tiers (cap or retire the weakest) and simplify the list to "what do I pay / what can I do". Measure Platinum court usage first (a Playtomic export crossed with the member list), then add a court-quota model: a flat booking allowance, then pay-per-use beyond it, so the last slice of court capacity carries a rising cost.'],
       ['Upgrades are allowed anytime, downgrades only at renewal — all by hand — and even staff find the upfront single-payment maths (12 vs 13 months, the free month) unclear.', 'Low', 'Codify upgrade / downgrade and the upfront-vs-installment calculation in the system, so it is unambiguous and, where possible, self-serve.'],
     ],
   },
@@ -106,13 +107,14 @@ const areas = [
   {
     num: '06',
     title: 'Reception, Customer Journey & Sales',
-    owner: 'Rossana / Francesca',
+    owner: 'Rossana / Francesca / Beatrice',
     lead: 'Online sign-up barely works and the journey is fully dependent on whoever is at the desk. The fix is to digitise the filter, give sales a CRM they will actually use, and let them act fast only when it matters.',
     findings: [
       ['Online sign-up is nearly non-functional; mostly old members re-subscribe. The price brochure is the only material and is not immediately readable.', 'High', 'Clean up and redesign the offer, put the essentials on the website, and test the layout on non-experts before launch.'],
       ['Lead routing is opaque: website inquiries land in personal Perfect Gym mailboxes under cryptic labels (TCA Guest, Digital Team, Existing Contact); a contact already in the system is invisible unless it hits the right inbox; the shared "Sales Team" box goes unread. Leads arrive unqualified, so sales burns time qualifying.', 'High', 'Route by activity-of-interest from the site form, dedupe by email against Perfect Gym, and deliver a pre-qualified lead — reason, activity, call-back window — into a single aliased inbox.'],
       ['Reception (10-11 people on 4-5h shifts) is meant to filter then pass to sales, but effectively passes everyone - so sales becomes the pivot and the bottleneck.', 'High', 'Reception runs a digital "setting" (the filter); sales acts fast only when the opportunity is real; routine comms go automatic.'],
       ['Perfect Gym is rejected as a CRM ("macchinoso"): follow-up is entirely personal and untracked, the email-send module was set up years ago but never switched on, and the old "opportunities" were truncated or simply vanished.', 'High', 'A purpose-built CRM that logs every task (type, interest, reason-not-joined, outcome) and syncs actions back to Perfect Gym — opportunity-based, with a fixed evaluation window, zone-based handling so an inquiry is always answered, and the few metrics that matter (inquiries in, time-to-first-contact, conversion) pushed to a BI view.'],
+      ['Sales reach leads from a personal, consumer WhatsApp number — the fastest channel (many never answer unknown calls), but untraceable, off the record and not a professional tool.', 'Med', 'A professional WhatsApp Business channel with approved templates, reserved for revenue-driving moments (lead acquisition and qualification) and logged against the lead in the CRM; email stays the official channel for formal notices.'],
       ['Trials are booked in the salesperson\'s own name (a lead cannot book) with no tracing of requested → activated → converted, so nobody knows what a trial actually produces. Referrals have no flow at all.', 'Med', 'A purchasable trial (a short membership or promo code, activate-once, with a member-identical booking experience) and a referral flow (member invites a friend; €50 credit on conversion) — both feeding a measurable funnel.'],
       ['Promo codes exist but are not visible online; sales must hand them over. A banner hooks the member, but with no code to complete the purchase the funnel breaks and creates extra work afterwards.', 'Med', 'Make promotions self-serve via a landing page with the code applied, plus trackable links sales can send.'],
       ['Work is compartmentalised (marketing / sales / operations) while the customer journey is transversal.', 'Med', 'Design around the journey: lead capture via QR into the CRM, automated follow-up, and a back-office pass that picks up non-converters.'],
@@ -213,7 +215,7 @@ const impactClass = { High: 'high', Med: 'med', Low: 'low' };
         </div>
       ))}
     </div>
-    <p class="au-prose au-prose--muted">Six interviews in: coverage now spans the tennis school, the competitive squad and sales, alongside administration and reception. More statements will be folded in as they arrive.</p>
+    <p class="au-prose au-prose--muted">Seven interviews in: coverage now spans the tennis school, the competitive squad and sales, alongside administration and reception. More statements will be folded in as they arrive.</p>
 
     <!-- ── CROSS-CUTTING THEMES ── -->
     <h2 class="au-section-title">02 · Cross-Cutting <em>Themes</em></h2>
@@ -333,6 +335,7 @@ const impactClass = { High: 'high', Med: 'med', Low: 'low' };
           <li>Ship the PT page with a contact form per trainer on the new site.</li>
           <li>Stand up the lead-routing form (activity-of-interest &rarr; aliased inbox) on the new site.</li>
           <li>Publish the tennis-school level ladder so families self-qualify before they call.</li>
+          <li>Build the site "fast answers" / FAQ section (hours, costs, how it works) from sales' own Q&amp;A, so the 15-20 min info calls shrink.</li>
         </ul>
       </div>
       <div class="prio-col prio-col--later">
