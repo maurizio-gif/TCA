@@ -27,12 +27,22 @@ const rows: Row[] = [
   {
     scope:       'Perfect Gym',
     owner:       'Maurizio Taruggi',
-    people:      'Peter Croft',
+    people:      'Nathan Dennis',
     status:      'wip',
-    statusLabel: 'Waiting for call confirmation from Peter',
-    nextStep:    'Call Peter Croft',
-    date:        'Jun 15–19',
+    statusLabel: 'Direct invoicing confirmed — Aspria sign-off pending',
+    nextStep:    'Send registry extract; await Aspria detail',
+    date:        'Jun 22 ✓',
     detail: [
+      {
+        heading: 'Latest Update — Call with Nathan Dennis (22 June)',
+        text: 'First call held with Nathan Dennis (Perfect Gym). Status on the key points:',
+        bullets: [
+          'Direct invoicing to Tennis Club Ambrosiano confirmed — no issues. The company registry extract (visura camerale) with the billing data is being sent over.',
+          'Discount requested on two line items — the Success Plan and the Sandbox — which together could save roughly €500/month (still to be confirmed).',
+          'Nathan confirmed the timeline we need (the 31 July cut-off) is achievable.',
+          'Open point: awaiting detail on the possible sign-off required from Aspria Holdings to release the separation — Nathan to revert the same day.',
+        ],
+      },
       {
         heading: 'Urgency',
         text: 'Administrative separation of contracts from Aspria Holdings. Goal: direct invoicing to Tennis Club Ambrosiano with full service continuity guaranteed throughout the transition.',
@@ -58,17 +68,41 @@ const rows: Row[] = [
     people:      'Laura Giardini & Alice Bartoli',
     peopleNote:  'Alice Bartoli: usage details + co-defines features & architecture',
     status:      'wip',
-    statusLabel: 'Decision made — New site',
+    statusLabel: 'In progress — ~50% built',
     nextStep:    'Transfer domain to Cloudflare',
     date:        'TBD — DNS',
     detail: [
+      {
+        heading: 'Build Progress — ~50%',
+        text: 'The new site is roughly 50% built. Current work: gathering the photographic material and the information for each activity, mapping the customer journey per business unit, and customising the forms and calls-to-action for each one.',
+      },
+      {
+        heading: 'Driven by the Operations Audit',
+        text: 'The operational business audit underway feeds the site directly: it calibrates the automations — both the connection to Perfect Gym and the downstream handover and management of leads and opportunities.',
+      },
       {
         heading: 'Decision Confirmed — New Site',
         text: 'The strategic decision has been made to build a completely new website from scratch. The existing Prismic setup will not be carried forward.',
       },
       {
         heading: 'Site + Forms — One Workstream',
-        text: 'The new site and the form replacement (HubSpot & JotForm) are a single, unified workstream. They will be designed and built together. Once live, the site will host the custom forms that replace HubSpot and JotForm entirely.',
+        text: 'The new site and the form replacement are a single, unified workstream — HubSpot and JotForm are folded into the website and managed there. The site hosts the custom forms that replace them entirely; the separate HubSpot & JotForm workstream is now closed.',
+      },
+      {
+        heading: 'Forms — Approach',
+        text: 'HubSpot and JotForm are retired. All existing forms are rebuilt as custom HTML/CSS forms connected via N8N to Perfect Gym — not a 1:1 copy, but a restructured form logic managed inside the website itself.',
+      },
+      {
+        heading: 'Forms — Strategic Improvements',
+        bullets: [
+          'Deeper user profiling compared to the current setup',
+          'Renewed deduplication and lead-nurturing logic',
+          'New automation architecture via N8N → Perfect Gym',
+        ],
+      },
+      {
+        heading: 'Forms — Scope',
+        text: 'Static-site lead generation (SEO / acquisition) + event registration forms.',
       },
       {
         heading: 'Only External Dependency: DNS',
@@ -85,48 +119,49 @@ const rows: Row[] = [
     ],
   },
   {
-    scope:       'HubSpot & JotForm',
+    scope:       'Social & Analytics',
+    scopeNote:   'Social, GTM, Search Console, Analytics',
     owner:       'Maurizio Taruggi',
-    people:      'Alice Bartoli',
-    peopleNote:  'Usage details + co-defines features & architecture',
+    people:      'Laura Giardini',
+    peopleNote:  'Geeta: account data & access',
     status:      'wip',
-    statusLabel: 'Merged into Website workstream',
-    nextStep:    'Transfer domain to Cloudflare',
-    date:        'TBD — DNS',
+    statusLabel: 'Awaiting account data from Geeta',
+    nextStep:    'Receive accounts & access from Geeta',
+    date:        'TBD',
     detail: [
       {
-        heading: 'Merged with Website Workstream',
-        text: 'Forms and site are now a single build. The replacement of HubSpot & JotForm is part of the new website project — they ship together.',
-      },
-      {
-        heading: 'Approach',
-        text: 'All existing forms will be fully replaced with custom HTML/CSS forms connected via N8N to Perfect Gym. This is not a 1:1 replacement — it is a complete rebuild with a restructured form logic.',
-      },
-      {
-        heading: 'Strategic Improvements',
-        bullets: [
-          'Deeper user profiling compared to current setup',
-          'Renewed deduplication and lead-nurturing logic',
-          'New automation architecture via N8N → Perfect Gym',
-        ],
-      },
-      {
         heading: 'Scope',
-        text: 'Static site lead generation (SEO / acquisition) + event registration forms.',
+        text: 'Carve out and take ownership of the social accounts and the Google marketing stack — Google Tag Manager, Google Search Console and Google Analytics — so tag management and tracking move under TCA control alongside the new website.',
+      },
+      {
+        heading: 'Status',
+        text: 'Laura Giardini is already involved. We are waiting on Geeta to provide the account data and access before the transfer can proceed.',
+      },
+      {
+        heading: 'Why It Matters',
+        text: 'The new website needs GTM, Search Console and Analytics under TCA ownership to preserve historical data, SEO continuity and conversion tracking after the cutover.',
       },
     ],
   },
   {
     scope:       'Microsoft',
-    scopeNote:   'Outlook & OneDrive',
+    scopeNote:   'Outlook, OneDrive & SharePoint',
     owner:       'Maurizio Taruggi',
     people:      'Alice Bartoli & Thomas Sander',
     peopleNote:  'Alice Bartoli: usage details',
     status:      'wip',
-    statusLabel: 'Accounts list received — domain transfer pending',
+    statusLabel: 'Mailboxes detailed — awaiting DNS config',
     nextStep:    'Transfer domain to Cloudflare',
     date:        'TBD — DNS',
     detail: [
+      {
+        heading: 'Latest Update — Call with Thomas Sander (22 June)',
+        text: 'Call held with Thomas Sander. He shared the full detail of all the mailboxes. Still pending: the current DNS records and how they are configured. The domain transfer to Cloudflare has already been raised with Thomas Sander and is awaiting his response.',
+      },
+      {
+        heading: 'SharePoint — Operational Files',
+        text: 'In parallel, we are collecting the detail of every operational-management file held on SharePoint — both to feed the operations audit and to guarantee their transfer during the carve-out, preserving full operational continuity.',
+      },
       {
         heading: 'Two Objectives',
         bullets: [
