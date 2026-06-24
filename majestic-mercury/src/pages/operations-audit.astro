@@ -51,6 +51,11 @@ const profiles = [
     w: ['Stretched across many domains — attention diluted', 'Supervises tennis rather than controlling it: little leverage there', 'Inclined to under-invest where margin looks thin'],
     o: ['Natural owner of the tennis-lessons redesign', 'Can fold coach booking + payment into one system', 'Can drive the bottom-up process across silos'],
     t: ['Reliance on external coaches he cannot fully police (cash-work blind spots)', 'Competing rebuilds (pool, fitness) crowd out execution'],
+    alice: {
+      costYear: 49938, netMonth: 1750, atRisk: true,
+      hard: ['Course KPI analysis', 'Sports & freelance contract management', 'Activity scheduling'],
+      soft: [],
+    },
   },
   {
     name: 'Matteo', role: 'Head of Competitive Tennis', tag: 'The reform-minded builder', readiness: 9,
@@ -75,6 +80,11 @@ const profiles = [
     w: ['Fifteen years of habits; personal, manual follow-up', 'Defends nuance in ways that can slow standardisation', 'Tool-skeptical of Perfect Gym'],
     o: ['Shape the new CRM and the simplified price list', 'Lead the Gold / Platinum tier rationalisation', 'Turn her tacit playbook into trackable process'],
     t: ['Change fatigue; reverts to personal methods under load', 'Thin team (down to two) limits bandwidth'],
+    alice: {
+      costYear: 46952, netMonth: 2000, atRisk: true,
+      hard: ['Closing sales', 'Lead handling & generation', 'Follow-up', 'Perfect Gym CRM', 'Playtomic'],
+      soft: ['Storytelling & club history', 'Building member connection'],
+    },
   },
   {
     name: 'Beatrice', role: 'Sales Advisor', tag: 'The adaptable newcomer', readiness: 8,
@@ -83,6 +93,11 @@ const profiles = [
     w: ['Junior, less institutional context', 'Uses a personal consumer WhatsApp; manual status updates', 'Role partly in flux'],
     o: ['Power-user of the new CRM and trial / referral funnel', 'Owns the FAQ / fast-answers content', 'Helps measure requested - activated - converted'],
     t: ['Role ambiguity while the team is in flux', 'Without tooling she inherits the same manual load'],
+    alice: {
+      costYear: 30739, netMonth: 1250, atRisk: false,
+      hard: ['Closing sales', 'Lead handling & generation', 'Follow-up', 'Perfect Gym CRM', 'Playtomic', 'Canva'],
+      soft: ['Team work', 'Proactive member care', 'Event & clubbing promotion', 'Communication'],
+    },
   },
   {
     name: 'Rossana', role: 'Reception Supervisor', tag: 'The pragmatic gatekeeper', readiness: 7,
@@ -91,6 +106,11 @@ const profiles = [
     w: ['Thin reception coverage — short shifts, "not inside the club"', 'In practice passes everyone through to sales', 'Bound by manual back-office checks'],
     o: ['Run the digital "setting" filter at the desk', 'Clean lead capture via QR into the CRM', 'Cut manual reconciliation'],
     t: ['10-11 part-timers give inconsistent information', 'Manual checks pile up if tooling slips'],
+    alice: {
+      costYear: 38235, netMonth: 1700, atRisk: false,
+      hard: ['Reception-team training & management', 'Front-desk coordination', 'Quality control & procedure definition (brand standard)', 'Feedback & complaint handling', 'Welcome-process optimisation', 'Operational event support', 'Sports software · Office · graphics'],
+      soft: ['Problem solving', 'Communication', 'Team work'],
+    },
   },
   {
     name: 'Valerio Caimi', role: 'Membership Administrator', tag: 'The systems-minded administrator', readiness: 9,
@@ -99,9 +119,16 @@ const profiles = [
     w: ['Time-poor: manual revenue keying (a full Spani week)', 'Carries many one-off exceptions himself', 'Risk of being the sole keeper of the logic'],
     o: ['Lead the payments / recurring overhaul and suspension rebuild', 'Revenue automation + BI dashboard; retire Coda / Spani', 'Saved methods + automated dunning'],
     t: ['Overload and key-person risk', 'Blocked by IT (refund permission stuck for months)', 'Fiscalisation risk from manual payment edits'],
+    alice: {
+      costYear: 36320, netMonth: 1650, atRisk: false,
+      hard: ['Membership-contract management', 'Sports software · Office / Excel', 'Club rules, privacy & H&S', 'Payments & renewals', 'Commercial terms', 'Cancellation & membership-change procedures'],
+      soft: ['Reception / admin support', 'Club-procedure knowledge'],
+    },
   },
 ];
 const rdBand = (n) => (n >= 8 ? 'high' : n >= 6 ? 'mid' : 'low');
+// ── Money formatter for the Club Manager's cost figures (whole euros) ──
+const eur0 = (n) => '€' + Math.round(n).toLocaleString('en-US');
 
 // ── Cross-cutting themes ──
 const themes = [
@@ -314,9 +341,11 @@ const impactClass = { High: 'high', Med: 'med', Low: 'low' };
     <h2 class="au-section-title">02 · Team Profiles &amp; <em>Change Readiness</em></h2>
     <p class="au-prose">
       A constructive, first-pass read of each interviewee's <strong>professional role, working style and disposition</strong>,
-      with a four-quadrant <strong>SWOT</strong> and a <strong>change-readiness</strong> score from 1 to 10. It is drawn
-      only from what people said and do in the interviews — an interpretive aid for sequencing the change and pairing the
-      right person with the right step, <em>not</em> a formal performance evaluation. Strictly confidential.
+      with a four-quadrant <strong>SWOT</strong> and a <strong>change-readiness</strong> score from 1 to 10. The read and SWOT are
+      drawn from what people said and do in the interviews; each card also folds in the <strong>Club Manager's own file</strong> —
+      the annual cost to the club, monthly net pay, the hard and soft skills Alice maps to the role, and an <strong>at-risk</strong>
+      flag where she raised one (shown only for the salaried staff that file covers). It is an interpretive aid for sequencing the
+      change and pairing the right person with the right step, <em>not</em> a formal performance evaluation. Strictly confidential.
     </p>
 
     <div class="table-wrap">
@@ -363,6 +392,36 @@ const impactClass = { High: 'high', Med: 'med', Low: 'low' };
             </div>
           </div>
           <p class="prof-read">{p.read}</p>
+          {p.alice ? (
+            <div class="mgr">
+              <div class="mgr-head">
+                <span class="mgr-lbl">Manager's read &middot; Alice</span>
+                {p.alice.atRisk && <span class="mgr-risk">At risk</span>}
+              </div>
+              <div class="mgr-cost">
+                <div class="mgr-cost-item">
+                  <span class="mgr-cost-num">{eur0(p.alice.costYear)}</span>
+                  <span class="mgr-cost-lbl">Cost to club / yr</span>
+                </div>
+                <div class="mgr-cost-item">
+                  <span class="mgr-cost-num">{eur0(p.alice.netMonth)}</span>
+                  <span class="mgr-cost-lbl">Net / month</span>
+                </div>
+              </div>
+              <div class="mgr-skills">
+                <span class="mgr-skills-lbl">Hard skills</span>
+                <div class="mgr-chips">{p.alice.hard.map((h) => <span class="mgr-chip mgr-chip--hard">{h}</span>)}</div>
+              </div>
+              {p.alice.soft.length > 0 && (
+                <div class="mgr-skills">
+                  <span class="mgr-skills-lbl">Soft skills</span>
+                  <div class="mgr-chips">{p.alice.soft.map((s) => <span class="mgr-chip mgr-chip--soft">{s}</span>)}</div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <p class="mgr-na">Not included in the Club Manager's personnel &amp; cost file.</p>
+          )}
           <div class="swot">
             <div class="swot-q swot-s">
               <span class="swot-lbl">Strengths</span>
@@ -1290,6 +1349,94 @@ const impactClass = { High: 'high', Med: 'med', Low: 'low' };
   .swot-w li::before { background: var(--red); }
   .swot-o li::before { background: #1F5FA8; }
   .swot-t li::before { background: #8B6000; }
+
+  /* ── MANAGER'S READ (Club Manager's file: cost, risk, skills) ── */
+  .mgr {
+    margin: 2px 0 14px;
+    padding: 13px 14px;
+    background: var(--off-white);
+    border: 1px solid var(--grey-light);
+    border-radius: 5px;
+  }
+  .mgr-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 11px; }
+  .mgr-lbl {
+    font-family: var(--fd);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+  }
+  .mgr-risk {
+    font-family: var(--fd);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--red);
+    background: rgba(139,26,26,0.08);
+    border: 1px solid rgba(139,26,26,0.32);
+    border-radius: 100px;
+    padding: 3px 11px;
+    white-space: nowrap;
+  }
+  .mgr-cost { display: flex; gap: 10px; margin-bottom: 4px; }
+  .mgr-cost-item {
+    flex: 1;
+    background: #fff;
+    border: 1px solid var(--grey-light);
+    border-radius: 5px;
+    padding: 9px 11px;
+    text-align: center;
+  }
+  .mgr-cost-num {
+    display: block;
+    font-family: var(--fd);
+    font-weight: 800;
+    font-size: clamp(1rem, 1.3vw, 1.3rem);
+    line-height: 1;
+    color: var(--text);
+  }
+  .mgr-cost-lbl {
+    display: block;
+    font-family: var(--fd);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    margin-top: 5px;
+  }
+  .mgr-skills { margin-top: 11px; }
+  .mgr-skills-lbl {
+    display: block;
+    font-family: var(--fd);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    margin-bottom: 7px;
+  }
+  .mgr-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .mgr-chip {
+    font-family: var(--fb);
+    font-size: clamp(11px, 0.8vw, 13px);
+    font-weight: 400;
+    line-height: 1.3;
+    border-radius: 100px;
+    padding: 4px 11px;
+  }
+  .mgr-chip--hard { color: var(--text); background: #fff; border: 1px solid var(--grey-light); }
+  .mgr-chip--soft { color: #1F5FA8; background: rgba(31,95,168,0.06); border: 1px solid rgba(31,95,168,0.26); }
+  .mgr-na {
+    margin: 2px 0 14px;
+    font-size: clamp(11px, 0.82vw, 13px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--grey-mid);
+    line-height: 1.5;
+  }
 
   /* ── MOBILE ── */
   @media (max-width: 768px) {
