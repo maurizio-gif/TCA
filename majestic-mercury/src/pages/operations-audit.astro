@@ -2,6 +2,15 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PhotoBand from '../components/PhotoBand.astro';
 
+// ── Raw interview transcripts (Italian), imported as text ──
+import edoardo from '../data/transcripts/edoardo.txt?raw';
+import matteo from '../data/transcripts/matteo.txt?raw';
+import paoloAgnelli from '../data/transcripts/paolo-agnelli.txt?raw';
+import francesca from '../data/transcripts/francesca.txt?raw';
+import beatrice from '../data/transcripts/beatrice.txt?raw';
+import rossana from '../data/transcripts/rossana.txt?raw';
+import valerioCaimi from '../data/transcripts/valerio-caimi.txt?raw';
+
 // ── Systems currently in play across the club ──
 const systems = [
   'Perfect Gym', 'Playtomic', 'Stripe', 'GoCardless', 'Excel / SharePoint',
@@ -19,6 +28,18 @@ const people = [
   ['Rossana', 'Reception Supervisor', 'Front desk, customer journey, sales support, schools'],
   ['Valerio Caimi', 'Membership Administrator', 'Payments, contracts, billing, debt collection, accounting'],
 ];
+
+// ── Transcripts keyed by interviewee name (click a card to open it in a modal) ──
+const transcripts = {
+  'Edoardo': edoardo,
+  'Matteo': matteo,
+  'Paolo Agnelli': paoloAgnelli,
+  'Francesca': francesca,
+  'Beatrice': beatrice,
+  'Rossana': rossana,
+  'Valerio Caimi': valerioCaimi,
+};
+const txSlug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
 // ── Cross-cutting themes ──
 const themes = [
@@ -207,15 +228,25 @@ const impactClass = { High: 'high', Med: 'med', Low: 'low' };
     <!-- ── INTERVIEWS ── -->
     <h2 class="au-section-title">01 · Interviews <em>So Far</em></h2>
     <div class="people-grid">
-      {people.map(([name, role, scope]) => (
-        <div class="person-card">
-          <div class="person-name">{name}</div>
-          <div class="person-role">{role}</div>
-          <p class="person-scope">{scope}</p>
-        </div>
-      ))}
+      {people.map(([name, role, scope]) => {
+        const hasTx = Boolean(transcripts[name]);
+        return (
+          <div
+            class:list={['person-card', { 'person-card--clickable': hasTx }]}
+            data-tx-target={hasTx ? txSlug(name) : undefined}
+            role={hasTx ? 'button' : undefined}
+            tabindex={hasTx ? '0' : undefined}
+            aria-haspopup={hasTx ? 'dialog' : undefined}
+          >
+            <div class="person-name">{name}</div>
+            <div class="person-role">{role}</div>
+            <p class="person-scope">{scope}</p>
+            {hasTx && <span class="person-tx-hint">Read transcript &rarr;</span>}
+          </div>
+        );
+      })}
     </div>
-    <p class="au-prose au-prose--muted">Seven interviews in: coverage now spans the tennis school, the competitive squad and sales, alongside administration and reception. More statements will be folded in as they arrive.</p>
+    <p class="au-prose au-prose--muted">Seven interviews in: coverage now spans the tennis school, the competitive squad and sales, alongside administration and reception. Click any name to read that interview's full transcript. More statements will be folded in as they arrive.</p>
 
     <!-- ── CROSS-CUTTING THEMES ── -->
     <h2 class="au-section-title">02 · Cross-Cutting <em>Themes</em></h2>
@@ -373,7 +404,70 @@ const impactClass = { High: 'high', Med: 'med', Low: 'low' };
 
     <p class="au-footer">Confidential · Tennis Club Ambrosiano · Audit dates: 22–23 June 2026 · Living document</p>
 
+    <!-- ── INTERVIEW TRANSCRIPT MODAL ── -->
+    <div id="tx-modal" class="tx-modal" hidden role="dialog" aria-modal="true" aria-labelledby="tx-modal-name">
+      <div class="tx-modal__backdrop" data-tx-close></div>
+      <div class="tx-modal__panel">
+        <header class="tx-modal__head">
+          <div class="tx-modal__heading">
+            <span class="tx-modal__eyebrow">Interview transcript</span>
+            <span class="tx-modal__name" id="tx-modal-name"></span>
+            <span class="tx-modal__role"></span>
+          </div>
+          <button type="button" class="tx-modal__close" data-tx-close aria-label="Close transcript">&times;</button>
+        </header>
+        <div class="tx-modal__body" tabindex="0"></div>
+        <div class="tx-modal__foot">Automated interview transcription · Italian · condensed for readability</div>
+      </div>
+    </div>
+
+    <!-- hidden source store: one block per interviewee, copied into the modal on click -->
+    <div class="tx-store" hidden>
+      {people.filter(([name]) => transcripts[name]).map(([name, role]) => (
+        <div id={`tx-src-${txSlug(name)}`} data-name={name} data-role={role}>{transcripts[name]}</div>
+      ))}
+    </div>
+
   </main>
+
+  <script>
+    (() => {
+      const modal = document.getElementById('tx-modal');
+      if (!modal) return;
+      const nameEl = modal.querySelector('.tx-modal__name');
+      const roleEl = modal.querySelector('.tx-modal__role');
+      const bodyEl = modal.querySelector('.tx-modal__body');
+      const closeBtn = modal.querySelector('.tx-modal__close');
+      let lastFocus = null;
+
+      const open = (id) => {
+        const src = document.getElementById('tx-src-' + id);
+        if (!src) return;
+        nameEl.textContent = src.dataset.name || '';
+        roleEl.textContent = src.dataset.role || '';
+        bodyEl.textContent = src.textContent;
+        bodyEl.scrollTop = 0;
+        lastFocus = document.activeElement;
+        modal.hidden = false;
+        document.body.style.overflow = 'hidden';
+        closeBtn.focus();
+      };
+      const close = () => {
+        modal.hidden = true;
+        document.body.style.overflow = '';
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
+      };
+
+      document.querySelectorAll('[data-tx-target]').forEach((card) => {
+        card.addEventListener('click', () => open(card.getAttribute('data-tx-target')));
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(card.getAttribute('data-tx-target')); }
+        });
+      });
+      modal.querySelectorAll('[data-tx-close]').forEach((el) => el.addEventListener('click', close));
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) close(); });
+    })();
+  </script>
 
 </BaseLayout>
 
@@ -806,6 +900,120 @@ const impactClass = { High: 'high', Med: 'med', Low: 'low' };
     text-transform: uppercase;
   }
 
+  /* ── CLICKABLE PERSON CARDS ── */
+  .person-card--clickable { cursor: pointer; transition: border-color 0.18s, box-shadow 0.18s, transform 0.18s; }
+  .person-card--clickable:hover { border-color: var(--red); box-shadow: 0 8px 24px rgba(0,0,0,0.09); transform: translateY(-2px); }
+  .person-card--clickable:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+  .person-tx-hint {
+    display: inline-block;
+    margin-top: 12px;
+    font-family: var(--fd);
+    font-size: clamp(10px, 0.72vw, 12px);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+
+  /* ── TRANSCRIPT MODAL ── */
+  .tx-store { display: none; }
+  .tx-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(12px, 4vw, 48px);
+  }
+  .tx-modal[hidden] { display: none; }
+  .tx-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15,16,19,0.62);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+  .tx-modal__panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: min(820px, 100%);
+    max-height: min(86vh, 920px);
+    background: #fff;
+    border-top: 4px solid var(--red);
+    border-radius: 6px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+    overflow: hidden;
+  }
+  .tx-modal__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px clamp(18px, 2.5vw, 32px) 16px;
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .tx-modal__heading { display: flex; flex-direction: column; gap: 3px; }
+  .tx-modal__eyebrow {
+    font-family: var(--fd);
+    font-size: clamp(9px, 0.65vw, 11px);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+  }
+  .tx-modal__name {
+    font-family: var(--fd);
+    font-size: clamp(1.3rem, 2vw, 1.9rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.05;
+    color: var(--text);
+  }
+  .tx-modal__role {
+    font-family: var(--fd);
+    font-size: clamp(10px, 0.8vw, 13px);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+  .tx-modal__close {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 30px;
+    line-height: 1;
+    color: var(--grey-mid);
+    padding: 0 6px;
+    border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
+  }
+  .tx-modal__close:hover { color: var(--text); background: rgba(0,0,0,0.05); }
+  .tx-modal__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 18px clamp(18px, 2.5vw, 32px);
+    white-space: pre-wrap;
+    font-size: clamp(13px, 0.95vw, 15px);
+    font-weight: 300;
+    line-height: 1.7;
+    color: #333;
+  }
+  .tx-modal__foot {
+    padding: 11px clamp(18px, 2.5vw, 32px);
+    border-top: 1px solid var(--grey-light);
+    font-family: var(--fd);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    background: var(--off-white);
+  }
+
   /* ── MOBILE ── */
   @media (max-width: 768px) {
     .au-page { padding: calc(var(--header-h) + 20px) 16px 40px; }
@@ -814,5 +1022,7 @@ const impactClass = { High: 'high', Med: 'med', Low: 'low' };
     .idea-grid { grid-template-columns: 1fr; }
     .prio-grid { grid-template-columns: 1fr; }
     .au-footer { font-size: 12px; }
+    .tx-modal { padding: 10px; }
+    .tx-modal__panel { max-height: 94vh; }
   }
 </style>
