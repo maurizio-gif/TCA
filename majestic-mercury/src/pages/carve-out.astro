@@ -8,7 +8,38 @@ const deadline = '31 July 2026';
 // One slide per topic. Each: status (where we are) + the single next move.
 const topics = [
   {
-    n: '01', title: 'Perfect Gym', scope: 'Member platform',
+    n: '01', title: 'Account Ownership', scope: 'Who owns the digital stack',
+    decision: true,
+    tone: 'red', status: 'Decide first', stage: 'Decision',
+    owner: 'Maurizio Taruggi', partner: 'Brian Morris · decision', date: 'Decide now',
+    macro: 'Before we switch on the new tools, one choice shapes everything that follows: who owns the digital stack — the Club, or a dedicated digital entity?',
+    paths: [
+      {
+        key: 'A', title: 'Register under the Club', badge: 'Simple today', rec: false,
+        text: 'Fastest to set up — but every future change becomes a migration, and all digital risk and admin sit directly on the Club.',
+      },
+      {
+        key: 'B', title: 'Dedicated digital entity', badge: 'Recommended', rec: true,
+        text: 'Clean from day one. One home for technology, marketing and accounting — built to scale, leaving the Club free to focus on members.',
+      },
+    ],
+    note: 'The window narrows with every account we activate: deciding now avoids a costly migration later.',
+    tools: [
+      { name: 'GitHub', cat: 'now', tag: 'Code & history', desc: 'The secure vault where all the software and its full history live.' },
+      { name: 'Vercel', cat: 'now', tag: 'Website hosting', desc: 'Where the new website actually runs and goes live to the public.' },
+      { name: 'Cloudflare', cat: 'now', tag: 'Domain & security', desc: 'Controls the web address, plus the security and speed of the site.' },
+      { name: 'Fillout', cat: 'now', tag: 'Smart forms', desc: 'The forms members fill in — sign-ups and bookings — replacing the old ones.' },
+      { name: 'Stripe Connect', cat: 'now', tag: 'Payments', desc: 'Collects membership and service payments online.' },
+      { name: 'Supabase', cat: 'future', tag: 'Data backbone', desc: 'One organised home for member data, so the CRM, management system and dashboards all speak the same language.' },
+      { name: 'Claude Team', cat: 'future', tag: 'AI on the data', desc: 'Reads the data to answer questions and produce analysis and reports automatically.' },
+      { name: 'Meta Business Manager', cat: 'future', tag: 'Advertising', desc: 'Runs Facebook and Instagram ads, with a separate ad account per club.' },
+      { name: 'Accounting system', cat: 'future', tag: 'Finance', desc: 'Bookkeeping and financial reporting — the specific tool is still to be decided.' },
+    ],
+    next: 'Pick the ownership model now — before the next account goes live.',
+    nextShort: 'Decide ownership',
+  },
+  {
+    n: '02', title: 'Perfect Gym', scope: 'Member platform',
     tone: 'green', status: 'On Track', pct: 80, stage: 'Finalising',
     owner: 'Maurizio Taruggi', partner: 'Nathan Dennis', date: 'by 31 Jul',
     where: [
@@ -21,7 +52,7 @@ const topics = [
     nextShort: 'Thomas Escher signs',
   },
   {
-    n: '02', title: 'Website', scope: 'New site + forms',
+    n: '03', title: 'Website', scope: 'New site + forms',
     tone: 'amber', status: 'In Progress', pct: 50, stage: 'Building',
     owner: 'Maurizio Taruggi', partner: 'Laura Giardini + Alice Bartoli', date: 'TBD — DNS',
     preview: 'https://maurizio-gif.github.io/WebSite-TCA/',
@@ -34,7 +65,7 @@ const topics = [
     nextShort: 'Domain → Cloudflare',
   },
   {
-    n: '03', title: 'Social & Analytics', scope: 'Social, GTM, GSC, Analytics',
+    n: '04', title: 'Social & Analytics', scope: 'Social, GTM, GSC, Analytics',
     tone: 'grey', status: 'Not Started', pct: 20, stage: 'Awaiting data',
     owner: 'Maurizio Taruggi', partner: 'Laura Giardini', date: 'TBD',
     where: [
@@ -45,7 +76,7 @@ const topics = [
     nextShort: 'Accounts from Geeta',
   },
   {
-    n: '04', title: 'Microsoft', scope: 'Outlook, OneDrive, SharePoint',
+    n: '05', title: 'Microsoft', scope: 'Outlook, OneDrive, SharePoint',
     tone: 'amber', status: 'In Progress', pct: 40, stage: 'Mapping',
     owner: 'Maurizio Taruggi', partner: 'Thomas Sander + Alice Bartoli', date: 'TBD — DNS',
     where: [
@@ -56,7 +87,7 @@ const topics = [
     nextShort: 'DNS config',
   },
   {
-    n: '05', title: 'Physical Devices', scope: 'PCs & Wi-Fi',
+    n: '06', title: 'Physical Devices', scope: 'PCs & Wi-Fi',
     tone: 'grey', status: 'Not Started', pct: 10, stage: 'To kick off',
     owner: 'On-site partner (TBD)', partner: 'Thomas Sander + Alice Bartoli', date: 'Jun 22–26',
     where: [
@@ -84,13 +115,19 @@ const topics = [
 
       <div class="cc-board">
         {topics.map((t) => (
-          <div class={`cc-cell cc-cell--${t.tone}`}>
+          <div class={`cc-cell cc-cell--${t.tone}${t.decision ? ' cc-cell--decision' : ''}`}>
             <div class="cc-cell-head">
               <span class="cc-cell-n">{t.n}</span>
               <span class="cc-cell-title">{t.title}</span>
             </div>
-            <div class="cc-bar"><span class={`cc-bar-fill bar--${t.tone}`} style={`width:${t.pct}%`}></span></div>
-            <div class="cc-cell-meta"><strong>{t.pct}%</strong> · {t.status}</div>
+            {t.decision ? (
+              <span class="cc-cell-flag">&#9679; Decide first</span>
+            ) : (
+              <>
+                <div class="cc-bar"><span class={`cc-bar-fill bar--${t.tone}`} style={`width:${t.pct}%`}></span></div>
+                <div class="cc-cell-meta"><strong>{t.pct}%</strong> · {t.status}</div>
+              </>
+            )}
             <div class="cc-cell-next"><em>Next</em> {t.nextShort}</div>
           </div>
         ))}
@@ -101,7 +138,66 @@ const topics = [
   </section>
 
   <!-- ── ONE SLIDE PER TOPIC ── -->
-  {topics.map((t) => (
+  {topics.map((t) => (t.decision ? (
+
+    <!-- ── DECISION SLIDE ── -->
+    <section class="cslide cslide--topic cslide--decision" data-header="light">
+      <span class="ct-watermark">{t.n}</span>
+      <div class="ct-inner ct-inner--decision">
+
+        <div class="ct-head">
+          <span class="ct-eyebrow">Carve-Out · {t.n} / 0{topics.length} · Decide first</span>
+          <div class="ct-titlerow">
+            <h2 class="ct-title">{t.title}</h2>
+            <span class="ct-scope">{t.scope}</span>
+          </div>
+        </div>
+
+        <p class="dec-macro">{t.macro}</p>
+
+        <div class="dec-paths">
+          {t.paths.map((p) => (
+            <div class={`dec-path${p.rec ? ' dec-path--rec' : ''}`}>
+              <div class="dec-path-top">
+                <span class="dec-path-opt">Option {p.key}</span>
+                <span class={`dec-path-badge${p.rec ? ' dec-path-badge--rec' : ''}`}>{p.badge}</span>
+              </div>
+              <div class="dec-path-title">{p.title}</div>
+              <p class="dec-path-text">{p.text}</p>
+            </div>
+          ))}
+        </div>
+
+        <p class="dec-note">{t.note}</p>
+
+        <div class="dec-tools">
+          <div class="dec-tools-label">What are these tools? <span>— click any to learn more</span></div>
+          <div class="dec-tools-grid">
+            {t.tools.map((tool) => (
+              <details class="dec-tool">
+                <summary>
+                  <span class="dec-tool-name">{tool.name}</span>
+                  <span class={`dec-tool-cat dec-tool-cat--${tool.cat}`}>{tool.cat === 'now' ? 'Now' : 'Future'}</span>
+                  <span class="dec-tool-tag">{tool.tag}</span>
+                  <span class="dec-tool-plus" aria-hidden="true">+</span>
+                </summary>
+                <p class="dec-tool-desc">{tool.desc}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+
+        <div class="ct-foot">
+          <span><em>Owner</em>{t.owner}</span>
+          <span><em>With</em>{t.partner}</span>
+          <span><em>Target</em>{t.date}</span>
+        </div>
+
+      </div>
+    </section>
+
+  ) : (
+
     <section class="cslide cslide--topic" data-header="light">
       <span class="ct-watermark">{t.n}</span>
       <div class="ct-inner">
@@ -149,7 +245,8 @@ const topics = [
 
       </div>
     </section>
-  ))}
+
+  )))}
 
 </BaseLayout>
 
@@ -218,7 +315,7 @@ const topics = [
   }
   .cc-board {
     margin-top: auto;
-    display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px;
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px;
   }
   .cc-cell {
     background: rgba(255,255,255,0.06);
@@ -230,6 +327,17 @@ const topics = [
   .cc-cell--green { border-top-color: #2E9E45; }
   .cc-cell--amber { border-top-color: #D89000; }
   .cc-cell--grey  { border-top-color: rgba(255,255,255,0.3); }
+  .cc-cell--decision {
+    border-top-color: #C0282A;
+    background: rgba(192,40,42,0.14);
+    border-color: rgba(192,40,42,0.4);
+  }
+  .cc-cell-flag {
+    font-family: var(--fd); font-size: clamp(11px, 0.8vw, 13px);
+    font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+    color: #fff; background: var(--red);
+    padding: 4px 10px; border-radius: 3px; width: fit-content;
+  }
   .cc-cell-head { display: flex; align-items: baseline; gap: 8px; }
   .cc-cell-n { font-family: var(--fd); font-size: clamp(13px, 1vw, 16px); font-weight: 800; color: rgba(255,255,255,0.35); }
   .cc-cell-title { font-family: var(--fd); font-size: clamp(13px, 1.05vw, 18px); font-weight: 700; text-transform: uppercase; color: #fff; line-height: 1.05; }
@@ -328,6 +436,96 @@ const topics = [
   .ct-foot span { font-size: clamp(12px, 0.95vw, 16px); font-weight: 400; color: #444; }
   .ct-foot em { font-family: var(--fd); font-style: normal; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey-mid); font-size: 0.7em; display: block; margin-bottom: 3px; }
 
+  /* ══════════════ DECISION SLIDE ══════════════ */
+  .cslide--decision { overflow-y: auto; }
+  .ct-inner--decision {
+    justify-content: flex-start;
+    gap: clamp(10px, 1.8vh, 20px);
+    padding-top: calc(var(--header-h) + 2.4vh);
+    padding-bottom: 3vh;
+  }
+
+  .dec-macro {
+    font-family: var(--fd);
+    font-size: clamp(1.15rem, 1.9vw, 2.05rem);
+    font-weight: 700; line-height: 1.22; color: var(--text);
+    max-width: 62ch;
+  }
+
+  /* two paths */
+  .dec-paths { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(12px, 1.6vw, 22px); }
+  .dec-path {
+    border: 1.5px solid var(--grey-light); border-radius: 8px;
+    padding: clamp(14px, 1.8vh, 22px) clamp(16px, 1.6vw, 24px);
+    background: #fff;
+  }
+  .dec-path--rec { border-color: var(--red); background: rgba(192,40,42,0.04); box-shadow: 0 6px 22px rgba(192,40,42,0.10); }
+  .dec-path-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+  .dec-path-opt {
+    font-family: var(--fd); font-size: clamp(10px, 0.78vw, 12px);
+    font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--grey-mid);
+  }
+  .dec-path-badge {
+    font-family: var(--fd); font-size: clamp(9px, 0.7vw, 11px);
+    font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 3px;
+    color: var(--grey-mid); background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.12);
+  }
+  .dec-path-badge--rec { color: #fff; background: var(--red); border-color: var(--red); }
+  .dec-path-title {
+    font-family: var(--fd); font-size: clamp(1.15rem, 1.7vw, 1.7rem);
+    font-weight: 800; text-transform: uppercase; line-height: 1.05; color: var(--text); margin-bottom: 6px;
+  }
+  .dec-path--rec .dec-path-title { color: var(--red); }
+  .dec-path-text { font-size: clamp(12px, 0.95vw, 15px); font-weight: 300; color: #555; line-height: 1.55; }
+
+  .dec-note {
+    font-size: clamp(12px, 0.92vw, 14.5px); font-weight: 300; color: #666; line-height: 1.5;
+    padding-left: 14px; border-left: 3px solid var(--red);
+  }
+
+  /* tools accordion */
+  .dec-tools-label {
+    font-family: var(--fd); font-size: clamp(10px, 0.82vw, 13px);
+    font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--grey-mid);
+    margin-bottom: 1vh;
+  }
+  .dec-tools-label span { font-weight: 400; letter-spacing: 0.04em; text-transform: none; color: #aaa; }
+  .dec-tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+
+  .dec-tool {
+    border: 1px solid var(--grey-light); border-radius: 6px; background: #fff;
+    transition: border-color 0.18s, box-shadow 0.18s;
+  }
+  .dec-tool[open] { border-color: rgba(192,40,42,0.4); box-shadow: 0 4px 14px rgba(0,0,0,0.05); }
+  .dec-tool summary {
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 12px; cursor: pointer; list-style: none;
+  }
+  .dec-tool summary::-webkit-details-marker { display: none; }
+  .dec-tool-name { font-family: var(--fd); font-size: clamp(12px, 0.95vw, 15px); font-weight: 700; color: var(--text); }
+  .dec-tool-cat {
+    font-family: var(--fd); font-size: clamp(8px, 0.6vw, 9.5px);
+    font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 1px 6px; border-radius: 2px; flex-shrink: 0;
+  }
+  .dec-tool-cat--now    { color: #1E6B2E; background: rgba(30,107,46,0.1); }
+  .dec-tool-cat--future { color: #8B6000; background: rgba(180,120,0,0.1); }
+  .dec-tool-tag {
+    font-size: clamp(10px, 0.78vw, 12px); font-weight: 300; color: #888;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .dec-tool-plus {
+    margin-left: auto; flex-shrink: 0;
+    font-family: var(--fd); font-size: 1.1rem; font-weight: 700; line-height: 1;
+    color: var(--red); transition: transform 0.2s ease;
+  }
+  .dec-tool[open] .dec-tool-plus { transform: rotate(45deg); }
+  .dec-tool-desc {
+    padding: 0 12px 11px; font-size: clamp(12px, 0.9vw, 14px);
+    font-weight: 300; color: #555; line-height: 1.55;
+  }
+
   /* ══════════════ MOBILE ══════════════ */
   @media (max-width: 768px) {
     html { scroll-snap-type: none; }
@@ -345,6 +543,12 @@ const topics = [
     .ct-cols { grid-template-columns: 1fr; gap: 16px; }
     .ct-where li { font-size: 16px; }
     .ct-next-text { font-size: 22px; }
+
+    .ct-inner--decision { padding: calc(var(--header-h) + 20px) 20px 28px; }
+    .dec-macro { font-size: clamp(1.2rem, 6vw, 1.7rem); }
+    .dec-paths { grid-template-columns: 1fr; gap: 12px; }
+    .dec-tools-grid { grid-template-columns: 1fr; }
+    .dec-tool-tag { white-space: normal; }
   }
 </style>
 
