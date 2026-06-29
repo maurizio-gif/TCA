@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCA · Digital Account Ownership</title>
+
+<link rel="icon" type="image/png" href="logo%20tca.png">
+<link rel="apple-touch-icon" href="logo%20tca.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red:        #8B1A1A;
+    --red-dark:   #6B1414;
+    --grey-light: #EBEBEB;
+    --grey-mid:   #999999;
+    --text:       #1A1A1A;
+    --amber:      #8B6000;
+    --green:      #1E6B2E;
+    --fd: 'Barlow Condensed', sans-serif;
+    --fb: 'Barlow', sans-serif;
+  }
+
+  html, body {
+    font-family: var(--fb);
+    background: #fff;
+    color: var(--text);
+    min-height: 100%;
+  }
+
+  /* ── NAV ── */
+  .page-nav {
+    position: sticky; top: 0; z-index: 10;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 3.5vw; height: 64px;
+    background: rgba(255,255,255,0.97);
+    border-bottom: 1px solid var(--grey-light);
+    backdrop-filter: blur(8px);
+  }
+  .nav-logo img { height: 52px; }
+  .nav-tag {
+    font-family: var(--fd); font-size: 0.75vw; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--grey-mid);
+  }
+  .nav-links { display: flex; align-items: center; gap: 1.8vw; }
+  .nav-back {
+    font-family: var(--fd); font-size: 0.75vw; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey-mid);
+    text-decoration: none; display: flex; align-items: center; gap: 6px;
+    transition: color 0.2s;
+  }
+  .nav-back:hover { color: var(--text); }
+  .nav-back::before { content: '←'; font-size: 1em; }
+
+  /* ── CONTENT ── */
+  .page-content {
+    padding: 4vh 5vw 6vh;
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+
+  /* ── HEADER ── */
+  .eyebrow {
+    font-family: var(--fd); font-size: 0.78vw; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--grey-mid);
+    display: block; margin-bottom: 10px;
+  }
+  .page-title {
+    font-family: var(--fd);
+    font-size: clamp(2.4rem, 5vw, 5.5rem);
+    font-weight: 800; text-transform: uppercase; line-height: 1.0;
+    color: var(--text); margin-bottom: 0.9vh;
+  }
+  .page-title em { color: var(--red); font-style: normal; }
+  .page-subtitle {
+    font-size: clamp(14px, 1.05vw, 17px); font-weight: 300; color: #555;
+    margin-bottom: 3.5vh; max-width: 680px; line-height: 1.6;
+  }
+
+  /* ── DECISION GRID ── */
+  .decision-grid {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: clamp(18px, 2.5vw, 36px);
+    align-items: start;
+    margin-bottom: 2.4vh;
+  }
+
+  /* ── ACCOUNTS COLUMN ── */
+  .accounts-col { display: flex; flex-direction: column; gap: clamp(14px, 1.8vh, 24px); }
+
+  .accounts-block {
+    border: 1px solid var(--grey-light);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .accounts-block-header {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 11px 20px;
+    background: var(--text);
+  }
+  .accounts-block-header--future {
+    background: #f5f5f5;
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .accounts-block-label {
+    font-family: var(--fd); font-size: clamp(10px, 0.8vw, 13px);
+    font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #fff;
+  }
+  .accounts-block-header--future .accounts-block-label { color: var(--grey-mid); }
+
+  .accounts-block-count {
+    font-family: var(--fd); font-size: clamp(9px, 0.7vw, 11px);
+    font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 2px;
+    background: rgba(255,255,255,0.14); color: rgba(255,255,255,0.75);
+  }
+  .accounts-block-header--future .accounts-block-count {
+    background: rgba(0,0,0,0.06); color: var(--grey-mid);
+  }
+
+  .accounts-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+  .account-item {
+    padding: 14px 20px;
+    border-right: 1px solid var(--grey-light);
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .account-item:last-child { border-bottom: none; }
+
+  .account-name {
+    font-family: var(--fd);
+    font-size: clamp(14px, 1.15vw, 18px);
+    font-weight: 700; color: var(--text); margin-bottom: 4px;
+  }
+  .account-name--future { color: #888; }
+  .account-desc {
+    font-size: clamp(11px, 0.82vw, 13px); font-weight: 300;
+    color: #777; line-height: 1.5;
+  }
+  .account-tbd {
+    display: inline-block; margin-top: 5px;
+    font-family: var(--fd); font-size: clamp(9px, 0.68vw, 10px);
+    font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--amber); padding: 2px 7px; border-radius: 2px;
+    background: rgba(180,120,0,0.08); border: 1px solid rgba(180,120,0,0.22);
+  }
+
+  /* ── PATHS COLUMN ── */
+  .paths-col {
+    display: flex; flex-direction: column; gap: 14px;
+    position: sticky; top: 80px;
+  }
+
+  .path-card {
+    border: 1.5px solid var(--grey-light);
+    border-radius: 6px; overflow: hidden;
+  }
+  .path-card--recommended { border-color: var(--red); }
+
+  .path-header {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 12px 18px; background: #f9f9f9;
+  }
+  .path-header--recommended { background: var(--red); }
+
+  .path-option-label {
+    font-family: var(--fd); font-size: clamp(9px, 0.72vw, 11px);
+    font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--grey-mid); margin-bottom: 3px;
+  }
+  .path-header--recommended .path-option-label { color: rgba(255,255,255,0.6); }
+
+  .path-title {
+    font-family: var(--fd); font-size: clamp(14px, 1.1vw, 17px);
+    font-weight: 700; color: var(--text);
+  }
+  .path-header--recommended .path-title { color: #fff; }
+
+  .path-badge {
+    flex-shrink: 0;
+    font-family: var(--fd); font-size: clamp(9px, 0.68vw, 11px);
+    font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 2px; white-space: nowrap;
+  }
+  .path-badge--no {
+    background: rgba(139,26,26,0.08); color: var(--red);
+    border: 1px solid rgba(139,26,26,0.22);
+  }
+  .path-badge--yes {
+    background: rgba(255,255,255,0.18); color: #fff;
+  }
+
+  .path-body { padding: 12px 18px 14px; }
+
+  .path-item {
+    display: flex; align-items: flex-start; gap: 9px;
+    padding: 6px 0; border-bottom: 1px solid var(--grey-light);
+    font-size: clamp(12px, 0.88vw, 14px); font-weight: 300;
+    color: #555; line-height: 1.5;
+  }
+  .path-item:last-child { border-bottom: none; }
+
+  .pi-icon {
+    flex-shrink: 0; margin-top: 2px;
+    font-family: var(--fd); font-size: 1em; font-weight: 700; line-height: 1;
+  }
+  .pi-icon--pro { color: var(--green); }
+  .pi-icon--con { color: #bbb; }
+
+  /* ── ENTITY SCOPE ── */
+  .scope-block {
+    border: 1px solid var(--grey-light);
+    border-left: 3px solid var(--red);
+    border-radius: 4px;
+    padding: 14px 20px;
+    margin-bottom: 2.4vh;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  .scope-label {
+    font-family: var(--fd); font-size: clamp(9px, 0.72vw, 11px);
+    font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--red); padding-top: 2px; white-space: nowrap;
+  }
+  .scope-body {
+    font-size: clamp(13px, 0.9vw, 15px); font-weight: 300;
+    color: #444; line-height: 1.65;
+  }
+  .scope-body strong { font-weight: 600; color: var(--text); }
+
+  /* ── PERFECT GYM NOTE ── */
+  .pg-note {
+    background: rgba(180,120,0,0.06);
+    border: 1px solid rgba(180,120,0,0.22);
+    border-left: 3px solid var(--amber);
+    border-radius: 4px;
+    padding: 14px 20px;
+    margin-bottom: 2vh;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  .pg-label {
+    font-family: var(--fd); font-size: clamp(9px, 0.72vw, 11px);
+    font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--amber); padding-top: 2px; white-space: nowrap;
+  }
+  .pg-text {
+    font-size: clamp(12px, 0.88vw, 14px); font-weight: 300;
+    color: #555; line-height: 1.6;
+  }
+  .pg-text strong { font-weight: 600; color: var(--text); }
+
+  /* ── URGENCY ── */
+  .urgency-bar {
+    background: var(--text); border-radius: 4px;
+    padding: 14px 22px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .urgency-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--red); flex-shrink: 0;
+  }
+  .urgency-text {
+    font-family: var(--fd); font-size: clamp(12px, 0.95vw, 15px);
+    font-weight: 400; color: rgba(255,255,255,0.75); line-height: 1.5;
+  }
+  .urgency-text strong { color: #fff; font-weight: 700; }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    margin-top: 3.5vh; border-top: 1px solid var(--grey-light);
+    padding-top: 2vh; font-size: 0.75vw; color: var(--grey-mid);
+    font-family: var(--fd); letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 960px) {
+    .decision-grid { grid-template-columns: 1fr; }
+    .paths-col { position: static; }
+  }
+  @media (max-width: 768px) {
+    .page-nav { height: 56px; padding: 0 20px; }
+    .nav-logo img { height: 42px; }
+    .nav-tag { display: none; }
+    .nav-back { font-size: 12px; }
+    .page-content { padding: 24px 16px 48px; }
+    .eyebrow { font-size: 11px; }
+    .page-title { font-size: clamp(1.8rem, 8vw, 2.6rem); }
+    .page-subtitle { font-size: 14px; }
+    .accounts-list { grid-template-columns: 1fr; }
+    .scope-block,
+    .pg-note { grid-template-columns: 1fr; gap: 6px; }
+    .scope-label, .pg-label { white-space: normal; }
+    .page-footer { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="page-nav">
+  <a href="index.html" class="nav-logo">
+    <img src="logo%20tca.png" alt="Tennis Club Ambrosiano">
+  </a>
+  <span class="nav-tag">Strategic Decision</span>
+  <div class="nav-links">
+    <a href="carve-out.html" class="nav-back">Carve-Out Roadmap</a>
+    <a href="index.html" class="nav-back">Hub</a>
+  </div>
+</nav>
+
+<main class="page-content">
+
+  <div class="page-header">
+    <span class="eyebrow">Operational Architecture &middot; Decision Point</span>
+    <h1 class="page-title">Digital Account <em>Ownership</em></h1>
+    <p class="page-subtitle">Before the next account goes live, we choose who owns the stack. This decision determines the cost and complexity of every future change — and the window to choose is closing with each activation.</p>
+  </div>
+
+  <div class="decision-grid">
+
+    <!-- ── LEFT: Account inventory ── -->
+    <div class="accounts-col">
+
+      <div class="accounts-block">
+        <div class="accounts-block-header">
+          <span class="accounts-block-label">Activate now</span>
+          <span class="accounts-block-count">5 accounts</span>
+        </div>
+        <div class="accounts-list">
+          <div class="account-item">
+            <div class="account-name">GitHub</div>
+            <div class="account-desc">Version control &amp; CI/CD — every line of code and every deploy</div>
+          </div>
+          <div class="account-item">
+            <div class="account-name">Vercel</div>
+            <div class="account-desc">Web hosting for the new TCA site and all future apps</div>
+          </div>
+          <div class="account-item">
+            <div class="account-name">Fillout</div>
+            <div class="account-desc">Smart forms replacing JotForm and legacy form infrastructure</div>
+          </div>
+          <div class="account-item">
+            <div class="account-name">Cloudflare</div>
+            <div class="account-desc">DNS, CDN, SSL — controls domain identity and web performance</div>
+          </div>
+          <div class="account-item">
+            <div class="account-name">Stripe Connect</div>
+            <div class="account-desc">Payment infrastructure for memberships and club services</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accounts-block">
+        <div class="accounts-block-header accounts-block-header--future">
+          <span class="accounts-block-label">Future roadmap</span>
+          <span class="accounts-block-count">4 accounts</span>
+        </div>
+        <div class="accounts-list">
+          <div class="account-item">
+            <div class="account-name account-name--future">Supabase</div>
+            <div class="account-desc">Data layer for CRM, ERP, and BI dashboards</div>
+          </div>
+          <div class="account-item">
+            <div class="account-name account-name--future">Claude Team</div>
+            <div class="account-desc">AI analysis connected to Supabase — intelligence layer on top of club data</div>
+          </div>
+          <div class="account-item">
+            <div class="account-name account-name--future">Meta Business Manager</div>
+            <div class="account-desc">Digital advertising with club-specific ad accounts and creatives</div>
+          </div>
+          <div class="account-item">
+            <div class="account-name account-name--future">Accounting System</div>
+            <div class="account-desc">Financial management and reporting infrastructure</div>
+            <div class="account-tbd">To decide</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── RIGHT: Two paths ── -->
+    <div class="paths-col">
+
+      <div class="path-card">
+        <div class="path-header">
+          <div>
+            <div class="path-option-label">Option A</div>
+            <div class="path-title">Register under TCA</div>
+          </div>
+          <span class="path-badge path-badge--no">Not recommended</span>
+        </div>
+        <div class="path-body">
+          <div class="path-item">
+            <span class="pi-icon pi-icon--pro">+</span>
+            Simple setup today
+          </div>
+          <div class="path-item">
+            <span class="pi-icon pi-icon--con">−</span>
+            Migration required later — time, technical risk, potential downtime
+          </div>
+          <div class="path-item">
+            <span class="pi-icon pi-icon--con">−</span>
+            Every digital asset tied to the club's legal identity and governance
+          </div>
+          <div class="path-item">
+            <span class="pi-icon pi-icon--con">−</span>
+            Limits future optionality: services resale, external partnerships
+          </div>
+          <div class="path-item">
+            <span class="pi-icon pi-icon--con">−</span>
+            Digital and operational risk not separated from the club
+          </div>
+        </div>
+      </div>
+
+      <div class="path-card path-card--recommended">
+        <div class="path-header path-header--recommended">
+          <div>
+            <div class="path-option-label">Option B</div>
+            <div class="path-title">Independent Entity</div>
+          </div>
+          <span class="path-badge path-badge--yes">Recommended</span>
+        </div>
+        <div class="path-body">
+          <div class="path-item">
+            <span class="pi-icon pi-icon--pro">+</span>
+            Clean separation from day one — no future migration needed
+          </div>
+          <div class="path-item">
+            <span class="pi-icon pi-icon--pro">+</span>
+            Club delegates digital ops to a focused, lean structure
+          </div>
+          <div class="path-item">
+            <span class="pi-icon pi-icon--pro">+</span>
+            Tech, digital marketing, and accounting under one governance model
+          </div>
+          <div class="path-item">
+            <span class="pi-icon pi-icon--pro">+</span>
+            Future optionality: resell services, attract partners, isolate risk
+          </div>
+          <div class="path-item">
+            <span class="pi-icon pi-icon--pro">+</span>
+            Lean digital model built to scale beyond a single club
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Entity scope note ── -->
+  <div class="scope-block">
+    <span class="scope-label">What this<br>entity covers</span>
+    <p class="scope-body">
+      <strong>Technology infrastructure</strong> (all accounts above) ·
+      <strong>Digital marketing &amp; advertising</strong> (Meta BM, analytics, campaigns) ·
+      <strong>Accounting &amp; reporting</strong> — from a tech governance perspective, with operational scope to be confirmed ·
+      <strong>Future commercial services</strong> (resell, partnerships, white-label) if the model evolves.
+      The club retains its own legal identity and operations; this entity manages the digital layer on its behalf.
+    </p>
+  </div>
+
+  <!-- ── Perfect Gym note ── -->
+  <div class="pg-note">
+    <span class="pg-label">Perfect Gym<br>Note</span>
+    <p class="pg-text">
+      <strong>Not technically binding today.</strong> The ownership transfer from Aspria BV is underway (Thomas Escher signing for TCA). However, if the new entity evolves into a services or management hub, having Perfect Gym registered under it would simplify future billing, governance, and commercial terms with Sport Alliance — and avoid a second migration later.
+      Worth evaluating now, before the transfer is finalised.
+    </p>
+  </div>
+
+  <!-- ── Urgency ── -->
+  <div class="urgency-bar">
+    <div class="urgency-dot"></div>
+    <p class="urgency-text">
+      <strong>The window closes with each activation.</strong>
+      Every account registered under TCA today is a future migration.
+      The conservative path is reversible in principle — but the cost grows with every new service added.
+      The right moment to decide is now, before the stack locks.
+    </p>
+  </div>
+
+  <p class="page-footer">Confidential &middot; Tennis Club Ambrosiano &middot; 2026</p>
+
+</main>
+
+</body>
+</html>
