@@ -1,0 +1,381 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// ── Accounts to activate now ──
+const activateNow = [
+  ['GitHub',         'Version control & CI/CD — every line of code and every deploy'],
+  ['Vercel',         'Web hosting for the new TCA site and all future apps'],
+  ['Fillout',        'Smart forms replacing JotForm and legacy form infrastructure'],
+  ['Cloudflare',     'DNS, CDN, SSL — controls domain identity and web performance'],
+  ['Stripe Connect', 'Payment infrastructure for memberships and club services'],
+];
+
+// ── Future roadmap accounts ──
+const futureRoadmap = [
+  ['Supabase',              'Data layer for CRM, ERP and BI dashboards', false],
+  ['Claude Team',           'AI analysis connected to Supabase — intelligence layer on club data', false],
+  ['Meta Business Manager', 'Digital advertising with club-specific ad accounts and creatives', false],
+  ['Accounting System',     'Financial management and reporting infrastructure', true],
+];
+
+const optionA = [
+  ['con', 'Simple setup today — the only real upside', true],
+  ['con', 'Migration required later: time, technical risk, potential downtime'],
+  ['con', "Every digital asset tied to the club's legal identity and governance"],
+  ['con', 'Limits future optionality: services resale, external partnerships'],
+  ['con', 'Digital and operational risk not separated from the club'],
+];
+
+const optionB = [
+  ['pro', 'Clean separation from day one — no future migration needed'],
+  ['pro', 'Club delegates digital ops to a focused, lean structure'],
+  ['pro', 'Tech, digital marketing and accounting under one governance model'],
+  ['pro', 'Future optionality: resell services, attract partners, isolate risk'],
+  ['pro', 'Lean digital model built to scale beyond a single club'],
+];
+---
+
+<BaseLayout
+  title="TCA · Digital Account Ownership"
+  description="Before the next account goes live — the case for registering the full digital stack under an independent entity rather than TCA directly."
+>
+
+  <main class="ao-page">
+
+    <!-- ── HEADER ── -->
+    <header class="ao-head">
+      <span class="ao-eyebrow">Operational Architecture &middot; Decision Point</span>
+      <h1 class="ao-title">Digital Account <em>Ownership</em></h1>
+      <p class="ao-sub">
+        Before the next account goes live, we choose who owns the stack. This decision sets the cost
+        and complexity of every future change — and the window to choose narrows with each activation.
+      </p>
+    </header>
+
+    <!-- ── DECISION GRID ── -->
+    <div class="ao-grid">
+
+      <!-- LEFT · account inventory -->
+      <div class="ao-accounts">
+
+        <div class="ao-block">
+          <div class="ao-block-head">
+            <span class="ao-block-label">Activate now</span>
+            <span class="ao-block-count">{activateNow.length} accounts</span>
+          </div>
+          <div class="ao-list">
+            {activateNow.map(([name, desc]) => (
+              <div class="ao-item">
+                <div class="ao-item-name">{name}</div>
+                <div class="ao-item-desc">{desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="ao-block">
+          <div class="ao-block-head ao-block-head--future">
+            <span class="ao-block-label">Future roadmap</span>
+            <span class="ao-block-count">{futureRoadmap.length} accounts</span>
+          </div>
+          <div class="ao-list">
+            {futureRoadmap.map(([name, desc, tbd]) => (
+              <div class="ao-item">
+                <div class="ao-item-name ao-item-name--future">{name}</div>
+                <div class="ao-item-desc">{desc}</div>
+                {tbd && <span class="ao-tbd">To decide</span>}
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT · two paths -->
+      <div class="ao-paths">
+
+        <div class="ao-path">
+          <div class="ao-path-head">
+            <div>
+              <div class="ao-path-opt">Option A</div>
+              <div class="ao-path-title">Register under TCA</div>
+            </div>
+            <span class="ao-path-badge ao-path-badge--no">Not recommended</span>
+          </div>
+          <div class="ao-path-body">
+            {optionA.map(([kind, text]) => (
+              <div class="ao-pi">
+                <span class={`ao-pi-icon ao-pi-icon--${kind === 'pro' ? 'pro' : 'con'}`}>{kind === 'pro' ? '+' : '−'}</span>
+                {text}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="ao-path ao-path--rec">
+          <div class="ao-path-head ao-path-head--rec">
+            <div>
+              <div class="ao-path-opt">Option B</div>
+              <div class="ao-path-title">Independent Entity</div>
+            </div>
+            <span class="ao-path-badge ao-path-badge--yes">Recommended</span>
+          </div>
+          <div class="ao-path-body">
+            {optionB.map(([kind, text]) => (
+              <div class="ao-pi">
+                <span class="ao-pi-icon ao-pi-icon--pro">+</span>
+                {text}
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── ENTITY SCOPE ── -->
+    <div class="ao-scope">
+      <span class="ao-scope-label">What this<br />entity covers</span>
+      <p class="ao-scope-body">
+        <strong>Technology infrastructure</strong> (all accounts above) &middot;
+        <strong>Digital marketing &amp; advertising</strong> (Meta BM, analytics, campaigns) &middot;
+        <strong>Accounting &amp; reporting</strong> — certainly from a tech &amp; development standpoint, with operational scope to be confirmed &middot;
+        <strong>Future commercial services</strong> (resell, partnerships, white-label) if the model evolves.
+        The club keeps its own legal identity and operations; this entity runs the digital layer on its behalf.
+      </p>
+    </div>
+
+    <!-- ── PERFECT GYM NOTE ── -->
+    <div class="ao-pg">
+      <span class="ao-pg-label">Perfect Gym<br />Note</span>
+      <p class="ao-pg-text">
+        <strong>Not technically binding today.</strong> The ownership transfer from Aspria BV is underway
+        (Thomas Escher signing for TCA), and Perfect Gym works either way. But if the new entity becomes a
+        services / management hub, registering Perfect Gym under it would simplify billing, governance and
+        future commercial terms with Sport Alliance — and avoid a second migration later.
+        Worth evaluating now, while the transfer is still being finalised.
+      </p>
+    </div>
+
+    <!-- ── URGENCY ── -->
+    <div class="ao-urgency">
+      <span class="ao-urgency-dot"></span>
+      <p class="ao-urgency-text">
+        <strong>The window closes with each activation.</strong>
+        Every account registered under TCA today is a future migration. The conservative path is reversible
+        in principle — but the cost grows with every new service added. The moment to decide is now,
+        before the stack locks in.
+      </p>
+    </div>
+
+    <p class="ao-footer">Confidential &middot; Tennis Club Ambrosiano &middot; 2026</p>
+
+  </main>
+
+</BaseLayout>
+
+<style>
+  .ao-page {
+    padding: calc(var(--header-h) + 3.5vh) clamp(20px, 5vw, 72px) 6vh;
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+
+  /* ── HEADER ── */
+  .ao-eyebrow {
+    font-family: var(--fd);
+    font-size: clamp(10px, 0.78vw, 13px);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    display: block;
+    margin-bottom: 10px;
+  }
+  .ao-title {
+    font-family: var(--fd);
+    font-size: clamp(2.4rem, 5vw, 5.5rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.0;
+    color: var(--text);
+    margin-bottom: 1vh;
+  }
+  .ao-title em { color: var(--red); font-style: normal; }
+  .ao-sub {
+    font-size: clamp(14px, 1.05vw, 17px);
+    font-weight: 300;
+    color: #555;
+    margin-bottom: 4vh;
+    max-width: 70ch;
+    line-height: 1.65;
+  }
+
+  /* ── DECISION GRID ── */
+  .ao-grid {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: clamp(18px, 2.5vw, 36px);
+    align-items: start;
+    margin-bottom: 2.6vh;
+  }
+
+  /* ── ACCOUNTS ── */
+  .ao-accounts { display: flex; flex-direction: column; gap: clamp(14px, 1.8vh, 24px); }
+
+  .ao-block { border: 1px solid var(--grey-light); border-radius: 6px; overflow: hidden; }
+
+  .ao-block-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 11px 20px; background: var(--text);
+  }
+  .ao-block-head--future { background: #f5f5f5; border-bottom: 1px solid var(--grey-light); }
+
+  .ao-block-label {
+    font-family: var(--fd); font-size: clamp(10px, 0.8vw, 13px);
+    font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #fff;
+  }
+  .ao-block-head--future .ao-block-label { color: var(--grey-mid); }
+
+  .ao-block-count {
+    font-family: var(--fd); font-size: clamp(9px, 0.7vw, 11px);
+    font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 2px;
+    background: rgba(255,255,255,0.14); color: rgba(255,255,255,0.75);
+  }
+  .ao-block-head--future .ao-block-count { background: rgba(0,0,0,0.06); color: var(--grey-mid); }
+
+  .ao-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); }
+  .ao-item {
+    padding: 14px 20px;
+    border-right: 1px solid var(--grey-light);
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .ao-item-name {
+    font-family: var(--fd); font-size: clamp(14px, 1.15vw, 18px);
+    font-weight: 700; color: var(--text); margin-bottom: 4px;
+  }
+  .ao-item-name--future { color: #888; }
+  .ao-item-desc {
+    font-size: clamp(11px, 0.82vw, 13px); font-weight: 300; color: #777; line-height: 1.5;
+  }
+  .ao-tbd {
+    display: inline-block; margin-top: 6px;
+    font-family: var(--fd); font-size: clamp(9px, 0.68vw, 10px);
+    font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: #8B6000; padding: 2px 7px; border-radius: 2px;
+    background: rgba(180,120,0,0.08); border: 1px solid rgba(180,120,0,0.22);
+  }
+
+  /* ── PATHS ── */
+  .ao-paths { display: flex; flex-direction: column; gap: 14px; position: sticky; top: calc(var(--header-h) + 16px); }
+
+  .ao-path { border: 1.5px solid var(--grey-light); border-radius: 6px; overflow: hidden; }
+  .ao-path--rec { border-color: var(--red); }
+
+  .ao-path-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 12px 18px; background: #f9f9f9;
+  }
+  .ao-path-head--rec { background: var(--red); }
+
+  .ao-path-opt {
+    font-family: var(--fd); font-size: clamp(9px, 0.72vw, 11px);
+    font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--grey-mid); margin-bottom: 3px;
+  }
+  .ao-path-head--rec .ao-path-opt { color: rgba(255,255,255,0.6); }
+  .ao-path-title {
+    font-family: var(--fd); font-size: clamp(14px, 1.1vw, 17px); font-weight: 700; color: var(--text);
+  }
+  .ao-path-head--rec .ao-path-title { color: #fff; }
+
+  .ao-path-badge {
+    flex-shrink: 0;
+    font-family: var(--fd); font-size: clamp(9px, 0.68vw, 11px);
+    font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 2px; white-space: nowrap;
+  }
+  .ao-path-badge--no {
+    background: rgba(139,26,26,0.08); color: var(--red); border: 1px solid rgba(139,26,26,0.22);
+  }
+  .ao-path-badge--yes { background: rgba(255,255,255,0.18); color: #fff; }
+
+  .ao-path-body { padding: 12px 18px 14px; }
+  .ao-pi {
+    display: flex; align-items: flex-start; gap: 9px;
+    padding: 6px 0; border-bottom: 1px solid var(--grey-light);
+    font-size: clamp(12px, 0.88vw, 14px); font-weight: 300; color: #555; line-height: 1.5;
+  }
+  .ao-pi:last-child { border-bottom: none; }
+  .ao-pi-icon { flex-shrink: 0; margin-top: 1px; font-family: var(--fd); font-weight: 700; line-height: 1.2; }
+  .ao-pi-icon--pro { color: #1E6B2E; }
+  .ao-pi-icon--con { color: #bbb; }
+
+  /* ── SCOPE ── */
+  .ao-scope {
+    border: 1px solid var(--grey-light);
+    border-left: 3px solid var(--red);
+    border-radius: 4px;
+    padding: 14px 20px;
+    margin-bottom: 2.4vh;
+    display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: start;
+  }
+  .ao-scope-label {
+    font-family: var(--fd); font-size: clamp(9px, 0.72vw, 11px);
+    font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--red); padding-top: 2px; white-space: nowrap; line-height: 1.3;
+  }
+  .ao-scope-body { font-size: clamp(13px, 0.9vw, 15px); font-weight: 300; color: #444; line-height: 1.65; }
+  .ao-scope-body strong { font-weight: 600; color: var(--text); }
+
+  /* ── PERFECT GYM ── */
+  .ao-pg {
+    background: rgba(180,120,0,0.06);
+    border: 1px solid rgba(180,120,0,0.22);
+    border-left: 3px solid #8B6000;
+    border-radius: 4px;
+    padding: 14px 20px;
+    margin-bottom: 2.2vh;
+    display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: start;
+  }
+  .ao-pg-label {
+    font-family: var(--fd); font-size: clamp(9px, 0.72vw, 11px);
+    font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+    color: #8B6000; padding-top: 2px; white-space: nowrap; line-height: 1.3;
+  }
+  .ao-pg-text { font-size: clamp(12px, 0.88vw, 14px); font-weight: 300; color: #555; line-height: 1.6; }
+  .ao-pg-text strong { font-weight: 600; color: var(--text); }
+
+  /* ── URGENCY ── */
+  .ao-urgency {
+    background: var(--text); border-radius: 4px;
+    padding: 15px 22px; display: flex; align-items: center; gap: 14px;
+  }
+  .ao-urgency-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
+  .ao-urgency-text {
+    font-family: var(--fd); font-size: clamp(12px, 0.95vw, 15px);
+    font-weight: 400; color: rgba(255,255,255,0.75); line-height: 1.5;
+  }
+  .ao-urgency-text strong { color: #fff; font-weight: 700; }
+
+  /* ── FOOTER ── */
+  .ao-footer {
+    margin-top: 3.5vh; border-top: 1px solid var(--grey-light);
+    padding-top: 2vh; font-size: clamp(10px, 0.75vw, 13px); color: var(--grey-mid);
+    font-family: var(--fd); letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 960px) {
+    .ao-grid { grid-template-columns: 1fr; }
+    .ao-paths { position: static; }
+  }
+  @media (max-width: 768px) {
+    .ao-page { padding: calc(var(--header-h) + 20px) 16px 40px; }
+    .ao-sub { font-size: 14px; }
+    .ao-list { grid-template-columns: 1fr; }
+    .ao-scope, .ao-pg { grid-template-columns: 1fr; gap: 6px; }
+    .ao-scope-label, .ao-pg-label { white-space: normal; }
+  }
+</style>
