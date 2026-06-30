@@ -13,5 +13,12 @@
       "runtimeArgs": ["serve", "-l", "7899", "/Users/mauriziotaruggi/Documents/GitHub/TCA/.claude/worktrees/admiring-panini-62c824"],
       "port": 7899
     }
+  ,
+    {
+      "name": "TCA Carve-out",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-l", "5050", "/Users/mauriziotaruggi/Documents/Documenti - MacBook Air Maurizio/GitHub/TCA/.claude/worktrees/cool-leakey-b68bb1"],
+      "port": 5050
+    }
   ]
 }
