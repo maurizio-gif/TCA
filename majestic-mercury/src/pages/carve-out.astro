@@ -25,15 +25,26 @@ const topics = [
     ],
     note: 'The window narrows with every account we activate: deciding now avoids a costly migration later.',
     tools: [
-      { name: 'GitHub', cat: 'now', tag: 'Code & history', desc: 'The secure vault where all the software and its full history live.' },
-      { name: 'Vercel', cat: 'now', tag: 'Website hosting', desc: 'Where the new website actually runs and goes live to the public.' },
-      { name: 'Cloudflare', cat: 'now', tag: 'Domain & security', desc: 'Controls the web address, plus the security and speed of the site.' },
-      { name: 'Fillout', cat: 'now', tag: 'Smart forms', desc: 'The forms members fill in — sign-ups and bookings — replacing the old ones.' },
+      { name: 'GitHub', cat: 'now', tag: 'Code & history', cost: 'Free', desc: 'The secure vault where all the software and its full history live.' },
+      { name: 'Vercel', cat: 'now', tag: 'Website hosting', cost: '€19/mo', desc: 'Where the new website actually runs and goes live to the public.' },
+      { name: 'Cloudflare', cat: 'now', tag: 'Domain & security', cost: '€10/mo', desc: 'Controls the web address, plus the security and speed of the site.' },
+      { name: 'Fillout', cat: 'now', tag: 'Smart forms', cost: '$40/mo', desc: 'The forms members fill in — sign-ups and bookings — replacing the old ones.' },
       { name: 'Stripe Connect', cat: 'now', tag: 'Payments', desc: 'Collects membership and service payments online.' },
-      { name: 'Supabase', cat: 'future', tag: 'Data backbone', desc: 'One organised home for member data, so the CRM, management system and dashboards all speak the same language.' },
-      { name: 'Claude Team', cat: 'future', tag: 'AI on the data', desc: 'Reads the data to answer questions and produce analysis and reports automatically.' },
+      { name: 'Supabase', cat: 'future', tag: 'Data backbone', cost: '€20/mo', desc: 'One organised home for member data, so the CRM, management system and dashboards all speak the same language.' },
+      { name: 'Claude Team', cat: 'future', tag: 'AI on the data', cost: '$125/mo · 5 users', desc: 'Reads the data to answer questions and produce analysis and reports automatically.' },
+      { name: 'Softr', cat: 'future', tag: 'Operator interfaces', cost: '$139/mo', desc: 'No-code platform to build custom operator portals for CRM management, ERP workflows, and internal dashboards.' },
       { name: 'Meta Business Manager', cat: 'future', tag: 'Advertising', desc: 'Runs Facebook and Instagram ads, with a separate ad account per club.' },
       { name: 'Accounting system', cat: 'future', tag: 'Finance', desc: 'Bookkeeping and financial reporting — the specific tool is still to be decided.' },
+    ],
+    prereqs: [
+      {
+        title: 'Main Account Control',
+        desc: 'Full control of the primary email address that owns all accounts — required to activate, manage, and recover every service independently.',
+      },
+      {
+        title: 'Prepaid Card',
+        desc: 'A dedicated prepaid card to subscribe to and pay for all digital services, without routing payments through the Club\'s accounts.',
+      },
     ],
     next: 'Pick the ownership model now — before the next account goes live.',
     nextShort: 'Decide ownership',
@@ -48,8 +59,8 @@ const topics = [
       'Discount on Success Plan + Sandbox in play (~€500/mo)',
       'Transfer of ownership Aspria BV → new entity underway · details received from Aspria (29 Jun)',
     ],
-    next: 'Thomas Escher to sign the transfer documents on the TCA side',
-    nextShort: 'Thomas Escher signs',
+    next: 'Perfect Gym Sales dept to send the contract to Thomas Escher for signature',
+    nextShort: 'PG sends contract to Thomas',
   },
   {
     n: '03', title: 'Website', scope: 'New site + forms',
@@ -67,29 +78,46 @@ const topics = [
     nextShort: 'Domain → Cloudflare',
   },
   {
-    n: '04', title: 'Social & Analytics', scope: 'Social, GTM, GSC, Analytics',
-    tone: 'grey', status: 'Not Started', pct: 20, stage: 'Awaiting data',
+    n: '04', title: 'Domain', scope: 'tcambrosiano.com',
+    tone: 'amber', status: 'In Progress', pct: 25, stage: 'Preparing transfer',
+    owner: 'Maurizio Taruggi', partner: 'Thomas Sander', date: 'TBD',
+    where: [
+      'Current DNS records obtained — full detail in hand',
+      'Cloudflare account to be created — email address and company still to be decided',
+      'Thomas Sander (Deutsche Telekom): change nameservers to the two provided by Cloudflare',
+      'Thomas Sander: disable domain transfer lock and provide the EPP / Auth Code',
+    ],
+    next: 'Create the Cloudflare account, then get nameservers + EPP code from Thomas Sander',
+    nextShort: 'Cloudflare account + EPP from Thomas',
+  },
+  {
+    n: '05', title: 'Social & Analytics', scope: 'Social, GTM, GSC, Analytics',
+    tone: 'amber', status: 'In Progress', pct: 45, stage: 'Receiving access',
     owner: 'Maurizio Taruggi', partner: 'Laura Giardini', date: 'TBD',
     where: [
-      'Scope set: social + Google stack under TCA ownership',
-      'Laura Giardini already involved',
+      'Access received on direzione@tcambrosiano.com: Instagram TCA, Instagram Trofeo Avvenire, Facebook, Google Ads, Google Analytics',
+      'Meta Business Manager: access still to be verified and received — critical blocker',
+      'Google Tag Manager: verify if an existing account is in place; if not, create from scratch',
+      'Google Search Console: verify if an existing account is in place; if not, create from scratch',
     ],
-    next: 'Get the accounts and access from Geeta',
-    nextShort: 'Accounts from Geeta',
+    next: 'Verify and obtain Meta Business Manager access — critical. Check GTM and GSC; create if missing.',
+    nextShort: 'Meta BM access — critical',
   },
   {
-    n: '05', title: 'Microsoft', scope: 'Outlook, OneDrive, SharePoint',
-    tone: 'amber', status: 'In Progress', pct: 40, stage: 'Mapping',
-    owner: 'Maurizio Taruggi', partner: 'Thomas Sander + Alice Bartoli', date: 'TBD — DNS',
+    n: '06', title: 'Microsoft', scope: 'Outlook, OneDrive, SharePoint',
+    tone: 'amber', status: 'In Progress', pct: 30, stage: 'Awaiting admin access',
+    owner: 'Maurizio Taruggi', partner: 'Thomas Sander + Alice Bartoli', date: 'TBD',
     where: [
-      'All mailboxes mapped (call with Thomas Sander)',
-      'SharePoint operational files being inventoried',
+      'Waiting for Thomas Sander to create a temporary admin account to carry out the migration',
+      'In parallel: Google Workspace account to be activated — requires control of direzione@tcambrosiano.com first',
+      'OneDrive: map all folders, tidy up, and save all files locally — including on a dedicated SSD per macro group',
+      'SharePoint: once migration is complete, sharing logic will be re-configured on Google Drive',
     ],
-    next: 'Get the DNS config → transfer the domain to Cloudflare',
-    nextShort: 'DNS config',
+    next: 'Thomas Sander to create the temporary admin account to unlock the migration',
+    nextShort: 'Temp admin account from Thomas',
   },
   {
-    n: '06', title: 'Physical Devices', scope: 'PCs & Wi-Fi',
+    n: '07', title: 'Physical Devices', scope: 'PCs & Wi-Fi',
     tone: 'grey', status: 'Not Started', pct: 10, stage: 'To kick off',
     owner: 'On-site partner (TBD)', partner: 'Thomas Sander + Alice Bartoli', date: 'Jun 22–26',
     where: [
@@ -181,6 +209,7 @@ const topics = [
                   <span class="dec-tool-name">{tool.name}</span>
                   <span class={`dec-tool-cat dec-tool-cat--${tool.cat}`}>{tool.cat === 'now' ? 'Now' : 'Future'}</span>
                   <span class="dec-tool-tag">{tool.tag}</span>
+                  {tool.cost && <span class={`dec-tool-cost${tool.cost === 'Free' ? ' dec-tool-cost--free' : ''}`}>{tool.cost}</span>}
                   <span class="dec-tool-plus" aria-hidden="true">+</span>
                 </summary>
                 <p class="dec-tool-desc">{tool.desc}</p>
@@ -188,6 +217,20 @@ const topics = [
             ))}
           </div>
         </div>
+
+        {t.prereqs && (
+          <div class="dec-prereqs">
+            <span class="dec-prereqs-label">&#9670;&nbsp; Operational Prerequisites</span>
+            <div class="dec-prereqs-grid">
+              {t.prereqs.map((p: {title: string; desc: string}) => (
+                <div class="dec-prereqs-box">
+                  <div class="dec-prereqs-box-title">{p.title}</div>
+                  <p class="dec-prereqs-box-text">{p.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div class="ct-foot">
           <span><em>Owner</em>{t.owner}</span>
@@ -523,6 +566,45 @@ const topics = [
     color: var(--red); transition: transform 0.2s ease;
   }
   .dec-tool[open] .dec-tool-plus { transform: rotate(45deg); }
+  .dec-tool-cost {
+    flex-shrink: 0; margin-left: auto;
+    font-family: var(--fd); font-size: clamp(8px, 0.62vw, 10px);
+    font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 2px 7px; border-radius: 2px;
+    color: #1E6B2E; background: rgba(30,107,46,0.09); border: 1px solid rgba(30,107,46,0.22);
+  }
+  .dec-tool-cost--free {
+    color: var(--grey-mid); background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.1);
+  }
+  .dec-tool-plus { margin-left: 6px; }
+
+  .dec-prereqs {
+    border-left: 3px solid #B47800;
+    background: rgba(180,120,0,0.04);
+    border-radius: 4px;
+    padding: clamp(10px, 1.4vh, 16px) clamp(14px, 1.4vw, 20px);
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .dec-prereqs-label {
+    font-family: var(--fd); font-size: clamp(9px, 0.72vw, 11px);
+    font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #8B6000;
+  }
+  .dec-prereqs-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: clamp(10px, 1.2vw, 16px);
+  }
+  .dec-prereqs-box {
+    background: #fff; border: 1px solid rgba(180,120,0,0.22);
+    border-radius: 4px; padding: clamp(10px, 1.2vh, 14px) clamp(12px, 1.2vw, 16px);
+    display: flex; flex-direction: column; gap: 5px;
+  }
+  .dec-prereqs-box-title {
+    font-family: var(--fd); font-size: clamp(12px, 1vw, 15px);
+    font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: #8B6000;
+  }
+  .dec-prereqs-box-text {
+    font-size: clamp(11px, 0.85vw, 13px); font-weight: 300; color: #555; line-height: 1.55;
+  }
+
   .dec-tool-desc {
     padding: 0 12px 11px; font-size: clamp(12px, 0.9vw, 14px);
     font-weight: 300; color: #555; line-height: 1.55;
@@ -551,6 +633,7 @@ const topics = [
     .dec-paths { grid-template-columns: 1fr; gap: 12px; }
     .dec-tools-grid { grid-template-columns: 1fr; }
     .dec-tool-tag { white-space: normal; }
+    .dec-prereqs-grid { grid-template-columns: 1fr; }
   }
 </style>
 
