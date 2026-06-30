@@ -2,6 +2,12 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "TCA Live (Astro)",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "/Users/mauriziotaruggi/Documents/GitHub/NEW-TCA/.claude/worktrees/focused-johnson-85ba40/majestic-mercury", "run", "dev", "--", "--port", "4173"],
+      "port": 4173
+    },
+    {
       "name": "TCA Proposal",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["serve", "-l", "4321", "/Users/mauriziotaruggi/Documents/GitHub/TCA/majestic-mercury/dist"],

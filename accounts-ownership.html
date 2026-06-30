@@ -151,6 +151,40 @@
     color: var(--amber); padding: 2px 7px; border-radius: 2px;
     background: rgba(180,120,0,0.08); border: 1px solid rgba(180,120,0,0.22);
   }
+  .account-cost {
+    display: inline-block; margin-top: 5px; margin-left: 4px;
+    font-family: var(--fd); font-size: clamp(9px, 0.68vw, 10px);
+    font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: #1E6B2E; padding: 2px 7px; border-radius: 2px;
+    background: rgba(30,107,46,0.07); border: 1px solid rgba(30,107,46,0.2);
+  }
+  .account-cost--free {
+    color: var(--grey-mid);
+    background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.1);
+  }
+  /* ── PREREQUISITES NOTE ── */
+  .prereq-block {
+    border: 1px solid var(--grey-light);
+    border-left: 3px solid var(--amber);
+    border-radius: 4px;
+    padding: 16px 22px;
+    margin-top: 2vh;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    align-items: start;
+    background: rgba(180,120,0,0.03);
+  }
+  .prereq-label {
+    font-family: var(--fd); font-size: clamp(9px, 0.72vw, 11px);
+    font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--amber); padding-top: 2px; white-space: nowrap;
+  }
+  .prereq-body {
+    font-size: clamp(13px, 0.9vw, 15px); font-weight: 300;
+    color: #444; line-height: 1.65;
+  }
+  .prereq-body strong { font-weight: 600; color: var(--text); }
 
   /* ── PATHS COLUMN ── */
   .paths-col {
