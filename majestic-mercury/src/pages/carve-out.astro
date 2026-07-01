@@ -79,16 +79,16 @@ const topics = [
   },
   {
     n: '04', title: 'Domain', scope: 'tcambrosiano.com',
-    tone: 'amber', status: 'In Progress', pct: 25, stage: 'Preparing transfer',
+    tone: 'amber', status: 'In Progress', pct: 45, stage: 'Awaiting nameserver change',
     owner: 'Maurizio Taruggi', partner: 'Thomas Sander', date: 'TBD',
     where: [
-      'Current DNS records obtained — full detail in hand',
-      'Cloudflare account to be created — email address and company still to be decided',
-      'Thomas Sander (Deutsche Telekom): change nameservers to the two provided by Cloudflare',
-      'Thomas Sander: disable domain transfer lock and provide the EPP / Auth Code',
+      'Cloudflare account created',
+      'Email sent to Thomas Sander (Deutsche Telekom) proposing a two-step handover',
+      'Step 1 — nameserver change: near-instant once he switches the nameservers to Cloudflare; gives us full control of all DNS records and configurations, and lets us start working on the site and publish it',
+      'Step 2 — registrar transfer: takes a few weeks from when he starts the procedure; once complete, we switch over the email',
     ],
-    next: 'Create the Cloudflare account, then get nameservers + EPP code from Thomas Sander',
-    nextShort: 'Cloudflare account + EPP from Thomas',
+    next: 'Await Thomas Sander’s nameserver change (Step 1) to unlock site publishing, then kick off the registrar transfer (Step 2) ahead of the email switch',
+    nextShort: 'Awaiting nameserver change from Thomas',
   },
   {
     n: '05', title: 'Social & Analytics', scope: 'Social, GTM, GSC, Analytics',
