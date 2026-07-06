@@ -10,20 +10,21 @@ const topics = [
   {
     n: '01', title: 'Account Ownership', scope: 'Who owns the digital stack',
     decision: true,
-    tone: 'red', status: 'Decide first', stage: 'Decision',
-    owner: 'Maurizio Taruggi', partner: 'Brian Morris · decision', date: 'Decide now',
+    tone: 'red', status: 'Decided', stage: 'Phase 1',
+    owner: 'Maurizio Taruggi', partner: 'Laura Bonamico', date: 'Phase 1',
     macro: 'Before we switch on the new tools, one choice shapes everything that follows: who owns the digital stack — the Club, or a dedicated digital entity?',
+    decided: 'After review with Laura Bonamico, Phase 1 continues under Tennis Club Ambrosiano SSD, on direzione@tcambrosiano.com. TCA Operational is currently dormant — activating it now would need deep planning and would only add cost given the tight timeline.',
     paths: [
       {
-        key: 'A', title: 'Register under the Club', badge: 'Simple today', rec: false,
-        text: 'Fastest to set up — but every future change becomes a migration, and all digital risk and admin sit directly on the Club.',
+        key: 'A', title: 'Register under the Club', badge: 'Chosen · Phase 1', rec: true,
+        text: 'Fastest to set up. Every future change becomes a migration and digital admin sits on the Club — accepted trade-off for Phase 1, given the timeline.',
       },
       {
-        key: 'B', title: 'Dedicated digital entity', badge: 'Recommended', rec: true,
+        key: 'B', title: 'Dedicated digital entity', badge: 'Recommended · Phase 2', rec: false,
         text: 'Clean from day one. One home for technology, marketing and accounting — built to scale, leaving the Club free to focus on members.',
       },
     ],
-    note: 'The window narrows with every account we activate: deciding now avoids a costly migration later.',
+    note: 'Phase 2: revisit the dedicated digital entity once TCA Operational can be properly planned and activated.',
     tools: [
       { name: 'GitHub', cat: 'now', tag: 'Code & history', cost: 'Free', desc: 'The secure vault where all the software and its full history live.' },
       { name: 'Vercel', cat: 'now', tag: 'Website hosting', cost: '€19/mo', desc: 'Where the new website actually runs and goes live to the public.' },
@@ -46,8 +47,8 @@ const topics = [
         desc: 'A dedicated prepaid card to subscribe to and pay for all digital services, without routing payments through the Club\'s accounts.',
       },
     ],
-    next: 'Pick the ownership model now — before the next account goes live.',
-    nextShort: 'Decide ownership',
+    next: 'Proceed with Phase 1 under TCA SSD; plan the dedicated entity for Phase 2.',
+    nextShort: 'Proceed — Phase 1 under TCA SSD',
   },
   {
     n: '02', title: 'Perfect Gym', scope: 'Member platform',
@@ -166,7 +167,7 @@ const topics = [
               <span class="cc-cell-title">{t.title}</span>
             </div>
             {t.decision ? (
-              <span class="cc-cell-flag">&#9679; Decide first</span>
+              <span class="cc-cell-flag">&#10003; Decided · Phase 1</span>
             ) : (
               <>
                 <div class="cc-bar"><span class={`cc-bar-fill bar--${t.tone}`} style={`width:${t.pct}%`}></span></div>
@@ -191,7 +192,7 @@ const topics = [
       <div class="ct-inner ct-inner--decision">
 
         <div class="ct-head">
-          <span class="ct-eyebrow">Carve-Out · {t.n} / 0{topics.length} · Decide first</span>
+          <span class="ct-eyebrow">Carve-Out · {t.n} / 0{topics.length} · Decided</span>
           <div class="ct-titlerow">
             <h2 class="ct-title">{t.title}</h2>
             <span class="ct-scope">{t.scope}</span>
@@ -199,6 +200,13 @@ const topics = [
         </div>
 
         <p class="dec-macro">{t.macro}</p>
+
+        {t.decided && (
+          <div class="dec-decided">
+            <span class="dec-decided-label">&#10003;&nbsp; Decision · Phase 1</span>
+            <p class="dec-decided-text">{t.decided}</p>
+          </div>
+        )}
 
         <div class="dec-paths">
           {t.paths.map((p) => (
@@ -543,6 +551,25 @@ const topics = [
     font-size: clamp(12px, 0.92vw, 14.5px); font-weight: 300; color: #666; line-height: 1.5;
     padding-left: 14px; border-left: 3px solid var(--red);
   }
+
+  /* decision taken banner */
+  .dec-decided {
+    background: rgba(30,107,46,0.07);
+    border: 1px solid rgba(30,107,46,0.3);
+    border-left: 4px solid #1E6B2E;
+    border-radius: 6px;
+    padding: clamp(11px, 1.4vh, 16px) clamp(14px, 1.4vw, 20px);
+  }
+  .dec-decided-label {
+    display: inline-block;
+    font-family: var(--fd); font-size: clamp(10px, 0.8vw, 13px);
+    font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: #1E6B2E; margin-bottom: 5px;
+  }
+  .dec-decided-text {
+    font-size: clamp(12.5px, 0.95vw, 15px); font-weight: 300; color: #333; line-height: 1.55;
+  }
+  .dec-decided-text strong { font-weight: 600; }
 
   /* tools accordion */
   .dec-tools-label {
