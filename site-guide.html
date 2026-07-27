@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCA · How the Site Works</title>
+
+<!-- Favicon: red tennis ball, inline (no external requests) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%238B1A1A'/%3E%3Cpath d='M32 2 C18 14,18 50,32 62' stroke='white' stroke-width='2' fill='none'/%3E%3Cpath d='M32 2 C46 14,46 50,32 62' stroke='white' stroke-width='2' fill='none'/%3E%3C/svg%3E">
+
+<meta name="description" content="How the Tennis Club Ambrosiano website works, and how you run it — a briefing for Brian.">
+<meta property="og:title" content="TCA · How the Site Works">
+<meta property="og:description" content="How the new site works, and how you run it.">
+<meta property="og:type" content="website">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red:        #8B1A1A;
+    --red-dark:   #6B1414;
+    --red-bright: #C0282A;
+    --white:      #FFFFFF;
+    --off-white:  #F5F3F0;
+    --grey-light: #EBEBEB;
+    --grey-mid:   #999999;
+    --text:       #1A1A1A;
+    --text-light: #555555;
+    --fd: 'Barlow Condensed', 'Roboto Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif;
+    --fb: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  html {
+    height: 100%;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+  body {
+    font-family: var(--fb);
+    color: var(--text);
+    background: #000;
+    margin: 0;
+    height: 100%;
+  }
+  ::selection { background: var(--red); color: #fff; }
+
+  img { max-width: 100%; display: block; }
+
+  /* ── SLIDE BASE ── */
+  .slide {
+    width: 100vw;
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  /* ── NAV BAR ── */
+  .slide-nav {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 3.5vw;
+    height: 72px;
+    background: rgba(255,255,255,0.96);
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .nav-logo { display: flex; align-items: center; text-decoration: none; gap: 12px; }
+  .nav-logo img { height: 46px; width: auto; }
+  .nav-tag {
+    font-family: var(--fd);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    white-space: nowrap;
+  }
+
+  /* ── EYEBROW ── */
+  .eyebrow {
+    font-family: var(--fd);
+    font-size: clamp(12px, 1.15vw, 17px);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+    display: block;
+    margin-bottom: 10px;
+  }
+  .eyebrow--light { color: rgba(255,255,255,0.5); }
+
+  /* ── TITLES ── */
+  .slide-title {
+    font-family: var(--fd);
+    font-weight: 800;
+    line-height: 0.95;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    font-size: clamp(2rem, 4.8vw, 4rem);
+  }
+  .slide-title em { color: var(--red-bright); font-style: normal; }
+  .slide-lead {
+    font-size: clamp(1rem, 1.35vw, 1.35rem);
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--text-light);
+    max-width: 46em;
+  }
+  /* ── BUTTONS ── */
+  .btn {
+    font-family: var(--fd);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 2px;
+  }
+  .btn-red { background: var(--red); color: #fff; border-color: var(--red); }
+  .btn-red:hover { background: var(--red-dark); }
+  .btn-outline { background: transparent; color: #fff; border-color: rgba(255,255,255,0.55); }
+  .btn-outline:hover { border-color: #fff; }
+
+  /* ── CONTENT WRAPPER (shared) ── */
+  .wrap {
+    position: relative; z-index: 2;
+    margin-top: 72px;
+    padding: clamp(20px, 3.5vh, 44px) 5vw clamp(24px, 4vh, 44px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    gap: clamp(14px, 2vh, 26px);
+  }
+  .wrap-head { max-width: 60em; }
+  .wrap-head .slide-title { margin-top: 2px; }
+  .wrap-head .slide-lead { margin-top: 8px !important; }
+
+  /* ── ICON base ── */
+  .ic { width: 26px; height: 26px; flex-shrink: 0; }
+  .ic-lg { width: 34px; height: 34px; }
+
+  /* ════════════════════════════════════════════
+     SLIDE 0 — DOTS + COUNTER
+  ════════════════════════════════════════════ */
+  .slide-dots {
+    position: fixed;
+    right: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 999;
+  }
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .dot.active { background: var(--red); transform: scale(1.5); }
+  .dot-dark { background: rgba(0,0,0,0.18); }
+  .dot-dark.active { background: var(--red); }
+
+  .slide-counter {
+    position: fixed;
+    left: 22px;
+    bottom: 20px;
+    z-index: 999;
+    font-family: var(--fd);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: rgba(255,255,255,0.55);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    pointer-events: none;
+  }
+  .slide-counter .bar {
+    width: 34px; height: 2px;
+    background: rgba(255,255,255,0.25);
+    position: relative;
+    overflow: hidden;
+  }
+  .slide-counter .bar::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--red);
+    transform-origin: left;
+    transform: scaleX(var(--p, 0));
+    transition: transform 0.3s;
+  }
+  .slide-counter.counter-dark { color: rgba(0,0,0,0.45); }
+  .slide-counter.counter-dark .bar { background: rgba(0,0,0,0.15); }
+
+  /* ════════════════════════════════════════════
+     SLIDE 1 — COVER
+  ════════════════════════════════════════════ */
+  .cov { background: var(--text); }
+  .cov-bg {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(105deg, rgba(20,20,20,0.90) 40%, rgba(139,26,26,0.35) 100%),
+      url('sfondo%20tca.avif') center/cover no-repeat;
+  }
+  .cov-content {
+    position: relative; z-index: 2;
+    margin-top: 72px;
+    padding: 8vh 6vw 4vh;
+    display: flex;
+    flex-direction: column;
+    gap: 2.4vh;
+    flex: 1;
+    justify-content: center;
+  }
+  .cov-title {
+    font-family: var(--fd);
+    font-size: clamp(2.6rem, 8vw, 7.2rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 0.92;
+    color: #fff;
+    letter-spacing: -0.01em;
+  }
+  .cov-title em { color: var(--red-bright); font-style: normal; }
+  .cov-sub {
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
+    font-weight: 300;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.6;
+    max-width: 42em;
+  }
+  .cov-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 6px; }
+  .cov-meta {
+    position: relative; z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 0 6vw 4vh;
+    font-family: var(--fd);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+  }
+  .cov-watermark {
+    position: absolute;
+    bottom: -6vw; right: 1vw;
+    font-family: var(--fd);
+    font-size: 20vw;
+    font-weight: 800;
+    color: rgba(255,255,255,0.035);
+    line-height: 1;
+    user-select: none;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ════════════════════════════════════════════
+     SLIDE 2 — THE STACK
+  ════════════════════════════════════════════ */
+  .stk { background: var(--off-white); }
+  .stk-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--grey-light);
+    border: 1px solid var(--grey-light);
+  }
+  .stk-card {
+    background: #fff;
+    padding: clamp(16px, 2.4vh, 30px) 1.7vw;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.1vh, 14px);
+  }
+  .stk-tag {
+    font-family: var(--fd);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+  }
+  .stk-name {
+    font-family: var(--fd);
+    font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--text);
+    line-height: 1.05;
+  }
+  .stk-what {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--red);
+    line-height: 1.4;
+  }
+  .stk-text {
+    font-size: 0.86rem;
+    font-weight: 400;
+    color: var(--text-light);
+    line-height: 1.55;
+  }
+  .stk-banner {
+    background: var(--red);
+    color: #fff;
+    padding: clamp(18px, 2.4vh, 30px) 3vw;
+    display: flex;
+    align-items: center;
+    gap: 2vw;
+  }
+  .stk-banner p {
+    font-family: var(--fd);
+    font-size: clamp(1.15rem, 2vw, 1.9rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+  }
+  .stk-banner .ic { width: 42px; height: 42px; flex-shrink: 0; }
+
+  /* ════════════════════════════════════════════
+     SLIDE 3 — ADVANTAGE
+  ════════════════════════════════════════════ */
+  .adv { background: var(--text); }
+  .adv .slide-title, .adv .slide-lead { color: #fff; }
+  .adv .slide-lead { color: rgba(255,255,255,0.65); }
+  .adv-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.08);
+  }
+  .adv-grid > .adv-card:nth-child(4) { grid-column: span 1; }
+  .adv-card {
+    background: #16191F;
+    padding: clamp(12px, 1.6vh, 22px) 1.4vw;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .adv-num {
+    font-family: var(--fd);
+    font-size: 1.7rem;
+    font-weight: 800;
+    line-height: 1;
+    color: rgba(255,255,255,0.1);
+  }
+  .adv-fact {
+    font-family: var(--fd);
+    font-size: 0.98rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--red-bright);
+    line-height: 1.2;
+  }
+  .adv-benefit {
+    font-size: 0.84rem;
+    font-weight: 400;
+    color: rgba(255,255,255,0.68);
+    line-height: 1.5;
+  }
+  .adv-line {
+    font-family: var(--fd);
+    font-size: clamp(0.95rem, 1.5vw, 1.3rem);
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  /* ════════════════════════════════════════════
+     SLIDE 4 — EDITING (WHAT BRIAN CAN DO)
+  ════════════════════════════════════════════ */
+  .edt { background: #fff; }
+  .edt-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 3vw;
+    align-items: stretch;
+  }
+  /* mock editor window */
+  .mock {
+    background: var(--off-white);
+    border: 1px solid var(--grey-light);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .mock-bar {
+    background: #26292F;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .mock-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .mock-dot.d1 { background: #E0605A; }
+  .mock-dot.d2 { background: #E8B84B; }
+  .mock-dot.d3 { background: #6FBE6F; }
+  .mock-url {
+    margin-left: 10px;
+    font-family: var(--fb);
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.06);
+    padding: 4px 10px;
+    border-radius: 3px;
+  }
+  .mock-body { padding: clamp(14px, 1.8vh, 22px) 1.8vw; display: flex; flex-direction: column; gap: clamp(10px, 1.4vh, 18px); flex: 1; }
+  .mock-steps { display: flex; flex-direction: column; gap: 0; }
+  .mock-step {
+    display: flex;
+    gap: 14px;
+    padding: clamp(8px, 1vh, 14px) 0;
+    border-bottom: 1px dashed var(--grey-light);
+  }
+  .mock-step:last-child { border-bottom: none; }
+  .mock-step-num {
+    font-family: var(--fd);
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--red);
+    min-width: 1.6em;
+  }
+  .mock-step-title {
+    font-family: var(--fd);
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--text);
+  }
+  .mock-step-text { font-size: 0.85rem; color: var(--text-light); line-height: 1.55; margin-top: 2px; }
+  .mock-langs { display: flex; gap: 8px; margin-top: auto; }
+  .mock-lang {
+    flex: 1;
+    background: #fff;
+    border: 1px solid var(--grey-light);
+    padding: 8px 10px;
+    font-size: 11px;
+    color: var(--text-light);
+  }
+  .mock-lang b { color: var(--text); display: block; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 3px; font-family: var(--fd); }
+
+  .edt-side { display: flex; flex-direction: column; gap: 2.2vh; }
+  .edt-list-title {
+    font-family: var(--fd);
+    font-size: 1.15rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--text);
+  }
+  .edt-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 14px;
+  }
+  .edt-list li {
+    font-size: 0.88rem;
+    color: var(--text-light);
+    padding: 8px 10px;
+    background: var(--off-white);
+    border-left: 3px solid var(--red);
+    line-height: 1.4;
+  }
+  .edt-callout {
+    background: var(--text);
+    color: #fff;
+    padding: 2vh 1.6vw;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .edt-callout p { font-size: 0.92rem; line-height: 1.55; color: rgba(255,255,255,0.85); }
+  .edt-callout b { color: #fff; }
+  .edt-callout .ic { color: var(--red-bright); }
+
+  /* ════════════════════════════════════════════
+     SLIDE 5 — TOUR
+  ════════════════════════════════════════════ */
+  .tur { background: var(--off-white); }
+  .tur-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  .tur-card {
+    background: #fff;
+    border: 1px solid var(--grey-light);
+    border-top: 3px solid var(--red);
+    padding: clamp(10px, 1.4vh, 18px) 1.2vw;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-height: 88px;
+  }
+  .tur-card-title {
+    font-family: var(--fd);
+    font-size: 0.94rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--text);
+  }
+  .tur-card-text { font-size: 0.76rem; color: var(--text-light); line-height: 1.42; }
+  .tur-highlight {
+    grid-column: 1 / -1;
+    background: var(--red);
+    border-top: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 2vw;
+    padding: clamp(14px, 1.8vh, 26px) 2vw;
+    margin-top: 2px;
+  }
+  .tur-highlight .ic { width: 40px; height: 40px; flex-shrink: 0; }
+  .tur-highlight-title {
+    font-family: var(--fd);
+    font-size: 1.15rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .tur-highlight-text { font-size: 0.9rem; line-height: 1.55; color: rgba(255,255,255,0.9); }
+
+  /* ════════════════════════════════════════════
+     SLIDE 6 — PRIVACY
+  ════════════════════════════════════════════ */
+  .prv { background: #fff; }
+  .prv-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.6vw;
+  }
+  .prv-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: clamp(16px, 2.2vh, 28px) 1.6vw;
+    background: var(--off-white);
+    border-bottom: 3px solid var(--red);
+  }
+  .prv-card .ic { color: var(--red); }
+  .prv-card-title {
+    font-family: var(--fd);
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+  .prv-card-text { font-size: 0.9rem; color: var(--text-light); line-height: 1.6; }
+  .prv-statement {
+    font-family: var(--fd);
+    font-size: clamp(1.1rem, 1.9vw, 1.7rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text);
+    text-align: center;
+    padding: clamp(16px, 2vh, 26px) 2vw;
+    border-top: 1px solid var(--grey-light);
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .prv-statement em { color: var(--red); font-style: normal; }
+
+  /* ════════════════════════════════════════════
+     SLIDE 7 — FLOW
+  ════════════════════════════════════════════ */
+  .flo { background: var(--text); }
+  .flo .slide-title { color: #fff; }
+  .flo .slide-lead { color: rgba(255,255,255,0.65); }
+  .flo-diagram {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    align-items: stretch;
+  }
+  .flo-step {
+    position: relative;
+    background: #16191F;
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: clamp(16px, 2.4vh, 30px) 1.5vw;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.2vh, 16px);
+  }
+  .flo-step + .flo-step { border-left: none; }
+  .flo-step-num {
+    font-family: var(--fd);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--red-bright);
+  }
+  .flo-step-ic { color: #fff; }
+  .flo-step-title {
+    font-family: var(--fd);
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #fff;
+    line-height: 1.2;
+  }
+  .flo-step-text { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.55; }
+  .flo-arrow {
+    position: absolute;
+    top: 50%;
+    right: -13px;
+    transform: translateY(-50%);
+    width: 26px; height: 26px;
+    background: var(--red);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+  }
+  .flo-note {
+    font-family: var(--fd);
+    font-size: clamp(1rem, 1.6vw, 1.4rem);
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+    padding-top: 1vh;
+  }
+  .flo-note b { color: var(--red-bright); }
+
+  /* ════════════════════════════════════════════
+     SLIDE 8 — ROADMAP / CLOSING
+  ════════════════════════════════════════════ */
+  .rmp { background: var(--text); }
+  .rmp-bg {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(135deg, rgba(10,14,20,0.86) 0%, rgba(26,26,26,0.8) 55%, rgba(100,18,18,0.55) 100%),
+      url('orizzntale%20tca.avif') center/cover no-repeat;
+  }
+  .rmp-corner { position: absolute; width: 60px; height: 3px; background: var(--red); }
+  .rmp-corner-v { position: absolute; width: 3px; height: 60px; background: var(--red); }
+  .rmp-corner.tl { top: 0; left: 0; } .rmp-corner-v.tl { top: 0; left: 0; }
+  .rmp-corner.br { bottom: 0; right: 0; } .rmp-corner-v.br { bottom: 0; right: 0; }
+  .rmp-content {
+    position: relative; z-index: 2;
+    margin-top: 72px;
+    padding: clamp(24px, 4vh, 44px) 5vw clamp(24px, 3.5vh, 40px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(14px, 2vh, 24px);
+    flex: 1;
+  }
+  .rmp .slide-title { color: #fff; }
+  .rmp .slide-lead { color: rgba(255,255,255,0.7); }
+  .rmp-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.4vw;
+  }
+  .rmp-card {
+    border: 1.5px dashed rgba(255,255,255,0.35);
+    padding: clamp(16px, 2.2vh, 28px) 1.6vw;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 120px;
+  }
+  .rmp-tag {
+    align-self: flex-start;
+    font-family: var(--fd);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red-bright);
+    border: 1px solid var(--red-bright);
+    padding: 3px 8px;
+  }
+  .rmp-card-title {
+    font-family: var(--fd);
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+  }
+  .rmp-card-text { font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.55; }
+  .rmp-footer {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 2vh;
+    border-top: 1px solid rgba(255,255,255,0.12);
+  }
+  .rmp-footer-meta {
+    font-family: var(--fd);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+
+  /* ════════════════════════════════════════════
+     MOBILE — ≤ 860px
+  ════════════════════════════════════════════ */
+  @media (max-width: 860px) {
+    html { scroll-snap-type: none; overflow-y: auto; }
+    .slide { height: auto; min-height: auto; scroll-snap-align: none; scroll-snap-stop: normal; }
+    .cov, .rmp { min-height: 100svh; }
+    .slide-dots { display: none; }
+    .slide-counter { display: none; }
+
+    .slide-nav { height: 60px; padding: 0 18px; }
+    .nav-logo img { height: 38px; }
+    .nav-tag { display: none; }
+
+    .wrap, .cov-content, .rmp-content { margin-top: 60px; padding: 32px 20px 44px; gap: 22px; }
+    .slide-title { font-size: clamp(1.8rem, 8vw, 2.6rem) !important; }
+    .slide-lead { font-size: 15px; }
+
+    .cov-title { font-size: clamp(2.4rem, 12vw, 3.4rem); }
+    .cov-sub { font-size: 15px; max-width: 100%; }
+    .cov-actions { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .cov-meta { padding: 0 20px 28px; font-size: 10px; }
+    .cov-watermark { display: none; }
+
+    .stk-grid, .adv-grid, .prv-grid, .flo-diagram, .rmp-grid { grid-template-columns: 1fr; }
+    .stk-banner { flex-direction: column; text-align: center; gap: 14px; padding: 24px 20px; }
+    .adv-card { border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .flo-step { border-left: 1px solid rgba(255,255,255,0.08) !important; border-bottom: none; }
+    .flo-arrow { top: auto; bottom: -13px; right: 50%; transform: translateX(50%) rotate(90deg); }
+
+    .edt-grid { grid-template-columns: 1fr; }
+    .edt-list { grid-template-columns: 1fr 1fr; }
+    .tur-grid { grid-template-columns: 1fr 1fr; }
+    .tur-highlight { flex-direction: column; text-align: center; }
+
+    .rmp-footer { flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 520px) {
+    .tur-grid, .edt-list { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV DOTS + COUNTER -->
+<div class="slide-dots" id="dots"></div>
+<div class="slide-counter" id="counter"><span id="counterText">01 / 08</span><span class="bar" id="counterBar"></span></div>
+
+<!-- ════════════════════════════════════
+  SLIDE 1 — COVER
+════════════════════════════════════ -->
+<section class="slide cov" id="s1">
+  <div class="cov-bg"></div>
+  <div class="cov-watermark">TCA</div>
+  <nav class="slide-nav">
+    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
+    <span class="nav-tag">Site Briefing · July 2026</span>
+  </nav>
+  <div class="cov-content">
+    <span class="eyebrow eyebrow--light">Digital Infrastructure Briefing</span>
+    <h1 class="cov-title">How the new site<br>works. <em>And how<br>you run it.</em></h1>
+    <p class="cov-sub">A short, non-technical walkthrough of the platform behind the Tennis Club Ambrosiano website — written for the person who runs the brand, not the servers.</p>
+    <div class="cov-actions">
+      <a href="#s2" class="btn btn-red">See the Stack</a>
+      <a href="#s4" class="btn btn-outline">See What You Can Do</a>
+    </div>
+  </div>
+  <div class="cov-meta">
+    <span>Prepared for Brian</span>
+    <span>Tennis Club Ambrosiano · July 2026</span>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  SLIDE 2 — THE STACK, IN PLAIN TERMS
+════════════════════════════════════ -->
+<section class="slide stk" id="s2">
+  <nav class="slide-nav">
+    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
+    <span class="nav-tag">The Stack</span>
+  </nav>
+  <div class="wrap">
+    <div class="wrap-head">
+      <span class="eyebrow">01 · The Stack, In Plain Terms</span>
+      <h2 class="slide-title">Three systems. Zero servers to babysit.</h2>
+      <p class="slide-lead" style="margin-top:12px;">The site is not "hosted on a server" the old way. It is built from three modern pieces that work together — each one removing a job a developer used to have to do by hand.</p>
+    </div>
+    <div class="stk-grid">
+      <div class="stk-card">
+        <span class="stk-tag">The Engine</span>
+        <div class="stk-name">Astro</div>
+        <div class="stk-what">Builds every page in advance</div>
+        <p class="stk-text">Instead of assembling each page live when a visitor lands (the old, slower way), Astro pre-builds the entire site ahead of time. <strong>Benefit:</strong> pages open almost instantly anywhere in the world, and there's no live database sitting behind the site waiting to be overloaded, hacked, or breached.</p>
+      </div>
+      <div class="stk-card">
+        <span class="stk-tag">The Editor</span>
+        <div class="stk-name">TinaCMS</div>
+        <div class="stk-what">A visual editor wired to the real content</div>
+        <p class="stk-text">You edit text and images the way you'd edit a shared document — click, change, see it, save. <strong>Benefit:</strong> no ticket to a developer, no waiting for "the next release" to fix a typo or swap a photo.</p>
+      </div>
+      <div class="stk-card">
+        <span class="stk-tag">The Delivery</span>
+        <div class="stk-name">Vercel / Netlify</div>
+        <div class="stk-what">Publishes automatically, worldwide</div>
+        <p class="stk-text">The moment content is saved, the platform rebuilds and redistributes the site across a global network. <strong>Benefit:</strong> every change goes live in about a minute, with no downtime and no separate hosting bill to negotiate or manage.</p>
+      </div>
+    </div>
+    <div class="stk-banner">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><path d="M13 2 L4 14h6l-1 8 9-12h-6l1-8z" stroke-linejoin="round" stroke-linecap="round"/></svg>
+      <p>Every content change becomes live in seconds — no developers on call, no downtime, no server maintenance bills.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  SLIDE 3 — TECHNICAL ADVANTAGE
+════════════════════════════════════ -->
+<section class="slide adv" id="s3">
+  <nav class="slide-nav" style="background:rgba(20,20,20,0.9); border-color:rgba(255,255,255,0.08);">
+    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
+    <span class="nav-tag" style="color:rgba(255,255,255,0.4);">Under the Hood</span>
+  </nav>
+  <div class="wrap">
+    <div class="wrap-head">
+      <span class="eyebrow">02 · Under the Hood</span>
+      <h2 class="slide-title">This isn't a budget website. <em>It's engineered.</em></h2>
+      <p class="slide-lead" style="margin-top:12px;">Five architectural choices that quietly do the work of an entire technical team — turned into what they actually mean for the brand.</p>
+    </div>
+    <div class="adv-grid">
+      <div class="adv-card">
+        <span class="adv-num">01</span>
+        <span class="adv-fact">Pre-rendered pages, no live database per visit</span>
+        <p class="adv-benefit">Among the fastest load times technically possible on the web today. Visitors — and Google's ranking algorithm — both reward speed with attention.</p>
+      </div>
+      <div class="adv-card">
+        <span class="adv-num">02</span>
+        <span class="adv-fact">Every piece of content has a typed schema</span>
+        <p class="adv-benefit">It is structurally impossible to publish an event with no date, or a page with no SEO title. Quality is enforced by the system, not left to whoever is typing that day.</p>
+      </div>
+      <div class="adv-card">
+        <span class="adv-num">03</span>
+        <span class="adv-fact">Every edit is a Git commit</span>
+        <p class="adv-benefit">A complete history of every version of the site, with instant rollback to any past state. There is no "we lost the homepage and nobody remembers what it looked like."</p>
+      </div>
+      <div class="adv-card">
+        <span class="adv-num">04</span>
+        <span class="adv-fact">Native SEO & AI-readiness</span>
+        <p class="adv-benefit">Structured Schema.org data, an automatic sitemap, and meta tags on every page — built to be read correctly by Google and by AI assistants like ChatGPT and Gemini, not only by a human clicking around.</p>
+      </div>
+      <div class="adv-card">
+        <span class="adv-num">05</span>
+        <span class="adv-fact">Bilingual IT / EN, routed automatically</span>
+        <p class="adv-benefit">One platform serves both languages cleanly, without duplicating the site or doubling the effort of keeping it up to date.</p>
+      </div>
+      <div class="adv-card" style="justify-content:center; align-items:center; text-align:center; background:#1B1E24;">
+        <p class="adv-line">Quality, history and findability<br>aren't a promise here —<br>they're <b style="color:var(--red-bright);">enforced by the architecture.</b></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  SLIDE 4 — WHAT BRIAN CAN DO
+════════════════════════════════════ -->
+<section class="slide edt" id="s4">
+  <nav class="slide-nav">
+    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
+    <span class="nav-tag">Day to Day</span>
+  </nav>
+  <div class="wrap">
+    <div class="wrap-head">
+      <span class="eyebrow">03 · What You Can Do, Day to Day</span>
+      <h2 class="slide-title">Editing the site is like editing a shared document.</h2>
+    </div>
+    <div class="edt-grid">
+      <div class="mock">
+        <div class="mock-bar">
+          <div class="mock-dot d1"></div><div class="mock-dot d2"></div><div class="mock-dot d3"></div>
+          <span class="mock-url">tinacms.app/tca/edit</span>
+        </div>
+        <div class="mock-body">
+          <div class="mock-steps">
+            <div class="mock-step">
+              <span class="mock-step-num">1</span>
+              <div><div class="mock-step-title">Click "Edit"</div><div class="mock-step-text">Right on the real page — no separate technical dashboard to learn.</div></div>
+            </div>
+            <div class="mock-step">
+              <span class="mock-step-num">2</span>
+              <div><div class="mock-step-title">Change text or photo</div><div class="mock-step-text">You see the actual page update as you type, exactly as visitors will.</div></div>
+            </div>
+            <div class="mock-step">
+              <span class="mock-step-num">3</span>
+              <div><div class="mock-step-title">Save</div><div class="mock-step-text">One click. No code, no export, no email to a developer.</div></div>
+            </div>
+            <div class="mock-step">
+              <span class="mock-step-num">4</span>
+              <div><div class="mock-step-title">It's live</div><div class="mock-step-text">Published automatically, worldwide, in about a minute.</div></div>
+            </div>
+          </div>
+          <div class="mock-langs">
+            <div class="mock-lang"><b>Italiano</b>Prenota il tuo campo</div>
+            <div class="mock-lang"><b>English</b>Book your court</div>
+          </div>
+        </div>
+      </div>
+      <div class="edt-side">
+        <div>
+          <div class="edt-list-title" style="margin-bottom:12px;">Editable without a developer</div>
+          <ul class="edt-list">
+            <li>Hero text &amp; headline on every page</li>
+            <li>Events &amp; news</li>
+            <li>Course planning &amp; schedules</li>
+            <li>Membership &amp; pricing table</li>
+            <li>Help Desk guides</li>
+            <li>Legal documents (PDFs)</li>
+            <li>Partner logos</li>
+            <li>Photos across the site</li>
+          </ul>
+        </div>
+        <div class="edt-callout">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p>Every field has its <b>English version right next to the Italian one</b> — nothing gets forgotten or falls out of sync. And if a change is a mistake, <b>one click restores any earlier version.</b> Nothing is ever truly lost.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  SLIDE 5 — TOUR OF WHAT'S BUILT
+════════════════════════════════════ -->
+<section class="slide tur" id="s5">
+  <nav class="slide-nav">
+    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
+    <span class="nav-tag">What's Live</span>
+  </nav>
+  <div class="wrap">
+    <div class="wrap-head">
+      <span class="eyebrow">04 · A Tour of What's Already Built</span>
+      <h2 class="slide-title">Every corner of the club, already online.</h2>
+    </div>
+    <div class="tur-grid">
+      <div class="tur-card"><div class="tur-card-title">Home</div><p class="tur-card-text">The club's first impression — brand, positioning, entry points to everything else.</p></div>
+      <div class="tur-card"><div class="tur-card-title">Tennis</div><p class="tur-card-text">Courts, programmes and booking information.</p></div>
+      <div class="tur-card"><div class="tur-card-title">Padel</div><p class="tur-card-text">The club's Padel offer, presented on equal footing with Tennis.</p></div>
+      <div class="tur-card"><div class="tur-card-title">Athletic Preparation</div><p class="tur-card-text">Includes an interactive course calendar members browse directly online.</p></div>
+      <div class="tur-card"><div class="tur-card-title">Tennis School</div><p class="tur-card-text">Programmes for every age and level, clearly explained.</p></div>
+      <div class="tur-card"><div class="tur-card-title">Summer Camps</div><p class="tur-card-text">Seasonal offer, kept current every year without rebuilding the page.</p></div>
+      <div class="tur-card"><div class="tur-card-title">Torneo Avvenire</div><p class="tur-card-text">The club's flagship tournament, with its own dedicated presence.</p></div>
+      <div class="tur-card"><div class="tur-card-title">Agonistica</div><p class="tur-card-text">Competitive programme and pathway for serious players.</p></div>
+      <div class="tur-card"><div class="tur-card-title">Club Life</div><p class="tur-card-text">News, events, Help Desk guides and member services, all in one hub.</p></div>
+      <div class="tur-card"><div class="tur-card-title">Membership</div><p class="tur-card-text">A comparison pricing table so prospects can decide without calling first.</p></div>
+      <div class="tur-card"><div class="tur-card-title">Sign-Up &amp; Contact</div><p class="tur-card-text">A direct form to enrol or get in touch — no email chain required.</p></div>
+      <div class="tur-card" style="border-top-color:var(--grey-mid);"><div class="tur-card-title">+ Every page, bilingual</div><p class="tur-card-text">IT and EN versions of all of the above, routed automatically.</p></div>
+    </div>
+    <div class="tur-highlight">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M3 9h18M8 4v5" stroke-linecap="round"/></svg>
+      <div>
+        <div class="tur-highlight-title">The Planning page — a real webpage, not a PDF</div>
+        <p class="tur-highlight-text">The course schedule is built as an actual page on the site, deliberately not as a downloadable PDF. Reason: a PDF is invisible to Google and to AI, and has to be updated by hand every single time. A web page updates itself and can be found.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  SLIDE 6 — PRIVACY & COMPLIANCE
+════════════════════════════════════ -->
+<section class="slide prv" id="s6">
+  <nav class="slide-nav">
+    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
+    <span class="nav-tag">Trust</span>
+  </nav>
+  <div class="wrap">
+    <div class="wrap-head">
+      <span class="eyebrow">05 · Privacy &amp; Compliance by Design</span>
+      <h2 class="slide-title">Compliant because it was built that way — not patched afterward.</h2>
+    </div>
+    <div class="prv-grid">
+      <div class="prv-card">
+        <svg class="ic ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l8 4v6c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V6l8-4z" stroke-linejoin="round"/></svg>
+        <div class="prv-card-title">Google Consent Mode v2</div>
+        <p class="prv-card-text">Built into the core of the site, not bolted on as a script. It's the current standard Google itself requires for compliant tracking.</p>
+      </div>
+      <div class="prv-card">
+        <svg class="ic ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="7" width="18" height="13" rx="1.5"/><path d="M7 7V5a5 5 0 0 1 10 0v2" stroke-linecap="round"/></svg>
+        <div class="prv-card-title">GDPR-compliant cookie banner</div>
+        <p class="prv-card-text">Clear, standard, and shown to every visitor — the legal baseline handled correctly from day one.</p>
+      </div>
+      <div class="prv-card">
+        <svg class="ic ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9"/></svg>
+        <div class="prv-card-title">Tracking follows real consent</div>
+        <p class="prv-card-text">Analytics only activate once a visitor genuinely agrees — never assumed, never forced.</p>
+      </div>
+    </div>
+    <p class="prv-statement">The site respects the law <em>by construction</em> — not by a patch added after the fact.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  SLIDE 7 — PUBLISH FLOW
+════════════════════════════════════ -->
+<section class="slide flo" id="s7">
+  <nav class="slide-nav" style="background:rgba(20,20,20,0.9); border-color:rgba(255,255,255,0.08);">
+    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
+    <span class="nav-tag" style="color:rgba(255,255,255,0.4);">The Publish Flow</span>
+  </nav>
+  <div class="wrap">
+    <div class="wrap-head">
+      <span class="eyebrow">06 · How a Content Change Reaches the Live Site</span>
+      <h2 class="slide-title">From edit to live, in about a minute.</h2>
+    </div>
+    <div class="flo-diagram">
+      <div class="flo-step">
+        <span class="flo-step-num">STEP 1</span>
+        <svg class="ic flo-step-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="flo-step-title">Brian edits in TinaCMS</div>
+        <p class="flo-step-text">A text change, a new photo, a new event — saved with one click.</p>
+        <div class="flo-arrow">→</div>
+      </div>
+      <div class="flo-step">
+        <span class="flo-step-num">STEP 2</span>
+        <svg class="ic flo-step-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="5" r="2.2"/><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="18" r="2.2"/><path d="M12 7.2V14M12 14L8 15.8M12 14l4 1.8" stroke-linecap="round"/></svg>
+        <div class="flo-step-title">Saved to GitHub</div>
+        <p class="flo-step-text">The version history — every past state kept, nothing overwritten.</p>
+        <div class="flo-arrow">→</div>
+      </div>
+      <div class="flo-step">
+        <span class="flo-step-num">STEP 3</span>
+        <svg class="ic flo-step-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 16l4-4 3 3 5-6 4 5" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 20h16" stroke-linecap="round"/></svg>
+        <div class="flo-step-title">Vercel / Netlify rebuilds</div>
+        <p class="flo-step-text">The site regenerates itself automatically — no one presses "publish."</p>
+        <div class="flo-arrow">→</div>
+      </div>
+      <div class="flo-step">
+        <span class="flo-step-num">STEP 4</span>
+        <svg class="ic flo-step-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18z" /></svg>
+        <div class="flo-step-title">Live, worldwide</div>
+        <p class="flo-step-text">Visible to every visitor, everywhere, in roughly sixty seconds.</p>
+      </div>
+    </div>
+    <p class="flo-note">No developer. No ticket. <b>No waiting for a release window.</b></p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  SLIDE 8 — ROADMAP / CLOSING
+════════════════════════════════════ -->
+<section class="slide rmp" id="s8">
+  <div class="rmp-bg"></div>
+  <div class="rmp-corner tl"></div><div class="rmp-corner-v tl"></div>
+  <div class="rmp-corner br"></div><div class="rmp-corner-v br"></div>
+  <nav class="slide-nav" style="background:rgba(20,20,20,0.9); border-color:rgba(255,255,255,0.08);">
+    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
+    <span class="nav-tag" style="color:rgba(255,255,255,0.4);">What's Next</span>
+  </nav>
+  <div class="rmp-content">
+    <div class="wrap-head">
+      <span class="eyebrow eyebrow--light">07 · Roadmap / Next Steps</span>
+      <h2 class="slide-title">Where we go from here.</h2>
+      <p class="slide-lead" style="margin-top:12px;">Placeholders below — to be defined together in our next working session.</p>
+    </div>
+    <div class="rmp-grid">
+      <div class="rmp-card">
+        <span class="rmp-tag">Placeholder</span>
+        <div class="rmp-card-title">Next initiative — TBD</div>
+        <p class="rmp-card-text">To be defined together with Brian.</p>
+      </div>
+      <div class="rmp-card">
+        <span class="rmp-tag">Placeholder</span>
+        <div class="rmp-card-title">Next initiative — TBD</div>
+        <p class="rmp-card-text">To be defined together with Brian.</p>
+      </div>
+      <div class="rmp-card">
+        <span class="rmp-tag">Placeholder</span>
+        <div class="rmp-card-title">Next initiative — TBD</div>
+        <p class="rmp-card-text">To be defined together with Brian.</p>
+      </div>
+    </div>
+    <div class="rmp-footer">
+      <span class="rmp-footer-meta">Tennis Club Ambrosiano · Digital Infrastructure Briefing</span>
+      <span class="rmp-footer-meta">Prepared by Maurizio Taruggi</span>
+    </div>
+  </div>
+</section>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const dotsContainer = document.getElementById('dots');
+  const counterText = document.getElementById('counterText');
+  const counterBar = document.getElementById('counterBar');
+  const counterEl = document.getElementById('counter');
+  const darkSlides = ['s1', 's3', 's7', 's8'];
+  let current = 0;
+
+  slides.forEach((s, i) => {
+    const d = document.createElement('div');
+    const isDark = darkSlides.includes(s.id);
+    d.className = 'dot' + (isDark ? '' : ' dot-dark') + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsContainer.appendChild(d);
+  });
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function updateUI(idx) {
+    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+    counterText.textContent = pad(idx + 1) + ' / ' + pad(slides.length);
+    counterBar.style.setProperty('--p', (idx + 1) / slides.length);
+    counterEl.classList.toggle('counter-dark', !darkSlides.includes(slides[idx].id));
+  }
+
+  function goTo(idx) {
+    idx = Math.max(0, Math.min(slides.length - 1, idx));
+    current = idx;
+    slides[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    updateUI(idx);
+  }
+
+  document.addEventListener('keydown', e => {
+    if (['ArrowDown', 'ArrowRight', 'PageDown', ' '].includes(e.key)) {
+      e.preventDefault(); goTo(current + 1);
+    } else if (['ArrowUp', 'ArrowLeft', 'PageUp'].includes(e.key)) {
+      e.preventDefault(); goTo(current - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault(); goTo(0);
+    } else if (e.key === 'End') {
+      e.preventDefault(); goTo(slides.length - 1);
+    }
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = slides.indexOf(entry.target);
+        current = idx;
+        updateUI(idx);
+      }
+    });
+  }, { threshold: 0.6 });
+
+  slides.forEach(s => observer.observe(s));
+  updateUI(0);
+</script>
+</body>
+</html>
