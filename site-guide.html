@@ -8,7 +8,7 @@
 <!-- Favicon: red tennis ball, inline (no external requests) -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%238B1A1A'/%3E%3Cpath d='M32 2 C18 14,18 50,32 62' stroke='white' stroke-width='2' fill='none'/%3E%3Cpath d='M32 2 C46 14,46 50,32 62' stroke='white' stroke-width='2' fill='none'/%3E%3C/svg%3E">
 
-<meta name="description" content="How the Tennis Club Ambrosiano website works, and how you run it — a briefing for Brian.">
+<meta name="description" content="How the Tennis Club Ambrosiano website works, and how it's run day to day.">
 <meta property="og:title" content="TCA · How the Site Works">
 <meta property="og:description" content="How the new site works, and how you run it.">
 <meta property="og:type" content="website">
@@ -137,12 +137,12 @@
   .wrap {
     position: relative; z-index: 2;
     margin-top: 72px;
-    padding: clamp(20px, 3.5vh, 44px) 5vw clamp(24px, 4vh, 44px);
+    padding: clamp(14px, 3.5vh, 44px) 5vw clamp(18px, 4vh, 44px);
     display: flex;
     flex-direction: column;
     justify-content: center;
     flex: 1;
-    gap: clamp(14px, 2vh, 26px);
+    gap: clamp(10px, 2vh, 26px);
   }
   .wrap-head { max-width: 60em; }
   .wrap-head .slide-title { margin-top: 2px; }
@@ -287,10 +287,10 @@
   }
   .stk-card {
     background: #fff;
-    padding: clamp(16px, 2.4vh, 30px) 1.7vw;
+    padding: clamp(12px, 2vh, 26px) 1.7vw;
     display: flex;
     flex-direction: column;
-    gap: clamp(8px, 1.1vh, 14px);
+    gap: clamp(6px, 1vh, 12px);
   }
   .stk-tag {
     font-family: var(--fd);
@@ -315,10 +315,10 @@
     line-height: 1.4;
   }
   .stk-text {
-    font-size: 0.86rem;
+    font-size: 0.82rem;
     font-weight: 400;
     color: var(--text-light);
-    line-height: 1.55;
+    line-height: 1.48;
   }
   .stk-banner {
     background: var(--red);
@@ -350,35 +350,34 @@
     gap: 1px;
     background: rgba(255,255,255,0.08);
   }
-  .adv-grid > .adv-card:nth-child(4) { grid-column: span 1; }
   .adv-card {
     background: #16191F;
-    padding: clamp(12px, 1.6vh, 22px) 1.4vw;
+    padding: clamp(8px, 1.1vh, 16px) 1.4vw;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
   }
   .adv-num {
     font-family: var(--fd);
-    font-size: 1.7rem;
+    font-size: 1.4rem;
     font-weight: 800;
     line-height: 1;
     color: rgba(255,255,255,0.1);
   }
   .adv-fact {
     font-family: var(--fd);
-    font-size: 0.98rem;
+    font-size: 0.9rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.03em;
     color: var(--red-bright);
-    line-height: 1.2;
+    line-height: 1.18;
   }
   .adv-benefit {
-    font-size: 0.84rem;
+    font-size: 0.76rem;
     font-weight: 400;
     color: rgba(255,255,255,0.68);
-    line-height: 1.5;
+    line-height: 1.36;
   }
   .adv-line {
     font-family: var(--fd);
@@ -386,21 +385,22 @@
     font-weight: 600;
     color: #fff;
     text-align: center;
-    padding-top: 8px;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    line-height: 1.35;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.12);
   }
 
   /* ════════════════════════════════════════════
-     SLIDE 4 — EDITING (WHAT BRIAN CAN DO)
+     SLIDE 4 — HOW THE SITE IS ORGANISED
   ════════════════════════════════════════════ */
-  .edt { background: #fff; }
-  .edt-grid {
+  .arc { background: #fff; }
+  .arc-grid {
     display: grid;
-    grid-template-columns: 1.05fr 0.95fr;
+    grid-template-columns: 1fr 1.05fr;
     gap: 3vw;
     align-items: stretch;
   }
-  /* mock editor window */
+  /* mock browser window */
   .mock {
     background: var(--off-white);
     border: 1px solid var(--grey-light);
@@ -429,65 +429,85 @@
     border-radius: 3px;
   }
   .mock-body { padding: clamp(14px, 1.8vh, 22px) 1.8vw; display: flex; flex-direction: column; gap: clamp(10px, 1.4vh, 18px); flex: 1; }
-  .mock-steps { display: flex; flex-direction: column; gap: 0; }
-  .mock-step {
-    display: flex;
-    gap: 14px;
-    padding: clamp(8px, 1vh, 14px) 0;
-    border-bottom: 1px dashed var(--grey-light);
-  }
-  .mock-step:last-child { border-bottom: none; }
-  .mock-step-num {
-    font-family: var(--fd);
-    font-size: 1.05rem;
-    font-weight: 800;
-    color: var(--red);
-    min-width: 1.6em;
-  }
-  .mock-step-title {
-    font-family: var(--fd);
-    font-size: 0.95rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    color: var(--text);
-  }
-  .mock-step-text { font-size: 0.85rem; color: var(--text-light); line-height: 1.55; margin-top: 2px; }
-  .mock-langs { display: flex; gap: 8px; margin-top: auto; }
-  .mock-lang {
-    flex: 1;
+
+  /* modal-over-page mockup */
+  .mock-body--modal { position: relative; flex: 1; min-height: 200px; }
+  .mock-page { display: flex; flex-direction: column; gap: 10px; opacity: 0.5; }
+  .mock-page-photo { height: 64px; background: var(--grey-light); border-radius: 2px; }
+  .mock-page-line { height: 9px; background: var(--grey-light); border-radius: 2px; }
+  .mock-modal {
+    position: absolute;
+    left: 50%; top: 48%;
+    transform: translate(-50%, -50%);
+    width: 80%;
     background: #fff;
     border: 1px solid var(--grey-light);
-    padding: 8px 10px;
-    font-size: 11px;
-    color: var(--text-light);
+    box-shadow: 0 14px 34px rgba(0,0,0,0.18);
+    border-radius: 3px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
   }
-  .mock-lang b { color: var(--text); display: block; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 3px; font-family: var(--fd); }
-
-  .edt-side { display: flex; flex-direction: column; gap: 2.2vh; }
-  .edt-list-title {
+  .mock-modal-head {
     font-family: var(--fd);
-    font-size: 1.15rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .mock-modal-head span { color: var(--grey-mid); font-family: var(--fb); font-weight: 400; font-size: 1rem; line-height: 1; }
+  .mock-modal-field {
+    background: var(--off-white);
+    border: 1px solid var(--grey-light);
+    font-size: 0.72rem;
+    color: var(--grey-mid);
+    padding: 7px 9px;
+    border-radius: 2px;
+  }
+  .mock-modal-btn {
+    align-self: flex-start;
+    background: var(--red);
+    color: #fff;
+    font-family: var(--fd);
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 7px 16px;
+    border-radius: 2px;
+    margin-top: 2px;
+  }
+  .mock-caption { font-size: 0.82rem; color: var(--text-light); line-height: 1.5; padding: 0 1.8vw clamp(14px, 1.8vh, 22px); }
+
+  .arc-side { display: flex; flex-direction: column; gap: 1.6vh; }
+  .arc-list-title {
+    font-family: var(--fd);
+    font-size: 1.1rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.03em;
     color: var(--text);
   }
-  .edt-list {
+  .arc-list {
     list-style: none;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px 14px;
+    gap: 6px 12px;
   }
-  .edt-list li {
-    font-size: 0.88rem;
+  .arc-list li {
+    font-size: 0.84rem;
     color: var(--text-light);
-    padding: 8px 10px;
+    padding: 6px 10px;
     background: var(--off-white);
     border-left: 3px solid var(--red);
-    line-height: 1.4;
+    line-height: 1.35;
   }
-  .edt-callout {
+  .arc-callout {
     background: var(--text);
     color: #fff;
     padding: 2vh 1.6vw;
@@ -495,9 +515,9 @@
     align-items: center;
     gap: 16px;
   }
-  .edt-callout p { font-size: 0.92rem; line-height: 1.55; color: rgba(255,255,255,0.85); }
-  .edt-callout b { color: #fff; }
-  .edt-callout .ic { color: var(--red-bright); }
+  .arc-callout p { font-size: 0.9rem; line-height: 1.55; color: rgba(255,255,255,0.85); }
+  .arc-callout b { color: #fff; }
+  .arc-callout .ic { color: var(--red-bright); }
 
   /* ════════════════════════════════════════════
      SLIDE 5 — TOUR
@@ -549,7 +569,7 @@
   .tur-highlight-text { font-size: 0.9rem; line-height: 1.55; color: rgba(255,255,255,0.9); }
 
   /* ════════════════════════════════════════════
-     SLIDE 6 — PRIVACY
+     SLIDE 9 — PRIVACY
   ════════════════════════════════════════════ */
   .prv { background: #fff; }
   .prv-grid {
@@ -588,7 +608,7 @@
   .prv-statement em { color: var(--red); font-style: normal; }
 
   /* ════════════════════════════════════════════
-     SLIDE 7 — FLOW
+     SLIDE 10 — FLOW
   ════════════════════════════════════════════ */
   .flo { background: var(--text); }
   .flo .slide-title { color: #fff; }
@@ -651,7 +671,7 @@
   .flo-note b { color: var(--red-bright); }
 
   /* ════════════════════════════════════════════
-     SLIDE 8 — ROADMAP / CLOSING
+     SLIDE 11 — ROADMAP / CLOSING
   ════════════════════════════════════════════ */
   .rmp { background: var(--text); }
   .rmp-bg {
@@ -727,6 +747,95 @@
   }
 
   /* ════════════════════════════════════════════
+     SLIDE 6 — TRACKING & SMART FORMS
+  ════════════════════════════════════════════ */
+  .trk { background: var(--text); }
+  .trk .slide-title, .trk .slide-lead { color: #fff; }
+  .trk .slide-lead { color: rgba(255,255,255,0.65); }
+  .trk-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.08);
+  }
+  .trk-paths {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 4px;
+  }
+  .trk-paths li {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.72);
+    line-height: 1.4;
+    padding-left: 16px;
+    position: relative;
+  }
+  .trk-paths li::before { content: '→'; position: absolute; left: 0; color: var(--red-bright); }
+  .trk-paths b { color: #fff; }
+
+  /* ════════════════════════════════════════════
+     SLIDE 7 — THE FORMS
+  ════════════════════════════════════════════ */
+  .frm { background: #fff; }
+  .frm-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3vw;
+    align-items: start;
+  }
+  .frm-list { display: flex; flex-direction: column; border: 1px solid var(--grey-light); }
+  .frm-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .frm-row:last-child { border-bottom: none; }
+  .frm-name {
+    font-family: var(--fd);
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--text);
+  }
+  .frm-tag {
+    font-family: var(--fd);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+    white-space: nowrap;
+  }
+  .frm-side { display: flex; flex-direction: column; gap: 1.6vh; }
+  .frm-note {
+    padding: 2vh 1.6vw;
+    border-left: 3px solid var(--grey-mid);
+    background: var(--off-white);
+  }
+  .frm-note-title {
+    font-family: var(--fd);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    margin-bottom: 6px;
+  }
+  .frm-note p { font-size: 0.88rem; color: var(--text-light); line-height: 1.6; }
+  .frm-note--next {
+    border-left-color: var(--red);
+    background: #fff;
+    border: 1px dashed var(--red);
+  }
+  .frm-note--next .frm-note-title { color: var(--red); }
+
+  /* ════════════════════════════════════════════
      MOBILE — ≤ 860px
   ════════════════════════════════════════════ */
   @media (max-width: 860px) {
@@ -750,21 +859,21 @@
     .cov-meta { padding: 0 20px 28px; font-size: 10px; }
     .cov-watermark { display: none; }
 
-    .stk-grid, .adv-grid, .prv-grid, .flo-diagram, .rmp-grid { grid-template-columns: 1fr; }
+    .stk-grid, .adv-grid, .prv-grid, .flo-diagram, .rmp-grid, .trk-grid, .frm-grid { grid-template-columns: 1fr; }
     .stk-banner { flex-direction: column; text-align: center; gap: 14px; padding: 24px 20px; }
     .adv-card { border-bottom: 1px solid rgba(255,255,255,0.08); }
     .flo-step { border-left: 1px solid rgba(255,255,255,0.08) !important; border-bottom: none; }
     .flo-arrow { top: auto; bottom: -13px; right: 50%; transform: translateX(50%) rotate(90deg); }
 
-    .edt-grid { grid-template-columns: 1fr; }
-    .edt-list { grid-template-columns: 1fr 1fr; }
+    .arc-grid { grid-template-columns: 1fr; }
+    .arc-list { grid-template-columns: 1fr 1fr; }
     .tur-grid { grid-template-columns: 1fr 1fr; }
     .tur-highlight { flex-direction: column; text-align: center; }
 
     .rmp-footer { flex-direction: column; align-items: flex-start; }
   }
   @media (max-width: 520px) {
-    .tur-grid, .edt-list { grid-template-columns: 1fr; }
+    .tur-grid, .arc-list { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -772,7 +881,7 @@
 
 <!-- NAV DOTS + COUNTER -->
 <div class="slide-dots" id="dots"></div>
-<div class="slide-counter" id="counter"><span id="counterText">01 / 08</span><span class="bar" id="counterBar"></span></div>
+<div class="slide-counter" id="counter"><span id="counterText">01 / 11</span><span class="bar" id="counterBar"></span></div>
 
 <!-- ════════════════════════════════════
   SLIDE 1 — COVER
@@ -787,14 +896,14 @@
   <div class="cov-content">
     <span class="eyebrow eyebrow--light">Digital Infrastructure Briefing</span>
     <h1 class="cov-title">How the new site<br>works. <em>And how<br>you run it.</em></h1>
-    <p class="cov-sub">A short, non-technical walkthrough of the platform behind the Tennis Club Ambrosiano website — written for the person who runs the brand, not the servers.</p>
+    <p class="cov-sub">A clear walkthrough of the platform behind the Tennis Club Ambrosiano website: what it's built on, what it can do, and how it's run day to day.</p>
     <div class="cov-actions">
       <a href="#s2" class="btn btn-red">See the Stack</a>
-      <a href="#s4" class="btn btn-outline">See What You Can Do</a>
+      <a href="#s4" class="btn btn-outline">See How It's Organised</a>
     </div>
   </div>
   <div class="cov-meta">
-    <span>Prepared for Brian</span>
+    <span>Confidential</span>
     <span>Tennis Club Ambrosiano · July 2026</span>
   </div>
 </section>
@@ -880,74 +989,71 @@
         <span class="adv-fact">Bilingual IT / EN, routed automatically</span>
         <p class="adv-benefit">One platform serves both languages cleanly, without duplicating the site or doubling the effort of keeping it up to date.</p>
       </div>
-      <div class="adv-card" style="justify-content:center; align-items:center; text-align:center; background:#1B1E24;">
-        <p class="adv-line">Quality, history and findability<br>aren't a promise here —<br>they're <b style="color:var(--red-bright);">enforced by the architecture.</b></p>
+      <div class="adv-card">
+        <span class="adv-num">06</span>
+        <span class="adv-fact">Every piece of content is editable from the CMS — forms included</span>
+        <p class="adv-benefit">Add a new event or news item and update the copy on its sign-up form in the very same place. One free tool now replaces two separate systems — the old CMS and Jotform — for simpler operations and lower cost.</p>
       </div>
     </div>
+    <p class="adv-line">Quality, history, findability and cost<br>aren't a promise here —<br>they're <b style="color:var(--red-bright);">enforced by the architecture.</b></p>
   </div>
 </section>
 
 <!-- ════════════════════════════════════
-  SLIDE 4 — WHAT BRIAN CAN DO
+  SLIDE 4 — HOW THE SITE IS ORGANISED
 ════════════════════════════════════ -->
-<section class="slide edt" id="s4">
+<section class="slide arc" id="s4">
   <nav class="slide-nav">
     <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
-    <span class="nav-tag">Day to Day</span>
+    <span class="nav-tag">Site Structure</span>
   </nav>
   <div class="wrap">
     <div class="wrap-head">
-      <span class="eyebrow">03 · What You Can Do, Day to Day</span>
-      <h2 class="slide-title">Editing the site is like editing a shared document.</h2>
+      <span class="eyebrow">03 · How the Site Is Organised</span>
+      <h2 class="slide-title">One click to get there. Zero clicks to get lost.</h2>
+      <p class="slide-lead" style="margin-top:12px;">Content is split by macro-activity — Tennis, Padel, Athletic Preparation and so on — and each one lives on its own page, built to stand on its own like a landing page. No topic is buried behind a chain of menus.</p>
     </div>
-    <div class="edt-grid">
+    <div class="arc-grid">
       <div class="mock">
         <div class="mock-bar">
           <div class="mock-dot d1"></div><div class="mock-dot d2"></div><div class="mock-dot d3"></div>
-          <span class="mock-url">tinacms.app/tca/edit</span>
+          <span class="mock-url">tennisclubambrosiano.it/padel</span>
         </div>
-        <div class="mock-body">
-          <div class="mock-steps">
-            <div class="mock-step">
-              <span class="mock-step-num">1</span>
-              <div><div class="mock-step-title">Click "Edit"</div><div class="mock-step-text">Right on the real page — no separate technical dashboard to learn.</div></div>
-            </div>
-            <div class="mock-step">
-              <span class="mock-step-num">2</span>
-              <div><div class="mock-step-title">Change text or photo</div><div class="mock-step-text">You see the actual page update as you type, exactly as visitors will.</div></div>
-            </div>
-            <div class="mock-step">
-              <span class="mock-step-num">3</span>
-              <div><div class="mock-step-title">Save</div><div class="mock-step-text">One click. No code, no export, no email to a developer.</div></div>
-            </div>
-            <div class="mock-step">
-              <span class="mock-step-num">4</span>
-              <div><div class="mock-step-title">It's live</div><div class="mock-step-text">Published automatically, worldwide, in about a minute.</div></div>
-            </div>
+        <div class="mock-body mock-body--modal">
+          <div class="mock-page">
+            <div class="mock-page-photo"></div>
+            <div class="mock-page-line" style="width:75%"></div>
+            <div class="mock-page-line" style="width:55%"></div>
+            <div class="mock-page-line" style="width:65%"></div>
           </div>
-          <div class="mock-langs">
-            <div class="mock-lang"><b>Italiano</b>Prenota il tuo campo</div>
-            <div class="mock-lang"><b>English</b>Book your court</div>
+          <div class="mock-modal">
+            <div class="mock-modal-head">Book a Trial Lesson <span>×</span></div>
+            <div class="mock-modal-field">Name</div>
+            <div class="mock-modal-field">Email</div>
+            <div class="mock-modal-btn">Send</div>
           </div>
         </div>
+        <p class="mock-caption">A modal opens on top of the page for quick actions — booking a trial, asking a question. The visitor never actually leaves what they were looking at.</p>
       </div>
-      <div class="edt-side">
+      <div class="arc-side">
         <div>
-          <div class="edt-list-title" style="margin-bottom:12px;">Editable without a developer</div>
-          <ul class="edt-list">
-            <li>Hero text &amp; headline on every page</li>
-            <li>Events &amp; news</li>
-            <li>Course planning &amp; schedules</li>
-            <li>Membership &amp; pricing table</li>
-            <li>Help Desk guides</li>
-            <li>Legal documents (PDFs)</li>
-            <li>Partner logos</li>
-            <li>Photos across the site</li>
+          <div class="arc-list-title" style="margin-bottom:12px;">Every macro-activity, its own landing page</div>
+          <ul class="arc-list">
+            <li>Home</li>
+            <li>Tennis</li>
+            <li>Padel</li>
+            <li>Athletic Preparation</li>
+            <li>Tennis School</li>
+            <li>Summer Camps</li>
+            <li>Torneo Avvenire</li>
+            <li>Agonistica</li>
+            <li>Club Life</li>
+            <li>Membership</li>
           </ul>
         </div>
-        <div class="edt-callout">
-          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <p>Every field has its <b>English version right next to the Italian one</b> — nothing gets forgotten or falls out of sync. And if a change is a mistake, <b>one click restores any earlier version.</b> Nothing is ever truly lost.</p>
+        <div class="arc-callout">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p>Every page above is safe to link directly — from an ad, a QR code, a newsletter, a social post. The visitor lands exactly on the topic they clicked, <b>one hop from anywhere on the site.</b></p>
         </div>
       </div>
     </div>
@@ -992,16 +1098,118 @@
 </section>
 
 <!-- ════════════════════════════════════
-  SLIDE 6 — PRIVACY & COMPLIANCE
+  SLIDE 6 — TRACKING & SMART FORMS
 ════════════════════════════════════ -->
-<section class="slide prv" id="s6">
+<section class="slide trk" id="s6">
+  <nav class="slide-nav" style="background:rgba(20,20,20,0.9); border-color:rgba(255,255,255,0.08);">
+    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
+    <span class="nav-tag" style="color:rgba(255,255,255,0.4);">Built for Growth</span>
+  </nav>
+  <div class="wrap">
+    <div class="wrap-head">
+      <span class="eyebrow">05 · Built for Growth</span>
+      <h2 class="slide-title">Marketing intelligence, not just a website.</h2>
+      <p class="slide-lead" style="margin-top:12px;">Speed and structure aren't the only technical edge. The site also tracks where visitors really come from, and the forms adapt to who's filling them out.</p>
+    </div>
+    <div class="trk-grid">
+      <div class="adv-card">
+        <span class="adv-num">01</span>
+        <span class="adv-fact">UTM parameters carried page to page</span>
+        <p class="adv-benefit">The tags that identify a campaign, an ad or a channel are captured on arrival and stay attached for the entire visit — all the way through to the form. Real ROI per channel, not attribution guesswork.</p>
+      </div>
+      <div class="adv-card">
+        <span class="adv-num">02</span>
+        <span class="adv-fact">Conditional logic, checked against Perfect Gym in real time</span>
+        <p class="adv-benefit">The main Contact form checks the email against the Perfect Gym member database as it's typed, then adapts on the spot:</p>
+        <ul class="trk-paths">
+          <li><b>Existing member</b> → routed straight to a service request</li>
+          <li><b>New prospect, activity already chosen</b> → sent to the right team for it</li>
+          <li><b>General enquiry</b> → default routing to the front desk</li>
+        </ul>
+        <p class="adv-benefit">One form, several journeys — automatically, with no extra staff time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  SLIDE 7 — THE FORMS
+════════════════════════════════════ -->
+<section class="slide frm" id="s7">
+  <nav class="slide-nav">
+    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
+    <span class="nav-tag">The Forms</span>
+  </nav>
+  <div class="wrap">
+    <div class="wrap-head">
+      <span class="eyebrow">06 · The Forms</span>
+      <h2 class="slide-title">Five forms. One less-friction philosophy.</h2>
+      <p class="slide-lead" style="margin-top:12px;">Every request on the site — contact, referral, enrolment — goes through a form built around the same idea: ask only what's needed, route it to the right place.</p>
+    </div>
+    <div class="frm-grid">
+      <div class="frm-list">
+        <div class="frm-row"><span class="frm-name">Contact</span><span class="frm-tag">Main · Conditional Logic</span></div>
+        <div class="frm-row"><span class="frm-name">Referral</span><span class="frm-tag">Club Life Page</span></div>
+        <div class="frm-row"><span class="frm-name">SAT Enrolment</span><span class="frm-tag">Sign-Up</span></div>
+        <div class="frm-row"><span class="frm-name">Summer Camp Enrolment</span><span class="frm-tag">Sign-Up</span></div>
+        <div class="frm-row"><span class="frm-name">Summer Tennis Enrolment</span><span class="frm-tag">Sign-Up</span></div>
+      </div>
+      <div class="frm-side">
+        <div class="frm-note">
+          <div class="frm-note-title">Built to Match Today</div>
+          <p>The enrolment forms are built to mirror the current ones exactly — same fields, same steps. Nothing lost in the move, and no relearning for the team.</p>
+        </div>
+        <div class="frm-note frm-note--next">
+          <div class="frm-note-title">Recommended Next Step</div>
+          <p>A graphometric signature that auto-generates a signed PDF contract, Stripe built in, and a direct connection to Perfect Gym — so enrolling, paying and activating membership happen in one motion.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  SLIDE 8 — CLUB LIFE: THE MEMBER HUB
+════════════════════════════════════ -->
+<section class="slide tur" id="s8">
+  <nav class="slide-nav">
+    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
+    <span class="nav-tag">Club Life</span>
+  </nav>
+  <div class="wrap">
+    <div class="wrap-head">
+      <span class="eyebrow">07 · Club Life: The Member Hub</span>
+      <h2 class="slide-title">The club's digital noticeboard.</h2>
+      <p class="slide-lead" style="margin-top:12px;">News, events, Help Desk guides and partner offers, all in one place — and every single article has its own link.</p>
+    </div>
+    <div class="tur-grid">
+      <div class="tur-card"><div class="tur-card-title">News</div><p class="tur-card-text">Announcements and updates, published the moment they're ready.</p></div>
+      <div class="tur-card"><div class="tur-card-title">Events</div><p class="tur-card-text">What's coming up at the club, always current.</p></div>
+      <div class="tur-card"><div class="tur-card-title">Help Desk</div><p class="tur-card-text">Step-by-step guides for the questions members ask most — medical certificates, renewals, and more.</p></div>
+      <div class="tur-card"><div class="tur-card-title">Partners</div><p class="tur-card-text">Offers and collaborations from the club's partner network.</p></div>
+    </div>
+    <div class="tur-highlight">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div>
+        <div class="tur-highlight-title">Every article has its own link</div>
+        <p class="tur-highlight-text">Send a newsletter that points straight to one specific article — not just the homepage. Answer a member's request with a direct link to the exact Help Desk instructions, like the medical certificate procedure, instead of re-explaining it every time.</p>
+      </div>
+    </div>
+    <p class="prv-statement">This is the page that saves the team time, and gives members <em>speed and transparency</em> — every single day.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════
+  SLIDE 9 — PRIVACY & COMPLIANCE
+════════════════════════════════════ -->
+<section class="slide prv" id="s9">
   <nav class="slide-nav">
     <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
     <span class="nav-tag">Trust</span>
   </nav>
   <div class="wrap">
     <div class="wrap-head">
-      <span class="eyebrow">05 · Privacy &amp; Compliance by Design</span>
+      <span class="eyebrow">08 · Privacy &amp; Compliance by Design</span>
       <h2 class="slide-title">Compliant because it was built that way — not patched afterward.</h2>
     </div>
     <div class="prv-grid">
@@ -1026,23 +1234,23 @@
 </section>
 
 <!-- ════════════════════════════════════
-  SLIDE 7 — PUBLISH FLOW
+  SLIDE 10 — PUBLISH FLOW
 ════════════════════════════════════ -->
-<section class="slide flo" id="s7">
+<section class="slide flo" id="s10">
   <nav class="slide-nav" style="background:rgba(20,20,20,0.9); border-color:rgba(255,255,255,0.08);">
     <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
     <span class="nav-tag" style="color:rgba(255,255,255,0.4);">The Publish Flow</span>
   </nav>
   <div class="wrap">
     <div class="wrap-head">
-      <span class="eyebrow">06 · How a Content Change Reaches the Live Site</span>
+      <span class="eyebrow">09 · How a Content Change Reaches the Live Site</span>
       <h2 class="slide-title">From edit to live, in about a minute.</h2>
     </div>
     <div class="flo-diagram">
       <div class="flo-step">
         <span class="flo-step-num">STEP 1</span>
         <svg class="ic flo-step-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="flo-step-title">Brian edits in TinaCMS</div>
+        <div class="flo-step-title">Edited in TinaCMS</div>
         <p class="flo-step-text">A text change, a new photo, a new event — saved with one click.</p>
         <div class="flo-arrow">→</div>
       </div>
@@ -1072,9 +1280,9 @@
 </section>
 
 <!-- ════════════════════════════════════
-  SLIDE 8 — ROADMAP / CLOSING
+  SLIDE 11 — ROADMAP / CLOSING
 ════════════════════════════════════ -->
-<section class="slide rmp" id="s8">
+<section class="slide rmp" id="s11">
   <div class="rmp-bg"></div>
   <div class="rmp-corner tl"></div><div class="rmp-corner-v tl"></div>
   <div class="rmp-corner br"></div><div class="rmp-corner-v br"></div>
@@ -1084,7 +1292,7 @@
   </nav>
   <div class="rmp-content">
     <div class="wrap-head">
-      <span class="eyebrow eyebrow--light">07 · Roadmap / Next Steps</span>
+      <span class="eyebrow eyebrow--light">10 · Roadmap / Next Steps</span>
       <h2 class="slide-title">Where we go from here.</h2>
       <p class="slide-lead" style="margin-top:12px;">Placeholders below — to be defined together in our next working session.</p>
     </div>
@@ -1092,17 +1300,17 @@
       <div class="rmp-card">
         <span class="rmp-tag">Placeholder</span>
         <div class="rmp-card-title">Next initiative — TBD</div>
-        <p class="rmp-card-text">To be defined together with Brian.</p>
+        <p class="rmp-card-text">To be defined together.</p>
       </div>
       <div class="rmp-card">
         <span class="rmp-tag">Placeholder</span>
         <div class="rmp-card-title">Next initiative — TBD</div>
-        <p class="rmp-card-text">To be defined together with Brian.</p>
+        <p class="rmp-card-text">To be defined together.</p>
       </div>
       <div class="rmp-card">
         <span class="rmp-tag">Placeholder</span>
         <div class="rmp-card-title">Next initiative — TBD</div>
-        <p class="rmp-card-text">To be defined together with Brian.</p>
+        <p class="rmp-card-text">To be defined together.</p>
       </div>
     </div>
     <div class="rmp-footer">
@@ -1118,7 +1326,7 @@
   const counterText = document.getElementById('counterText');
   const counterBar = document.getElementById('counterBar');
   const counterEl = document.getElementById('counter');
-  const darkSlides = ['s1', 's3', 's7', 's8'];
+  const darkSlides = ['s1', 's3', 's6', 's10', 's11'];
   let current = 0;
 
   slides.forEach((s, i) => {
