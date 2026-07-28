@@ -775,12 +775,80 @@
   .frm-note--next .frm-note-title { color: var(--red); }
 
   /* ════════════════════════════════════════════
+     SLIDE 11 — WHAT THIS SITE ACHIEVES (CLOSING)
+  ════════════════════════════════════════════ */
+  .fin { background: var(--text); }
+  .fin-bg {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(105deg, rgba(12,14,17,0.93) 45%, rgba(139,26,26,0.4) 100%),
+      url('orizzntale%20tca.avif') center/cover no-repeat;
+  }
+  .fin-corner { position: absolute; width: 60px; height: 3px; background: var(--red); }
+  .fin-corner-v { position: absolute; width: 3px; height: 60px; background: var(--red); }
+  .fin-corner.tl { top: 0; left: 0; } .fin-corner-v.tl { top: 0; left: 0; }
+  .fin-corner.br { bottom: 0; right: 0; } .fin-corner-v.br { bottom: 0; right: 0; }
+  .fin .slide-title { color: #fff; }
+  .fin-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.1);
+  }
+  .fin-card {
+    background: rgba(10,12,16,0.6);
+    padding: clamp(10px, 1.6vh, 20px) 1.1vw;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .fin-num {
+    font-family: var(--fd);
+    font-size: 1.3rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--red-bright);
+  }
+  .fin-title {
+    font-family: var(--fd);
+    font-size: 0.92rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #fff;
+  }
+  .fin-text { font-size: 0.74rem; color: rgba(255,255,255,0.68); line-height: 1.38; }
+  .fin-statement {
+    text-align: center;
+    padding-top: clamp(10px, 1.6vh, 20px);
+  }
+  .fin-statement-lead {
+    font-family: var(--fd);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    font-size: clamp(1.4rem, 3vw, 2.4rem);
+    color: #fff;
+    line-height: 1.15;
+  }
+  .fin-statement-lead em { color: var(--red-bright); font-style: normal; }
+  .fin-statement-sub {
+    margin-top: 8px;
+    font-size: clamp(0.85rem, 1.15vw, 1.05rem);
+    color: rgba(255,255,255,0.65);
+    line-height: 1.55;
+    max-width: 56em;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ════════════════════════════════════════════
      MOBILE — ≤ 860px
   ════════════════════════════════════════════ */
   @media (max-width: 860px) {
     html { scroll-snap-type: none; overflow-y: auto; }
     .slide { height: auto; min-height: auto; scroll-snap-align: none; scroll-snap-stop: normal; }
-    .cov { min-height: 100svh; }
+    .cov, .fin { min-height: 100svh; }
     .slide-dots { display: none; }
     .slide-counter { display: none; }
 
@@ -798,7 +866,7 @@
     .cov-meta { padding: 0 20px 28px; font-size: 10px; }
     .cov-watermark { display: none; }
 
-    .stk-grid, .adv-grid, .prv-grid, .flo-diagram, .trk-grid, .frm-grid { grid-template-columns: 1fr; }
+    .stk-grid, .adv-grid, .prv-grid, .flo-diagram, .trk-grid, .frm-grid, .fin-grid { grid-template-columns: 1fr; }
     .stk-banner { flex-direction: column; text-align: center; gap: 14px; padding: 24px 20px; }
     .adv-card { border-bottom: 1px solid rgba(255,255,255,0.08); }
     .flo-step { border-left: 1px solid rgba(255,255,255,0.08) !important; border-bottom: none; }
@@ -818,7 +886,7 @@
 
 <!-- NAV DOTS + COUNTER -->
 <div class="slide-dots" id="dots"></div>
-<div class="slide-counter" id="counter"><span id="counterText">01 / 10</span><span class="bar" id="counterBar"></span></div>
+<div class="slide-counter" id="counter"><span id="counterText">01 / 11</span><span class="bar" id="counterBar"></span></div>
 
 <!-- ════════════════════════════════════
   SLIDE 1 — COVER
@@ -1229,13 +1297,63 @@
   </div>
 </section>
 
+<!-- ════════════════════════════════════
+  SLIDE 11 — WHAT THIS SITE ACHIEVES (CLOSING)
+════════════════════════════════════ -->
+<section class="slide fin" id="s11">
+  <div class="fin-bg"></div>
+  <div class="fin-corner tl"></div><div class="fin-corner-v tl"></div>
+  <div class="fin-corner br"></div><div class="fin-corner-v br"></div>
+  <nav class="slide-nav" style="background:rgba(20,20,20,0.9); border-color:rgba(255,255,255,0.08);">
+    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
+    <span class="nav-tag" style="color:rgba(255,255,255,0.4);">What This Achieves</span>
+  </nav>
+  <div class="wrap">
+    <div class="wrap-head">
+      <span class="eyebrow eyebrow--light">10 · What This Site Achieves</span>
+      <h2 class="slide-title">Five goals. One strategic asset.</h2>
+    </div>
+    <div class="fin-grid">
+      <div class="fin-card">
+        <span class="fin-num">01</span>
+        <span class="fin-title">Speed</span>
+        <p class="fin-text">Google measures load time as a ranking factor, and most visitors abandon a page that takes more than a few seconds to appear. A slow site quietly loses both search position and visitors, every day. This one is built to be among the fastest technically possible.</p>
+      </div>
+      <div class="fin-card">
+        <span class="fin-num">02</span>
+        <span class="fin-title">Ease of Use</span>
+        <p class="fin-text">A site that needs a developer for every small change is a cost. A site the team can update itself, in minutes, is operational value — time and money that stay with the club, not an agency retainer.</p>
+      </div>
+      <div class="fin-card">
+        <span class="fin-num">03</span>
+        <span class="fin-title">Scalability</span>
+        <p class="fin-text">New sections, new languages, new features — added on top of what already exists, not instead of it. Built to absorb the club's next few years of change, not just today's.</p>
+      </div>
+      <div class="fin-card">
+        <span class="fin-num">04</span>
+        <span class="fin-title">Stability</span>
+        <p class="fin-text">No live database to breach, no third-party plugin to break on the next update, every version kept and recoverable. Pre-rendered, versioned code is about as close to unbreakable as a website gets.</p>
+      </div>
+      <div class="fin-card">
+        <span class="fin-num">05</span>
+        <span class="fin-title">Independence</span>
+        <p class="fin-text">No complex CMS, no intermediary standing between the club and its own site. No vendor lock-in, no licence to renew, zero management cost beyond the hosting it already runs on.</p>
+      </div>
+    </div>
+    <div class="fin-statement">
+      <p class="fin-statement-lead">A website as a <em>method</em>, not a showcase.</p>
+      <p class="fin-statement-sub">A strategic, operational asset that runs the whole customer journey — from the first click, to the active member.</p>
+    </div>
+  </div>
+</section>
+
 <script>
   const slides = Array.from(document.querySelectorAll('.slide'));
   const dotsContainer = document.getElementById('dots');
   const counterText = document.getElementById('counterText');
   const counterBar = document.getElementById('counterBar');
   const counterEl = document.getElementById('counter');
-  const darkSlides = ['s1', 's3', 's6', 's10'];
+  const darkSlides = ['s1', 's3', 's6', 's10', 's11'];
   let current = 0;
 
   slides.forEach((s, i) => {
