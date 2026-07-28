@@ -52,32 +52,32 @@ const topics = [
   },
   {
     n: '02', title: 'Perfect Gym', scope: 'Member platform',
-    tone: 'green', status: 'On Track', pct: 90, stage: 'Awaiting pricing confirmation',
-    owner: 'Maurizio Taruggi', partner: 'Nathan Dennis · Shiv Patel · Thomas Escher', date: 'Take-over runs to 28 Feb 2027',
+    tone: 'green', status: 'Complete', pct: 100, stage: 'Signed',
+    owner: 'Maurizio Taruggi', partner: 'Nathan Dennis · Shiv Patel · Thomas Escher', date: 'Contract runs to 28 Feb 2027',
     where: [
-      'Pricing not yet confirmed — the contract terms on the amounts are unclear; awaiting confirmation from Nathan Dennis',
-      'Shiv Patel has signed the contract',
-      'Take-over into the current agreement runs through 28 Feb 2027 — no pressure to close, time to renegotiate the terms properly',
-      'Direct invoicing to TCA confirmed; transfer of ownership Aspria BV → new entity underway',
+      'Contract signed — take-over fully in place',
+      'Direct invoicing to TCA confirmed; ownership transferred from Aspria BV to the new entity',
+      'Contract runs through 28 Feb 2027 — no pressure to move, time to renegotiate the terms properly',
     ],
-    next: 'Once Nathan confirms the amounts, Thomas Escher can sign',
-    nextShort: 'Awaiting confirmation from Nathan',
+    next: 'Ahead of the 28 Feb 2027 expiry: renegotiate the contract — modules and pricing — and evaluate whether to change management software',
+    nextShort: 'Renegotiate contract before Feb 2027',
   },
   {
     n: '03', title: 'Website', scope: 'New site + forms',
-    tone: 'amber', status: 'In Progress', pct: 80, stage: 'Refining content',
-    owner: 'Maurizio Taruggi', partner: 'Laura Giardini + Alice Bartoli', date: 'TBD — DNS',
-    preview: 'https://maurizio-gif.github.io/WebSite-TCA/',
-    where: [
-      'Site ~80% built, fully bilingual (IT / EN)',
-      'Business units & events mapped through 1:1 interviews',
-      'Fillout chosen to replace JotForm — faster, more scalable, easier to integrate, lower cost',
-      'Standard forms now built in code & Fillout live — tour booking, call & contact underway',
-      'Phase 1 (now): generic forms routed by owner — membership → Sales, courses → Reception. Phase 2: real sign-up / contract forms with Stripe payments',
-      'Received feedback from Alice Bartoli on content to update',
+    tone: 'green', status: 'Complete', pct: 100, stage: 'Live',
+    owner: 'Maurizio Taruggi', partner: 'Laura Giardini + Alice Bartoli', date: 'Live',
+    links: [
+      { label: 'How the site works — full presentation', href: `${base}site-guide` },
     ],
-    next: 'Transfer the domain to Cloudflare — the only blocker to go live',
-    nextShort: 'Domain → Cloudflare',
+    where: [
+      'Live — the new site is fully published',
+      'Fully bilingual (IT / EN)',
+      'Business units & events mapped through 1:1 interviews',
+      'Forms rebuilt in code with Fillout, replacing JotForm — faster, more scalable, lower cost',
+      'Phase 1 (now): generic forms routed by owner — membership → Sales, courses → Reception. Phase 2: real sign-up / contract forms with Stripe payments',
+    ],
+    next: 'Phase 2 — real sign-up and contract forms with Stripe payments',
+    nextShort: 'Phase 2 — Stripe sign-up forms',
   },
   {
     n: '04', title: 'Domain', scope: 'tcambrosiano.com',
@@ -93,58 +93,41 @@ const topics = [
   },
   {
     n: '05', title: 'Social & Analytics', scope: 'Social, GTM, GSC, Analytics',
-    tone: 'green', status: 'Access Complete', pct: 90, stage: 'Setting up new ads account',
-    owner: 'Maurizio Taruggi', partner: 'Laura Giardini · Geeta', date: 'Launch end of Aug',
+    tone: 'green', status: 'Complete', pct: 100, stage: 'Campaigns launching 16 Aug',
+    owner: 'Maurizio Taruggi', partner: 'Laura Giardini · Geeta', date: 'Campaigns launch 16 Aug 2026',
     where: [
-      'Full access obtained on direzione@tcambrosiano.com: Instagram TCA, Instagram Trofeo Avvenire, Facebook, Google Ads, Google Analytics, Meta Business Manager',
-      'A new advertising ad account needs to be created from scratch — the old one is not transferable',
-      'Geeta will help configure the new ads account ahead of the launch planned for end of August',
-      'Current ad spend is disproportionate — budget will be brought down once we take over',
-      'Phase 2: find a partner for the ongoing management of Google Ads and Meta Ads',
+      'Full access confirmed on direzione@tcambrosiano.com: Instagram TCA, Instagram Trofeo Avvenire, Facebook, Google Ads, Google Analytics, Meta Business Manager',
+      'Payment card updated on Google Ads',
+      'Google Analytics tracking rebuilt and moved into Google Tag Manager, with all site events redone and updated',
+      'New Google Ads campaigns configured, launching 16 August — budget reduced to €1,000/month from the previous €3,000/month',
+      'Phase 2: evaluate bringing in an external partner for the ongoing management of Google Ads and Meta Ads',
     ],
-    next: 'Create the new ads account; Geeta to help configure it for the end-of-August launch',
-    nextShort: 'New ads account + Geeta setup',
+    next: 'Launch the new campaigns on 16 August; evaluate an external partner for ongoing Google Ads / Meta Ads management',
+    nextShort: 'Campaigns launch 16 Aug',
   },
   {
     n: '06', title: 'Microsoft', scope: 'Outlook, OneDrive, SharePoint',
-    tone: 'green', status: 'On Track', pct: 90, stage: 'Ready for MX cutover',
-    owner: 'Maurizio Taruggi', partner: 'Thomas Sander + Alice Bartoli', date: 'TBD',
+    tone: 'green', status: 'Complete', pct: 100, stage: 'Done',
+    owner: 'Maurizio Taruggi', partner: 'Thomas Sander + Alice Bartoli', date: 'Done',
     where: [
-      'Full migration completed — email, SharePoint and OneDrive all migrated',
+      'Full migration completed — Outlook email, SharePoint and OneDrive all migrated',
       'Accounts rationalised down to what\'s actually needed',
       'Google Workspace already existed and is free (non-profit status) — no added cost',
-      'Ready to update the MX records and switch email delivery over to Gmail',
     ],
-    next: 'Update the MX records to cut email delivery over to Gmail',
-    nextShort: 'Update MX records → Gmail',
+    next: 'Closed — migration complete',
+    nextShort: 'Done',
   },
   {
     n: '07', title: 'Physical Devices', scope: 'PCs & Wi-Fi',
-    tone: 'amber', status: 'In Progress', pct: 50, stage: 'Met local IT partner',
-    owner: 'On-site partner (TBD)', partner: 'Thomas Sander + Alice Bartoli', date: 'Jun 22–26',
+    tone: 'green', status: 'Complete', pct: 100, stage: 'Handed to Bulltech',
+    owner: 'Alice Bartoli', partner: 'Bulltech', date: 'Done',
     where: [
-      'Plan set: unlock, factory reset, storage to Google Drive',
-      'Local on-site IT company selected by Alice',
-      'Alice has already met with the local IT partner',
+      'Local IT partner identified and engaged: Bulltech',
+      'Alice Bartoli is running this directly with Bulltech',
+      'Hand-off complete — Bulltech has taken charge of the on-site work',
     ],
-    next: 'Scope the on-site work with the local IT partner',
-    nextShort: 'Scope work with local IT partner',
-  },
-  {
-    n: '08', title: 'Operations Audit', scope: 'Processes, costs & strategy',
-    tone: 'amber', status: 'In Progress', pct: 50, stage: 'Gathering business plan numbers',
-    owner: 'Maurizio Taruggi', partner: 'Brian Morris', date: 'TBD',
-    preview: 'https://maurizio-gif.github.io/TCA/operations-audit/',
-    where: [
-      'First analysis of key resources completed via 1:1 interviews — full findings available in the Operations Audit page',
-      'Gap: in-depth process mapping for Reception and Sales still to be completed',
-      'Brian\'s authorisation needed to access full cost data per business unit — required to calculate the contribution margin per BU and identify optimisation levers',
-      'Resource optimisation can only begin once the cost/revenue architecture per BU is fully understood',
-      'Now acquiring the business plan numbers directly',
-      'Early impression: some activities carry a structural constraint in how they were embedded in the organisation — evaluation required beyond digital and operational scope, into long-term strategy',
-    ],
-    next: 'Acquire the business plan numbers, then analyse them',
-    nextShort: 'Acquiring business plan numbers',
+    next: 'Alice to share updates as Bulltech progresses the on-site work',
+    nextShort: 'Updates from Alice',
   },
 ];
 ---
@@ -295,11 +278,15 @@ const topics = [
             <ul>
               {t.where.map((w) => <li>{w}</li>)}
             </ul>
-            {t.preview && (
-              <a class="ct-preview" href={t.preview} target="_blank" rel="noopener">
-                View the live preview
-                <span class="ct-preview-arrow">&#8599;</span>
-              </a>
+            {t.links && (
+              <div class="ct-links">
+                {t.links.map((l: {label: string; href: string}) => (
+                  <a class="ct-preview" href={l.href}>
+                    {l.label}
+                    <span class="ct-preview-arrow">&#8599;</span>
+                  </a>
+                ))}
+              </div>
             )}
           </div>
           <div class="ct-next">
@@ -483,9 +470,13 @@ const topics = [
     font-size: clamp(14px, 1.15vw, 19px); font-weight: 300; color: #333; line-height: 1.5;
   }
   .ct-where li::before { content: ''; position: absolute; left: 0; top: 0.55em; width: 8px; height: 8px; border-radius: 50%; background: var(--red); }
+  .ct-links {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    margin-top: clamp(12px, 1.8vh, 22px);
+  }
   .ct-preview {
     display: inline-flex; align-items: center; gap: 9px;
-    margin-top: clamp(12px, 1.8vh, 22px); width: fit-content;
+    width: fit-content;
     font-family: var(--fd); font-size: clamp(12px, 0.95vw, 15px);
     font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
     color: #fff; background: var(--text); text-decoration: none;
