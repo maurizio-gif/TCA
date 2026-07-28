@@ -26,8 +26,8 @@
     --grey-mid:   #999999;
     --text:       #1A1A1A;
     --text-light: #555555;
-    --fd: 'Barlow Condensed', 'Roboto Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif;
     --fb: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --fd: var(--fb);
   }
 
   html {
@@ -555,18 +555,33 @@
     display: flex;
     align-items: center;
     gap: 2vw;
-    padding: clamp(14px, 1.8vh, 26px) 2vw;
+    padding: clamp(8px, 1.2vh, 22px) 2vw;
     margin-top: 2px;
   }
-  .tur-highlight .ic { width: 40px; height: 40px; flex-shrink: 0; }
+  .tur-highlight .ic { width: 34px; height: 34px; flex-shrink: 0; }
   .tur-highlight-title {
     font-family: var(--fd);
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     font-weight: 800;
     text-transform: uppercase;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
   }
-  .tur-highlight-text { font-size: 0.9rem; line-height: 1.55; color: rgba(255,255,255,0.9); }
+  .tur-highlight-text { font-size: 0.82rem; line-height: 1.42; color: rgba(255,255,255,0.9); }
+  .tur-highlight-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 6px;
+  }
+  .tur-highlight-list li {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.92);
+    line-height: 1.3;
+    padding-left: 16px;
+    position: relative;
+  }
+  .tur-highlight-list li::before { content: '→'; position: absolute; left: 0; color: rgba(255,255,255,0.6); }
 
   /* ════════════════════════════════════════════
      SLIDE 9 — PRIVACY
@@ -671,82 +686,6 @@
   .flo-note b { color: var(--red-bright); }
 
   /* ════════════════════════════════════════════
-     SLIDE 11 — ROADMAP / CLOSING
-  ════════════════════════════════════════════ */
-  .rmp { background: var(--text); }
-  .rmp-bg {
-    position: absolute; inset: 0;
-    background:
-      linear-gradient(135deg, rgba(10,14,20,0.86) 0%, rgba(26,26,26,0.8) 55%, rgba(100,18,18,0.55) 100%),
-      url('orizzntale%20tca.avif') center/cover no-repeat;
-  }
-  .rmp-corner { position: absolute; width: 60px; height: 3px; background: var(--red); }
-  .rmp-corner-v { position: absolute; width: 3px; height: 60px; background: var(--red); }
-  .rmp-corner.tl { top: 0; left: 0; } .rmp-corner-v.tl { top: 0; left: 0; }
-  .rmp-corner.br { bottom: 0; right: 0; } .rmp-corner-v.br { bottom: 0; right: 0; }
-  .rmp-content {
-    position: relative; z-index: 2;
-    margin-top: 72px;
-    padding: clamp(24px, 4vh, 44px) 5vw clamp(24px, 3.5vh, 40px);
-    display: flex;
-    flex-direction: column;
-    gap: clamp(14px, 2vh, 24px);
-    flex: 1;
-  }
-  .rmp .slide-title { color: #fff; }
-  .rmp .slide-lead { color: rgba(255,255,255,0.7); }
-  .rmp-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.4vw;
-  }
-  .rmp-card {
-    border: 1.5px dashed rgba(255,255,255,0.35);
-    padding: clamp(16px, 2.2vh, 28px) 1.6vw;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    min-height: 120px;
-  }
-  .rmp-tag {
-    align-self: flex-start;
-    font-family: var(--fd);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--red-bright);
-    border: 1px solid var(--red-bright);
-    padding: 3px 8px;
-  }
-  .rmp-card-title {
-    font-family: var(--fd);
-    font-size: 1.1rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.85);
-  }
-  .rmp-card-text { font-size: 0.85rem; color: rgba(255,255,255,0.5); line-height: 1.55; }
-  .rmp-footer {
-    margin-top: auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    flex-wrap: wrap;
-    gap: 12px;
-    padding-top: 2vh;
-    border-top: 1px solid rgba(255,255,255,0.12);
-  }
-  .rmp-footer-meta {
-    font-family: var(--fd);
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.35);
-  }
-
-  /* ════════════════════════════════════════════
      SLIDE 6 — TRACKING & SMART FORMS
   ════════════════════════════════════════════ */
   .trk { background: var(--text); }
@@ -791,7 +730,7 @@
     align-items: baseline;
     justify-content: space-between;
     gap: 12px;
-    padding: 14px 18px;
+    padding: 8px 18px;
     border-bottom: 1px solid var(--grey-light);
   }
   .frm-row:last-child { border-bottom: none; }
@@ -812,22 +751,22 @@
     color: var(--red);
     white-space: nowrap;
   }
-  .frm-side { display: flex; flex-direction: column; gap: 1.6vh; }
+  .frm-side { display: flex; flex-direction: column; gap: 1.2vh; }
   .frm-note {
-    padding: 2vh 1.6vw;
+    padding: 1.4vh 1.6vw;
     border-left: 3px solid var(--grey-mid);
     background: var(--off-white);
   }
   .frm-note-title {
     font-family: var(--fd);
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--grey-mid);
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
-  .frm-note p { font-size: 0.88rem; color: var(--text-light); line-height: 1.6; }
+  .frm-note p { font-size: 0.82rem; color: var(--text-light); line-height: 1.45; }
   .frm-note--next {
     border-left-color: var(--red);
     background: #fff;
@@ -841,7 +780,7 @@
   @media (max-width: 860px) {
     html { scroll-snap-type: none; overflow-y: auto; }
     .slide { height: auto; min-height: auto; scroll-snap-align: none; scroll-snap-stop: normal; }
-    .cov, .rmp { min-height: 100svh; }
+    .cov { min-height: 100svh; }
     .slide-dots { display: none; }
     .slide-counter { display: none; }
 
@@ -849,7 +788,7 @@
     .nav-logo img { height: 38px; }
     .nav-tag { display: none; }
 
-    .wrap, .cov-content, .rmp-content { margin-top: 60px; padding: 32px 20px 44px; gap: 22px; }
+    .wrap, .cov-content { margin-top: 60px; padding: 32px 20px 44px; gap: 22px; }
     .slide-title { font-size: clamp(1.8rem, 8vw, 2.6rem) !important; }
     .slide-lead { font-size: 15px; }
 
@@ -859,7 +798,7 @@
     .cov-meta { padding: 0 20px 28px; font-size: 10px; }
     .cov-watermark { display: none; }
 
-    .stk-grid, .adv-grid, .prv-grid, .flo-diagram, .rmp-grid, .trk-grid, .frm-grid { grid-template-columns: 1fr; }
+    .stk-grid, .adv-grid, .prv-grid, .flo-diagram, .trk-grid, .frm-grid { grid-template-columns: 1fr; }
     .stk-banner { flex-direction: column; text-align: center; gap: 14px; padding: 24px 20px; }
     .adv-card { border-bottom: 1px solid rgba(255,255,255,0.08); }
     .flo-step { border-left: 1px solid rgba(255,255,255,0.08) !important; border-bottom: none; }
@@ -869,8 +808,6 @@
     .arc-list { grid-template-columns: 1fr 1fr; }
     .tur-grid { grid-template-columns: 1fr 1fr; }
     .tur-highlight { flex-direction: column; text-align: center; }
-
-    .rmp-footer { flex-direction: column; align-items: flex-start; }
   }
   @media (max-width: 520px) {
     .tur-grid, .arc-list { grid-template-columns: 1fr; }
@@ -881,7 +818,7 @@
 
 <!-- NAV DOTS + COUNTER -->
 <div class="slide-dots" id="dots"></div>
-<div class="slide-counter" id="counter"><span id="counterText">01 / 11</span><span class="bar" id="counterBar"></span></div>
+<div class="slide-counter" id="counter"><span id="counterText">01 / 10</span><span class="bar" id="counterBar"></span></div>
 
 <!-- ════════════════════════════════════
   SLIDE 1 — COVER
@@ -1165,6 +1102,19 @@
         </div>
       </div>
     </div>
+    <div class="tur-highlight">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1M3 12h3M18 12h3" stroke-linecap="round"/></svg>
+      <div>
+        <div class="tur-highlight-title">Every submission also plants a VID</div>
+        <p class="tur-highlight-text">A VID is a Visitor ID — a small, anonymous marker assigned the first time someone lands on the site. It doesn't identify a person by itself, but it lets the site recognise the same visitor across different visits. Every form submission is tied to that VID, and every time that visitor comes back to the site — even without filling anything in — a quiet "ping" is logged against it.</p>
+        <p class="tur-highlight-text" style="margin-top:8px;">Not yet connected to the CRM — but built to be. Once it is, this single signal can power:</p>
+        <ul class="tur-highlight-list">
+          <li>Automatic lead scoring, based on how many times a visitor returns</li>
+          <li>An instant back-office alert to recontact a hot lead right away</li>
+          <li>Automated communication flows — email, SMS or WhatsApp — triggered by that behaviour</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1279,54 +1229,13 @@
   </div>
 </section>
 
-<!-- ════════════════════════════════════
-  SLIDE 11 — ROADMAP / CLOSING
-════════════════════════════════════ -->
-<section class="slide rmp" id="s11">
-  <div class="rmp-bg"></div>
-  <div class="rmp-corner tl"></div><div class="rmp-corner-v tl"></div>
-  <div class="rmp-corner br"></div><div class="rmp-corner-v br"></div>
-  <nav class="slide-nav" style="background:rgba(20,20,20,0.9); border-color:rgba(255,255,255,0.08);">
-    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
-    <span class="nav-tag" style="color:rgba(255,255,255,0.4);">What's Next</span>
-  </nav>
-  <div class="rmp-content">
-    <div class="wrap-head">
-      <span class="eyebrow eyebrow--light">10 · Roadmap / Next Steps</span>
-      <h2 class="slide-title">Where we go from here.</h2>
-      <p class="slide-lead" style="margin-top:12px;">Placeholders below — to be defined together in our next working session.</p>
-    </div>
-    <div class="rmp-grid">
-      <div class="rmp-card">
-        <span class="rmp-tag">Placeholder</span>
-        <div class="rmp-card-title">Next initiative — TBD</div>
-        <p class="rmp-card-text">To be defined together.</p>
-      </div>
-      <div class="rmp-card">
-        <span class="rmp-tag">Placeholder</span>
-        <div class="rmp-card-title">Next initiative — TBD</div>
-        <p class="rmp-card-text">To be defined together.</p>
-      </div>
-      <div class="rmp-card">
-        <span class="rmp-tag">Placeholder</span>
-        <div class="rmp-card-title">Next initiative — TBD</div>
-        <p class="rmp-card-text">To be defined together.</p>
-      </div>
-    </div>
-    <div class="rmp-footer">
-      <span class="rmp-footer-meta">Tennis Club Ambrosiano · Digital Infrastructure Briefing</span>
-      <span class="rmp-footer-meta">Prepared by Maurizio Taruggi</span>
-    </div>
-  </div>
-</section>
-
 <script>
   const slides = Array.from(document.querySelectorAll('.slide'));
   const dotsContainer = document.getElementById('dots');
   const counterText = document.getElementById('counterText');
   const counterBar = document.getElementById('counterBar');
   const counterEl = document.getElementById('counter');
-  const darkSlides = ['s1', 's3', 's6', 's10', 's11'];
+  const darkSlides = ['s1', 's3', 's6', 's10'];
   let current = 0;
 
   slides.forEach((s, i) => {
