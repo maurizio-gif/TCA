@@ -59,11 +59,11 @@
     scroll-snap-stop: always;
   }
 
-  /* ── NAV BAR ── */
-  .slide-nav {
-    position: absolute;
+  /* ── GLOBAL NAV BAR (fixed, always on top) ── */
+  .g-nav {
+    position: fixed;
     top: 0; left: 0; right: 0;
-    z-index: 10;
+    z-index: 500;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -71,9 +71,16 @@
     height: 72px;
     background: rgba(255,255,255,0.96);
     border-bottom: 1px solid var(--grey-light);
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .g-nav--dark {
+    background: rgba(20,20,20,0.92);
+    border-bottom-color: rgba(255,255,255,0.08);
   }
   .nav-logo { display: flex; align-items: center; text-decoration: none; gap: 12px; }
-  .nav-logo img { height: 46px; width: auto; }
+  .nav-logo img { height: 46px; width: auto; transition: filter 0.3s; }
+  .g-nav--dark .nav-logo img { filter: brightness(0) invert(1); }
+  .g-nav__right { display: flex; align-items: center; gap: 22px; }
   .nav-tag {
     font-family: var(--fd);
     font-size: 13px;
@@ -82,6 +89,145 @@
     text-transform: uppercase;
     color: var(--grey-mid);
     white-space: nowrap;
+    transition: color 0.3s;
+  }
+  .g-nav--dark .nav-tag { color: rgba(255,255,255,0.4); }
+
+  /* ── HAMBURGER BUTTON ── */
+  .g-burger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .g-burger:hover { background: rgba(0,0,0,0.06); }
+  .g-nav--dark .g-burger:hover { background: rgba(255,255,255,0.08); }
+  .g-burger-bar {
+    display: block;
+    width: 22px; height: 2px;
+    background: var(--text);
+    border-radius: 2px;
+    transition: transform 0.28s ease, opacity 0.2s ease, background 0.3s;
+  }
+  .g-nav--dark .g-burger-bar { background: #fff; }
+  .g-burger.is-open .gb1 { transform: translateY(7px) rotate(45deg); }
+  .g-burger.is-open .gb2 { opacity: 0; transform: scaleX(0); }
+  .g-burger.is-open .gb3 { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ── FULL-SCREEN MENU OVERLAY ── */
+  .g-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 490;
+    background: #0f1013;
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.32s ease, visibility 0.32s ease;
+  }
+  .g-menu.is-open { pointer-events: all; visibility: visible; opacity: 1; }
+  .g-menu__inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 96px clamp(24px, 6vw, 100px) 5vh;
+    overflow-y: auto;
+  }
+  .g-menu__nav { display: flex; flex-direction: column; gap: 3vh; flex: 1; }
+  .g-menu__section { display: flex; flex-direction: column; }
+  .g-menu__section--ops { padding-top: 2.6vh; border-top: 1px solid rgba(255,255,255,0.07); }
+  .g-menu__section-label {
+    font-family: var(--fd);
+    font-size: clamp(9px, 0.6vw, 11px);
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.22);
+    display: block;
+    margin-bottom: 1vh;
+  }
+  .g-menu__link {
+    font-family: var(--fd);
+    font-size: clamp(1.5rem, 3vw, 2.8rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    line-height: 1.15;
+    display: flex;
+    align-items: baseline;
+    gap: 0.55em;
+    padding: 0.2vh 0;
+    transition: color 0.18s, transform 0.2s ease;
+  }
+  .g-menu__link em {
+    font-style: normal;
+    font-size: 0.38em;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.18);
+    min-width: 3em;
+    transition: color 0.18s;
+  }
+  .g-menu__link:hover { color: #fff; transform: translateX(10px); }
+  .g-menu__link:hover em { color: var(--red-bright); }
+  .g-menu__link--current { color: rgba(255,255,255,0.85); }
+  .g-menu__link--current em { color: var(--red-bright); }
+  .g-menu__link--sub { font-size: clamp(1.05rem, 1.9vw, 1.9rem); color: rgba(255,255,255,0.6); }
+  .g-menu__link--sub em { color: rgba(255,255,255,0.18); }
+  .g-menu__link--sub:hover { color: #fff; }
+  .g-menu__link--accent { color: var(--red-bright); font-size: clamp(1.05rem, 1.8vw, 1.8rem); margin-top: 1vh; }
+  .g-menu__link--accent em { color: rgba(192,40,42,0.5); min-width: 2em; }
+  .g-menu__link--accent:hover { color: #e14a4a; }
+  .g-menu__link--accent:hover em { color: #e14a4a; }
+  .g-menu__link--ticket {
+    font-family: var(--fd);
+    font-size: clamp(0.78rem, 1.2vw, 1.1rem);
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 9px 20px;
+    border: 2px solid rgba(255,255,255,0.22);
+    border-radius: 100px;
+    color: rgba(255,255,255,0.75);
+    background: rgba(255,255,255,0.05);
+    transition: border-color 0.18s, color 0.18s, background 0.18s, transform 0.2s ease;
+    align-self: flex-start;
+    margin-top: 1vh;
+  }
+  .g-menu__link--ticket::after { content: '↗'; font-size: 0.85em; opacity: 0.6; }
+  .g-menu__link--ticket:hover {
+    border-color: rgba(255,255,255,0.7);
+    color: #fff;
+    background: rgba(255,255,255,0.1);
+    transform: translateX(6px);
+  }
+  .g-menu__footer {
+    font-family: var(--fd);
+    font-size: clamp(9px, 0.6vw, 10px);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.12);
+    margin-top: 3vh;
+    padding-top: 2vh;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  @media (max-width: 768px) {
+    .g-menu__link { font-size: clamp(1.5rem, 8vw, 2.2rem); }
+    .g-menu__link--accent { font-size: clamp(1.05rem, 6vw, 1.5rem); }
+    .g-menu__inner { padding: 84px 24px 5vh; }
+    .g-menu__nav { gap: 2.6vh; }
   }
 
   /* ── EYEBROW ── */
@@ -811,7 +957,7 @@
     .slide-dots { display: none; }
     .slide-counter { display: none; }
 
-    .slide-nav { height: 60px; padding: 0 18px; }
+    .g-nav { height: 60px; padding: 0 18px; }
     .nav-logo img { height: 38px; }
     .nav-tag { display: none; }
 
@@ -843,6 +989,43 @@
 </head>
 <body>
 
+<!-- GLOBAL NAV — fixed, always on top -->
+<header class="g-nav" id="gNav">
+  <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
+  <div class="g-nav__right">
+    <span class="nav-tag" id="navTag">Site Briefing · July 2026</span>
+    <button class="g-burger" id="gBurger" aria-label="Open menu" aria-expanded="false">
+      <span class="g-burger-bar gb1"></span>
+      <span class="g-burger-bar gb2"></span>
+      <span class="g-burger-bar gb3"></span>
+    </button>
+  </div>
+</header>
+
+<!-- FULL-SCREEN MENU OVERLAY -->
+<div class="g-menu" id="gMenu" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="g-menu__inner">
+    <nav class="g-menu__nav">
+      <a href="./" class="g-menu__link" data-close><em>01</em>Project Hub</a>
+      <a href="presentation/" class="g-menu__link" data-close><em>02</em>Presentation</a>
+      <a href="carve-out/" class="g-menu__link" data-close><em>03</em>Carve-Out Roadmap</a>
+      <a href="accounting-analysis/" class="g-menu__link" data-close><em>04</em>Accounting Software Analysis</a>
+      <a href="operations-audit/" class="g-menu__link" data-close><em>05</em>Operations Audit</a>
+      <a href="site-guide" class="g-menu__link g-menu__link--current" data-close><em>06</em>Website Guide</a>
+      <div class="g-menu__section g-menu__section--ops">
+        <span class="g-menu__section-label">Tools</span>
+        <a href="workspace/" class="g-menu__link g-menu__link--sub" data-close><em>07</em>Shared Workspace</a>
+        <a href="dashboard-revenue" class="g-menu__link g-menu__link--sub" data-close><em>08</em>Revenue 2025–2026</a>
+        <a href="dashboard-contracts" class="g-menu__link g-menu__link--sub" data-close><em>09</em>New Contracts 2025–2026</a>
+        <a href="cockpit/" class="g-menu__link g-menu__link--sub" data-close><em>10</em>Performance Cockpit</a>
+      </div>
+      <a href="quote/" class="g-menu__link g-menu__link--accent" data-close><em>11</em>Quote</a>
+      <a href="https://help.ready2digital.it/" class="g-menu__link g-menu__link--ticket" target="_blank" rel="noopener">PG Ticket</a>
+    </nav>
+    <div class="g-menu__footer">Confidential · Tennis Club Ambrosiano · 2026</div>
+  </div>
+</div>
+
 <!-- NAV DOTS + COUNTER -->
 <div class="slide-dots" id="dots"></div>
 <div class="slide-counter" id="counter"><span id="counterText">01 / 11</span><span class="bar" id="counterBar"></span></div>
@@ -853,10 +1036,6 @@
 <section class="slide cov" id="s1">
   <div class="cov-bg"></div>
   <div class="cov-watermark">TCA</div>
-  <nav class="slide-nav">
-    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
-    <span class="nav-tag">Site Briefing · July 2026</span>
-  </nav>
   <div class="cov-content">
     <span class="eyebrow eyebrow--light">Digital Infrastructure Briefing</span>
     <h1 class="cov-title">How the new site<br>works. <em>And how<br>you run it.</em></h1>
@@ -876,10 +1055,6 @@
   SLIDE 2 — THE STACK, IN PLAIN TERMS
 ════════════════════════════════════ -->
 <section class="slide stk" id="s2">
-  <nav class="slide-nav">
-    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
-    <span class="nav-tag">The Stack</span>
-  </nav>
   <div class="wrap">
     <div class="wrap-head">
       <span class="eyebrow">01 · The Stack, In Plain Terms</span>
@@ -917,10 +1092,6 @@
   SLIDE 3 — TECHNICAL ADVANTAGE
 ════════════════════════════════════ -->
 <section class="slide adv" id="s3">
-  <nav class="slide-nav" style="background:rgba(20,20,20,0.9); border-color:rgba(255,255,255,0.08);">
-    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
-    <span class="nav-tag" style="color:rgba(255,255,255,0.4);">Under the Hood</span>
-  </nav>
   <div class="wrap">
     <div class="wrap-head">
       <span class="eyebrow">02 · Under the Hood</span>
@@ -967,10 +1138,6 @@
   SLIDE 4 — HOW THE SITE IS ORGANISED
 ════════════════════════════════════ -->
 <section class="slide arc" id="s4">
-  <nav class="slide-nav">
-    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
-    <span class="nav-tag">Site Structure</span>
-  </nav>
   <div class="wrap">
     <div class="wrap-head">
       <span class="eyebrow">03 · How the Site Is Organised</span>
@@ -1017,10 +1184,6 @@
   SLIDE 5 — TOUR OF WHAT'S BUILT
 ════════════════════════════════════ -->
 <section class="slide tur" id="s5">
-  <nav class="slide-nav">
-    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
-    <span class="nav-tag">What's Live</span>
-  </nav>
   <div class="wrap">
     <div class="wrap-head">
       <span class="eyebrow">04 · A Tour of What's Already Built</span>
@@ -1054,10 +1217,6 @@
   SLIDE 6 — TRACKING & SMART FORMS
 ════════════════════════════════════ -->
 <section class="slide trk" id="s6">
-  <nav class="slide-nav" style="background:rgba(20,20,20,0.9); border-color:rgba(255,255,255,0.08);">
-    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
-    <span class="nav-tag" style="color:rgba(255,255,255,0.4);">Built for Growth</span>
-  </nav>
   <div class="wrap">
     <div class="wrap-head">
       <span class="eyebrow">05 · Built for Growth</span>
@@ -1089,10 +1248,6 @@
   SLIDE 7 — THE FORMS
 ════════════════════════════════════ -->
 <section class="slide frm" id="s7">
-  <nav class="slide-nav">
-    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
-    <span class="nav-tag">The Forms</span>
-  </nav>
   <div class="wrap">
     <div class="wrap-head">
       <span class="eyebrow">06 · The Forms</span>
@@ -1138,10 +1293,6 @@
   SLIDE 8 — CLUB LIFE: THE MEMBER HUB
 ════════════════════════════════════ -->
 <section class="slide tur" id="s8">
-  <nav class="slide-nav">
-    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
-    <span class="nav-tag">Club Life</span>
-  </nav>
   <div class="wrap">
     <div class="wrap-head">
       <span class="eyebrow">07 · Club Life: The Member Hub</span>
@@ -1169,10 +1320,6 @@
   SLIDE 9 — PRIVACY & COMPLIANCE
 ════════════════════════════════════ -->
 <section class="slide prv" id="s9">
-  <nav class="slide-nav">
-    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
-    <span class="nav-tag">Trust</span>
-  </nav>
   <div class="wrap">
     <div class="wrap-head">
       <span class="eyebrow">08 · Privacy &amp; Compliance by Design</span>
@@ -1203,10 +1350,6 @@
   SLIDE 10 — PUBLISH FLOW
 ════════════════════════════════════ -->
 <section class="slide flo" id="s10">
-  <nav class="slide-nav" style="background:rgba(20,20,20,0.9); border-color:rgba(255,255,255,0.08);">
-    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
-    <span class="nav-tag" style="color:rgba(255,255,255,0.4);">The Publish Flow</span>
-  </nav>
   <div class="wrap">
     <div class="wrap-head">
       <span class="eyebrow">09 · How a Content Change Reaches the Live Site</span>
@@ -1252,10 +1395,6 @@
   <div class="fin-bg"></div>
   <div class="fin-corner tl"></div><div class="fin-corner-v tl"></div>
   <div class="fin-corner br"></div><div class="fin-corner-v br"></div>
-  <nav class="slide-nav" style="background:rgba(20,20,20,0.9); border-color:rgba(255,255,255,0.08);">
-    <a href="#s1" class="nav-logo"><img src="logo%20tca.png" alt="Tennis Club Ambrosiano"></a>
-    <span class="nav-tag" style="color:rgba(255,255,255,0.4);">What This Achieves</span>
-  </nav>
   <div class="wrap">
     <div class="wrap-head">
       <span class="eyebrow eyebrow--light">10 · What This Site Achieves</span>
@@ -1301,7 +1440,24 @@
   const counterText = document.getElementById('counterText');
   const counterBar = document.getElementById('counterBar');
   const counterEl = document.getElementById('counter');
+  const gNav = document.getElementById('gNav');
+  const navTag = document.getElementById('navTag');
+  const gBurger = document.getElementById('gBurger');
+  const gMenu = document.getElementById('gMenu');
   const darkSlides = ['s1', 's3', 's6', 's10', 's11'];
+  const navTags = {
+    s1: 'Site Briefing · July 2026',
+    s2: 'The Stack',
+    s3: 'Under the Hood',
+    s4: 'Site Structure',
+    s5: "What's Live",
+    s6: 'Built for Growth',
+    s7: 'The Forms',
+    s8: 'Club Life',
+    s9: 'Trust',
+    s10: 'The Publish Flow',
+    s11: 'What This Achieves',
+  };
   let current = 0;
 
   slides.forEach((s, i) => {
@@ -1315,10 +1471,13 @@
   function pad(n) { return String(n).padStart(2, '0'); }
 
   function updateUI(idx) {
+    const isDark = darkSlides.includes(slides[idx].id);
     document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === idx));
     counterText.textContent = pad(idx + 1) + ' / ' + pad(slides.length);
     counterBar.style.setProperty('--p', (idx + 1) / slides.length);
-    counterEl.classList.toggle('counter-dark', !darkSlides.includes(slides[idx].id));
+    counterEl.classList.toggle('counter-dark', !isDark);
+    gNav.classList.toggle('g-nav--dark', isDark);
+    navTag.textContent = navTags[slides[idx].id] || '';
   }
 
   function goTo(idx) {
@@ -1329,6 +1488,7 @@
   }
 
   document.addEventListener('keydown', e => {
+    if (gMenu.classList.contains('is-open')) return;
     if (['ArrowDown', 'ArrowRight', 'PageDown', ' '].includes(e.key)) {
       e.preventDefault(); goTo(current + 1);
     } else if (['ArrowUp', 'ArrowLeft', 'PageUp'].includes(e.key)) {
@@ -1352,6 +1512,25 @@
 
   slides.forEach(s => observer.observe(s));
   updateUI(0);
+
+  /* ── Hamburger menu ── */
+  function openMenu() {
+    gMenu.classList.add('is-open');
+    gMenu.setAttribute('aria-hidden', 'false');
+    gBurger.classList.add('is-open');
+    gBurger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    gMenu.classList.remove('is-open');
+    gMenu.setAttribute('aria-hidden', 'true');
+    gBurger.classList.remove('is-open');
+    gBurger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+  gBurger.addEventListener('click', () => gMenu.classList.contains('is-open') ? closeMenu() : openMenu());
+  gMenu.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
 </script>
 </body>
 </html>
