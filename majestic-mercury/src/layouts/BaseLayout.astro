@@ -63,14 +63,18 @@ const ogUrl = Astro.url.href;
         <a href={`${base}accounting-analysis/`}     class="g-menu__link" data-close><em>04</em>Accounting Software Analysis</a>
         <a href={`${base}operations-audit/`}        class="g-menu__link" data-close><em>05</em>Operations Audit</a>
         <a href={`${base}site-guide`}                class="g-menu__link" data-close><em>06</em>Website Guide</a>
-        <div class="g-menu__section g-menu__section--ops">
-          <span class="g-menu__section-label">Tools</span>
-          <a href={`${base}workspace/`}            class="g-menu__link g-menu__link--sub" data-close><em>07</em>Shared Workspace</a>
-          <a href={`${base}dashboard-revenue`}     class="g-menu__link g-menu__link--sub" data-close><em>08</em>Revenue 2025–2026</a>
-          <a href={`${base}dashboard-contracts`}   class="g-menu__link g-menu__link--sub" data-close><em>09</em>New Contracts 2025–2026</a>
-          <a href={`${base}cockpit/`}             class="g-menu__link g-menu__link--sub" data-close><em>10</em>Performance Cockpit</a>
+        <div class="g-menu__section">
+          <span class="g-menu__section-label">Minutes</span>
+          <a href={`${base}minutes-2026-08-18/`}   class="g-menu__link g-menu__link--sub" data-close><em>07</em>Allineamento TCA &middot; 18 Aug 2026</a>
         </div>
-        <a href={`${base}quote/`} class="g-menu__link g-menu__link--accent" data-close><em>11</em>Quote</a>
+        <div class="g-menu__section">
+          <span class="g-menu__section-label">Tools</span>
+          <a href={`${base}workspace/`}            class="g-menu__link g-menu__link--sub" data-close><em>08</em>Shared Workspace</a>
+          <a href={`${base}dashboard-revenue`}     class="g-menu__link g-menu__link--sub" data-close><em>09</em>Revenue 2025–2026</a>
+          <a href={`${base}dashboard-contracts`}   class="g-menu__link g-menu__link--sub" data-close><em>10</em>New Contracts 2025–2026</a>
+          <a href={`${base}cockpit/`}             class="g-menu__link g-menu__link--sub" data-close><em>11</em>Performance Cockpit</a>
+        </div>
+        <a href={`${base}quote/`} class="g-menu__link g-menu__link--accent" data-close><em>12</em>Quote</a>
         <a href="https://help.ready2digital.it/" class="g-menu__link g-menu__link--ticket" target="_blank" rel="noopener">PG Ticket</a>
       </nav>
       <div class="g-menu__footer">
@@ -190,8 +194,9 @@ const ogUrl = Astro.url.href;
     flex: 1;
   }
 
-  .g-menu__section { display: flex; flex-direction: column; }
-  .g-menu__section--ops {
+  .g-menu__section {
+    display: flex;
+    flex-direction: column;
     padding-top: 3.5vh;
     border-top: 1px solid rgba(255,255,255,0.07);
   }

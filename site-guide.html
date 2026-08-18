@@ -140,8 +140,7 @@
     overflow-y: auto;
   }
   .g-menu__nav { display: flex; flex-direction: column; gap: 3vh; flex: 1; }
-  .g-menu__section { display: flex; flex-direction: column; }
-  .g-menu__section--ops { padding-top: 2.6vh; border-top: 1px solid rgba(255,255,255,0.07); }
+  .g-menu__section { display: flex; flex-direction: column; padding-top: 2.6vh; border-top: 1px solid rgba(255,255,255,0.07); }
   .g-menu__section-label {
     font-family: var(--fd);
     font-size: clamp(9px, 0.6vw, 11px);
@@ -1012,14 +1011,18 @@
       <a href="accounting-analysis/" class="g-menu__link" data-close><em>04</em>Accounting Software Analysis</a>
       <a href="operations-audit/" class="g-menu__link" data-close><em>05</em>Operations Audit</a>
       <a href="site-guide" class="g-menu__link g-menu__link--current" data-close><em>06</em>Website Guide</a>
-      <div class="g-menu__section g-menu__section--ops">
-        <span class="g-menu__section-label">Tools</span>
-        <a href="workspace/" class="g-menu__link g-menu__link--sub" data-close><em>07</em>Shared Workspace</a>
-        <a href="dashboard-revenue" class="g-menu__link g-menu__link--sub" data-close><em>08</em>Revenue 2025–2026</a>
-        <a href="dashboard-contracts" class="g-menu__link g-menu__link--sub" data-close><em>09</em>New Contracts 2025–2026</a>
-        <a href="cockpit/" class="g-menu__link g-menu__link--sub" data-close><em>10</em>Performance Cockpit</a>
+      <div class="g-menu__section">
+        <span class="g-menu__section-label">Minutes</span>
+        <a href="minutes-2026-08-18/" class="g-menu__link g-menu__link--sub" data-close><em>07</em>Allineamento TCA · 18 Aug 2026</a>
       </div>
-      <a href="quote/" class="g-menu__link g-menu__link--accent" data-close><em>11</em>Quote</a>
+      <div class="g-menu__section">
+        <span class="g-menu__section-label">Tools</span>
+        <a href="workspace/" class="g-menu__link g-menu__link--sub" data-close><em>08</em>Shared Workspace</a>
+        <a href="dashboard-revenue" class="g-menu__link g-menu__link--sub" data-close><em>09</em>Revenue 2025–2026</a>
+        <a href="dashboard-contracts" class="g-menu__link g-menu__link--sub" data-close><em>10</em>New Contracts 2025–2026</a>
+        <a href="cockpit/" class="g-menu__link g-menu__link--sub" data-close><em>11</em>Performance Cockpit</a>
+      </div>
+      <a href="quote/" class="g-menu__link g-menu__link--accent" data-close><em>12</em>Quote</a>
       <a href="https://help.ready2digital.it/" class="g-menu__link g-menu__link--ticket" target="_blank" rel="noopener">PG Ticket</a>
     </nav>
     <div class="g-menu__footer">Confidential · Tennis Club Ambrosiano · 2026</div>
