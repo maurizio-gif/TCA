@@ -4,8 +4,10 @@ interface Props {
   description?: string;
   initialHeaderDark?: boolean;
   noindex?: boolean;
+  /** Render the page without the global header and its menu. */
+  hideHeader?: boolean;
 }
-const { title, description = 'Maurizio Taruggi for Tennis Club Ambrosiano.', initialHeaderDark = false, noindex = false } = Astro.props;
+const { title, description = 'Maurizio Taruggi for Tennis Club Ambrosiano.', initialHeaderDark = false, noindex = false, hideHeader = false } = Astro.props;
 const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith("/") ? b : b + "/"; })();
 const site = (import.meta.env.SITE ?? '').replace(/\/$/, '');
 const ogImage = `${site}${base}club-aerial.jpeg`;
@@ -41,7 +43,8 @@ const ogUrl = Astro.url.href;
 </head>
 <body>
 
-  <!-- ── GLOBAL HEADER ── -->
+  <!-- ── GLOBAL HEADER + MENU (omitted when hideHeader) ── -->
+  {!hideHeader && (
   <header class={`g-header${initialHeaderDark ? ' g-header--dark' : ''}`} id="g-header">
     <a href={base} class="g-header__logo">
       <img src={`${base}logo tca.png`} alt="Tennis Club Ambrosiano" />
@@ -52,8 +55,9 @@ const ogUrl = Astro.url.href;
       <span class="burger-bar b3"></span>
     </button>
   </header>
+  )}
 
-  <!-- ── FULL-SCREEN MENU OVERLAY ── -->
+  {!hideHeader && (
   <div class="g-menu" id="g-menu" aria-hidden="true" role="dialog" aria-modal="true">
     <div class="g-menu__inner">
       <nav class="g-menu__nav">
@@ -82,6 +86,7 @@ const ogUrl = Astro.url.href;
       </div>
     </div>
   </div>
+  )}
 
   <slot />
 
@@ -306,34 +311,38 @@ const ogUrl = Astro.url.href;
 </style>
 
 <script>
-  const burger = document.getElementById('g-burger')!;
-  const menu   = document.getElementById('g-menu')!;
+  const burger = document.getElementById('g-burger');
+  const menu   = document.getElementById('g-menu');
 
-  function openMenu() {
-    menu.classList.add('is-open');
-    menu.setAttribute('aria-hidden', 'false');
-    burger.setAttribute('aria-expanded', 'true');
-    document.body.classList.add('menu-open');
-    document.body.style.overflow = 'hidden';
+  // Pages rendered with hideHeader carry neither element, and Astro hoists
+  // this script onto every page regardless — so bail out when they are absent.
+  if (burger && menu) {
+    const openMenu = () => {
+      menu.classList.add('is-open');
+      menu.setAttribute('aria-hidden', 'false');
+      burger.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('menu-open');
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeMenu = () => {
+      menu.classList.remove('is-open');
+      menu.setAttribute('aria-hidden', 'true');
+      burger.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('menu-open');
+      document.body.style.overflow = '';
+    };
+
+    burger.addEventListener('click', () =>
+      menu.classList.contains('is-open') ? closeMenu() : openMenu()
+    );
+
+    menu.querySelectorAll('[data-close]').forEach(el =>
+      el.addEventListener('click', closeMenu)
+    );
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeMenu();
+    });
   }
-
-  function closeMenu() {
-    menu.classList.remove('is-open');
-    menu.setAttribute('aria-hidden', 'true');
-    burger.setAttribute('aria-expanded', 'false');
-    document.body.classList.remove('menu-open');
-    document.body.style.overflow = '';
-  }
-
-  burger.addEventListener('click', () =>
-    menu.classList.contains('is-open') ? closeMenu() : openMenu()
-  );
-
-  menu.querySelectorAll('[data-close]').forEach(el =>
-    el.addEventListener('click', closeMenu)
-  );
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeMenu();
-  });
 </script>

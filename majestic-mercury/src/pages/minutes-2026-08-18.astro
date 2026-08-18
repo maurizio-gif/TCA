@@ -5,6 +5,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <BaseLayout
   title="TCA &middot; Allineamento 1&deg;"
   description="Verbale della riunione Allineamento TCA del 18 agosto 2026: decisioni, azioni con owner e priorit&agrave;, punti aperti e il nodo critico della scuola tennis."
+  hideHeader={true}
 >
 
 <main class="page-content">
@@ -700,7 +701,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     --body:      #444444;
     --amber:     #8B6000;
     --blue:      #004FAF;
-    padding: calc(var(--header-h) + 3.5vh) clamp(20px, 5vw, 72px) 6vh;
+    padding: 4.5vh clamp(20px, 5vw, 72px) 6vh;
     max-width: 1280px;
     margin: 0 auto;
     display: flex;
@@ -1027,7 +1028,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   /* ── MOBILE ── */
   @media (max-width: 860px) {
-    .page-content { padding: calc(var(--header-h) + 22px) 18px 48px; gap: 38px; }
+    .page-content { padding: 28px 18px 48px; gap: 38px; }
     .page-title { font-size: clamp(1.9rem, 8.5vw, 2.7rem); }
     .topic-title { font-size: 1.3rem; }
 
