@@ -6,7 +6,7 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith("/")
 // Lean deck: one idea per slide, big titles, keywords only.
 // The spoken story lives in the meeting notes, not here.
 
-const leaving = ['Nobody calls back', 'Trials without follow-up', 'Renewals left to memory', 'Know-how walks out'];
+const leaving = ['Nobody calls back', 'Renewals left to memory', 'Know-how walks out'];
 
 const procedure = [
   ['01', 'Online', 'The customer does everything'],
@@ -80,12 +80,21 @@ const phase0 = [
 <section class="slide om-light" id="s2" data-header="light">
   <div class="om-wrap">
     <span class="eyebrow">Before we start</span>
-    <h2 class="om-h om-h--xl">The group<br /><em>in three years?</em></h2>
-    <ul class="om-chips">
-      <li>How many sites</li>
-      <li>What kind of club</li>
-      <li>What stays the same</li>
-    </ul>
+    <h2 class="om-h om-h--xl">TCA<br /><em>in three years?</em></h2>
+    <div class="om-row om-row--3 om-path">
+      <div class="om-word om-word--light">
+        <span class="om-word__tag">Today</span>
+        On hold. Ready to evolve.
+      </div>
+      <div class="om-word om-word--light">
+        <span class="om-word__tag">TCA</span>
+        How far do we push it?
+      </div>
+      <div class="om-word om-word--ink">
+        <span class="om-word__tag">Then</span>
+        Do we open more?
+      </div>
+    </div>
   </div>
 </section>
 
@@ -94,7 +103,7 @@ const phase0 = [
   <div class="om-wrap">
     <span class="eyebrow eyebrow--light">01 · What I see</span>
     <h2 class="om-h om-h--light">November:<br /><em>two people leave.</em></h2>
-    <div class="om-row om-row--dark">
+    <div class="om-row om-row--3 om-row--dark">
       {leaving.map((t) => <div class="om-word om-word--dark">{t}</div>)}
     </div>
     <p class="om-punch om-punch--light">Replace them, or move to the model?</p>
@@ -435,6 +444,7 @@ const phase0 = [
   .om-word--dark  { background: #1E2530; color: #fff; }
   .om-word--red   { background: var(--red); color: #fff; }
   .om-row--2 .om-word { min-height: clamp(160px, 26vh, 280px); }
+  .om-path { background: transparent; gap: clamp(10px, 1.2vw, 20px); }
   .om-word--light { background: var(--off-white); color: var(--text); border-top: 5px solid var(--red); }
   .om-word--ink   { background: var(--text); color: #fff; border-top: 5px solid #C0282A; }
   .om-word__tag {
