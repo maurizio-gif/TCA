@@ -1,0 +1,725 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith("/") ? b : b + "/"; })();
+
+// Lean deck: one idea per slide, big titles, keywords only.
+// The spoken story lives in the meeting notes, not here.
+
+const leaving = ['Nobody calls back', 'Trials without follow-up', 'Renewals left to memory', 'Know-how walks out'];
+
+const procedure = [
+  ['01', 'Online', 'The customer does everything'],
+  ['02', 'At the club', 'Same procedure, assisted'],
+  ['03', 'The team', 'Trained as expert customers'],
+  ['04', 'Control', 'Reporting runs itself'],
+];
+
+const kiosk = ['Show the club', 'Virtual tour', 'Capture the lead', 'Enrol', 'Personal area', 'Teach digital'];
+
+const failures = [
+  ['Depends on people', 'One exit, sales stop', 'The process sells'],
+  ['Compliance chased', 'Checked by hand', 'Compliance by design'],
+  ['Data chased', 'Numbers rebuilt', 'Numbers close themselves'],
+  ['Reactive club', 'The customer leads', 'The system anticipates'],
+];
+
+const chain = [
+  ['Information', 'Real data, public prices', 'Salespeople, by voice', 'As Athlon, plus courts & coaching'],
+  ['Product', 'Few standard plans', 'A grown catalogue', 'Membership · coaching · court-hours'],
+  ['Enrolment', 'One path, online & on site', 'Paperwork at the desk', 'One path, online & kiosk'],
+  ['Compliance', 'Tracked by the system', 'By hand', 'As Athlon, plus FIT card'],
+  ['Booking', 'In the system', 'Playtomic, outside', 'One system: the court-hour'],
+  ['Delivery', 'Class register', 'Handed to the partner', 'Register for coaching too'],
+  ['Renewal', 'System-driven', 'Found at expiry', 'As Athlon'],
+  ['Control', 'Automatic', 'Rebuilt by hand', 'As Athlon'],
+  ['People', 'Relationship · 25% staff cost', 'Hub of the process', 'Relationship'],
+];
+
+const choices = ['The court is the inventory', 'The member is a family', 'People are the lubricant'];
+
+const measures = [
+  'Sales closed on their own',
+  'Stops at the desk',
+  'Time to enrol',
+  'Response time',
+  'Members in, members out',
+  'Staff cost · Athlon 25%',
+  'Days to close the month',
+];
+
+const phase0 = [
+  ['01', 'Rebuild', 'Products · data · one procedure'],
+  ['02', 'Assist', 'Desk & kiosk on the same path'],
+  ['03', 'Open', 'Online, one product at a time'],
+  ['04', 'Measure', 'Numbers back on their own'],
+];
+---
+
+<BaseLayout
+  title="TCA · The Operating Model"
+  description="A lean, digital operating model for Tennis Club Ambrosiano, designed to be repeated at the next sites."
+  noindex={true}
+>
+
+<div class="slide-dots" id="dots"></div>
+
+<!-- S1 · COVER -->
+<section class="slide om-cover" id="s1" data-header="dark">
+  <div class="om-cover__bg" style={`background-image: linear-gradient(105deg, rgba(20,20,22,.9) 40%, rgba(139,26,26,.35) 100%), url('${base}club-aerial.jpeg')`}></div>
+  <div class="om-cover__watermark">TCA</div>
+  <div class="om-cover__content">
+    <span class="eyebrow eyebrow--light">Tennis Club Ambrosiano · October 2026</span>
+    <h1 class="om-cover__title">A club that<br />runs on a<br /><em>model.</em></h1>
+    <p class="om-cover__sub">Lean. Digital. Repeatable.</p>
+  </div>
+  <div class="om-cover__meta">Maurizio Taruggi</div>
+</section>
+
+<!-- S2 · THE QUESTION BEFORE WE START -->
+<section class="slide om-light" id="s2" data-header="light">
+  <div class="om-wrap">
+    <span class="eyebrow">Before we start</span>
+    <h2 class="om-h om-h--xl">The group<br /><em>in three years?</em></h2>
+    <ul class="om-chips">
+      <li>How many sites</li>
+      <li>What kind of club</li>
+      <li>What stays the same</li>
+    </ul>
+  </div>
+</section>
+
+<!-- S3 · NOVEMBER -->
+<section class="slide om-dark" id="s3" data-header="dark">
+  <div class="om-wrap">
+    <span class="eyebrow eyebrow--light">01 · What I see</span>
+    <h2 class="om-h om-h--light">November:<br /><em>two people leave.</em></h2>
+    <div class="om-row om-row--dark">
+      {leaving.map((t) => <div class="om-word om-word--dark">{t}</div>)}
+    </div>
+    <p class="om-punch om-punch--light">Replace them, or move to the model?</p>
+  </div>
+</section>
+
+<!-- S4 · THE DATA: LEADS -->
+<section class="slide om-light" id="s4" data-header="light">
+  <div class="om-wrap">
+    <span class="eyebrow">01 · What I see · The data</span>
+    <h2 class="om-h">Leads ×3.<br /><em>The flow is stuck.</em></h2>
+    <div class="om-flow" aria-label="From lead to enrolment, with two choke points">
+      <div class="om-flow__step om-flow__step--strong"><span class="om-flow__big">×3</span><span>Leads</span></div>
+      <div class="om-flow__arrow">→</div>
+      <div class="om-flow__step om-flow__step--choke"><span class="om-flow__mark">1</span><span>Hand-off</span></div>
+      <div class="om-flow__arrow">→</div>
+      <div class="om-flow__step"><span>Tennis course</span></div>
+      <div class="om-flow__arrow">→</div>
+      <div class="om-flow__step om-flow__step--choke"><span class="om-flow__mark">2</span><span>Places &amp; procedure</span></div>
+      <div class="om-flow__arrow">→</div>
+      <div class="om-flow__step"><span>Enrolment</span></div>
+    </div>
+    <p class="om-punch">Not a demand problem. A flow problem.</p>
+  </div>
+</section>
+
+<!-- S5 · TENNIS IS THE CORE -->
+<section class="slide om-dark" id="s5" data-header="dark">
+  <div class="om-wrap">
+    <span class="eyebrow eyebrow--light">01 · What I see · Tennis</span>
+    <h2 class="om-h om-h--light">Tennis is our core.<br /><em>Its front door is outside.</em></h2>
+    <div class="om-row om-row--3 om-row--dark">
+      <div class="om-word om-word--dark">
+        <span class="om-word__tag">The flow</span>
+        One door: Vavassori Team
+      </div>
+      <div class="om-word om-word--dark">
+        <span class="om-word__tag">The margin</span>
+        <span class="om-big">50–55%</span>
+        to the partner
+      </div>
+      <div class="om-word om-word--red">
+        <span class="om-word__tag">The direction</span>
+        The club owns the journey. The partner owns the coaching.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S6 · ONLINE IS NOT A THIRD SALESPERSON -->
+<section class="slide om-light" id="s6" data-header="light">
+  <div class="om-wrap">
+    <span class="eyebrow">02 · The model</span>
+    <h2 class="om-h">Online is not<br /><em>a third salesperson.</em></h2>
+    <div class="om-invert">
+      <div class="om-invert__panel">
+        <span class="om-invert__tag">The usual picture</span>
+        <div class="om-invert__row">
+          <div class="om-box">Sales</div>
+          <div class="om-box">Sales</div>
+          <div class="om-box om-box--ghost">Online</div>
+        </div>
+      </div>
+      <div class="om-invert__panel om-invert__panel--model">
+        <span class="om-invert__tag">The model · bottom-up</span>
+        <div class="om-stack">
+          <div class="om-stack__layer om-stack__layer--people">People</div>
+          <div class="om-stack__layer om-stack__layer--data">Data &amp; control</div>
+          <div class="om-stack__layer om-stack__layer--base">One procedure</div>
+        </div>
+      </div>
+    </div>
+    <p class="om-punch">Process first. People make it smooth.</p>
+  </div>
+</section>
+
+<!-- S7 · ONE PROCEDURE -->
+<section class="slide om-dark" id="s7" data-header="dark">
+  <div class="om-wrap">
+    <span class="eyebrow eyebrow--light">02 · The model · The procedure</span>
+    <h2 class="om-h om-h--light">One procedure.<br /><em>Three ways. One control.</em></h2>
+    <div class="om-row om-row--dark">
+      {procedure.map(([num, label, head]) => (
+        <div class={`om-word ${num === '04' ? 'om-word--red' : 'om-word--dark'}`}>
+          <span class="om-word__num">{num}</span>
+          <span class="om-word__tag">{label}</span>
+          {head}
+        </div>
+      ))}
+    </div>
+    <p class="om-punch om-punch--light">A new site inherits the procedure, not the people.</p>
+  </div>
+</section>
+
+<!-- S8 · FRONT AND BACK -->
+<section class="slide om-light" id="s8" data-header="light">
+  <div class="om-wrap">
+    <span class="eyebrow">02 · The model · The team</span>
+    <h2 class="om-h">Front and back.<br /><em>Two simple jobs.</em></h2>
+    <div class="om-row om-row--2">
+      <div class="om-word om-word--light">
+        <span class="om-word__tag">Front</span>
+        <span class="om-word__xl">An expert customer</span>
+      </div>
+      <div class="om-word om-word--ink">
+        <span class="om-word__tag">Back</span>
+        <span class="om-word__xl">Closing online</span>
+      </div>
+    </div>
+    <p class="om-punch">Every sale closed online is one less in the queue.</p>
+  </div>
+</section>
+
+<!-- S9 · THE KIOSK -->
+<section class="slide om-dark" id="s9" data-header="dark">
+  <div class="om-wrap om-kiosk">
+    <div class="om-kiosk__text">
+      <span class="eyebrow eyebrow--light">02 · The model · The front desk</span>
+      <h2 class="om-h om-h--light">A kiosk<br /><em>that teaches.</em></h2>
+      <ul class="om-chips om-chips--dark">
+        {kiosk.map((k) => <li>{k}</li>)}
+      </ul>
+      <p class="om-punch om-punch--light">Education, not operations.</p>
+    </div>
+    <figure class="om-kiosk__photo">
+      <img src={`${base}athlon-reception.webp`} alt="Athlon Roma reception: one desk and two kiosks" loading="lazy" />
+      <figcaption>Athlon Roma · one desk, two kiosks</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- S10 · LEAN WITH PEOPLE OR WITH PROCESS -->
+<section class="slide om-light" id="s10" data-header="light">
+  <div class="om-wrap">
+    <span class="eyebrow">02 · The model · Why lean fails</span>
+    <h2 class="om-h">Lean with people,<br /><em>or with process?</em></h2>
+    <table class="om-table om-table--big">
+      <thead>
+        <tr><th>Failure</th><th>How it shows</th><th>The model</th></tr>
+      </thead>
+      <tbody>
+        {failures.map(([name, shows, answer]) => (
+          <tr>
+            <td class="om-table__name">{name}</td>
+            <td data-label="How it shows" class="om-table__today">{shows}</td>
+            <td data-label="The model" class="om-table__answer">{answer}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- S11 · FROM ATHLON TO TCA -->
+<section class="slide om-light om-off" id="s11" data-header="light">
+  <div class="om-wrap">
+    <span class="eyebrow">02 · The model · From Athlon to TCA</span>
+    <h2 class="om-h om-h--md">Not a copy of Athlon.<br /><em>A new model, together.</em></h2>
+    <table class="om-table om-table--chain">
+      <thead>
+        <tr><th>Link</th><th>Tested at Athlon</th><th>TCA today</th><th>TCA in the model</th></tr>
+      </thead>
+      <tbody>
+        {chain.map(([link, athlon, today, model]) => (
+          <tr>
+            <td class="om-table__name">{link}</td>
+            <td data-label="Tested at Athlon">{athlon}</td>
+            <td data-label="TCA today" class="om-table__today">{today}</td>
+            <td data-label="TCA in the model" class="om-table__answer">{model}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <ul class="om-chips om-chips--red">
+      {choices.map((c) => <li>{c}</li>)}
+    </ul>
+  </div>
+</section>
+
+<!-- S12 · OWN THE CUSTOMER JOURNEY -->
+<section class="slide om-dark" id="s12" data-header="dark">
+  <div class="om-wrap">
+    <span class="eyebrow eyebrow--light">02 · The model · The customer journey</span>
+    <h2 class="om-h om-h--light">We own<br /><em>the customer journey.</em></h2>
+    <div class="om-layers">
+      <div class="om-layer om-layer--ours">
+        <span class="om-layer__tag">The journey · ours</span>
+        <div class="om-layer__items"><span>Website</span><span>Enrolment</span><span>Kiosk</span><span>Personal area</span><span>Bookings</span><span>Renewals</span></div>
+      </div>
+      <div class="om-layer om-layer--control">
+        <span class="om-layer__tag">Control · ours</span>
+        <div class="om-layer__items"><span>Live dashboards</span><span>Alerts</span><span>Monthly close</span></div>
+      </div>
+      <div class="om-layer om-layer--engine">
+        <span class="om-layer__tag">Engine · PerfectGym</span>
+        <div class="om-layer__items"><span>Contracts</span><span>Payments</span><span>Access</span></div>
+      </div>
+    </div>
+    <div class="om-actions">
+      <a href="https://crm.tcambrosiano.com/dashboard/perfectgym" target="_blank" rel="noopener" class="btn btn-red">Live · the TCA dashboard ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- S13 · WHAT WE'LL MEASURE -->
+<section class="slide om-light" id="s13" data-header="light">
+  <div class="om-wrap">
+    <span class="eyebrow">03 · Why it holds</span>
+    <h2 class="om-h">The model<br /><em>measures itself.</em></h2>
+    <div class="om-grid om-grid--4">
+      {measures.map((m, i) => (
+        <div class="om-measure">
+          <span class="om-measure__num">{String(i + 1).padStart(2, '0')}</span>
+          <p>{m}</p>
+        </div>
+      ))}
+      <div class="om-measure om-measure--key">
+        <span class="om-measure__num">08</span>
+        <p>Time &amp; cost of a new site</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- S14 · NOVEMBER IS PHASE 0 -->
+<section class="slide om-dark" id="s14" data-header="dark">
+  <div class="om-wrap">
+    <span class="eyebrow eyebrow--light">03 · November</span>
+    <h2 class="om-h om-h--light">November is<br /><em>phase 0.</em></h2>
+    <div class="om-row om-row--dark">
+      {phase0.map(([num, label, text], i) => (
+        <div class={`om-word ${i === 0 ? 'om-word--red' : 'om-word--dark'}`}>
+          <span class="om-word__num">{num}</span>
+          <span class="om-word__xl">{label}</span>
+          <span class="om-word__small">{text}</span>
+        </div>
+      ))}
+    </div>
+    <p class="om-punch om-punch--light">A rebuild, not a switch-on.</p>
+  </div>
+</section>
+
+<!-- S15 · THE QUESTION -->
+<section class="slide om-close" id="s15" data-header="dark">
+  <div class="om-close__bg" style={`background: linear-gradient(170deg, rgba(10,14,20,.88) 0%, rgba(26,26,26,.8) 50%, rgba(100,18,18,.62) 100%), url('${base}verticale tca.avif') 35% center/cover no-repeat`}></div>
+  <div class="om-close__corner om-close__corner--tl"></div>
+  <div class="om-close__corner om-close__corner--br"></div>
+  <div class="om-close__content">
+    <span class="eyebrow eyebrow--light">The question</span>
+    <h2 class="om-close__title">A model,<br /><em>or tools?</em></h2>
+    <p class="om-close__quote">Tools solve November. A model solves every site you open.</p>
+    <p class="om-close__meta">Maurizio Taruggi · maurizio@ready2digital.it</p>
+  </div>
+</section>
+
+</BaseLayout>
+
+<style is:global>
+  html { scroll-behavior: smooth; }
+  body { background: var(--text); }
+
+  .slide {
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .om-dark  { background: var(--text); }
+  .om-light { background: #fff; }
+  .om-off   { background: var(--off-white); }
+
+  .om-wrap {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: calc(var(--header-h) + 4vh) clamp(24px,5vw,72px) 5vh;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(18px, 3.4vh, 40px);
+    flex: 1;
+    justify-content: center;
+  }
+
+  /* ── big titles: the slide is the title ── */
+  .om-h {
+    font-family: var(--fd);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -.01em;
+    line-height: .9;
+    color: var(--text);
+    font-size: clamp(2.8rem, 6.6vw, 7rem);
+  }
+  .om-h em, .om-cover__title em, .om-close__title em { color: #C0282A; font-style: normal; }
+  .om-h--light { color: #fff; }
+  .om-h--xl { font-size: clamp(3.2rem, 9vw, 9.5rem); }
+  .om-h--md { font-size: clamp(2.4rem, 4.8vw, 5rem); }
+
+  .om-punch {
+    font-family: var(--fd);
+    font-size: clamp(1.4rem, 2.6vw, 2.6rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1.05;
+    color: var(--red);
+    border-left: 5px solid var(--red);
+    padding-left: clamp(14px, 1.4vw, 22px);
+  }
+  .om-punch--light { color: #fff; }
+
+  /* ── dots ── */
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.25s;
+    background: rgba(255,255,255,0.25);
+  }
+  .dot-on-light { background: rgba(0,0,0,0.2); }
+  .dot.active { background: var(--red); transform: scale(1.5); }
+
+  /* ── keyword rows ── */
+  .om-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--grey-light); }
+  .om-row--dark { background: rgba(255,255,255,.08); }
+  .om-row--3 { grid-template-columns: repeat(3, 1fr); }
+  .om-row--2 { grid-template-columns: repeat(2, 1fr); background: transparent; gap: clamp(12px, 1.4vw, 24px); }
+
+  .om-word {
+    padding: clamp(20px, 3.6vh, 44px) clamp(18px, 1.8vw, 30px);
+    display: flex; flex-direction: column; justify-content: flex-end; gap: 10px;
+    font-family: var(--fd);
+    font-size: clamp(1.25rem, 2vw, 2rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1.02;
+  }
+  .om-word--dark  { background: #1E2530; color: #fff; }
+  .om-word--red   { background: var(--red); color: #fff; }
+  .om-row--2 .om-word { min-height: clamp(160px, 26vh, 280px); }
+  .om-word--light { background: var(--off-white); color: var(--text); border-top: 5px solid var(--red); }
+  .om-word--ink   { background: var(--text); color: #fff; border-top: 5px solid #C0282A; }
+  .om-word__tag {
+    font-size: clamp(11px, .95vw, 14px);
+    font-weight: 700; letter-spacing: .18em;
+    color: #C0282A;
+  }
+  .om-word--red .om-word__tag { color: rgba(255,255,255,.7); }
+  .om-word__num { font-size: clamp(2rem, 3.6vw, 3.6rem); font-weight: 800; line-height: 1; color: rgba(255,255,255,.14); }
+  .om-word__xl { font-size: clamp(2rem, 4vw, 4.2rem); font-weight: 800; line-height: .92; }
+  .om-word__small { font-size: clamp(.95rem, 1.3vw, 1.3rem); font-weight: 600; color: rgba(255,255,255,.7); letter-spacing: .02em; }
+  .om-big { display: block; font-size: clamp(3.2rem, 6.4vw, 6.4rem); font-weight: 800; line-height: .9; color: #fff; }
+
+  /* ── chips ── */
+  .om-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 10px 12px; }
+  .om-chips li {
+    font-family: var(--fd); font-size: clamp(15px, 1.6vw, 24px);
+    font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--text); border: 2px solid var(--grey-light); padding: 10px 18px;
+  }
+  .om-chips--dark li { color: #fff; border-color: rgba(255,255,255,.22); }
+  .om-chips--red li { color: #fff; background: var(--red); border-color: var(--red); font-size: clamp(14px, 1.3vw, 20px); }
+
+  /* ── S1 cover ── */
+  .om-cover { background: var(--text); overflow: hidden; }
+  .om-cover__bg {
+    position: absolute; inset: 0;
+    background-position: center; background-size: cover; background-repeat: no-repeat;
+    filter: blur(2px); transform: scale(1.06);
+  }
+  .om-cover__content {
+    position: relative; z-index: 2;
+    padding: calc(var(--header-h) + 8vh) clamp(24px,6vw,80px) 8vh;
+    display: flex; flex-direction: column; justify-content: center; gap: 3vh; flex: 1;
+  }
+  .om-cover__title {
+    font-family: var(--fd);
+    font-size: clamp(3.6rem, 10vw, 10rem);
+    font-weight: 800; text-transform: uppercase; line-height: .86; letter-spacing: -.015em; color: #fff;
+  }
+  .om-cover__sub {
+    font-family: var(--fd);
+    font-size: clamp(1.3rem, 2.4vw, 2.4rem); font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+    color: rgba(255,255,255,.72);
+  }
+  .om-cover__meta {
+    position: absolute; bottom: 3.5vh; right: clamp(24px,4vw,60px); z-index: 2;
+    font-family: var(--fd); font-size: clamp(12px, 1vw, 15px);
+    font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.4);
+  }
+  .om-cover__watermark {
+    position: absolute; bottom: -4vw; right: 2vw;
+    font-family: var(--fd); font-size: clamp(140px, 18vw, 280px);
+    font-weight: 800; color: rgba(255,255,255,.03); line-height: 1;
+    user-select: none; pointer-events: none;
+  }
+
+  /* ── S4 flow ── */
+  .om-flow { display: flex; align-items: stretch; gap: clamp(6px, .8vw, 12px); }
+  .om-flow__step {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+    text-align: center;
+    background: var(--off-white);
+    padding: clamp(18px, 3.6vh, 40px) 10px;
+    font-family: var(--fd); font-size: clamp(15px, 1.6vw, 24px);
+    font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--text); line-height: 1.05;
+  }
+  .om-flow__step--strong { background: var(--text); color: #fff; }
+  .om-flow__big { font-size: clamp(2.6rem, 4.6vw, 4.6rem); font-weight: 800; line-height: 1; color: #C0282A; }
+  .om-flow__step--choke { background: #fff; border: 3px solid var(--red); color: var(--red); }
+  .om-flow__arrow { display: flex; align-items: center; font-family: var(--fd); font-size: clamp(20px, 2vw, 30px); color: var(--grey-mid); }
+  .om-flow__mark {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 1.7em; height: 1.7em; border-radius: 50%;
+    background: var(--red); color: #fff;
+    font-size: 15px; font-weight: 800;
+  }
+
+  /* ── S6 inversion ── */
+  .om-invert { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2vw, 32px); }
+  .om-invert__panel {
+    background: var(--off-white);
+    padding: clamp(18px, 3vh, 36px) clamp(18px, 2vw, 32px);
+    display: flex; flex-direction: column; gap: clamp(14px, 2.4vh, 26px);
+  }
+  .om-invert__panel--model { background: var(--text); }
+  .om-invert__tag {
+    font-family: var(--fd); font-size: clamp(12px, 1vw, 15px);
+    font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--grey-mid);
+  }
+  .om-invert__panel--model .om-invert__tag { color: #C0282A; }
+  .om-invert__row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; flex: 1; align-items: end; }
+  .om-box {
+    background: #fff; border: 2px solid var(--grey-mid);
+    font-family: var(--fd); font-size: clamp(16px, 1.7vw, 26px); font-weight: 800;
+    letter-spacing: .04em; text-transform: uppercase; color: var(--text);
+    text-align: center; padding: clamp(32px, 7vh, 72px) 6px;
+  }
+  .om-box--ghost { border-style: dashed; color: var(--grey-mid); background: transparent; }
+  .om-stack { display: flex; flex-direction: column; gap: 6px; flex: 1; justify-content: flex-end; }
+  .om-stack__layer {
+    font-family: var(--fd); font-size: clamp(16px, 1.7vw, 26px); font-weight: 800;
+    letter-spacing: .04em; text-transform: uppercase; text-align: center;
+    padding: clamp(10px, 1.8vh, 18px) 16px; color: #fff;
+  }
+  .om-stack__layer--people { background: rgba(255,255,255,.1); margin: 0 22%; }
+  .om-stack__layer--data   { background: rgba(255,255,255,.18); margin: 0 10%; }
+  .om-stack__layer--base   { background: var(--red); padding-top: clamp(18px, 3.4vh, 34px); padding-bottom: clamp(18px, 3.4vh, 34px); }
+
+  /* ── S9 kiosk ── */
+  .om-kiosk { display: grid; grid-template-columns: 1fr 1.05fr; align-items: center; gap: clamp(24px, 3.4vw, 64px); }
+  .om-kiosk__text { display: flex; flex-direction: column; gap: clamp(18px, 3.4vh, 36px); }
+  .om-kiosk__photo { margin: 0; }
+  .om-kiosk__photo img { width: 100%; height: auto; display: block; border-top: 5px solid var(--red); }
+  .om-kiosk__photo figcaption {
+    font-family: var(--fd); font-size: clamp(12px, 1vw, 15px);
+    font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+    color: rgba(255,255,255,.45); margin-top: 10px;
+  }
+
+  /* ── tables ── */
+  .om-table { width: 100%; border-collapse: collapse; background: #fff; }
+  .om-table th {
+    font-family: var(--fd); font-size: clamp(12px, 1vw, 15px);
+    font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+    text-align: left; color: #fff; background: var(--text);
+    padding: clamp(10px, 1.4vh, 14px) clamp(12px, 1.2vw, 20px);
+  }
+  .om-table th:last-child { background: var(--red); }
+  .om-table td {
+    font-family: var(--fd); font-size: clamp(14px, 1.25vw, 19px); font-weight: 600;
+    letter-spacing: .02em; text-transform: uppercase; line-height: 1.15; color: var(--text-light);
+    padding: clamp(8px, 1.2vh, 13px) clamp(12px, 1.2vw, 20px);
+    border-bottom: 1px solid var(--grey-light);
+    vertical-align: middle;
+  }
+  .om-table__name { font-weight: 800 !important; color: var(--text) !important; white-space: nowrap; }
+  .om-table__answer { color: var(--red) !important; font-weight: 800 !important; background: rgba(139,26,26,.04); }
+  .om-table__today { color: var(--grey-mid) !important; }
+  .om-table--big td { font-size: clamp(1.1rem, 2vw, 2rem); padding: clamp(14px, 2.6vh, 28px) clamp(14px, 1.4vw, 24px); }
+
+  /* ── S12 layers ── */
+  .om-layers { display: flex; flex-direction: column; gap: 6px; }
+  .om-layer {
+    display: grid; grid-template-columns: minmax(180px, 17em) 1fr; align-items: center; gap: 16px;
+    padding: clamp(14px, 2.4vh, 26px) clamp(16px, 1.8vw, 28px);
+  }
+  .om-layer--ours    { background: var(--red); }
+  .om-layer--control { background: rgba(255,255,255,.14); }
+  .om-layer--engine  { background: rgba(255,255,255,.04); border: 1px dashed rgba(255,255,255,.25); }
+  .om-layer__tag {
+    font-family: var(--fd); font-size: clamp(15px, 1.5vw, 22px);
+    font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #fff;
+  }
+  .om-layer--engine .om-layer__tag { color: rgba(255,255,255,.55); }
+  .om-layer__items { display: flex; flex-wrap: wrap; gap: 8px; }
+  .om-layer__items span {
+    font-family: var(--fd); font-size: clamp(14px, 1.3vw, 19px);
+    font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
+    color: #fff; border: 1px solid rgba(255,255,255,.35); padding: 6px 14px;
+  }
+  .om-layer--engine .om-layer__items span { color: rgba(255,255,255,.55); border-color: rgba(255,255,255,.18); }
+  .om-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  /* ── S13 measures ── */
+  .om-grid { display: grid; gap: 1px; background: var(--grey-light); }
+  .om-grid--4 { grid-template-columns: repeat(4, 1fr); }
+  .om-measure {
+    background: #fff;
+    padding: clamp(18px, 3vh, 34px) clamp(16px, 1.6vw, 26px);
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .om-measure p {
+    font-family: var(--fd); font-size: clamp(1.15rem, 1.8vw, 1.8rem);
+    font-weight: 700; text-transform: uppercase; line-height: 1.02; color: var(--text);
+  }
+  .om-measure__num { font-family: var(--fd); font-size: clamp(24px, 2.6vw, 40px); font-weight: 800; line-height: 1; color: var(--grey-light); }
+  .om-measure--key { background: var(--red); }
+  .om-measure--key p { color: #fff; }
+  .om-measure--key .om-measure__num { color: rgba(255,255,255,.35); }
+
+  /* ── S15 close ── */
+  .om-close { background: var(--text); overflow: hidden; }
+  .om-close__bg { position: absolute; inset: 0; }
+  .om-close__corner { position: absolute; z-index: 1; width: clamp(40px,6vw,96px); height: clamp(40px,6vw,96px); }
+  .om-close__corner--tl { top: 0; left: 0; border-top: 3px solid var(--red); border-left: 3px solid var(--red); }
+  .om-close__corner--br { bottom: 0; right: 0; border-bottom: 3px solid var(--red); border-right: 3px solid var(--red); }
+  .om-close__content {
+    position: relative; z-index: 2;
+    padding: calc(var(--header-h) + 7vh) clamp(24px,7vw,100px) 7vh;
+    display: flex; flex-direction: column; justify-content: center; gap: 4vh; flex: 1;
+  }
+  .om-close__title {
+    font-family: var(--fd); font-size: clamp(3.6rem, 11vw, 11rem);
+    font-weight: 800; text-transform: uppercase; line-height: .84; color: #fff;
+  }
+  .om-close__quote {
+    font-size: clamp(1.2rem, 2.2vw, 2.1rem); font-weight: 300; font-style: italic;
+    line-height: 1.4; color: rgba(255,255,255,.82); max-width: 900px;
+  }
+  .om-close__meta {
+    font-family: var(--fd); font-size: clamp(12px, 1vw, 14px);
+    font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.32);
+  }
+
+  /* ══════════ MOBILE ══════════ */
+  @media (max-width: 900px) {
+    .slide { min-height: auto; }
+    .om-cover, .om-close { min-height: 100svh; }
+    .om-wrap { padding: calc(var(--header-h) + 24px) 16px 44px; gap: 18px; justify-content: flex-start; }
+    .om-h { font-size: clamp(2.4rem, 11vw, 3.6rem); }
+    .om-h--xl { font-size: clamp(2.8rem, 14vw, 4.4rem); }
+    .om-row, .om-row--3, .om-row--2, .om-invert, .om-kiosk, .om-grid--4 { grid-template-columns: 1fr; }
+    .om-flow { flex-direction: column; }
+    .om-flow__arrow { justify-content: center; transform: rotate(90deg); }
+    .om-cover__content { padding: calc(var(--header-h) + 32px) 22px 48px; }
+    .om-cover__meta { position: static; padding: 0 22px 28px; }
+    .om-layer { grid-template-columns: 1fr; gap: 10px; }
+    .om-close__content { padding: calc(var(--header-h) + 36px) 22px 48px; }
+
+    /* tables become stacked cards */
+    .om-table thead { display: none; }
+    .om-table, .om-table tbody, .om-table tr, .om-table td { display: block; width: 100%; }
+    .om-table tr { border-top: 3px solid var(--red); margin-bottom: 12px; background: #fff; }
+    .om-table td[data-label]::before {
+      content: attr(data-label);
+      display: block;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: .14em; color: var(--grey-mid);
+      margin-bottom: 2px;
+    }
+    .om-table--big td { font-size: 1.1rem; padding: 10px 14px; }
+    .om-table__name { white-space: normal; }
+  }
+
+  /* ══════════ PRINT (one slide per page) ══════════ */
+  @media print {
+    @page { size: A4 landscape; margin: 0; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .g-header, .g-menu, .slide-dots, .om-actions { display: none !important; }
+    .slide { min-height: 100vh; break-after: page; }
+    .om-wrap { padding-top: 5vh; }
+  }
+</style>
+
+<script>
+  const slides        = Array.from(document.querySelectorAll<HTMLElement>('.slide'));
+  const dotsContainer = document.getElementById('dots')!;
+  const header        = document.getElementById('g-header');
+
+  // dark section → light header, light section → dark header (contrast)
+  const sectionIsLight = (s: HTMLElement) => s.dataset.header === 'light';
+
+  slides.forEach((s, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (sectionIsLight(s) ? ' dot-on-light' : '') + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => s.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    dotsContainer.appendChild(d);
+  });
+
+  if (slides[0]) header?.classList.toggle('g-header--dark', sectionIsLight(slides[0]));
+
+  let current = 0;
+  const allDots = () => Array.from(document.querySelectorAll('.dot'));
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting && e.intersectionRatio >= 0.5) {
+        current = slides.indexOf(e.target as HTMLElement);
+        allDots().forEach((d, i) => d.classList.toggle('active', i === current));
+        header?.classList.toggle('g-header--dark', sectionIsLight(e.target as HTMLElement));
+      }
+    });
+  }, { threshold: 0.5 });
+  slides.forEach(s => observer.observe(s));
+
+  // Presenting from a laptop: arrows, page keys and space move one slide.
+  document.addEventListener('keydown', e => {
+    if (document.body.classList.contains('menu-open')) return;
+    const next = ['ArrowDown', 'ArrowRight', 'PageDown', ' '].includes(e.key);
+    const prev = ['ArrowUp', 'ArrowLeft', 'PageUp'].includes(e.key);
+    if (!next && !prev) return;
+    e.preventDefault();
+    const target = Math.min(slides.length - 1, Math.max(0, current + (next ? 1 : -1)));
+    slides[target].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+</script>
