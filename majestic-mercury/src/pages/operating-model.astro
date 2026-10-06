@@ -212,7 +212,12 @@ const phase0 = [
       <div class="om-flow__arrow">→</div>
       <div class="om-flow__step om-flow__step--blocked"><span>Enrolment</span><span class="om-flow__sub">Stuck</span></div>
     </div>
-    <p class="om-punch">Not a demand problem. A product and process problem.</p>
+    <div class="om-row om-row--3 om-stats">
+      <div class="om-stat"><span class="om-stat__big">8 in 10</span><span class="om-stat__label">new adults ask for tennis</span></div>
+      <div class="om-stat"><span class="om-stat__big">1 in 12</span><span class="om-stat__label">of them joins</span></div>
+      <div class="om-stat om-stat--key"><span class="om-stat__big">45% → 22%</span><span class="om-stat__label">Join rate: membership alone → with tennis</span></div>
+    </div>
+    <p class="om-punch">Tennis demand gets stuck in the course, and takes the membership with it.</p>
   </div>
 </section>
 
@@ -702,6 +707,14 @@ const phase0 = [
   .om-flow__step--strong { background: var(--text); color: #fff; }
   .om-flow__big { font-size: clamp(2.6rem, 4.6vw, 4.6rem); font-weight: 800; line-height: 1; color: #C0282A; }
   .om-flow__step--choke { background: #fff; border: 3px solid var(--red); color: var(--red); }
+  .om-stats { background: transparent; gap: clamp(10px, 1.2vw, 20px); }
+  .om-stat { display: flex; flex-direction: column; gap: 6px; padding: clamp(12px, 2vh, 22px) clamp(14px, 1.4vw, 22px); border-top: 4px solid var(--text); background: var(--off-white); }
+  .om-stat--key { border-top-color: var(--red); }
+  .om-stat__big { font-family: var(--fd); font-size: clamp(2.2rem, 4.2vw, 4.4rem); font-weight: 800; line-height: .95; color: var(--text); white-space: nowrap; }
+  .om-stat--key .om-stat__big { color: var(--red); }
+  .om-stat__label { font-family: var(--fd); font-size: clamp(13px, 1.25vw, 19px); font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--text-light); }
+  #s6 .om-flow__step { padding-top: clamp(12px, 2.4vh, 28px); padding-bottom: clamp(12px, 2.4vh, 28px); }
+  #s6 .om-wrap { gap: clamp(14px, 2.6vh, 30px); }
   .om-flow__step--blocked { background: transparent; border: 2px dashed var(--grey-mid); color: var(--grey-mid); }
   .om-flow__sub { font-size: .72em; font-weight: 600; letter-spacing: .06em; opacity: .85; }
   .om-flow__arrow { display: flex; align-items: center; font-family: var(--fd); font-size: clamp(20px, 2vw, 30px); color: var(--grey-mid); }
