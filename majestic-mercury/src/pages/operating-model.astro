@@ -556,6 +556,14 @@ const phase0 = [
   }
   .om-punch--light { color: #fff; }
 
+  /* ── slide number ── */
+  .om-num {
+    position: absolute; left: clamp(24px, 5vw, 72px); bottom: clamp(14px, 2.6vh, 28px); z-index: 3;
+    font-family: var(--fd); font-size: clamp(12px, 1vw, 15px); font-weight: 700;
+    letter-spacing: .14em; color: rgba(255,255,255,.45);
+  }
+  .om-num--light { color: var(--grey-mid); }
+
   /* ── dots ── */
   .dot {
     width: 6px; height: 6px;
@@ -901,6 +909,15 @@ const phase0 = [
 
   // dark section → light header, light section → dark header (contrast)
   const sectionIsLight = (s: HTMLElement) => s.dataset.header === 'light';
+
+  // Slide number, bottom left: "06 / 19".
+  const pad = (n: number) => String(n).padStart(2, '0');
+  slides.forEach((s, i) => {
+    const n = document.createElement('span');
+    n.className = 'om-num' + (sectionIsLight(s) ? ' om-num--light' : '');
+    n.textContent = `${pad(i + 1)} / ${pad(slides.length)}`;
+    s.appendChild(n);
+  });
 
   slides.forEach((s, i) => {
     const d = document.createElement('div');
