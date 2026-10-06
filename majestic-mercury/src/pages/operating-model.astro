@@ -91,7 +91,7 @@ const phase0 = [
   <div class="om-cover__content">
     <span class="eyebrow eyebrow--light">Tennis Club Ambrosiano · October 2026</span>
     <h1 class="om-cover__title">A club that<br />runs on a<br /><em>model.</em></h1>
-    <p class="om-cover__sub">Lean. Digital. Repeatable.</p>
+    <p class="om-cover__sub">Smart. Lean. Repeatable.</p>
   </div>
   <div class="om-cover__meta">Maurizio Taruggi</div>
 </section>
@@ -239,23 +239,29 @@ const phase0 = [
   </div>
 </section>
 
-<!-- OVER TO YOU · TCA IN THREE YEARS -->
+<!-- BRIDGE · THE STRUCTURE IS SET, NOW THE ENGINE -->
 <section class="slide om-red" id="s8" data-header="dark">
   <div class="om-wrap">
-    <span class="eyebrow eyebrow--light">Over to you</span>
-    <h2 class="om-h om-h--xl om-h--light">TCA<br /><em>in three years?</em></h2>
-    <div class="om-row om-row--3 om-path">
+    <span class="eyebrow eyebrow--light">03 · The model</span>
+    <h2 class="om-h om-h--light">The structure is set.<br /><em>Now the engine.</em></h2>
+    <div class="om-row om-row--2">
       <div class="om-word om-word--dark">
-        <span class="om-word__tag">Today</span>
-        On hold. Ready to evolve.
-      </div>
-      <div class="om-word om-word--dark">
-        <span class="om-word__tag">TCA</span>
-        How far do we push it?
+        <span class="om-word__tag">The structure · designed</span>
+        <ul class="om-list">
+          <li>Clear roles</li>
+          <li>SOPs &amp; checklists</li>
+          <li>Outsourced services</li>
+          <li>Staff on duty</li>
+        </ul>
       </div>
       <div class="om-word om-word--white">
-        <span class="om-word__tag">Then</span>
-        Do we open more?
+        <span class="om-word__tag">The engine · digital</span>
+        <ul class="om-list">
+          <li>Selling online</li>
+          <li>Control that runs itself</li>
+          <li>The tennis course flow</li>
+          <li>Ready for new sites</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -313,11 +319,11 @@ const phase0 = [
     <h2 class="om-h">Front and back.<br /><em>Two simple jobs.</em></h2>
     <div class="om-row om-row--2">
       <div class="om-word om-word--light">
-        <span class="om-word__tag">Front</span>
+        <span class="om-word__tag">Front · Ambassadors</span>
         <span class="om-word__xl">An expert customer</span>
       </div>
       <div class="om-word om-word--ink">
-        <span class="om-word__tag">Back</span>
+        <span class="om-word__tag">Back · Senior supervisors</span>
         <span class="om-word__xl">Closing online</span>
       </div>
     </div>
@@ -454,8 +460,30 @@ const phase0 = [
   </div>
 </section>
 
+<!-- OVER TO YOU · TCA IN THREE YEARS -->
+<section class="slide om-light om-off" id="s18" data-header="light">
+  <div class="om-wrap">
+    <span class="eyebrow">Over to you</span>
+    <h2 class="om-h om-h--xl">TCA<br /><em>in three years?</em></h2>
+    <div class="om-row om-row--3 om-path">
+      <div class="om-word om-word--light">
+        <span class="om-word__tag">Today</span>
+        On hold. Ready to evolve.
+      </div>
+      <div class="om-word om-word--light">
+        <span class="om-word__tag">TCA</span>
+        How far do we push it?
+      </div>
+      <div class="om-word om-word--ink">
+        <span class="om-word__tag">Then</span>
+        Do we open more?
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- THE QUESTION -->
-<section class="slide om-close" id="s18" data-header="dark">
+<section class="slide om-close" id="s19" data-header="dark">
   <div class="om-close__bg" style={`background: linear-gradient(170deg, rgba(10,14,20,.88) 0%, rgba(26,26,26,.8) 50%, rgba(100,18,18,.62) 100%), url('${base}verticale tca.avif') 35% center/cover no-repeat`}></div>
   <div class="om-close__corner om-close__corner--tl"></div>
   <div class="om-close__corner om-close__corner--br"></div>
@@ -554,6 +582,7 @@ const phase0 = [
   .om-row--2 .om-word { min-height: clamp(160px, 26vh, 280px); }
   .om-path { background: transparent; gap: clamp(10px, 1.2vw, 20px); }
   .om-word--light { background: var(--off-white); color: var(--text); border-top: 5px solid var(--red); }
+  .om-off .om-word--light { background: #fff; }
   .om-word--ink   { background: var(--text); color: #fff; border-top: 5px solid #C0282A; }
   .om-word__tag {
     font-size: clamp(11px, .95vw, 14px);
@@ -614,6 +643,9 @@ const phase0 = [
   .om-red { background: var(--red); }
   .om-red .om-h em { color: var(--text); }
   .om-word--white { background: #fff; color: var(--text); }
+  .om-list { list-style: none; display: flex; flex-direction: column; gap: clamp(6px, 1.2vh, 12px); font-size: clamp(1.3rem, 2.3vw, 2.4rem); font-weight: 800; line-height: 1; }
+  .om-list li::before { content: '— '; color: #C0282A; }
+  .om-row--2 .om-word:has(.om-list) { justify-content: flex-start; gap: clamp(14px, 2.4vh, 24px); }
 
   /* ── staff cost bars ── */
   .om-bars { display: flex; flex-direction: column; gap: clamp(12px, 2.2vh, 22px); }
