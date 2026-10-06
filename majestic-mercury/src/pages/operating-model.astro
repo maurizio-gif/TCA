@@ -11,7 +11,7 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith("/")
 const bars = [
   ['2025 · starting point', [['vav', 20.8], ['staff', 22.0], ['fee', 6.0]], '48.8%'],
   ['After the exits',  [['vav', 20.8], ['staff', 11.6]], '32.4%'],
-  ['Athlon · all staff', [['athlon', 25.0]], '25%'],
+  ['Target', [['target', 30.0]], '30%'],
 ];
 const SCALE = 50;
 
@@ -81,7 +81,7 @@ const measures = [
   'Time to enrol',
   'Response time',
   'Members in, members out',
-  'Payroll ratio · Athlon 25%',
+  'Payroll ratio · target 30%',
   'Days to close the month',
 ];
 
@@ -179,8 +179,9 @@ const phase0 = [
       <li><i class="om-bar__seg--vav"></i>Vavassori</li>
       <li><i class="om-bar__seg--staff"></i>Other staff</li>
       <li><i class="om-bar__seg--fee"></i>Aspria fee</li>
+      <li><i class="om-bar__seg--target"></i>Target: full payroll, cleaning excluded</li>
     </ul>
-    <p class="om-punch om-punch--light">Vavassori alone: 20.8 points. Two thirds of what stays.</p>
+    <p class="om-punch om-punch--light">Vavassori alone: 20.8 points. The road to 30% runs through a new agreement.</p>
   </div>
 </section>
 
@@ -749,7 +750,7 @@ const phase0 = [
   .om-bar__seg--vav    { background: #C0282A; }
   .om-bar__seg--staff  { background: #3A4352; }
   .om-bar__seg--fee    { background: repeating-linear-gradient(135deg, #5a6272 0 6px, #2b313c 6px 12px); }
-  .om-bar__seg--athlon { background: #fff; color: var(--text); }
+  .om-bar__seg--target { background: transparent; border: 2px dashed rgba(255,255,255,.7); color: #fff; }
   .om-bar__total {
     flex: none;
     display: flex; align-items: center; padding-left: clamp(10px, 1vw, 18px);
