@@ -85,12 +85,6 @@ const measures = [
   'Days to close the month',
 ];
 
-const phase0 = [
-  ['01', 'Rebuild', 'Products · data · one procedure'],
-  ['02', 'Assist', 'Desk & kiosk on the same path'],
-  ['03', 'Open', 'Online, one product at a time'],
-  ['04', 'Measure', 'Numbers back on their own'],
-];
 ---
 
 <BaseLayout
@@ -505,26 +499,8 @@ const phase0 = [
   </div>
 </section>
 
-<!-- NOVEMBER IS PHASE 0 -->
-<section class="slide om-dark" id="s19" data-header="dark">
-  <div class="om-wrap">
-    <span class="eyebrow eyebrow--light">04 · November</span>
-    <h2 class="om-h om-h--light">November is<br /><em>phase 0.</em></h2>
-    <div class="om-row om-row--dark">
-      {phase0.map(([num, label, text], i) => (
-        <div class={`om-word ${i === 0 ? 'om-word--red' : 'om-word--dark'}`}>
-          <span class="om-word__num">{num}</span>
-          <span class="om-word__xl">{label}</span>
-          <span class="om-word__small">{text}</span>
-        </div>
-      ))}
-    </div>
-    <p class="om-punch om-punch--light">A rebuild, not a switch-on.</p>
-  </div>
-</section>
-
 <!-- OVER TO YOU · TCA IN THREE YEARS -->
-<section class="slide om-light om-off" id="s20" data-header="light">
+<section class="slide om-light om-off" id="s19" data-header="light">
   <div class="om-wrap">
     <span class="eyebrow">Over to you</span>
     <h2 class="om-h om-h--xl">TCA<br /><em>in three years?</em></h2>
@@ -546,20 +522,20 @@ const phase0 = [
 </section>
 
 <!-- THE QUESTION -->
-<section class="slide om-close" id="s21" data-header="dark">
+<section class="slide om-close" id="s20" data-header="dark">
   <div class="om-close__bg" style={`background: linear-gradient(170deg, rgba(10,14,20,.88) 0%, rgba(26,26,26,.8) 50%, rgba(100,18,18,.62) 100%), url('${base}verticale tca.avif') 35% center/cover no-repeat`}></div>
   <div class="om-close__corner om-close__corner--tl"></div>
   <div class="om-close__corner om-close__corner--br"></div>
   <div class="om-close__content">
-    <span class="eyebrow eyebrow--light">The question</span>
-    <h2 class="om-h om-h--light">Supplier, consultant,<br /><em>or partner?</em></h2>
+    <span class="eyebrow eyebrow--light">Brian, how do you want me?</span>
+    <h2 class="om-h om-h--light">Supplier, advisor,<br /><em>or partner?</em></h2>
     <div class="om-row om-row--3 om-roles">
       <div class="om-word om-word--dark">
         <span class="om-word__tag">Supplier</span>
         Tools
       </div>
       <div class="om-word om-word--dark">
-        <span class="om-word__tag">Consultant</span>
+        <span class="om-word__tag">Advisor</span>
         Advice
       </div>
       <div class="om-word om-word--red">
@@ -567,7 +543,7 @@ const phase0 = [
         A new model. Innovative, lean, digital.
       </div>
     </div>
-    <p class="om-close__quote">You saw this model coming. Let’s build it.</p>
+    <p class="om-close__quote">If it’s partner, let’s discuss.</p>
     <p class="om-close__meta">Maurizio Taruggi · maurizio@ready2digital.it</p>
   </div>
 </section>
