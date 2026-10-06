@@ -44,16 +44,19 @@ const failures = [
   ['Reactive club', 'The customer leads', 'The system anticipates'],
 ];
 
+// S14 · before and after, link by link. Bookings: Playtomic may stay for now;
+// what has to be ours is the customer, the data and the automations.
 const chain = [
-  ['Information', 'Real data, public prices', 'Salespeople, by voice', 'As Athlon, plus courts & coaching'],
-  ['Product', 'Few standard plans', 'A grown catalogue', 'Membership · coaching · court-hours'],
-  ['Enrolment', 'One path, online & on site', 'Paperwork at the desk', 'One path, online & kiosk'],
-  ['Compliance', 'Tracked by the system', 'By hand', 'As Athlon, plus FIT card'],
-  ['Booking', 'In the system', 'Playtomic, outside', 'One system: the court-hour'],
-  ['Delivery', 'Class register', 'Handed to the partner', 'Register for coaching too'],
-  ['Renewal', 'System-driven', 'Found at expiry', 'As Athlon'],
-  ['Control', 'Automatic', 'Rebuilt by hand', 'As Athlon'],
-  ['People', 'Relationship · 25% staff cost', 'Hub of the process', 'Relationship'],
+  ['Customer & data', 'Spread across tools', 'One hub, ours: data & automations'],
+  ['Information', 'Salespeople, by voice', 'Website & assistant on real data'],
+  ['Product', 'A grown catalogue', 'Few clear products, tennis at the core'],
+  ['Enrolment', 'Paperwork at the desk', 'One path, online & kiosk'],
+  ['Compliance', 'By hand', 'Tracked by the system, FIT card too'],
+  ['Booking', 'Playtomic, disconnected', 'Playtomic for now, connected to our hub'],
+  ['Coaching', 'Handed to the partner', 'The club sees every lesson'],
+  ['Renewal', 'Found at expiry', 'Driven before expiry'],
+  ['Control', 'Rebuilt by hand', 'Automatic, every day'],
+  ['People', 'Hub of the process', 'Relationship'],
 ];
 
 const choices = ['The court is the inventory', 'The member is a family', 'People are the lubricant'];
@@ -376,20 +379,19 @@ const phase0 = [
   </div>
 </section>
 
-<!-- FROM ATHLON TO TCA -->
+<!-- BEFORE AND AFTER -->
 <section class="slide om-light om-off" id="s14" data-header="light">
   <div class="om-wrap">
-    <span class="eyebrow">03 · The model · From Athlon to TCA</span>
-    <h2 class="om-h om-h--md">Not a copy of Athlon.<br /><em>A new model, together.</em></h2>
+    <span class="eyebrow">03 · The model · Before and after</span>
+    <h2 class="om-h om-h--md">From today<br /><em>to the model.</em></h2>
     <table class="om-table om-table--chain">
       <thead>
-        <tr><th>Link</th><th>Tested at Athlon</th><th>TCA today</th><th>TCA in the model</th></tr>
+        <tr><th>Link</th><th>TCA today</th><th>TCA in the model</th></tr>
       </thead>
       <tbody>
-        {chain.map(([link, athlon, today, model]) => (
+        {chain.map(([link, today, model]) => (
           <tr>
             <td class="om-table__name">{link}</td>
-            <td data-label="Tested at Athlon">{athlon}</td>
             <td data-label="TCA today" class="om-table__today">{today}</td>
             <td data-label="TCA in the model" class="om-table__answer">{model}</td>
           </tr>
