@@ -622,8 +622,10 @@ const phase0 = [
     font-family: var(--fd); font-size: clamp(14px, 1.4vw, 21px);
     font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: rgba(255,255,255,.75);
   }
-  .om-bar__track { display: flex; align-items: stretch; height: clamp(40px, 7vh, 72px); }
+  /* segments are % of the track; the track leaves room on the right for the total */
+  .om-bar__track { display: flex; align-items: stretch; height: clamp(40px, 7vh, 72px); width: calc(100% - 6.5rem); }
   .om-bar__seg {
+    flex: none;
     display: flex; align-items: center; justify-content: center;
     font-family: var(--fd); font-size: clamp(13px, 1.2vw, 18px); font-weight: 700; color: #fff;
     overflow: hidden; white-space: nowrap;
@@ -633,6 +635,7 @@ const phase0 = [
   .om-bar__seg--fee    { background: repeating-linear-gradient(135deg, #5a6272 0 6px, #2b313c 6px 12px); }
   .om-bar__seg--athlon { background: #fff; color: var(--text); }
   .om-bar__total {
+    flex: none;
     display: flex; align-items: center; padding-left: clamp(10px, 1vw, 18px);
     font-family: var(--fd); font-size: clamp(1.6rem, 3vw, 3rem); font-weight: 800; color: #fff; line-height: 1;
   }
