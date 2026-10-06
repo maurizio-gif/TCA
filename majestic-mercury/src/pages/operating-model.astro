@@ -6,10 +6,10 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith("/")
 // Lean deck: one idea per slide, big titles, keywords only.
 // The spoken story lives in the meeting notes, not here.
 
-// S3–S4 · staff cost ratio, 2025 business plan and financial statements.
+// Payroll ratio (payroll / revenue), 2025 business plan and financial statements.
 // Same 2025 revenue (~€3.0M) before and after, so only the costs that leave move.
 const bars = [
-  ['2025 · inherited', [['vav', 20.8], ['staff', 22.0], ['fee', 6.0]], '48.8%'],
+  ['2025 · starting point', [['vav', 20.8], ['staff', 22.0], ['fee', 6.0]], '48.8%'],
   ['After the exits',  [['vav', 20.8], ['staff', 11.6]], '32.4%'],
   ['Athlon · all staff', [['athlon', 25.0]], '25%'],
 ];
@@ -81,7 +81,7 @@ const measures = [
   'Time to enrol',
   'Response time',
   'Members in, members out',
-  'Staff cost · Athlon 25%',
+  'Payroll ratio · Athlon 25%',
   'Days to close the month',
 ];
 
@@ -117,7 +117,7 @@ const phase0 = [
 <section class="slide om-light" id="s2" data-header="light">
   <div class="om-wrap">
     <span class="eyebrow">01 · Where TCA starts</span>
-    <h2 class="om-h">TCA inherits<br /><em>an Aspria organisation.</em></h2>
+    <h2 class="om-h">An organisation<br /><em>built for Aspria.</em></h2>
     <div class="om-row om-row--3 om-path">
       <div class="om-word om-word--light">
         <span class="om-word__tag">The model</span>
@@ -157,11 +157,11 @@ const phase0 = [
   </div>
 </section>
 
-<!-- WHERE TCA STARTS · STAFF COST RATIO -->
+<!-- WHERE TCA STARTS · PAYROLL RATIO -->
 <section class="slide om-dark" id="s4" data-header="dark">
   <div class="om-wrap">
-    <span class="eyebrow eyebrow--light">01 · Where TCA starts · The numbers we inherit</span>
-    <h2 class="om-h om-h--light">Staff cost:<br /><em>42.8% of revenue.</em></h2>
+    <span class="eyebrow eyebrow--light">01 · Where TCA starts · The starting numbers</span>
+    <h2 class="om-h om-h--light">Payroll ratio:<br /><em>42.8% of revenue.</em></h2>
     <div class="om-bars">
       {bars.map(([label, segs, total]) => (
         <div class="om-bar">
@@ -191,7 +191,7 @@ const phase0 = [
     <h2 class="om-h om-h--md">What leaves.<br /><em>What stays.</em></h2>
     <table class="om-table om-table--nums">
       <thead>
-        <tr><th>Staff cost, 2025</th><th>€ k</th><th>% revenue</th><th>After · € k</th><th>% revenue</th></tr>
+        <tr><th>Payroll, 2025</th><th>€ k</th><th>% revenue</th><th>After · € k</th><th>% revenue</th></tr>
       </thead>
       <tbody>
         {staff.map(([line, before, pb, after, pa]) => (
@@ -204,7 +204,7 @@ const phase0 = [
           </tr>
         ))}
         <tr class="om-table__total">
-          <td class="om-table__name">Total staff</td>
+          <td class="om-table__name">Total payroll</td>
           <td data-label="2025 · € k">1,295.0</td>
           <td data-label="% revenue">42.8%</td>
           <td data-label="After · € k">978.9</td>
@@ -371,7 +371,7 @@ const phase0 = [
         </div>
       ))}
     </div>
-    <p class="om-punch om-punch--light">A new site inherits the procedure, not the people.</p>
+    <p class="om-punch om-punch--light">A new site starts with the procedure, not the people.</p>
   </div>
 </section>
 
@@ -731,7 +731,7 @@ const phase0 = [
   .om-list li::before { content: '— '; color: #C0282A; }
   .om-row--2 .om-word:has(.om-list) { justify-content: flex-start; gap: clamp(14px, 2.4vh, 24px); }
 
-  /* ── staff cost bars ── */
+  /* ── payroll ratio bars ── */
   .om-bars { display: flex; flex-direction: column; gap: clamp(12px, 2.2vh, 22px); }
   .om-bar { display: grid; grid-template-columns: minmax(150px, 15em) 1fr; align-items: center; gap: clamp(12px, 1.4vw, 24px); }
   .om-bar__label {
@@ -763,7 +763,7 @@ const phase0 = [
   }
   .om-legend i { display: inline-block; width: 18px; height: 12px; }
 
-  /* ── staff cost table ── */
+  /* ── payroll table ── */
   .om-table--nums th:not(:first-child), .om-table--nums td:not(:first-child) { text-align: right; white-space: nowrap; }
   .om-table--nums td { padding-top: clamp(6px, 1vh, 11px); padding-bottom: clamp(6px, 1vh, 11px); }
   .om-table__gone td { color: var(--grey-mid) !important; }
