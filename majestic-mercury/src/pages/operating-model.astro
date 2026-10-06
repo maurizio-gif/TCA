@@ -494,8 +494,22 @@ const phase0 = [
   <div class="om-close__corner om-close__corner--br"></div>
   <div class="om-close__content">
     <span class="eyebrow eyebrow--light">The question</span>
-    <h2 class="om-close__title">A model,<br /><em>or tools?</em></h2>
-    <p class="om-close__quote">Tools solve November. A model solves every site you open.</p>
+    <h2 class="om-h om-h--light">Supplier, consultant,<br /><em>or partner?</em></h2>
+    <div class="om-row om-row--3 om-roles">
+      <div class="om-word om-word--dark">
+        <span class="om-word__tag">Supplier</span>
+        Tools
+      </div>
+      <div class="om-word om-word--dark">
+        <span class="om-word__tag">Consultant</span>
+        Advice
+      </div>
+      <div class="om-word om-word--red">
+        <span class="om-word__tag">Partner</span>
+        A new model. Innovative, lean, digital.
+      </div>
+    </div>
+    <p class="om-close__quote">You saw this model coming. Let’s build it.</p>
     <p class="om-close__meta">Maurizio Taruggi · maurizio@ready2digital.it</p>
   </div>
 </section>
@@ -851,6 +865,9 @@ const phase0 = [
     font-family: var(--fd); font-size: clamp(3.6rem, 11vw, 11rem);
     font-weight: 800; text-transform: uppercase; line-height: .84; color: #fff;
   }
+  .om-roles { background: transparent; gap: clamp(10px, 1.2vw, 20px); max-width: 1300px; }
+  .om-roles .om-word { min-height: clamp(130px, 20vh, 210px); }
+  .om-roles .om-word--dark { background: rgba(30,37,48,.88); }
   .om-close__quote {
     font-size: clamp(1.2rem, 2.2vw, 2.1rem); font-weight: 300; font-style: italic;
     line-height: 1.4; color: rgba(255,255,255,.82); max-width: 900px;
