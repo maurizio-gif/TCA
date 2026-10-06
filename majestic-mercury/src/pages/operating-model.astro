@@ -26,6 +26,20 @@ const staff = [
   ['Aspria functions, recharged', '145.0', '4.8%', '', ''],
 ];
 
+// The thread of the deck: the same club, two ways of moving data.
+// Legacy: data passes from person to person. Model: one unified database.
+const handoffs = ['Customer', 'Sales', 'Desk', 'Admin', 'Accounting', 'Management'];
+const hubDomains = [
+  ['Active cycle', 'Sales & payments'],
+  ['Members', 'Contracts & families'],
+  ['Bookings', 'Courts & classes'],
+  ['Coaching', 'Lessons & courses'],
+  ['Passive cycle', 'Suppliers & costs'],
+  ['Operations', 'Shifts & checklists'],
+  ['Maintenance', 'Tickets & assets'],
+  ['Compliance', 'Certificates & FIT'],
+];
+
 const leaving = ['Nobody calls back', 'Renewals left to memory', 'Know-how walks out'];
 
 const procedure = [
@@ -121,8 +135,30 @@ const phase0 = [
   </div>
 </section>
 
+<!-- THE THREAD · LEGACY: DATA THROUGH PEOPLE -->
+<section class="slide om-light om-off" id="s3" data-header="light">
+  <div class="om-wrap">
+    <span class="eyebrow">01 · Where TCA starts · The legacy model</span>
+    <h2 class="om-h">Data flows<br /><em>through people.</em></h2>
+    <div class="om-chain" aria-label="Data passed from person to person">
+      {handoffs.map((h, i) => (
+        <>
+          {i > 0 && <span class="om-chain__hop">hand-off</span>}
+          <span class={`om-chain__node${i === 0 ? ' om-chain__node--start' : ''}`}>{h}</span>
+        </>
+      ))}
+    </div>
+    <ul class="om-chips om-chips--red">
+      <li>Slow</li>
+      <li>Inefficient</li>
+      <li>Inconsistent</li>
+    </ul>
+    <p class="om-punch">Every hand-off adds time, and errors.</p>
+  </div>
+</section>
+
 <!-- WHERE TCA STARTS · STAFF COST RATIO -->
-<section class="slide om-dark" id="s3" data-header="dark">
+<section class="slide om-dark" id="s4" data-header="dark">
   <div class="om-wrap">
     <span class="eyebrow eyebrow--light">01 · Where TCA starts · The numbers we inherit</span>
     <h2 class="om-h om-h--light">Staff cost:<br /><em>42.8% of revenue.</em></h2>
@@ -149,7 +185,7 @@ const phase0 = [
 </section>
 
 <!-- WHERE TCA STARTS · LINE BY LINE -->
-<section class="slide om-light" id="s4" data-header="light">
+<section class="slide om-light" id="s5" data-header="light">
   <div class="om-wrap">
     <span class="eyebrow">01 · Where TCA starts · Line by line</span>
     <h2 class="om-h om-h--md">What leaves.<br /><em>What stays.</em></h2>
@@ -188,7 +224,7 @@ const phase0 = [
 </section>
 
 <!-- NOVEMBER -->
-<section class="slide om-dark" id="s5" data-header="dark">
+<section class="slide om-dark" id="s6" data-header="dark">
   <div class="om-wrap">
     <span class="eyebrow eyebrow--light">02 · What I see</span>
     <h2 class="om-h om-h--light">November:<br /><em>two people leave.</em></h2>
@@ -200,7 +236,7 @@ const phase0 = [
 </section>
 
 <!-- THE DATA: LEADS -->
-<section class="slide om-light" id="s6" data-header="light">
+<section class="slide om-light om-leads" id="s7" data-header="light">
   <div class="om-wrap">
     <span class="eyebrow">02 · What I see · The data</span>
     <h2 class="om-h">Leads ×3.<br /><em>The flow is stuck.</em></h2>
@@ -225,7 +261,7 @@ const phase0 = [
 </section>
 
 <!-- TENNIS IS THE CORE -->
-<section class="slide om-dark" id="s7" data-header="dark">
+<section class="slide om-dark" id="s8" data-header="dark">
   <div class="om-wrap">
     <span class="eyebrow eyebrow--light">02 · What I see · Tennis</span>
     <h2 class="om-h om-h--light">Tennis is our core.<br /><em>Its front door is outside.</em></h2>
@@ -248,7 +284,7 @@ const phase0 = [
 </section>
 
 <!-- BRIDGE · THE STRUCTURE IS SET, NOW THE ENGINE -->
-<section class="slide om-red" id="s8" data-header="dark">
+<section class="slide om-red" id="s9" data-header="dark">
   <div class="om-wrap">
     <span class="eyebrow eyebrow--light">03 · The model</span>
     <h2 class="om-h om-h--light">The structure is set.<br /><em>Now the engine.</em></h2>
@@ -265,6 +301,7 @@ const phase0 = [
       <div class="om-word om-word--white">
         <span class="om-word__tag">The engine · digital</span>
         <ul class="om-list">
+          <li>One data hub</li>
           <li>Selling online</li>
           <li>Control that runs itself</li>
           <li>The tennis course flow</li>
@@ -275,8 +312,26 @@ const phase0 = [
   </div>
 </section>
 
+<!-- THE THREAD · THE MODEL: ONE DATA HUB -->
+<section class="slide om-dark" id="s10" data-header="dark">
+  <div class="om-wrap">
+    <span class="eyebrow eyebrow--light">03 · The model · The engine</span>
+    <h2 class="om-h om-h--light">One hub.<br /><em>All the data.</em></h2>
+    <div class="om-hub">
+      {hubDomains.slice(0, 4).map(([name, sub]) => (
+        <div class="om-hub__spoke"><span class="om-hub__name">{name}</span><span class="om-hub__sub">{sub}</span></div>
+      ))}
+      <div class="om-hub__core"><span class="om-hub__core-tag">Unified database</span><span class="om-hub__core-name">One truth, live</span></div>
+      {hubDomains.slice(4).map(([name, sub]) => (
+        <div class="om-hub__spoke"><span class="om-hub__name">{name}</span><span class="om-hub__sub">{sub}</span></div>
+      ))}
+    </div>
+    <p class="om-punch om-punch--light">This is the real digital revolution.</p>
+  </div>
+</section>
+
 <!-- ONLINE IS NOT A THIRD SALESPERSON -->
-<section class="slide om-light" id="s9" data-header="light">
+<section class="slide om-light" id="s11" data-header="light">
   <div class="om-wrap">
     <span class="eyebrow">03 · The model</span>
     <h2 class="om-h">Online is not<br /><em>a third salesperson.</em></h2>
@@ -303,7 +358,7 @@ const phase0 = [
 </section>
 
 <!-- ONE PROCEDURE -->
-<section class="slide om-dark" id="s10" data-header="dark">
+<section class="slide om-dark" id="s12" data-header="dark">
   <div class="om-wrap">
     <span class="eyebrow eyebrow--light">03 · The model · The procedure</span>
     <h2 class="om-h om-h--light">One procedure.<br /><em>Three ways. One control.</em></h2>
@@ -321,7 +376,7 @@ const phase0 = [
 </section>
 
 <!-- FRONT AND BACK -->
-<section class="slide om-light" id="s11" data-header="light">
+<section class="slide om-light" id="s13" data-header="light">
   <div class="om-wrap">
     <span class="eyebrow">03 · The model · The team</span>
     <h2 class="om-h">Front and back.<br /><em>Two simple jobs.</em></h2>
@@ -340,7 +395,7 @@ const phase0 = [
 </section>
 
 <!-- THE KIOSK -->
-<section class="slide om-dark" id="s12" data-header="dark">
+<section class="slide om-dark" id="s14" data-header="dark">
   <div class="om-wrap om-kiosk">
     <div class="om-kiosk__text">
       <span class="eyebrow eyebrow--light">03 · The model · The front desk</span>
@@ -358,7 +413,7 @@ const phase0 = [
 </section>
 
 <!-- LEAN WITH PEOPLE OR WITH PROCESS -->
-<section class="slide om-light" id="s13" data-header="light">
+<section class="slide om-light" id="s15" data-header="light">
   <div class="om-wrap">
     <span class="eyebrow">03 · The model · Why lean fails</span>
     <h2 class="om-h">Lean with people,<br /><em>or with process?</em></h2>
@@ -380,7 +435,7 @@ const phase0 = [
 </section>
 
 <!-- BEFORE AND AFTER -->
-<section class="slide om-light om-off" id="s14" data-header="light">
+<section class="slide om-light om-off" id="s16" data-header="light">
   <div class="om-wrap">
     <span class="eyebrow">03 · The model · Before and after</span>
     <h2 class="om-h om-h--md">From today<br /><em>to the model.</em></h2>
@@ -405,7 +460,7 @@ const phase0 = [
 </section>
 
 <!-- OWN THE CUSTOMER JOURNEY -->
-<section class="slide om-dark" id="s15" data-header="dark">
+<section class="slide om-dark" id="s17" data-header="dark">
   <div class="om-wrap">
     <span class="eyebrow eyebrow--light">03 · The model · The customer journey</span>
     <h2 class="om-h om-h--light">We own<br /><em>the customer journey.</em></h2>
@@ -415,7 +470,7 @@ const phase0 = [
         <div class="om-layer__items"><span>Website</span><span>Enrolment</span><span>Kiosk</span><span>Personal area</span><span>Bookings</span><span>Renewals</span></div>
       </div>
       <div class="om-layer om-layer--control">
-        <span class="om-layer__tag">Control · ours</span>
+        <span class="om-layer__tag">Data hub · ours</span>
         <div class="om-layer__items"><span>Live dashboards</span><span>Alerts</span><span>Monthly close</span></div>
       </div>
       <div class="om-layer om-layer--engine">
@@ -430,7 +485,7 @@ const phase0 = [
 </section>
 
 <!-- WHAT WE'LL MEASURE -->
-<section class="slide om-light" id="s16" data-header="light">
+<section class="slide om-light" id="s18" data-header="light">
   <div class="om-wrap">
     <span class="eyebrow">04 · Why it holds</span>
     <h2 class="om-h">The model<br /><em>measures itself.</em></h2>
@@ -450,7 +505,7 @@ const phase0 = [
 </section>
 
 <!-- NOVEMBER IS PHASE 0 -->
-<section class="slide om-dark" id="s17" data-header="dark">
+<section class="slide om-dark" id="s19" data-header="dark">
   <div class="om-wrap">
     <span class="eyebrow eyebrow--light">04 · November</span>
     <h2 class="om-h om-h--light">November is<br /><em>phase 0.</em></h2>
@@ -468,7 +523,7 @@ const phase0 = [
 </section>
 
 <!-- OVER TO YOU · TCA IN THREE YEARS -->
-<section class="slide om-light om-off" id="s18" data-header="light">
+<section class="slide om-light om-off" id="s20" data-header="light">
   <div class="om-wrap">
     <span class="eyebrow">Over to you</span>
     <h2 class="om-h om-h--xl">TCA<br /><em>in three years?</em></h2>
@@ -490,7 +545,7 @@ const phase0 = [
 </section>
 
 <!-- THE QUESTION -->
-<section class="slide om-close" id="s19" data-header="dark">
+<section class="slide om-close" id="s21" data-header="dark">
   <div class="om-close__bg" style={`background: linear-gradient(170deg, rgba(10,14,20,.88) 0%, rgba(26,26,26,.8) 50%, rgba(100,18,18,.62) 100%), url('${base}verticale tca.avif') 35% center/cover no-repeat`}></div>
   <div class="om-close__corner om-close__corner--tl"></div>
   <div class="om-close__corner om-close__corner--br"></div>
@@ -717,6 +772,29 @@ const phase0 = [
   .om-table__total .om-table__answer { background: var(--red) !important; }
   .om-note { font-size: clamp(12px, .95vw, 14px); font-weight: 300; font-style: italic; color: var(--grey-mid); }
 
+  /* ── the thread: legacy chain and data hub ── */
+  .om-chain { display: flex; align-items: center; flex-wrap: wrap; gap: clamp(6px, .8vw, 12px); }
+  .om-chain__node {
+    font-family: var(--fd); font-size: clamp(16px, 1.7vw, 26px); font-weight: 800; text-transform: uppercase;
+    background: #fff; color: var(--text); border: 2px solid var(--grey-light); padding: clamp(14px, 2.6vh, 26px) clamp(12px, 1.4vw, 22px);
+  }
+  .om-chain__node--start { background: var(--text); color: #fff; border-color: var(--text); }
+  .om-chain__hop {
+    font-family: var(--fd); font-size: clamp(11px, .9vw, 13px); font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--red); display: flex; flex-direction: column; align-items: center;
+  }
+  .om-chain__hop::after { content: '→'; font-size: clamp(18px, 1.8vw, 26px); line-height: 1; }
+  .om-hub { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(3, auto); gap: 6px; }
+  .om-hub > :nth-child(1) { grid-area: 1 / 1; } .om-hub > :nth-child(2) { grid-area: 1 / 2; } .om-hub > :nth-child(3) { grid-area: 1 / 3; }
+  .om-hub > :nth-child(4) { grid-area: 2 / 1; } .om-hub > :nth-child(5) { grid-area: 2 / 2; } .om-hub > :nth-child(6) { grid-area: 2 / 3; }
+  .om-hub > :nth-child(7) { grid-area: 3 / 1; } .om-hub > :nth-child(8) { grid-area: 3 / 2; } .om-hub > :nth-child(9) { grid-area: 3 / 3; }
+  .om-hub__spoke { background: #1E2530; padding: clamp(10px, 1.8vh, 18px) clamp(14px, 1.4vw, 22px); display: flex; flex-direction: column; gap: 4px; }
+  .om-hub__name { font-family: var(--fd); font-size: clamp(15px, 1.6vw, 24px); font-weight: 800; text-transform: uppercase; color: #fff; line-height: 1; }
+  .om-hub__sub { font-family: var(--fd); font-size: clamp(11px, .95vw, 14px); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.5); }
+  .om-hub__core { background: var(--red); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 4px; padding: clamp(10px, 1.8vh, 18px); }
+  .om-hub__core-tag { font-family: var(--fd); font-size: clamp(11px, .95vw, 14px); font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.75); }
+  .om-hub__core-name { font-family: var(--fd); font-size: clamp(1.4rem, 2.4vw, 2.4rem); font-weight: 800; text-transform: uppercase; color: #fff; line-height: 1; }
+
   /* ── S4 flow ── */
   .om-flow { display: flex; align-items: stretch; gap: clamp(6px, .8vw, 12px); }
   .om-flow__step {
@@ -737,8 +815,8 @@ const phase0 = [
   .om-stat__big { font-family: var(--fd); font-size: clamp(2.2rem, 4.2vw, 4.4rem); font-weight: 800; line-height: .95; color: var(--text); white-space: nowrap; }
   .om-stat--key .om-stat__big { color: var(--red); }
   .om-stat__label { font-family: var(--fd); font-size: clamp(13px, 1.25vw, 19px); font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--text-light); }
-  #s6 .om-flow__step { padding-top: clamp(12px, 2.4vh, 28px); padding-bottom: clamp(12px, 2.4vh, 28px); }
-  #s6 .om-wrap { gap: clamp(14px, 2.6vh, 30px); }
+  .om-leads .om-flow__step { padding-top: clamp(12px, 2.4vh, 28px); padding-bottom: clamp(12px, 2.4vh, 28px); }
+  .om-leads .om-wrap { gap: clamp(14px, 2.6vh, 30px); }
   .om-flow__step--blocked { background: transparent; border: 2px dashed var(--grey-mid); color: var(--grey-mid); }
   .om-flow__sub { font-size: .72em; font-weight: 600; letter-spacing: .06em; opacity: .85; }
   .om-flow__arrow { display: flex; align-items: center; font-family: var(--fd); font-size: clamp(20px, 2vw, 30px); color: var(--grey-mid); }
@@ -893,6 +971,10 @@ const phase0 = [
     .om-cover__meta { position: static; padding: 0 22px 28px; }
     .om-layer { grid-template-columns: 1fr; gap: 10px; }
     .om-bar { grid-template-columns: 1fr; gap: 6px; }
+    .om-chain { flex-direction: column; align-items: stretch; }
+    .om-hub { grid-template-columns: 1fr 1fr; }
+    .om-hub > * { grid-area: auto !important; }
+    .om-hub__core { grid-column: 1 / -1 !important; order: -1; }
     .om-table--nums td:not(:first-child) { text-align: left; }
     .om-close__content { padding: calc(var(--header-h) + 36px) 22px 48px; }
 
