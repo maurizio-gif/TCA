@@ -201,18 +201,18 @@ const phase0 = [
   <div class="om-wrap">
     <span class="eyebrow">02 · What I see · The data</span>
     <h2 class="om-h">Leads ×3.<br /><em>The flow is stuck.</em></h2>
-    <div class="om-flow" aria-label="From lead to enrolment, with two choke points">
+    <div class="om-flow" aria-label="From lead to membership, with two choke points">
       <div class="om-flow__step om-flow__step--strong"><span class="om-flow__big">×3</span><span>Leads</span></div>
       <div class="om-flow__arrow">→</div>
-      <div class="om-flow__step om-flow__step--choke"><span class="om-flow__mark">1</span><span>Hand-off</span></div>
+      <div class="om-flow__step"><span>Adult tennis courses</span></div>
       <div class="om-flow__arrow">→</div>
-      <div class="om-flow__step"><span>Tennis course</span></div>
+      <div class="om-flow__step om-flow__step--choke"><span class="om-flow__mark">1</span><span>Handed to Vavassori</span><span class="om-flow__sub">Slow to reply</span></div>
       <div class="om-flow__arrow">→</div>
-      <div class="om-flow__step om-flow__step--choke"><span class="om-flow__mark">2</span><span>Places &amp; procedure</span></div>
+      <div class="om-flow__step om-flow__step--choke"><span class="om-flow__mark">2</span><span>The product</span><span class="om-flow__sub">Courses don’t scale</span></div>
       <div class="om-flow__arrow">→</div>
-      <div class="om-flow__step"><span>Enrolment</span></div>
+      <div class="om-flow__step om-flow__step--blocked"><span>Membership</span><span class="om-flow__sub">Blocked too</span></div>
     </div>
-    <p class="om-punch">Not a demand problem. A flow problem.</p>
+    <p class="om-punch">Not a demand problem. A product and process problem.</p>
   </div>
 </section>
 
@@ -224,7 +224,7 @@ const phase0 = [
     <div class="om-row om-row--3 om-row--dark">
       <div class="om-word om-word--dark">
         <span class="om-word__tag">The flow</span>
-        One door: Vavassori Team
+        One door: Vavassori Team. Slow to reply.
       </div>
       <div class="om-word om-word--dark">
         <span class="om-word__tag">The margin</span>
@@ -233,7 +233,7 @@ const phase0 = [
       </div>
       <div class="om-word om-word--red">
         <span class="om-word__tag">The direction</span>
-        The club owns the journey. The partner owns the coaching.
+        A scalable tennis product. We own the process end to end.
       </div>
     </div>
   </div>
@@ -702,6 +702,8 @@ const phase0 = [
   .om-flow__step--strong { background: var(--text); color: #fff; }
   .om-flow__big { font-size: clamp(2.6rem, 4.6vw, 4.6rem); font-weight: 800; line-height: 1; color: #C0282A; }
   .om-flow__step--choke { background: #fff; border: 3px solid var(--red); color: var(--red); }
+  .om-flow__step--blocked { background: transparent; border: 2px dashed var(--grey-mid); color: var(--grey-mid); }
+  .om-flow__sub { font-size: .72em; font-weight: 600; letter-spacing: .06em; opacity: .85; }
   .om-flow__arrow { display: flex; align-items: center; font-family: var(--fd); font-size: clamp(20px, 2vw, 30px); color: var(--grey-mid); }
   .om-flow__mark {
     display: inline-flex; align-items: center; justify-content: center;
