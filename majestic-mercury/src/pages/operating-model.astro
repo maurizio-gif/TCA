@@ -6,6 +6,26 @@ const base = (() => { const b = import.meta.env.BASE_URL; return b.endsWith("/")
 // Lean deck: one idea per slide, big titles, keywords only.
 // The spoken story lives in the meeting notes, not here.
 
+// S3–S4 · staff cost ratio, 2025 business plan and financial statements.
+// Same 2025 revenue (~€3.0M) before and after, so only the costs that leave move.
+const bars = [
+  ['2025 · inherited', [['vav', 20.8], ['staff', 22.0], ['fee', 6.0]], '48.8%'],
+  ['After the exits',  [['vav', 20.8], ['staff', 11.6]], '32.4%'],
+  ['Athlon · all staff', [['athlon', 25.0]], '25%'],
+];
+const SCALE = 50;
+
+const staff = [
+  ['Tennis coaching · Vavassori Team', '629.2', '20.8%', '629.2', '20.8%'],
+  ['Administration & management', '151.4', '5.0%', '151.4', '5.0%'],
+  ['Maintenance', '78.0', '2.6%', '35.0', '1.2%'],
+  ['Front desk & reception', '56.5', '1.9%', '56.5', '1.9%'],
+  ['Admin support', '5.2', '0.2%', '5.2', '0.2%'],
+  ['Instructors · fitness, PT, tennis', '101.5', '3.4%', '101.5', '3.4%'],
+  ['Sales & sports manager', '128.1', '4.2%', '', ''],
+  ['Aspria functions, recharged', '145.0', '4.8%', '', ''],
+];
+
 const leaving = ['Nobody calls back', 'Renewals left to memory', 'Know-how walks out'];
 
 const procedure = [
@@ -64,7 +84,7 @@ const phase0 = [
 
 <div class="slide-dots" id="dots"></div>
 
-<!-- S1 · COVER -->
+<!-- COVER -->
 <section class="slide om-cover" id="s1" data-header="dark">
   <div class="om-cover__bg" style={`background-image: linear-gradient(105deg, rgba(20,20,22,.9) 40%, rgba(139,26,26,.35) 100%), url('${base}club-aerial.jpeg')`}></div>
   <div class="om-cover__watermark">TCA</div>
@@ -76,32 +96,98 @@ const phase0 = [
   <div class="om-cover__meta">Maurizio Taruggi</div>
 </section>
 
-<!-- S2 · THE QUESTION BEFORE WE START -->
+<!-- WHERE TCA STARTS · THE ORGANISATION -->
 <section class="slide om-light" id="s2" data-header="light">
   <div class="om-wrap">
-    <span class="eyebrow">Before we start</span>
-    <h2 class="om-h om-h--xl">TCA<br /><em>in three years?</em></h2>
+    <span class="eyebrow">01 · Where TCA starts</span>
+    <h2 class="om-h">TCA inherits<br /><em>an Aspria organisation.</em></h2>
     <div class="om-row om-row--3 om-path">
       <div class="om-word om-word--light">
-        <span class="om-word__tag">Today</span>
-        On hold. Ready to evolve.
+        <span class="om-word__tag">The model</span>
+        Built on Aspria
       </div>
       <div class="om-word om-word--light">
-        <span class="om-word__tag">TCA</span>
-        How far do we push it?
+        <span class="om-word__tag">The ambition</span>
+        Towards Aspresso: lean &amp; digital
       </div>
       <div class="om-word om-word--ink">
-        <span class="om-word__tag">Then</span>
-        Do we open more?
+        <span class="om-word__tag">The organisation</span>
+        Still legacy
       </div>
     </div>
   </div>
 </section>
 
-<!-- S3 · NOVEMBER -->
+<!-- WHERE TCA STARTS · STAFF COST RATIO -->
 <section class="slide om-dark" id="s3" data-header="dark">
   <div class="om-wrap">
-    <span class="eyebrow eyebrow--light">01 · What I see</span>
+    <span class="eyebrow eyebrow--light">01 · Where TCA starts · The numbers we inherit</span>
+    <h2 class="om-h om-h--light">Staff cost:<br /><em>42.8% of revenue.</em></h2>
+    <div class="om-bars">
+      {bars.map(([label, segs, total]) => (
+        <div class="om-bar">
+          <span class="om-bar__label">{label}</span>
+          <div class="om-bar__track">
+            {(segs as [string, number][]).map(([kind, v]) => (
+              <span class={`om-bar__seg om-bar__seg--${kind}`} style={`width:${(v / SCALE) * 100}%`}>{v.toFixed(1)}</span>
+            ))}
+            <span class="om-bar__total">{total}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+    <ul class="om-legend">
+      <li><i class="om-bar__seg--vav"></i>Vavassori</li>
+      <li><i class="om-bar__seg--staff"></i>Other staff</li>
+      <li><i class="om-bar__seg--fee"></i>Aspria fee</li>
+    </ul>
+    <p class="om-punch om-punch--light">Vavassori alone: 20.8 points. Two thirds of what stays.</p>
+  </div>
+</section>
+
+<!-- WHERE TCA STARTS · LINE BY LINE -->
+<section class="slide om-light" id="s4" data-header="light">
+  <div class="om-wrap">
+    <span class="eyebrow">01 · Where TCA starts · Line by line</span>
+    <h2 class="om-h om-h--md">What leaves.<br /><em>What stays.</em></h2>
+    <table class="om-table om-table--nums">
+      <thead>
+        <tr><th>Staff cost, 2025</th><th>€ k</th><th>% revenue</th><th>After · € k</th><th>% revenue</th></tr>
+      </thead>
+      <tbody>
+        {staff.map(([line, before, pb, after, pa]) => (
+          <tr class={after ? '' : 'om-table__gone'}>
+            <td class="om-table__name">{line}</td>
+            <td data-label="2025 · € k">{before}</td>
+            <td data-label="% revenue">{pb}</td>
+            <td data-label="After · € k">{after || '—'}</td>
+            <td data-label="After · % revenue" class="om-table__answer">{pa || '—'}</td>
+          </tr>
+        ))}
+        <tr class="om-table__total">
+          <td class="om-table__name">Total staff</td>
+          <td data-label="2025 · € k">1,295.0</td>
+          <td data-label="% revenue">42.8%</td>
+          <td data-label="After · € k">978.9</td>
+          <td data-label="After · % revenue" class="om-table__answer">32.4%</td>
+        </tr>
+        <tr class="om-table__gone om-table__fee">
+          <td class="om-table__name">Aspria Holdings fee</td>
+          <td data-label="2025 · € k">182.1</td>
+          <td data-label="% revenue">6.0%</td>
+          <td data-label="After · € k">—</td>
+          <td data-label="After · % revenue" class="om-table__answer">—</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="om-note">Same 2025 revenue (about €3.0M) before and after. “After” removes the costs that leave; replacements for the Aspria functions are not included.</p>
+  </div>
+</section>
+
+<!-- NOVEMBER -->
+<section class="slide om-dark" id="s5" data-header="dark">
+  <div class="om-wrap">
+    <span class="eyebrow eyebrow--light">02 · What I see</span>
     <h2 class="om-h om-h--light">November:<br /><em>two people leave.</em></h2>
     <div class="om-row om-row--3 om-row--dark">
       {leaving.map((t) => <div class="om-word om-word--dark">{t}</div>)}
@@ -110,10 +196,10 @@ const phase0 = [
   </div>
 </section>
 
-<!-- S4 · THE DATA: LEADS -->
-<section class="slide om-light" id="s4" data-header="light">
+<!-- THE DATA: LEADS -->
+<section class="slide om-light" id="s6" data-header="light">
   <div class="om-wrap">
-    <span class="eyebrow">01 · What I see · The data</span>
+    <span class="eyebrow">02 · What I see · The data</span>
     <h2 class="om-h">Leads ×3.<br /><em>The flow is stuck.</em></h2>
     <div class="om-flow" aria-label="From lead to enrolment, with two choke points">
       <div class="om-flow__step om-flow__step--strong"><span class="om-flow__big">×3</span><span>Leads</span></div>
@@ -130,10 +216,10 @@ const phase0 = [
   </div>
 </section>
 
-<!-- S5 · TENNIS IS THE CORE -->
-<section class="slide om-dark" id="s5" data-header="dark">
+<!-- TENNIS IS THE CORE -->
+<section class="slide om-dark" id="s7" data-header="dark">
   <div class="om-wrap">
-    <span class="eyebrow eyebrow--light">01 · What I see · Tennis</span>
+    <span class="eyebrow eyebrow--light">02 · What I see · Tennis</span>
     <h2 class="om-h om-h--light">Tennis is our core.<br /><em>Its front door is outside.</em></h2>
     <div class="om-row om-row--3 om-row--dark">
       <div class="om-word om-word--dark">
@@ -153,10 +239,32 @@ const phase0 = [
   </div>
 </section>
 
-<!-- S6 · ONLINE IS NOT A THIRD SALESPERSON -->
-<section class="slide om-light" id="s6" data-header="light">
+<!-- OVER TO YOU · TCA IN THREE YEARS -->
+<section class="slide om-red" id="s8" data-header="dark">
   <div class="om-wrap">
-    <span class="eyebrow">02 · The model</span>
+    <span class="eyebrow eyebrow--light">Over to you</span>
+    <h2 class="om-h om-h--xl om-h--light">TCA<br /><em>in three years?</em></h2>
+    <div class="om-row om-row--3 om-path">
+      <div class="om-word om-word--dark">
+        <span class="om-word__tag">Today</span>
+        On hold. Ready to evolve.
+      </div>
+      <div class="om-word om-word--dark">
+        <span class="om-word__tag">TCA</span>
+        How far do we push it?
+      </div>
+      <div class="om-word om-word--white">
+        <span class="om-word__tag">Then</span>
+        Do we open more?
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ONLINE IS NOT A THIRD SALESPERSON -->
+<section class="slide om-light" id="s9" data-header="light">
+  <div class="om-wrap">
+    <span class="eyebrow">03 · The model</span>
     <h2 class="om-h">Online is not<br /><em>a third salesperson.</em></h2>
     <div class="om-invert">
       <div class="om-invert__panel">
@@ -180,10 +288,10 @@ const phase0 = [
   </div>
 </section>
 
-<!-- S7 · ONE PROCEDURE -->
-<section class="slide om-dark" id="s7" data-header="dark">
+<!-- ONE PROCEDURE -->
+<section class="slide om-dark" id="s10" data-header="dark">
   <div class="om-wrap">
-    <span class="eyebrow eyebrow--light">02 · The model · The procedure</span>
+    <span class="eyebrow eyebrow--light">03 · The model · The procedure</span>
     <h2 class="om-h om-h--light">One procedure.<br /><em>Three ways. One control.</em></h2>
     <div class="om-row om-row--dark">
       {procedure.map(([num, label, head]) => (
@@ -198,10 +306,10 @@ const phase0 = [
   </div>
 </section>
 
-<!-- S8 · FRONT AND BACK -->
-<section class="slide om-light" id="s8" data-header="light">
+<!-- FRONT AND BACK -->
+<section class="slide om-light" id="s11" data-header="light">
   <div class="om-wrap">
-    <span class="eyebrow">02 · The model · The team</span>
+    <span class="eyebrow">03 · The model · The team</span>
     <h2 class="om-h">Front and back.<br /><em>Two simple jobs.</em></h2>
     <div class="om-row om-row--2">
       <div class="om-word om-word--light">
@@ -217,11 +325,11 @@ const phase0 = [
   </div>
 </section>
 
-<!-- S9 · THE KIOSK -->
-<section class="slide om-dark" id="s9" data-header="dark">
+<!-- THE KIOSK -->
+<section class="slide om-dark" id="s12" data-header="dark">
   <div class="om-wrap om-kiosk">
     <div class="om-kiosk__text">
-      <span class="eyebrow eyebrow--light">02 · The model · The front desk</span>
+      <span class="eyebrow eyebrow--light">03 · The model · The front desk</span>
       <h2 class="om-h om-h--light">A kiosk<br /><em>that teaches.</em></h2>
       <ul class="om-chips om-chips--dark">
         {kiosk.map((k) => <li>{k}</li>)}
@@ -235,10 +343,10 @@ const phase0 = [
   </div>
 </section>
 
-<!-- S10 · LEAN WITH PEOPLE OR WITH PROCESS -->
-<section class="slide om-light" id="s10" data-header="light">
+<!-- LEAN WITH PEOPLE OR WITH PROCESS -->
+<section class="slide om-light" id="s13" data-header="light">
   <div class="om-wrap">
-    <span class="eyebrow">02 · The model · Why lean fails</span>
+    <span class="eyebrow">03 · The model · Why lean fails</span>
     <h2 class="om-h">Lean with people,<br /><em>or with process?</em></h2>
     <table class="om-table om-table--big">
       <thead>
@@ -257,10 +365,10 @@ const phase0 = [
   </div>
 </section>
 
-<!-- S11 · FROM ATHLON TO TCA -->
-<section class="slide om-light om-off" id="s11" data-header="light">
+<!-- FROM ATHLON TO TCA -->
+<section class="slide om-light om-off" id="s14" data-header="light">
   <div class="om-wrap">
-    <span class="eyebrow">02 · The model · From Athlon to TCA</span>
+    <span class="eyebrow">03 · The model · From Athlon to TCA</span>
     <h2 class="om-h om-h--md">Not a copy of Athlon.<br /><em>A new model, together.</em></h2>
     <table class="om-table om-table--chain">
       <thead>
@@ -283,10 +391,10 @@ const phase0 = [
   </div>
 </section>
 
-<!-- S12 · OWN THE CUSTOMER JOURNEY -->
-<section class="slide om-dark" id="s12" data-header="dark">
+<!-- OWN THE CUSTOMER JOURNEY -->
+<section class="slide om-dark" id="s15" data-header="dark">
   <div class="om-wrap">
-    <span class="eyebrow eyebrow--light">02 · The model · The customer journey</span>
+    <span class="eyebrow eyebrow--light">03 · The model · The customer journey</span>
     <h2 class="om-h om-h--light">We own<br /><em>the customer journey.</em></h2>
     <div class="om-layers">
       <div class="om-layer om-layer--ours">
@@ -308,10 +416,10 @@ const phase0 = [
   </div>
 </section>
 
-<!-- S13 · WHAT WE'LL MEASURE -->
-<section class="slide om-light" id="s13" data-header="light">
+<!-- WHAT WE'LL MEASURE -->
+<section class="slide om-light" id="s16" data-header="light">
   <div class="om-wrap">
-    <span class="eyebrow">03 · Why it holds</span>
+    <span class="eyebrow">04 · Why it holds</span>
     <h2 class="om-h">The model<br /><em>measures itself.</em></h2>
     <div class="om-grid om-grid--4">
       {measures.map((m, i) => (
@@ -328,10 +436,10 @@ const phase0 = [
   </div>
 </section>
 
-<!-- S14 · NOVEMBER IS PHASE 0 -->
-<section class="slide om-dark" id="s14" data-header="dark">
+<!-- NOVEMBER IS PHASE 0 -->
+<section class="slide om-dark" id="s17" data-header="dark">
   <div class="om-wrap">
-    <span class="eyebrow eyebrow--light">03 · November</span>
+    <span class="eyebrow eyebrow--light">04 · November</span>
     <h2 class="om-h om-h--light">November is<br /><em>phase 0.</em></h2>
     <div class="om-row om-row--dark">
       {phase0.map(([num, label, text], i) => (
@@ -346,8 +454,8 @@ const phase0 = [
   </div>
 </section>
 
-<!-- S15 · THE QUESTION -->
-<section class="slide om-close" id="s15" data-header="dark">
+<!-- THE QUESTION -->
+<section class="slide om-close" id="s18" data-header="dark">
   <div class="om-close__bg" style={`background: linear-gradient(170deg, rgba(10,14,20,.88) 0%, rgba(26,26,26,.8) 50%, rgba(100,18,18,.62) 100%), url('${base}verticale tca.avif') 35% center/cover no-repeat`}></div>
   <div class="om-close__corner om-close__corner--tl"></div>
   <div class="om-close__corner om-close__corner--br"></div>
@@ -501,6 +609,49 @@ const phase0 = [
     font-weight: 800; color: rgba(255,255,255,.03); line-height: 1;
     user-select: none; pointer-events: none;
   }
+
+  /* ── pivot slide on red ── */
+  .om-red { background: var(--red); }
+  .om-red .om-h em { color: var(--text); }
+  .om-word--white { background: #fff; color: var(--text); }
+
+  /* ── staff cost bars ── */
+  .om-bars { display: flex; flex-direction: column; gap: clamp(12px, 2.2vh, 22px); }
+  .om-bar { display: grid; grid-template-columns: minmax(150px, 15em) 1fr; align-items: center; gap: clamp(12px, 1.4vw, 24px); }
+  .om-bar__label {
+    font-family: var(--fd); font-size: clamp(14px, 1.4vw, 21px);
+    font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: rgba(255,255,255,.75);
+  }
+  .om-bar__track { display: flex; align-items: stretch; height: clamp(40px, 7vh, 72px); }
+  .om-bar__seg {
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--fd); font-size: clamp(13px, 1.2vw, 18px); font-weight: 700; color: #fff;
+    overflow: hidden; white-space: nowrap;
+  }
+  .om-bar__seg--vav    { background: #C0282A; }
+  .om-bar__seg--staff  { background: #3A4352; }
+  .om-bar__seg--fee    { background: repeating-linear-gradient(135deg, #5a6272 0 6px, #2b313c 6px 12px); }
+  .om-bar__seg--athlon { background: #fff; color: var(--text); }
+  .om-bar__total {
+    display: flex; align-items: center; padding-left: clamp(10px, 1vw, 18px);
+    font-family: var(--fd); font-size: clamp(1.6rem, 3vw, 3rem); font-weight: 800; color: #fff; line-height: 1;
+  }
+  .om-legend { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 22px; }
+  .om-legend li {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--fd); font-size: clamp(12px, 1vw, 15px); font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.55);
+  }
+  .om-legend i { display: inline-block; width: 18px; height: 12px; }
+
+  /* ── staff cost table ── */
+  .om-table--nums th:not(:first-child), .om-table--nums td:not(:first-child) { text-align: right; white-space: nowrap; }
+  .om-table--nums td { padding-top: clamp(6px, 1vh, 11px); padding-bottom: clamp(6px, 1vh, 11px); }
+  .om-table__gone td { color: var(--grey-mid) !important; }
+  .om-table__gone .om-table__name { text-decoration: line-through; text-decoration-color: var(--red); text-decoration-thickness: 2px; }
+  .om-table__total td { background: var(--text) !important; color: #fff !important; font-weight: 800 !important; }
+  .om-table__total .om-table__answer { background: var(--red) !important; }
+  .om-note { font-size: clamp(12px, .95vw, 14px); font-weight: 300; font-style: italic; color: var(--grey-mid); }
 
   /* ── S4 flow ── */
   .om-flow { display: flex; align-items: stretch; gap: clamp(6px, .8vw, 12px); }
@@ -664,6 +815,8 @@ const phase0 = [
     .om-cover__content { padding: calc(var(--header-h) + 32px) 22px 48px; }
     .om-cover__meta { position: static; padding: 0 22px 28px; }
     .om-layer { grid-template-columns: 1fr; gap: 10px; }
+    .om-bar { grid-template-columns: 1fr; gap: 6px; }
+    .om-table--nums td:not(:first-child) { text-align: left; }
     .om-close__content { padding: calc(var(--header-h) + 36px) 22px 48px; }
 
     /* tables become stacked cards */
