@@ -484,12 +484,12 @@ html.js .ui:hover{opacity:1}
 <p style="position:absolute;right:128px;bottom:64px;width:200px;text-align:right;font-size:24px;color:#6B645D">14</p>
 
 </section></div>
-<div class="ui" aria-label="Slide navigation"><button id="prev" aria-label="Previous slide">&#8592;</button><span id="count"></span><button id="next" aria-label="Next slide">&#8594;</button></div>
+<div class="ui" aria-label="Slide navigation"><button id="deck-prev" aria-label="Previous slide">&#8592;</button><span id="deck-count"></span><button id="deck-next" aria-label="Next slide">&#8594;</button></div>
 <script>
 (function(){
   document.documentElement.classList.add('js');
   var frames=[].slice.call(document.querySelectorAll('.frame')),i=0,W=1920,H=1080;
-  var count=document.getElementById('count');
+  var count=document.getElementById('deck-count');
   function fit(){
     var s=Math.min(innerWidth/W,innerHeight/H),x=(innerWidth-W*s)/2,y=(innerHeight-H*s)/2;
     frames.forEach(function(f){f.style.transform='translate('+x+'px,'+y+'px) scale('+s+')';});
@@ -501,8 +501,8 @@ html.js .ui:hover{opacity:1}
     if(history.replaceState)history.replaceState(null,'','#'+(i+1));
   }
   function go(d){show(i+d);}
-  document.getElementById('prev').onclick=function(){go(-1);};
-  document.getElementById('next').onclick=function(){go(1);};
+  document.getElementById('deck-prev').onclick=function(){go(-1);};
+  document.getElementById('deck-next').onclick=function(){go(1);};
   addEventListener('keydown',function(e){
     var k=e.key;
     if(k==='ArrowRight'||k==='PageDown'||k===' '){e.preventDefault();go(1);}
