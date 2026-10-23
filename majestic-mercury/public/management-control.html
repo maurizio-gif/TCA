@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" href="logo%20tca.png">
+<title>TCA Management Control Project</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&display=swap">
+<style>
+html,body{margin:0;height:100%;background:#14110F}
+body{font-family:'Barlow',Arial,sans-serif}
+.frame>section,.frame>section *{box-sizing:border-box;margin:0}
+.frame>section{position:relative;width:1920px;height:1080px;overflow:hidden}
+.frame h1{font-size:96px;font-weight:600;line-height:1.1}
+.frame h2{font-size:64px;font-weight:600;line-height:1.15}
+.frame h3{font-size:44px;font-weight:600;line-height:1.2}
+.frame p{font-size:32px;line-height:1.4}
+.frame ul,.frame ol{padding-left:44px}
+.frame table{border-collapse:collapse;width:100%;line-height:1.4}
+.frame th,.frame td{text-align:left;padding:.35em .6em;border-bottom:1px solid #D9D1C7;vertical-align:top}
+.frame th{font-weight:600}
+.frame x-shape{display:block}
+.frame x-shape[kind="arrow-right"]{clip-path:polygon(0 25%,60% 25%,60% 0,100% 50%,60% 100%,60% 75%,0 75%)}
+.frame{margin:0 auto 32px;width:1920px}
+html.js,html.js body{overflow:hidden}
+html.js .frame{position:fixed;left:0;top:0;margin:0;transform-origin:0 0;display:none}
+html.js .frame.on{display:block}
+.ui{display:none}
+html.js .ui{position:fixed;right:20px;bottom:16px;display:flex;gap:8px;align-items:center;z-index:9;opacity:.45;transition:opacity .2s}
+html.js .ui:hover{opacity:1}
+.ui button{font:600 18px 'Barlow',Arial,sans-serif;color:#F5F3F0;background:#2A2623;border:1px solid #4A443E;border-radius:6px;padding:6px 14px;cursor:pointer}
+.ui span{font:600 18px 'Barlow',Arial,sans-serif;color:#D4CDC4;min-width:64px;text-align:center}
+@media print{
+  @page{size:1920px 1080px;margin:0}
+  html,body,html.js,html.js body{overflow:visible;height:auto;background:#fff}
+  html.js .frame,.frame{position:relative!important;display:block!important;transform:none!important;margin:0!important;page-break-after:always;break-after:page}
+  html.js .ui,.ui{display:none!important}
+}
+</style>
+</head>
+<body>
+<div class="frame" data-id="cover"><section id="cover" style="background:#1F1B18;color:#F5F3F0;font-family:'Barlow', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:space-between;gap:48px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:32px">
+<div style="background:#FBFAF8;padding:12px;border-radius:12px;width:136px;height:136px">
+<img src="data:image/png;base64,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" alt="Tennis Club Ambrosiano logo" style="width:112px;height:111px;object-fit:contain">
+</div>
+<p style="font-size:28px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#E0857A">Tennis Club Ambrosiano SSD a r.l. · Project proposal</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:40px">
+<div style="background:#8B1A1A;width:160px;height:12px"></div>
+<h1 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:150px;font-weight:800;text-transform:uppercase;line-height:1.0;color:#F5F3F0">From data entry to <span style="color:#E0857A">instant management control</span></h1>
+<p style="font-size:38px;font-weight:400;line-height:1.4;color:#D4CDC4;width:1300px">A connected workflow that prepares the books for Studio Foresta and gives TCA a live management view, replacing CODA from 1 January 2027.</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1200px;font-size:24px;color:#B5ADA3">October 2026 · Draft for discussion</p>
+
+</section></div>
+<div class="frame" data-id="context"><section id="context" style="background:#F5F3F0;color:#3A3530;font-family:'Barlow', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:26px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#8B1A1A">Context</p>
+<h2 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:72px;font-weight:800;text-transform:uppercase;line-height:1.0;color:#1F1B18">Where we start</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px;align-items:stretch">
+<div style="width:520px;display:flex;flex-direction:column;gap:24px">
+<div style="background:#8B1A1A;color:#F5F3F0;padding:40px;display:flex;flex-direction:column;gap:16px;border-radius:12px">
+<p style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:140px;font-weight:800;line-height:1.0;text-transform:uppercase">31 Dec</p>
+<p style="font-size:34px;line-height:1.35">CODA stops. The new system takes over on 1 January 2027.</p>
+</div>
+<p style="font-size:28px;line-height:1.4;color:#5E5750">Studio Foresta loads the CODA output into DATEV and builds the financial statements from it.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column">
+<table style="font-size:28px;font-family:'Barlow', Arial, sans-serif;color:#3A3530">
+<tr style="background:#1F1B18"><th style="width:28%;color:#F5F3F0">Source</th><th style="width:72%;color:#F5F3F0">Done by hand today</th></tr>
+<tr style="background:#FBFAF8"><td style="width:28%;color:#1F1B18"><b>Tilby</b></td><td style="width:72%">Three entries a day: the fiscal movement, the bar receipt, the transfer to the right account</td></tr>
+<tr style="background:#FBFAF8"><td style="width:28%;color:#1F1B18"><b>Playtomic</b></td><td style="width:72%">Weekly payout downloaded and checked, wallets verified, revenue and costs booked by area</td></tr>
+<tr style="background:#FBFAF8"><td style="width:28%;color:#1F1B18"><b>PerfectGym</b></td><td style="width:72%">Every member movement booked one by one; the month stalls until all bank transfers are booked</td></tr>
+<tr style="background:#FBFAF8"><td style="width:28%;color:#1F1B18"><b>Invoices and banks</b></td><td style="width:72%">Each invoice entered individually, bank statements matched by hand</td></tr>
+</table>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#6B645D">TCA · Management control project</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;text-align:right;font-size:24px;color:#6B645D">02</p>
+
+</section></div>
+<div class="frame" data-id="principle"><section id="principle" style="background:#F5F3F0;color:#3A3530;font-family:'Barlow', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:26px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#8B1A1A">The principle</p>
+<h2 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:72px;font-weight:800;text-transform:uppercase;line-height:1.0;color:#1F1B18">The system prepares, the Studio keeps the books</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:24px;align-items:stretch">
+<div style="width:380px;background:#FBFAF8;border:1px solid #E0D9D0;border-radius:12px;padding:32px;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#6B645D">Sources</p>
+<ul style="font-size:34px;line-height:1.55;font-weight:500;color:#1F1B18"><li>PerfectGym</li><li>Tilby</li><li>Playtomic</li><li>Banks</li><li>Fatture Go</li></ul>
+</div>
+<div style="width:64px;display:flex;flex-direction:column;justify-content:center;align-items:center"><x-shape kind="arrow-right" style="background:#8B1A1A;width:64px;height:40px"></x-shape></div>
+<div style="width:500px;background:#8B1A1A;color:#F5F3F0;border-radius:12px;padding:32px;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#F0D5D0">The TCA system</p>
+<ul style="font-size:34px;line-height:1.55;font-weight:500"><li>Import every source</li><li>Clean and classify</li><li>Reconcile automatically</li><li>Flag only the exceptions</li></ul>
+</div>
+<div style="width:64px;display:flex;flex-direction:column;justify-content:center;align-items:center"><x-shape kind="arrow-right" style="background:#8B1A1A;width:64px;height:40px"></x-shape></div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div style="flex:1;background:#FBFAF8;border:1px solid #E0D9D0;border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#8B1A1A">Studio Foresta</p>
+<p style="font-size:28px;line-height:1.4;color:#1F1B18">Verifies the package, imports it into DATEV, keeps VAT, F24 and the financial statements.</p>
+</div>
+<div style="flex:1;background:#FBFAF8;border:1px solid #E0D9D0;border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#8B1A1A">TCA management</p>
+<p style="font-size:28px;line-height:1.4;color:#1F1B18">Live dashboard on cash and accrual basis, replacing the Management Pack.</p>
+</div>
+</div>
+</div>
+<p style="font-size:34px;font-weight:600;color:#8B1A1A">No ledger inside the system: formal bookkeeping stays with the Studio.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#6B645D">TCA · Management control project</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;text-align:right;font-size:24px;color:#6B645D">03</p>
+
+</section></div>
+<div class="frame" data-id="blocks"><section id="blocks" style="background:#F5F3F0;color:#3A3530;font-family:'Barlow', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:26px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#8B1A1A">The solution</p>
+<h2 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:72px;font-weight:800;text-transform:uppercase;line-height:1.0;color:#1F1B18">Three building blocks</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:32px;align-items:stretch">
+<div style="flex:1;background:#FBFAF8;border:1px solid #E0D9D0;border-radius:12px;padding:36px;display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:96px;font-weight:800;line-height:1.0;color:#8B1A1A">1</p>
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:44px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#1F1B18">Clean data in</h3>
+<p style="font-size:28px;line-height:1.45;color:#3A3530">Every source is imported, de-duplicated, classified by department and reconciled automatically.</p>
+</div>
+<div style="flex:1;background:#FBFAF8;border:1px solid #E0D9D0;border-radius:12px;padding:36px;display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:96px;font-weight:800;line-height:1.0;color:#8B1A1A">2</p>
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:44px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#1F1B18">Operator workspace</h3>
+<p style="font-size:28px;line-height:1.45;color:#3A3530">The team sees only what needs a decision, resolves it in one click and closes the month.</p>
+</div>
+<div style="flex:1;background:#8B1A1A;color:#F5F3F0;border-radius:12px;padding:36px;display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:96px;font-weight:800;line-height:1.0;color:#F5F3F0">3</p>
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:44px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#F5F3F0">Instant management control</h3>
+<p style="font-size:28px;line-height:1.45;color:#F5F3F0">A live dashboard replacing the Management Pack: P&amp;L by department, cash and accrual, members, budget.</p>
+</div>
+</div>
+<p style="font-size:30px;font-weight:500;color:#3A3530">Blocks 1 and 2 feed block 3: the dashboard is only as good as the data that reaches it.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#6B645D">TCA · Management control project</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;text-align:right;font-size:24px;color:#6B645D">04</p>
+
+</section></div>
+<div class="frame" data-id="sources"><section id="sources" style="background:#F5F3F0;color:#3A3530;font-family:'Barlow', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:26px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#8B1A1A">Data in</p>
+<h2 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:72px;font-weight:800;text-transform:uppercase;line-height:1.0;color:#1F1B18">Six sources, always a manual fallback</h2>
+</div>
+<table style="font-size:28px;font-family:'Barlow', Arial, sans-serif;color:#3A3530">
+<tr style="background:#1F1B18"><th style="width:24%;color:#F5F3F0">Source</th><th style="width:56%;color:#F5F3F0">How it arrives</th><th style="width:20%;color:#F5F3F0">Status</th></tr>
+<tr style="background:#FBFAF8"><td style="width:24%;color:#1F1B18"><b>PerfectGym</b></td><td style="width:56%">Automatic: already mirrored in the CRM</td><td style="width:20%;color:#2D6A3A"><b>Live</b></td></tr>
+<tr style="background:#FBFAF8"><td style="width:24%;color:#1F1B18"><b>Tilby</b></td><td style="width:56%">Export of daily closures by period; API to be assessed</td><td style="width:20%;color:#8A5A00"><b>To confirm</b></td></tr>
+<tr style="background:#FBFAF8"><td style="width:24%;color:#1F1B18"><b>Playtomic</b></td><td style="width:56%">Weekly payout export from Manager; API if stable</td><td style="width:20%;color:#8A5A00"><b>To confirm</b></td></tr>
+<tr style="background:#FBFAF8"><td style="width:24%;color:#1F1B18"><b>Banks</b></td><td style="width:56%">Excel statements; CSV or CBI flows to be requested</td><td style="width:20%;color:#8A5A00"><b>To confirm</b></td></tr>
+<tr style="background:#FBFAF8"><td style="width:24%;color:#1F1B18"><b>Fatture Go</b></td><td style="width:56%">XML files downloaded monthly and dropped into the system</td><td style="width:20%;color:#2D6A3A"><b>Feasible</b></td></tr>
+<tr style="background:#FBFAF8"><td style="width:24%;color:#1F1B18"><b>Petty cash</b></td><td style="width:56%">Mobile form with a photo of the receipt</td><td style="width:20%;color:#1F4E8C"><b>To build</b></td></tr>
+</table>
+<p style="font-size:32px;font-weight:500;line-height:1.35;color:#8B1A1A">Every source also accepts a manual file upload, so a changed format never blocks the month close.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#6B645D">TCA · Management control project</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;text-align:right;font-size:24px;color:#6B645D">05</p>
+
+</section></div>
+<div class="frame" data-id="clean"><section id="clean" style="background:#F5F3F0;color:#3A3530;font-family:'Barlow', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:26px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#8B1A1A">Block 1</p>
+<h2 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:72px;font-weight:800;text-transform:uppercase;line-height:1.0;color:#1F1B18">Clean data in</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:24px;align-items:stretch">
+<div style="flex:1;background:#FBFAF8;border:1px solid #E0D9D0;border-top:6px solid #8B1A1A;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:56px;font-weight:800;line-height:1.0;color:#8B1A1A">01</p>
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:36px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#1F1B18">Import</h3>
+<p style="font-size:26px;line-height:1.4">Files and feeds from every source</p>
+</div>
+<div style="flex:1;background:#FBFAF8;border:1px solid #E0D9D0;border-top:6px solid #8B1A1A;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:56px;font-weight:800;line-height:1.0;color:#8B1A1A">02</p>
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:36px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#1F1B18">Normalise and de-duplicate</h3>
+<p style="font-size:26px;line-height:1.4">One format, no double counting</p>
+</div>
+<div style="flex:1;background:#FBFAF8;border:1px solid #E0D9D0;border-top:6px solid #8B1A1A;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:56px;font-weight:800;line-height:1.0;color:#8B1A1A">03</p>
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:36px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#1F1B18">Classify</h3>
+<p style="font-size:26px;line-height:1.4">Department and account, by saved rules</p>
+</div>
+<div style="flex:1;background:#FBFAF8;border:1px solid #E0D9D0;border-top:6px solid #8B1A1A;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:56px;font-weight:800;line-height:1.0;color:#8B1A1A">04</p>
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:36px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#1F1B18">Reconcile</h3>
+<p style="font-size:26px;line-height:1.4">Payments matched to what was expected</p>
+</div>
+<div style="flex:1;background:#8B1A1A;color:#F5F3F0;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:12px;border-top:6px solid #8B1A1A">
+<p style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:56px;font-weight:800;line-height:1.0;color:#F5F3F0">05</p>
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:36px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#F5F3F0">Flag exceptions</h3>
+<p style="font-size:26px;line-height:1.4;color:#F5F3F0">Only what cannot be matched</p>
+</div>
+</div>
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#6B645D">Typical reconciliations</p>
+<div style="display:flex;flex-direction:row;gap:24px;align-items:stretch">
+<div style="flex:1;background:#FBFAF8;border:1px solid #E0D9D0;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:28px;font-weight:700;line-height:1.2;color:#1F1B18">Bank transfer and member charge</p>
+<p style="font-size:26px;line-height:1.4">Matched on amount, reference and the member's open charges.</p>
+</div>
+<div style="flex:1;background:#FBFAF8;border:1px solid #E0D9D0;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:28px;font-weight:700;line-height:1.2;color:#1F1B18">Playtomic payout and bookings</p>
+<p style="font-size:26px;line-height:1.4">Gross payments, fees, wallets and refunds split out.</p>
+</div>
+<div style="flex:1;background:#FBFAF8;border:1px solid #E0D9D0;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:28px;font-weight:700;line-height:1.2;color:#1F1B18">Supplier invoice and bank payment</p>
+<p style="font-size:26px;line-height:1.4">Matched on supplier, amount and due date.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#6B645D">TCA · Management control project</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;text-align:right;font-size:24px;color:#6B645D">06</p>
+
+</section></div>
+<div class="frame" data-id="operator"><section id="operator" style="background:#F5F3F0;color:#3A3530;font-family:'Barlow', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:26px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#8B1A1A">Block 2</p>
+<h2 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:72px;font-weight:800;text-transform:uppercase;line-height:1.0;color:#1F1B18">The operator workspace</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px;align-items:stretch">
+<div style="width:880px;background:#FBFAF8;border:1px solid #E0D9D0;border-radius:12px;padding:36px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#6B645D">Exception to resolve · illustrative example</p>
+<p style="font-size:34px;font-weight:600;line-height:1.25;color:#1F1B18">Bank transfer · €120.00 · reference “QUOTA OTTOBRE ROSSI”</p>
+<p style="font-size:30px;line-height:1.4;color:#3A3530">Suggested match: member Rossi, October membership charge.</p>
+<div style="display:flex;flex-direction:row;gap:16px">
+<p style="background:#8B1A1A;color:#F5F3F0;font-size:26px;font-weight:600;padding:14px 28px;border-radius:999px">Confirm</p>
+<p style="border:2px solid #8B1A1A;color:#8B1A1A;font-size:26px;font-weight:600;padding:12px 28px;border-radius:999px">Choose another</p>
+<p style="border:2px solid #8B1A1A;color:#8B1A1A;font-size:26px;font-weight:600;padding:12px 28px;border-radius:999px">Remember this rule</p>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-left:6px solid #8B1A1A;padding:0 0 0 28px">
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:40px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#1F1B18">Decide only on exceptions</h3>
+<p style="font-size:28px;line-height:1.4">One click per case; saved rules handle the next ones.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;border-left:6px solid #8B1A1A;padding:0 0 0 28px">
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:40px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#1F1B18">Add what no system knows</h3>
+<p style="font-size:28px;line-height:1.4">Petty cash with a receipt photo, accruals, notes on variances.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;border-left:6px solid #8B1A1A;padding:0 0 0 28px">
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:40px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#1F1B18">Close with confidence</h3>
+<p style="font-size:28px;line-height:1.4">Closed months are locked and every change is logged.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#6B645D">TCA · Management control project</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;text-align:right;font-size:24px;color:#6B645D">07</p>
+
+</section></div>
+<div class="frame" data-id="control"><section id="control" style="background:#F5F3F0;color:#3A3530;font-family:'Barlow', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:26px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#8B1A1A">Block 3</p>
+<h2 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:72px;font-weight:800;text-transform:uppercase;line-height:1.0;color:#1F1B18">Instant management control</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px;align-items:stretch">
+<div style="width:880px;background:#FBFAF8;border:1px solid #E0D9D0;border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#6B645D">Layout sketch · illustrative, no real data</p>
+<div style="display:flex;flex-direction:row;gap:16px">
+<div style="flex:1;background:#F5F3F0;border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:10px">
+<p style="font-size:24px;font-weight:600;color:#1F1B18">EBITDA</p>
+<div style="background:#D9D1C7;width:120px;height:24px;border-radius:4px"></div>
+</div>
+<div style="flex:1;background:#F5F3F0;border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:10px">
+<p style="font-size:24px;font-weight:600;color:#1F1B18">Cash</p>
+<div style="background:#D9D1C7;width:120px;height:24px;border-radius:4px"></div>
+</div>
+<div style="flex:1;background:#F5F3F0;border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:10px">
+<p style="font-size:24px;font-weight:600;color:#1F1B18">Members</p>
+<div style="background:#D9D1C7;width:120px;height:24px;border-radius:4px"></div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;flex-direction:row;align-items:center;gap:16px"><p style="width:190px;font-size:26px;color:#1F1B18">Membership</p><div style="background:#8B1A1A;width:560px;height:24px;border-radius:4px"></div></div>
+<div style="display:flex;flex-direction:row;align-items:center;gap:16px"><p style="width:190px;font-size:26px;color:#1F1B18">Tennis</p><div style="background:#8B1A1A;width:400px;height:24px;border-radius:4px"></div></div>
+<div style="display:flex;flex-direction:row;align-items:center;gap:16px"><p style="width:190px;font-size:26px;color:#1F1B18">Padel</p><div style="background:#8B1A1A;width:160px;height:24px;border-radius:4px"></div></div>
+<div style="display:flex;flex-direction:row;align-items:center;gap:16px"><p style="width:190px;font-size:26px;color:#1F1B18">Academy</p><div style="background:#8B1A1A;width:90px;height:24px;border-radius:4px"></div></div>
+<div style="display:flex;flex-direction:row;align-items:center;gap:16px"><p style="width:190px;font-size:26px;color:#1F1B18">F&amp;B</p><div style="background:#8B1A1A;width:60px;height:24px;border-radius:4px"></div></div>
+</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:28px;line-height:1.4;color:#1F1B18"><b>P&amp;L by department</b> against budget, last month, last year and year to date</p>
+<p style="font-size:28px;line-height:1.4;color:#1F1B18"><b>One switch</b> between cash basis and accrual basis</p>
+<p style="font-size:28px;line-height:1.4;color:#1F1B18"><b>Members:</b> starters, leavers, yield and debtors by age</p>
+<p style="font-size:28px;line-height:1.4;color:#1F1B18"><b>Cash</b> by bank account and a 12-month forecast</p>
+<p style="font-size:28px;line-height:1.4;color:#1F1B18"><b>Budget,</b> capex tracker and comments on key variances</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;gap:24px;align-items:stretch">
+<div style="flex:1;background:#E4EEE5;border-radius:8px;padding:16px 24px">
+<p style="font-size:26px;line-height:1.35;color:#1F3F28"><b>Live today in the CRM:</b> PerfectGym revenue on cash and accrual basis, debtors, cash forecast</p>
+</div>
+<div style="flex:1;background:#F1E3E0;border-radius:8px;padding:16px 24px">
+<p style="font-size:26px;line-height:1.35;color:#5C1212"><b>To build:</b> costs, department P&amp;L, budget, banks</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#6B645D">TCA · Management control project</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;text-align:right;font-size:24px;color:#6B645D">08</p>
+
+</section></div>
+<div class="frame" data-id="views"><section id="views" style="background:#F5F3F0;color:#3A3530;font-family:'Barlow', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:26px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#8B1A1A">Two lenses, one dataset</p>
+<h2 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:72px;font-weight:800;text-transform:uppercase;line-height:1.0;color:#1F1B18">Cash basis and accrual basis</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:32px;align-items:stretch">
+<div style="flex:1;background:#FBFAF8;border:1px solid #E0D9D0;border-top:6px solid #8B1A1A;border-radius:8px;padding:32px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:48px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#1F1B18">Cash basis</h3>
+<p style="font-size:30px;font-weight:600;line-height:1.3;color:#8B1A1A">What came in and went out, by date</p>
+<ul style="font-size:28px;line-height:1.5;color:#3A3530"><li>Bank movements, payouts and POS settlements</li><li>Liquidity by bank account</li><li>Forecast of collections and payments</li></ul>
+</div>
+<div style="flex:1;background:#FBFAF8;border:1px solid #E0D9D0;border-top:6px solid #8B1A1A;border-radius:8px;padding:32px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:48px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#1F1B18">Accrual basis</h3>
+<p style="font-size:30px;font-weight:600;line-height:1.3;color:#8B1A1A">What belongs to each month</p>
+<ul style="font-size:28px;line-height:1.5;color:#3A3530"><li>Membership and course contracts spread over the service period</li><li>Invoices by period of competence</li><li>Accruals added by the operator</li></ul>
+</div>
+</div>
+<div style="background:#1F1B18;color:#F5F3F0;border-radius:8px;padding:32px 40px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:40px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#E0857A">Aligned with the Studio every month</h3>
+<p style="font-size:28px;line-height:1.45;color:#F5F3F0">The monthly trial balance from DATEV brings depreciation, taxes and financial costs below EBITDA. A reconciliation page explains any difference; until the month is closed, those lines are marked provisional.</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#6B645D">TCA · Management control project</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;text-align:right;font-size:24px;color:#6B645D">09</p>
+
+</section></div>
+<div class="frame" data-id="studio"><section id="studio" style="background:#F5F3F0;color:#3A3530;font-family:'Barlow', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:26px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#8B1A1A">Monthly cycle</p>
+<h2 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:72px;font-weight:800;text-transform:uppercase;line-height:1.0;color:#1F1B18">What Studio Foresta receives</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px;align-items:stretch">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;flex-direction:row;gap:24px;align-items:flex-start;background:#FBFAF8;border:1px solid #E0D9D0;border-radius:8px;padding:20px 28px">
+<p style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:56px;font-weight:800;line-height:1.0;color:#8B1A1A;width:56px">1</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px">
+<p style="font-size:30px;font-weight:700;line-height:1.2;color:#1F1B18">Import file</p>
+<p style="font-size:26px;line-height:1.4">In the layout the Studio uses today, to be confirmed</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;gap:24px;align-items:flex-start;background:#FBFAF8;border:1px solid #E0D9D0;border-radius:8px;padding:20px 28px">
+<p style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:56px;font-weight:800;line-height:1.0;color:#8B1A1A;width:56px">2</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px">
+<p style="font-size:30px;font-weight:700;line-height:1.2;color:#1F1B18">Reconciliation statement</p>
+<p style="font-size:26px;line-height:1.4">Receipts by source, bank balances, POS totals</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;gap:24px;align-items:flex-start;background:#FBFAF8;border:1px solid #E0D9D0;border-radius:8px;padding:20px 28px">
+<p style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:56px;font-weight:800;line-height:1.0;color:#8B1A1A;width:56px">3</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px">
+<p style="font-size:30px;font-weight:700;line-height:1.2;color:#1F1B18">Exception list</p>
+<p style="font-size:26px;line-height:1.4">Resolved and still open</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;gap:24px;align-items:flex-start;background:#FBFAF8;border:1px solid #E0D9D0;border-radius:8px;padding:20px 28px">
+<p style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:56px;font-weight:800;line-height:1.0;color:#8B1A1A;width:56px">4</p>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px">
+<p style="font-size:30px;font-weight:700;line-height:1.2;color:#1F1B18">Other reports on request</p>
+<p style="font-size:26px;line-height:1.4">Excel, PDF or CSV, in the format the Studio asks for</p>
+</div>
+</div>
+</div>
+<div style="width:640px;background:#8B1A1A;color:#F5F3F0;border-radius:12px;padding:36px;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#F0D5D0">The Studio's named referent</p>
+<ul style="font-size:32px;line-height:1.45;font-weight:500"><li>Verifies and imports into DATEV</li><li>Keeps VAT, F24 and the financial statements</li><li>Sends back the monthly trial balance</li></ul>
+</div>
+</div>
+<p style="font-size:30px;font-weight:500;line-height:1.4;color:#8B1A1A">The Studio does not log into the system: it receives files and answers by email. TCA locks the month once the Studio confirms.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#6B645D">TCA · Management control project</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;text-align:right;font-size:24px;color:#6B645D">10</p>
+
+</section></div>
+<div class="frame" data-id="roles"><section id="roles" style="background:#F5F3F0;color:#3A3530;font-family:'Barlow', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:26px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#8B1A1A">Roles</p>
+<h2 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:72px;font-weight:800;text-transform:uppercase;line-height:1.0;color:#1F1B18">Roles and rhythm</h2>
+</div>
+<table style="font-size:26px;font-family:'Barlow', Arial, sans-serif;color:#3A3530">
+<tr style="background:#1F1B18"><th style="width:26%;color:#F5F3F0">Role</th><th style="width:54%;color:#F5F3F0">What they do</th><th style="width:20%;color:#F5F3F0">Rhythm</th></tr>
+<tr style="background:#FBFAF8"><td style="width:26%;color:#1F1B18"><b>Membership admin team</b></td><td style="width:54%">Resolve exceptions on PerfectGym, Tilby, Playtomic and cash</td><td style="width:20%">Weekly</td></tr>
+<tr style="background:#FBFAF8"><td style="width:26%;color:#1F1B18"><b>Finance administrator</b></td><td style="width:54%">Review bank and invoice reconciliations, close the month</td><td style="width:20%">Weekly and month-end</td></tr>
+<tr style="background:#FBFAF8"><td style="width:26%;color:#1F1B18"><b>Studio Foresta referent</b></td><td style="width:54%">Verify and import the file; VAT, F24, financial statements; return the trial balance</td><td style="width:20%">Monthly</td></tr>
+<tr style="background:#FBFAF8"><td style="width:26%;color:#1F1B18"><b>Club Manager</b></td><td style="width:54%">Budget, department structure, dashboard review</td><td style="width:20%">Monthly</td></tr>
+<tr style="background:#FBFAF8"><td style="width:26%;color:#1F1B18"><b>Developer</b></td><td style="width:54%">Build, reconciliation, export, dashboard; then handover and maintenance</td><td style="width:20%">Build, then support</td></tr>
+</table>
+<p style="font-size:34px;font-weight:600;line-height:1.3;color:#8B1A1A">The aim: fewer hours for everyone, with the same level of control.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#6B645D">TCA · Management control project</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;text-align:right;font-size:24px;color:#6B645D">11</p>
+
+</section></div>
+<div class="frame" data-id="plan"><section id="plan" style="background:#F5F3F0;color:#3A3530;font-family:'Barlow', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:26px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#8B1A1A">Plan</p>
+<h2 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:72px;font-weight:800;text-transform:uppercase;line-height:1.0;color:#1F1B18">Phasing and timeline</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:24px;align-items:stretch">
+<div style="flex:1;background:#FBFAF8;border:1px solid #E0D9D0;border-top:6px solid #8B1A1A;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:38px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#8B1A1A">By early November</h3>
+<ul style="font-size:26px;line-height:1.4"><li>Specifications agreed: export layout, account mapping, bank formats</li><li>Studio referent and quote</li></ul>
+</div>
+<div style="flex:1;background:#FBFAF8;border:1px solid #E0D9D0;border-top:6px solid #8B1A1A;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:38px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#8B1A1A">November</h3>
+<ul style="font-size:26px;line-height:1.4"><li>Build the core</li><li>October close as a dry run against CODA</li></ul>
+</div>
+<div style="flex:1;background:#FBFAF8;border:1px solid #E0D9D0;border-top:6px solid #8B1A1A;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:38px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#8B1A1A">December</h3>
+<ul style="font-size:26px;line-height:1.4"><li>Parallel run: November closed on both systems</li><li>Export of CODA history: debtors, deferred revenue, member count, open suppliers</li></ul>
+</div>
+<div style="flex:1;background:#8B1A1A;color:#F5F3F0;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:12px;border-top:6px solid #8B1A1A">
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:38px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#F5F3F0">January 2027</h3>
+<ul style="font-size:26px;line-height:1.4;color:#F5F3F0"><li>New system only</li><li>Phase 2 starts</li></ul>
+</div>
+</div>
+<div style="display:flex;flex-direction:row;gap:24px;align-items:stretch">
+<div style="flex:1;background:#FBFAF8;border:1px solid #E0D9D0;border-radius:8px;padding:24px 28px;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#8B1A1A">Phase 2, after go-live</p>
+<p style="font-size:28px;line-height:1.4;color:#1F1B18">Purchase-order workflow with approvals, accruals and payroll automation, extended analytical reporting.</p>
+</div>
+<div style="flex:1;background:#FBFAF8;border:1px solid #E0D9D0;border-radius:8px;padding:24px 28px;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#8B1A1A">Out of scope</p>
+<p style="font-size:28px;line-height:1.4;color:#1F1B18">Formal bookkeeping, VAT, F24 and the financial statements stay with the Studio.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#6B645D">TCA · Management control project</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;text-align:right;font-size:24px;color:#6B645D">12</p>
+
+</section></div>
+<div class="frame" data-id="handover"><section id="handover" style="background:#F5F3F0;color:#3A3530;font-family:'Barlow', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:26px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#8B1A1A">Handover</p>
+<h2 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:72px;font-weight:800;text-transform:uppercase;line-height:1.0;color:#1F1B18">Built to be run by TCA</h2>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:24px">
+<div style="background:#FBFAF8;border:1px solid #E0D9D0;border-left:6px solid #8B1A1A;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:36px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#1F1B18">Configuration, not code</h3>
+<p style="font-size:26px;line-height:1.4">Mapping, rules, budgets and the Studio export layout are editable by TCA, versioned and logged.</p>
+</div>
+<div style="background:#FBFAF8;border:1px solid #E0D9D0;border-left:6px solid #8B1A1A;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:36px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#1F1B18">Manual fallback everywhere</h3>
+<p style="font-size:26px;line-height:1.4">A changed bank or POS format never blocks the close.</p>
+</div>
+<div style="background:#FBFAF8;border:1px solid #E0D9D0;border-left:6px solid #8B1A1A;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:36px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#1F1B18">Source health panel</h3>
+<p style="font-size:26px;line-height:1.4">Last successful import, missing data, totals that do not match.</p>
+</div>
+<div style="background:#FBFAF8;border:1px solid #E0D9D0;border-left:6px solid #8B1A1A;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:36px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#1F1B18">Reference test files</h3>
+<p style="font-size:26px;line-height:1.4">Sample months with expected output protect future changes.</p>
+</div>
+<div style="background:#FBFAF8;border:1px solid #E0D9D0;border-left:6px solid #8B1A1A;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:36px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#1F1B18">TCA owns it</h3>
+<p style="font-size:26px;line-height:1.4">Repository, database and hosting under TCA's accounts, on the same stack as the CRM.</p>
+</div>
+<div style="background:#FBFAF8;border:1px solid #E0D9D0;border-left:6px solid #8B1A1A;border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:36px;font-weight:700;text-transform:uppercase;line-height:1.1;color:#1F1B18">Documented and supported</h3>
+<p style="font-size:26px;line-height:1.4">User guide, month-close checklist and a maintenance agreement.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#6B645D">TCA · Management control project</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;text-align:right;font-size:24px;color:#6B645D">13</p>
+
+</section></div>
+<div class="frame" data-id="next"><section id="next" style="background:#F5F3F0;color:#3A3530;font-family:'Barlow', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:26px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:#8B1A1A">Next steps</p>
+<h2 style="font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;font-size:72px;font-weight:800;text-transform:uppercase;line-height:1.0;color:#1F1B18">What we need to start</h2>
+</div>
+<div style="display:flex;flex-direction:row;gap:32px;align-items:stretch">
+<div style="width:1000px;display:flex;flex-direction:column;gap:24px">
+<div style="background:#FBFAF8;border:1px solid #E0D9D0;border-radius:12px;padding:28px 32px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#8B1A1A">From Studio Foresta</p>
+<ul style="font-size:26px;line-height:1.45;color:#1F1B18"><li>The file loaded from CODA today, and the CODA-to-DATEV account mapping</li><li>What the Studio already records (DK Link, banks)</li><li>Named referent, monthly deadline and quote</li></ul>
+</div>
+<div style="background:#FBFAF8;border:1px solid #E0D9D0;border-radius:12px;padding:28px 32px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#8B1A1A">From TCA</p>
+<ul style="font-size:26px;line-height:1.45;color:#1F1B18"><li>Bank statement samples and formats</li><li>Playtomic and Tilby access</li><li>Management Packs 2026 and budget 2027</li><li>CODA still usable after 31 December to close December</li><li>Group reporting format, if any</li></ul>
+</div>
+</div>
+<div style="flex:1;background:#8B1A1A;color:#F5F3F0;border-radius:12px;padding:36px;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#F0D5D0">Decisions requested</p>
+<ol style="font-size:32px;line-height:1.5;font-weight:500;color:#F5F3F0"><li>Approve the approach and the roles</li><li>Name the Studio referent and agree the fee</li><li>Approve phase 1 to start in November</li></ol>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1000px;font-size:24px;color:#6B645D">TCA · Management control project</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;text-align:right;font-size:24px;color:#6B645D">14</p>
+
+</section></div>
+<div class="ui" aria-label="Slide navigation"><button id="prev" aria-label="Previous slide">&#8592;</button><span id="count"></span><button id="next" aria-label="Next slide">&#8594;</button></div>
+<script>
+(function(){
+  document.documentElement.classList.add('js');
+  var frames=[].slice.call(document.querySelectorAll('.frame')),i=0,W=1920,H=1080;
+  var count=document.getElementById('count');
+  function fit(){
+    var s=Math.min(innerWidth/W,innerHeight/H),x=(innerWidth-W*s)/2,y=(innerHeight-H*s)/2;
+    frames.forEach(function(f){f.style.transform='translate('+x+'px,'+y+'px) scale('+s+')';});
+  }
+  function show(n){
+    i=Math.max(0,Math.min(frames.length-1,n));
+    frames.forEach(function(f,k){f.classList.toggle('on',k===i);});
+    count.textContent=(i+1)+' / '+frames.length;
+    if(history.replaceState)history.replaceState(null,'','#'+(i+1));
+  }
+  function go(d){show(i+d);}
+  document.getElementById('prev').onclick=function(){go(-1);};
+  document.getElementById('next').onclick=function(){go(1);};
+  addEventListener('keydown',function(e){
+    var k=e.key;
+    if(k==='ArrowRight'||k==='PageDown'||k===' '){e.preventDefault();go(1);}
+    else if(k==='ArrowLeft'||k==='PageUp'){e.preventDefault();go(-1);}
+    else if(k==='Home'){show(0);}
+    else if(k==='End'){show(frames.length-1);}
+  });
+  var t0=null;
+  addEventListener('touchstart',function(e){t0=e.touches[0].clientX;},{passive:true});
+  addEventListener('touchend',function(e){
+    if(t0===null)return;var dx=e.changedTouches[0].clientX-t0;t0=null;
+    if(Math.abs(dx)>50)go(dx<0?1:-1);
+  },{passive:true});
+  addEventListener('resize',fit);
+  var h=parseInt((location.hash||'').slice(1),10);
+  fit();show(isNaN(h)?0:h-1);
+})();
+</script>
+</body>
+</html>
