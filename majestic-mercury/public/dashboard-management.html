@@ -54,9 +54,14 @@ tr.sub td{font-weight:600;color:var(--ink);background:#F1EEE9}
 footer{max-width:1500px;margin:10px auto;padding:0 40px;color:var(--muted);font-size:12px}
 @media(max-width:1100px){.g6{grid-template-columns:repeat(3,1fr)}.g2,.g3,.g21,.g12{grid-template-columns:1fr}main,header,.navin,footer{padding-left:16px;padding-right:16px}}
 @media(max-width:600px){.g6{grid-template-columns:1fr 1fr}h1{font-size:30px}.kv{font-size:32px}.ctl{margin-left:0}}
+body.embed{padding-bottom:0}
+body.embed header{padding:14px 40px 12px}body.embed h1{font-size:30px}body.embed .poc{display:none}
+.back{display:none;position:fixed;right:16px;bottom:14px;z-index:30;font:600 15px 'Barlow',sans-serif;background:var(--ink);color:#F5F3F0;border:none;border-radius:6px;padding:8px 14px;cursor:pointer;opacity:.85}
+body.embed .back{display:block}body.embed footer{display:none}
 </style>
 </head>
 <body>
+<button class="back" id="back">← Back to slides</button>
 <header><div class="hrow">
 <div><p class="kick">Tennis Club Ambrosiano · Management control</p><h1>Management Dashboard</h1>
 <p class="sub">Proof of concept · Management Packs Jan–Sep 2026 · CRM (PerfectGym mirror) as of <span id="asof"></span></p></div>
@@ -309,6 +314,7 @@ function renderHealth(){
 }
 
 function render(){const p=active();({overview:renderOverview,pl:renderPL,rev:renderRev,mem:renderMem,cash:renderCash,health:renderHealth})[p]();}
+if(window.parent!==window||/[?&]embed=1/.test(location.search)){document.body.classList.add('embed');$('#back').onclick=()=>parent.postMessage({deck:'prev'},'*')}
 render();
 </script>
 </body>
