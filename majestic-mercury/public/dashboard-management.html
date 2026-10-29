@@ -56,6 +56,19 @@ footer{max-width:1500px;margin:10px auto;padding:0 40px;color:var(--muted);font-
 @media(max-width:600px){.g6{grid-template-columns:1fr 1fr}h1{font-size:30px}.kv{font-size:32px}.ctl{margin-left:0}}
 body.embed{padding-bottom:0}
 body.embed header{padding:14px 40px 12px}body.embed h1{font-size:30px}body.embed .poc{display:none}
+/* embed (shown inside the deck at 1920x1080): everything larger, readable from a slide */
+body.embed main{max-width:1800px;padding:22px 48px}
+body.embed header{padding:12px 48px 10px}body.embed .hrow{max-width:1800px}
+body.embed h1{font-size:52px}body.embed .kick{font-size:17px}body.embed .sub{font-size:19px}
+body.embed .tab{font-size:21px;padding:13px 14px}body.embed .navin{max-width:1800px;padding:0 48px}
+body.embed select,body.embed .seg button{font-size:20px;padding:8px 14px}body.embed .note{font-size:18px}
+body.embed h2{font-size:36px}body.embed h3{font-size:24px}
+body.embed .card{padding:24px 28px}body.embed .tag{font-size:14px}
+body.embed .g6{grid-template-columns:repeat(6,1fr);gap:14px}
+body.embed .kl{font-size:14px;letter-spacing:1px}body.embed .kv{font-size:50px}body.embed .kd{font-size:18px}
+body.embed table{font-size:21px}body.embed td,body.embed th{padding:11px 14px}body.embed th{font-size:16px}
+body.embed .ch{height:400px}body.embed .ch.tall{height:480px}
+body.embed .issue{font-size:19px}
 .back{display:none;position:fixed;right:16px;bottom:14px;z-index:30;font:600 15px 'Barlow',sans-serif;background:var(--ink);color:#F5F3F0;border:none;border-radius:6px;padding:8px 14px;cursor:pointer;opacity:.85}
 body.embed .back{display:block}body.embed footer{display:none}
 </style>
@@ -353,7 +366,7 @@ function renderHealth(){
 }
 
 function render(){const p=active();({overview:renderOverview,pl:renderPL,bu:renderBU,rev:renderRev,mem:renderMem,cash:renderCash,health:renderHealth})[p]();}
-if(window.parent!==window||/[?&]embed=1/.test(location.search)){document.body.classList.add('embed');$('#back').onclick=()=>parent.postMessage({deck:'prev'},'*')}
+if(window.parent!==window||/[?&]embed=1/.test(location.search)){document.body.classList.add('embed');Chart.defaults.font.size=18;Chart.defaults.plugins.legend.labels.boxWidth=16;$('#back').onclick=()=>parent.postMessage({deck:'prev'},'*')}
 render();
 </script>
 </body>
