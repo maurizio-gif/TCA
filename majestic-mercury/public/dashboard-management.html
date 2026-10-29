@@ -103,14 +103,12 @@ body.embed .back{display:block}body.embed footer{display:none}
 </section>
 
 <section class="pane" id="bu">
-<div class="card" style="margin-bottom:18px"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px"><div><h2>Business units, costs allocated <span class="tag t-pack">Monthly report</span></h2><p class="note" id="bu_note"></p></div></div>
+<div class="card" style="margin-bottom:18px"><h2>Business units <span class="tag t-pack">Monthly report</span></h2><p class="note" id="bu_note"></p>
 <table id="bu_t"></table><p class="note" id="bu_chk" style="margin-top:10px"></p></div>
 <div class="grid g2">
-<div class="card"><h3>Result by business unit: direct and after allocation</h3><p class="note">€000's, selected period.</p><div class="ch tall"><canvas id="c_bu"></canvas></div></div>
-<div class="card"><h3>Shared costs to allocate <span class="tag t-pack">Monthly report</span></h3><p class="note">Cost centres with no revenue of their own, selected period, €000's.</p><table id="bu_pool"></table>
-<p class="note" style="margin-top:14px">Revenue share is a placeholder key. In the new flow the Establishment centre is split in DATEV into utilities (gas, electricity, water), cleaning and maintenance, so each can take its own key: meters, square metres, court hours, to agree with the Studio.</p></div>
+<div class="card"><h3>Result by business unit</h3><p class="note">Direct result against budget, €000's, selected period.</p><div class="ch tall"><canvas id="c_bu"></canvas></div></div>
+<div class="card"><h3>Full-year plan 2026 <span class="tag t-warn">Club Budget</span></h3><p class="note">From the 2026 Club Budget (Full P&amp;L). Direct margin is revenue less cost of sales and the unit's own payroll. €000's.</p><table id="bu_bp"></table></div>
 </div>
-<div class="card"><h2>Full-year plan 2026 by business unit <span class="tag t-warn">Club Budget</span></h2><p class="note">From the 2026 Club Budget (Full P&amp;L), shared costs allocated by revenue share. Direct margin is revenue less cost of sales and the unit's own payroll. €000's.</p><table id="bu_bp"></table></div>
 </section>
 
 <section class="pane" id="rev">
@@ -299,43 +297,29 @@ function renderCash(){
 // ---------- business units
 const BUS=['Membership','Tennis','Padel','Academy','Food & Beverage','Fitness, Studio & Pool'];
 const BP={"dept":{"Membership":{"rev25":1309.1,"rev26":1354.6,"cos25":0,"cos26":0,"pay25":0,"pay26":0},"Academy":{"rev25":37.0,"rev26":60.5,"cos25":-21.9,"cos26":-32.8,"pay25":0,"pay26":0},"Food & Beverage":{"rev25":33.7,"rev26":26.0,"cos25":-6.5,"cos26":-4.7,"pay25":0,"pay26":0},"Fitness, Studio & Pool":{"rev25":41.4,"rev26":41.5,"cos25":0,"cos26":0,"pay25":-141.3,"pay26":-143.8},"Tennis":{"rev25":1539.6,"rev26":1550.5,"cos25":-775.8,"cos26":-763.4,"pay25":-17.8,"pay26":-16.1},"Padel":{"rev25":57.6,"rev26":59.3,"cos25":-10.0,"cos26":-15.0,"pay25":0,"pay26":0},"Sales":{"rev25":0,"rev26":0,"cos25":0,"cos26":0,"pay25":-101.5,"pay26":-84.6},"Reception":{"rev25":0,"rev26":0,"cos25":0,"cos26":0,"pay25":-81.4,"pay26":-120.0},"Administration":{"rev25":0,"rev26":0,"cos25":0,"cos26":0,"pay25":-65.6,"pay26":-76.1},"Establishment":{"rev25":0,"rev26":0,"cos25":0,"cos26":0,"pay25":-42.4,"pay26":-90.8}},"oh":{"Water":[-7.4,-10.9],"Gas/Heat":[-147.0,-160.3],"Electricity":[-109.5,-112.0],"Total":[-263.9,-283.2],"Cleaning":[-168.3,-179.3],"Repairs & maintenance":[-221.0,-244.5],"Establishment":[-35.6,-79.0],"Administration":[-169.0,-206.0],"Total overheads":[-927.1,-1076.2]},"ebitda":[829.0,669.1]};
-const keyShares=rev=>{const t=rev.reduce((a,b)=>a+b,0)||1;return rev.map(r=>r/t)};
 function renderBU(){
   const p=P(M),per=V==='m'?MN[M-1]+' 2026':'Year to date, January to '+MN[M-1];
-  $('#bu_note').textContent=per+' · €000\'s · shared costs allocated by revenue share (placeholder key)';
+  $('#bu_note').textContent=per+' · €000\'s · direct result of each unit: revenue less its own cost of sales and payroll. Shared cost centres are shown on one line, not allocated.';
   const rv=BUS.map(n=>cur(p.dept_rev[n])),de=BUS.map(n=>cur(p.dept_ebitda[n]));
-  const est=cur(p.dept_ebitda['Establishment']);
-  const sv=['House','Reception','Administration','Sales'].map(n=>cur(p.dept_ebitda[n]));
-  const svc={a:sv.reduce((x,y)=>x+y.a,0),b:sv.reduce((x,y)=>x+y.b,0)};
-  const shA=keyShares(rv.map(x=>x.a)),shB=keyShares(rv.map(x=>x.b));
-  let t='<tr><th>Business unit</th><th>Revenue</th><th>Direct result</th><th>Establishment &amp; utilities</th><th>Shared services</th><th>Result after allocation</th><th>% of revenue</th><th>Budget</th><th>Var</th></tr>';
-  let T={rv:0,d:0,e:0,s:0,r:0,b:0};const fin=[],dir=[],lab=[];
-  BUS.forEach((n,i)=>{
-    const e=est.a*shA[i],s2=svc.a*shA[i],res=de[i].a+e+s2,resB=de[i].b+est.b*shB[i]+svc.b*shB[i];
-    T.rv+=rv[i].a;T.d+=de[i].a;T.e+=e;T.s+=s2;T.r+=res;T.b+=resB;lab.push(n);dir.push(de[i].a);fin.push(res);
-    t+=`<tr><td>${n}</td><td>${f1(rv[i].a)}</td><td>${f1(de[i].a)}</td><td>${f1(e)}</td><td>${f1(s2)}</td><td><b>${f1(res)}</b></td><td>${rv[i].a?f1(100*res/rv[i].a)+'%':'–'}</td><td>${f1(resB)}</td><td>${sgn(res-resB)}</td></tr>`});
-  t+=`<tr class="tot"><td>Club EBITDA</td><td>${f1(T.rv)}</td><td>${f1(T.d)}</td><td>${f1(T.e)}</td><td>${f1(T.s)}</td><td>${f1(T.r)}</td><td>${T.rv?f1(100*T.r/T.rv)+'%':'–'}</td><td>${f1(T.b)}</td><td>${sgn(T.r-T.b)}</td></tr>`;
+  const sh=['Establishment','House','Reception','Administration','Sales'].map(n=>cur(p.dept_ebitda[n]));
+  const shared={a:sh.reduce((x,y)=>x+y.a,0),b:sh.reduce((x,y)=>x+y.b,0),py:sh.reduce((x,y)=>x+(y.py||0),0)};
+  let t='<tr><th>Business unit</th><th>Revenue</th><th>Budget</th><th>Var</th><th>Direct result</th><th>Budget</th><th>Var</th><th>% of revenue</th></tr>';
+  let T={rv:0,rb:0,d:0,db:0};
+  BUS.forEach((n,i)=>{T.rv+=rv[i].a;T.rb+=rv[i].b;T.d+=de[i].a;T.db+=de[i].b;
+    t+=`<tr><td>${n}</td><td>${f1(rv[i].a)}</td><td>${f1(rv[i].b)}</td><td>${sgn(rv[i].a-rv[i].b)}</td><td><b>${f1(de[i].a)}</b></td><td>${f1(de[i].b)}</td><td>${sgn(de[i].a-de[i].b)}</td><td>${rv[i].a?f1(100*de[i].a/rv[i].a)+'%':'–'}</td></tr>`});
+  t+=`<tr class="tot"><td>Business units</td><td>${f1(T.rv)}</td><td>${f1(T.rb)}</td><td>${sgn(T.rv-T.rb)}</td><td>${f1(T.d)}</td><td>${f1(T.db)}</td><td>${sgn(T.d-T.db)}</td><td>${T.rv?f1(100*T.d/T.rv)+'%':'–'}</td></tr>`;
+  t+=`<tr><td>Shared cost centres (Establishment, House, Reception, Administration, Sales)</td><td></td><td></td><td></td><td>${f1(shared.a)}</td><td>${f1(shared.b)}</td><td>${sgn(shared.a-shared.b)}</td><td></td></tr>`;
+  t+=`<tr class="tot"><td>Club EBITDA</td><td></td><td></td><td></td><td>${f1(T.d+shared.a)}</td><td>${f1(T.db+shared.b)}</td><td>${sgn(T.d+shared.a-T.db-shared.b)}</td><td></td></tr>`;
   $('#bu_t').innerHTML=t;
   const ce=cur(p['Club EBITDA']).a;
-  $('#bu_chk').textContent='Check: allocated total '+f1(T.r)+' against Club EBITDA in the P&L '+f1(ce)+(Math.abs(T.r-ce)<0.15?' · ties':' · does not tie');
-  mk('c_bu',{type:'bar',data:{labels:lab,datasets:[{label:'Direct result',data:dir,backgroundColor:RED2},{label:'After allocation',data:fin,backgroundColor:INK}]},options:{indexAxis:'y'}});
-  let q='<tr><th>Cost centre</th><th>Actual</th><th>Budget</th><th>Var</th></tr>';
-  [['Establishment','Establishment & utilities'],['House','House'],['Reception','Reception'],['Administration','Administration'],['Sales','Sales']].forEach(([n,l])=>{const x=cur(p.dept_ebitda[n]);q+=`<tr><td>${l}</td><td>${f1(x.a)}</td><td>${f1(x.b)}</td><td>${sgn(x.a-x.b)}</td></tr>`});
-  q+=`<tr class="tot"><td>Total shared</td><td>${f1(est.a+svc.a)}</td><td>${f1(est.b+svc.b)}</td><td>${sgn(est.a+svc.a-est.b-svc.b)}</td></tr>`;
-  $('#bu_pool').innerHTML=q;
-  // full-year plan
-  const D=BP.dept,oh=BP.oh,sum=(n,k)=>(D[n]||{})[k]||0;
-  const infraPay=sum('Establishment','pay26'),svcPay=sum('Sales','pay26')+sum('Reception','pay26')+sum('Administration','pay26');
-  const infra=oh['Total'][1]+oh['Cleaning'][1]+oh['Repairs & maintenance'][1]+oh['Establishment'][1]+infraPay;
-  const svcOh=oh['Total overheads'][1]-oh['Total'][1]-oh['Cleaning'][1]-oh['Repairs & maintenance'][1]-oh['Establishment'][1]+svcPay;
-  const sh=keyShares(BUS.map(n=>D[n].rev26));
-  let b='<tr><th>Business unit</th><th>Revenue 2025</th><th>Revenue plan 2026</th><th>Direct margin 2026</th><th>Infrastructure &amp; utilities</th><th>Shared services</th><th>Result 2026</th><th>% of revenue</th></tr>';
-  let X={r25:0,r26:0,d:0,i:0,s:0,e:0};
-  BUS.forEach((n,i)=>{const d=D[n],dm=d.rev26+d.cos26+d.pay26,ia=infra*sh[i],sa=svcOh*sh[i],res=dm+ia+sa;
-    X.r25+=d.rev25;X.r26+=d.rev26;X.d+=dm;X.i+=ia;X.s+=sa;X.e+=res;
-    b+=`<tr><td>${n}</td><td>${f1(d.rev25)}</td><td>${f1(d.rev26)}</td><td>${f1(dm)}</td><td>${f1(ia)}</td><td>${f1(sa)}</td><td><b>${f1(res)}</b></td><td>${d.rev26?f1(100*res/d.rev26)+'%':'–'}</td></tr>`});
-  b+=`<tr class="tot"><td>Club EBITDA plan</td><td>${f1(X.r25)}</td><td>${f1(X.r26)}</td><td>${f1(X.d)}</td><td>${f1(X.i)}</td><td>${f1(X.s)}</td><td>${f1(X.e)}</td><td>${f1(100*X.e/X.r26)}%</td></tr>`;
-  b+=`<tr><td colspan="8" class="note" style="text-align:left">Infrastructure pool ${f1(-infra)}: utilities ${f1(-oh['Total'][1])} (gas ${f1(-oh['Gas/Heat'][1])}, electricity ${f1(-oh['Electricity'][1])}, water ${f1(-oh['Water'][1])}), cleaning, maintenance, establishment. Plan Club EBITDA ${f1(BP.ebitda[1])}, allocated total ${f1(X.e)} (the gap is small lines not assigned to a unit).</td></tr>`;
+  $('#bu_chk').textContent='Check: units plus shared centres '+f1(T.d+shared.a)+' against Club EBITDA in the P&L '+f1(ce)+(Math.abs(T.d+shared.a-ce)<0.15?' · ties':' · does not tie');
+  mk('c_bu',{type:'bar',data:{labels:BUS,datasets:[{label:'Actual',data:de.map(x=>x.a),backgroundColor:RED},{label:'Budget',data:de.map(x=>x.b),backgroundColor:SAND}]},options:{indexAxis:'y'}});
+  const D=BP.dept;
+  let b='<tr><th>Business unit</th><th>Revenue 2025</th><th>Revenue 2026</th><th>Direct margin 2026</th><th>% of revenue</th></tr>';
+  let X={r25:0,r26:0,d:0};
+  BUS.forEach(n=>{const d=D[n],dm=d.rev26+d.cos26+d.pay26;X.r25+=d.rev25;X.r26+=d.rev26;X.d+=dm;
+    b+=`<tr><td>${n}</td><td>${f1(d.rev25)}</td><td>${f1(d.rev26)}</td><td><b>${f1(dm)}</b></td><td>${d.rev26?f1(100*dm/d.rev26)+'%':'–'}</td></tr>`});
+  b+=`<tr class="tot"><td>Business units</td><td>${f1(X.r25)}</td><td>${f1(X.r26)}</td><td>${f1(X.d)}</td><td>${f1(100*X.d/X.r26)}%</td></tr>`;
   $('#bu_bp').innerHTML=b;
 }
 
@@ -343,7 +327,7 @@ function renderBU(){
 function renderHealth(){
   const rows=[
    ['Revenue by department, EBITDA, budget','Monthly report from DATEV, shared on the CRM','p-pack','Monthly','Replaces the manual pack; plan of accounts rebuilt in DATEV'],
-   ['Cost allocation, utilities by business unit','Monthly report from DATEV','p-pack','Monthly','Analytic allocation; utilities reallocated by business unit'],
+   ['Results by business unit','Monthly report from DATEV','p-pack','Monthly','Analytic cost allocation by unit; utilities allocation is outside this demo'],
    ['Revenue cash vs accrual, deferred revenue','PerfectGym via CRM','p-live','Live','Sales go to the tax authority from PerfectGym (22% VAT)'],
    ['Members, starters, leavers, yield','PerfectGym via CRM','p-live','Live','Monthly report and CRM differ: reconcile (see right)'],
    ['Subscriptions sold, cancellations, debts','PerfectGym via CRM','p-live','Live','Automatic, always current'],
