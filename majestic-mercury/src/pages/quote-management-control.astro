@@ -1,0 +1,612 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PhotoBand from '../components/PhotoBand.astro';
+
+interface LineItem {
+  label: string;
+  note?: string;
+}
+interface Block {
+  id: string;
+  name: string;
+  subtitle?: string;
+  price: number;
+  items: LineItem[];
+  caveat?: string;
+}
+
+const blocks: Block[] = [
+  {
+    id: '01',
+    name: 'Active cycle',
+    subtitle: 'Clean the revenue at the source',
+    price: 3200,
+    items: [
+      { label: 'Sales confirmed in PerfectGym at 22% VAT sent for instant fiscal receipt issuing' },
+      { label: 'Retirement of Tilby: sales taken from PerfectGym' },
+      { label: 'Playtomic revenue through its API' },
+      { label: 'Cleaning and classification of all active-cycle revenue' },
+      { label: 'Live daily sales indicators: leads, tours and appointments, walk-ins, new contracts, target, conversion, membership mix' },
+    ],
+  },
+  {
+    id: '02',
+    name: 'Connection to Superbill',
+    subtitle: 'Cleaned active cycle into the accounting software',
+    price: 3000,
+    items: [
+      { label: 'The cleaned active cycle sent to Superbill through its API' },
+      { label: 'Bank data sent as well, once the bank module is active' },
+      { label: 'Tests with the bookkeeper and the Studio, and a parallel run before go-live' },
+    ],
+  },
+  {
+    id: '03',
+    name: 'Management dashboard',
+    subtitle: 'Live and consolidated view for management',
+    price: 3500,
+    items: [
+      { label: 'Live dashboard in the club CRM, with the payment schedule and cash flow taken from Superbill, kept by the bookkeeper' },
+      { label: 'Monthly import of the consolidated report (active and passive cycles) into the dashboard' },
+      { label: 'Results by business unit, budget comparison, members and receivables' },
+    ],
+  },
+  {
+    id: '04',
+    name: 'Daily email',
+    subtitle: 'Every morning to the management team',
+    price: 1000,
+    items: [
+      { label: 'Daily sales report and first accounting entries (prima nota)' },
+    ],
+  },
+  {
+    id: '05',
+    name: 'Coordination and go-live',
+    subtitle: 'Studio, accounting consultant and new bookkeeper',
+    price: 1500,
+    items: [
+      { label: 'Coordination with the Studio, Laura Bonamico and the new bookkeeper' },
+      { label: 'Monitoring during the first closing' },
+    ],
+  },
+];
+
+const bank = {
+  name: 'Bank connection',
+  subtitle: 'Optional module · billed only if delivered',
+  options: [
+    { id: 'A', name: 'File import', text: 'The club downloads the statement and uploads it into the CRM', price: 400 },
+    { id: 'B', name: 'Automatic connection', text: 'Bank movements downloaded daily, every 2 hours or hourly; instant only if the bank allows it', price: 1600 },
+  ],
+};
+
+const corePrice = blocks.reduce((s, b) => s + b.price, 0);
+const bankPrice = bank.options[1].price;
+const totalPrice = corePrice + bankPrice;
+const monthlyFee = 500;
+const eur = (n: number) => '€' + n.toLocaleString('en-US');
+---
+
+<BaseLayout title="TCA · Management Control Quote" initialHeaderDark={true} noindex={true}>
+
+  <main class="qt-page">
+
+    <div class="qt-header">
+      <span class="eyebrow eyebrow--grey">Confidential · Commercial Offer</span>
+      <h1 class="qt-title">Quote &mdash; <em>Management Control Project</em></h1>
+      <div class="qt-meta">
+        <div class="qt-meta-item"><span>Client</span>Tennis Club Ambrosiano SSD a r.l.</div>
+        <div class="qt-meta-item"><span>Supplier</span>Ready 2 Digital Srl</div>
+        <div class="qt-meta-item"><span>VAT no.</span>16573891005</div>
+        <div class="qt-meta-item"><span>Date</span>October 29, 2026</div>
+        <div class="qt-meta-item"><span>Validity</span>30 days</div>
+        <div class="qt-meta-item"><span>Target go-live</span>January 1, 2027</div>
+      </div>
+    </div>
+
+    <p class="qt-intro">
+      This offer covers the work to clean the club&rsquo;s active cycle at the source, connect it to the new
+      accounting software, and give management a live and a consolidated view. Prices are
+      <strong>fixed per block</strong>, for a core total of <strong>{eur(corePrice)}</strong>, plus the optional
+      bank module and a monthly fee after go-live. All amounts are subject to 22% VAT.
+    </p>
+
+    <PhotoBand img="club-family.jpeg" eyebrow="Investment" blur={3} line="From manual reconciliation to instant management control." />
+
+    <!-- ── BLOCKS ── -->
+    <div class="qt-streams">
+      {blocks.map(w => (
+        <section class="qt-stream">
+          <header class="qt-stream-head">
+            <div class="qt-stream-name">
+              <em>{w.id}</em>
+              <div>
+                <h2>{w.name}</h2>
+                {w.subtitle && <span class="qt-stream-sub">{w.subtitle}</span>}
+              </div>
+            </div>
+            <div class="qt-stream-price">
+              <span class="qt-price">{eur(w.price)}</span>
+              <span class="qt-vat">+ 22% VAT</span>
+            </div>
+          </header>
+          <ul class="qt-items">
+            {w.items.map(it => (
+              <li>
+                {it.label}
+                {it.note && <span class="qt-note">{it.note}</span>}
+              </li>
+            ))}
+          </ul>
+          {w.caveat && <p class="qt-caveat">{w.caveat}</p>}
+        </section>
+      ))}
+    </div>
+
+    <div class="qt-total">
+      <div class="qt-total-label">
+        Core total
+        <span>Fixed price per block</span>
+      </div>
+      <div class="qt-total-price">{eur(corePrice)} <span class="qt-total-vat">+ 22% VAT</span></div>
+    </div>
+
+    <!-- ── BANK MODULE ── -->
+    <div class="qt-streams">
+      <section class="qt-stream">
+        <header class="qt-stream-head">
+          <div class="qt-stream-name">
+            <em>06</em>
+            <div>
+              <h2>{bank.name}</h2>
+              <span class="qt-stream-sub">{bank.subtitle}</span>
+            </div>
+          </div>
+          <div class="qt-stream-price">
+            <span class="qt-price">{eur(bank.options[0].price)} &ndash; {eur(bank.options[1].price)}</span>
+            <span class="qt-vat">+ 22% VAT</span>
+          </div>
+        </header>
+        <ul class="qt-items">
+          <li>
+            Feasibility analysis <span class="qt-note">Included at no charge. If the connection is not possible, the module is not billed.</span>
+          </li>
+          {bank.options.map(o => (
+            <li>
+              <strong>Option {o.id} &middot; {o.name} &mdash; {eur(o.price)}.</strong> {o.text}
+            </li>
+          ))}
+          <li>If the bank can be connected directly to Superbill, the setup is verified and supported at no charge</li>
+        </ul>
+        <p class="qt-caveat">Prices assume up to two banks or accounts. The total below includes option B.</p>
+      </section>
+    </div>
+
+    <div class="qt-total">
+      <div class="qt-total-label">
+        Total with bank option B
+        <span>Core {eur(corePrice)} + bank connection {eur(bankPrice)}</span>
+      </div>
+      <div class="qt-total-price">{eur(totalPrice)} <span class="qt-total-vat">+ 22% VAT</span></div>
+    </div>
+
+    <!-- ── MONTHLY FEE ── -->
+    <div class="qt-streams">
+      <section class="qt-stream">
+        <header class="qt-stream-head">
+          <div class="qt-stream-name">
+            <em>07</em>
+            <div>
+              <h2>Monthly fee</h2>
+              <span class="qt-stream-sub">After go-live</span>
+            </div>
+          </div>
+          <div class="qt-stream-price">
+            <span class="qt-price">{eur(monthlyFee)} / month</span>
+            <span class="qt-vat">+ 22% VAT</span>
+          </div>
+        </header>
+        <ul class="qt-items">
+          <li>Starts 30 days after the final go-live of the whole project</li>
+          <li>Maintenance of the integrations and the dashboard, monitoring of the daily email, minor changes and support</li>
+        </ul>
+      </section>
+    </div>
+
+    <!-- ── CLUB COSTS ── -->
+    <div class="qt-terms">
+      <div class="qt-terms-block">
+        <h3>Costs borne by the club, paid directly to providers</h3>
+        <ul>
+          <li>Superbill licence</li>
+          <li>Instant fiscal-receipt service: estimated €300&ndash;400 a year</li>
+          <li>Supabase database: about $20 a month</li>
+          <li>Vercel, publication of the application: about $20 a month</li>
+          <li>SendGrid, to be evaluated: about $20 a month, for up to 50,000 bulk emails a month; activated only if the club wants it</li>
+          <li>Bank data provider, only for the automatic connection: the amount is known after the feasibility analysis</li>
+        </ul>
+      </div>
+      <div class="qt-terms-block">
+        <h3>Terms</h3>
+        <ul>
+          <li>Proposed invoicing of the core: 30% on signature &middot; 40% when the dashboard and the Superbill connection are ready &middot; 30% at go-live</li>
+          <li>The bank module is invoiced on delivery</li>
+          <li>The monthly fee is invoiced monthly in arrears</li>
+          <li>All amounts are subject to VAT at the statutory rate of 22%</li>
+          <li>Offer validity: 30 days from the issue date</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qt-terms">
+      <div class="qt-terms-block">
+        <h3>Exclusions</h3>
+        <ul>
+          <li>The accounting software, its configuration and the chart of accounts (Laura Bonamico)</li>
+          <li>Selection, hiring and training of the bookkeeper</li>
+          <li>Bank reconciliation in the books and the payables, kept in Superbill by the bookkeeper</li>
+          <li>Suggested matching of member transfers against PerfectGym charges: not included, quoted separately if requested</li>
+          <li>Activities beyond the described scope: assessed and quoted separately</li>
+        </ul>
+      </div>
+      <div class="qt-terms-block">
+        <h3>Assumptions</h3>
+        <ul>
+          <li>API access to Superbill, Playtomic, PerfectGym and the bank is provided by the club in time</li>
+          <li>Instant fiscal receipts follow the rules already used in my previous implementation</li>
+          <li>The timeline depends on data and access being available by mid-November</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ── ACCEPTANCE ── -->
+    <section class="qt-accept">
+      <h3>How to accept this offer</h3>
+      <ol class="qt-accept-steps">
+        <li>Reply to the sender confirming the offer, or send a signed copy of this page saved as a PDF</li>
+        <li>Indicate the bank option (none, A or B) and the invoicing details (registered office, VAT no.)</li>
+        <li>Send everything to <strong>maurizio@ready2digital.it</strong></li>
+      </ol>
+    </section>
+
+    <p class="qt-footer">Confidential · Tennis Club Ambrosiano · 2026</p>
+
+  </main>
+
+</BaseLayout>
+
+<style>
+  :global(body) { background: #fff; }
+
+  /* ── PAGE ── */
+  .qt-page {
+    padding: calc(var(--header-h) + 3.5vh) clamp(20px, 5vw, 72px) 6vh;
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+
+  .qt-header { margin-bottom: 3vh; }
+  .qt-title {
+    font-family: var(--fd);
+    font-size: clamp(2.4rem, 5vw, 5rem);
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1.0;
+    color: var(--text);
+    margin-bottom: 2vh;
+  }
+  .qt-title em { color: var(--red); font-style: normal; }
+
+  .qt-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 36px;
+    border-top: 1px solid var(--grey-light);
+    border-bottom: 1px solid var(--grey-light);
+    padding: 14px 0;
+  }
+  .qt-meta-item {
+    font-size: clamp(15px, 1.15vw, 18px);
+    font-weight: 500;
+    color: var(--text);
+  }
+  .qt-meta-item span {
+    display: block;
+    font-family: var(--fd);
+    font-size: clamp(10px, 0.78vw, 13px);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    margin-bottom: 2px;
+  }
+
+  .qt-intro {
+    font-size: clamp(15px, 1.15vw, 18px);
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.7;
+    max-width: 70ch;
+    margin-bottom: 4vh;
+  }
+
+  /* ── STREAMS ── */
+  .qt-streams { display: flex; flex-direction: column; gap: 18px; }
+
+  .qt-stream {
+    border: 1px solid var(--grey-light);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .qt-stream-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 22px;
+    background: #faf9f7;
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .qt-stream-name {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .qt-stream-name em {
+    font-family: var(--fd);
+    font-style: normal;
+    font-size: clamp(13px, 0.95vw, 15px);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--red);
+  }
+  .qt-stream-name h2 {
+    font-family: var(--fd);
+    font-size: clamp(20px, 1.7vw, 25px);
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text);
+    line-height: 1.1;
+  }
+  .qt-stream-sub {
+    display: block;
+    font-size: clamp(13px, 0.95vw, 15px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--grey-mid);
+    margin-top: 2px;
+  }
+  .qt-stream-price { text-align: right; flex-shrink: 0; }
+  .qt-price {
+    font-family: var(--fd);
+    font-size: clamp(20px, 1.7vw, 25px);
+    font-weight: 800;
+    color: var(--red);
+    white-space: nowrap;
+  }
+
+  .qt-items {
+    list-style: none;
+    padding: 16px 22px 6px;
+    margin: 0;
+  }
+  .qt-items li {
+    font-size: clamp(15px, 1.08vw, 17px);
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.6;
+    padding: 0 0 10px 18px;
+    position: relative;
+  }
+  .qt-items li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--red);
+    font-weight: 700;
+  }
+  .qt-note {
+    display: block;
+    font-size: clamp(13px, 0.9vw, 14px);
+    font-style: italic;
+    color: var(--grey-mid);
+  }
+  .qt-caveat {
+    margin: 0 22px 16px;
+    padding: 10px 14px;
+    background: rgba(139,26,26,0.05);
+    border-left: 3px solid var(--red);
+    border-radius: 0 4px 4px 0;
+    font-size: clamp(14px, 0.98vw, 16px);
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+
+  /* ── TOTAL ── */
+  .qt-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 24px;
+    padding: 20px 24px;
+    background: var(--red);
+    border-radius: 6px;
+    color: #fff;
+  }
+  .qt-total-label {
+    font-family: var(--fd);
+    font-size: clamp(18px, 1.4vw, 22px);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .qt-total-label span {
+    display: block;
+    font-family: var(--fb);
+    font-size: clamp(13px, 0.9vw, 14px);
+    font-weight: 300;
+    text-transform: none;
+    letter-spacing: 0;
+    color: rgba(255,255,255,0.7);
+    margin-top: 3px;
+  }
+  .qt-total-price {
+    font-family: var(--fd);
+    font-size: clamp(26px, 2.6vw, 38px);
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  .qt-total-vat {
+    font-size: 0.55em;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: rgba(255,255,255,0.75);
+  }
+
+  .qt-vat {
+    display: block;
+    font-family: var(--fd);
+    font-size: clamp(12px, 0.85vw, 14px);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    text-align: right;
+  }
+
+  /* ── DIVIDER ── */
+  .qt-divider {
+    margin: 7vh 0 5vh;
+    border: none;
+    border-top: 3px solid var(--red);
+    opacity: 0.85;
+  }
+
+  /* ── TERMS ── */
+  .qt-terms {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-top: 4vh;
+  }
+  .qt-terms-block h3 {
+    font-family: var(--fd);
+    font-size: clamp(13px, 0.95vw, 15px);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 10px;
+  }
+  .qt-terms-block ul { list-style: none; margin: 0; padding: 0; }
+  .qt-terms-block li {
+    font-size: clamp(14px, 1.0vw, 16px);
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.6;
+    padding: 0 0 8px 16px;
+    position: relative;
+  }
+  .qt-terms-block li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--red);
+    font-weight: 700;
+  }
+
+  /* ── ACCEPTANCE ── */
+  .qt-accept {
+    margin-top: 4vh;
+    padding: 22px 24px;
+    background: #faf9f7;
+    border: 1px solid var(--grey-light);
+    border-left: 3px solid var(--red);
+    border-radius: 6px;
+  }
+  .qt-accept h3 {
+    font-family: var(--fd);
+    font-size: clamp(15px, 1.15vw, 18px);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 12px;
+  }
+  .qt-accept-steps {
+    margin: 0 0 18px;
+    padding-left: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .qt-accept-steps li {
+    font-size: clamp(15px, 1.1vw, 17px);
+    font-weight: 300;
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+  .qt-accept-steps li::marker {
+    font-family: var(--fd);
+    font-weight: 700;
+    color: var(--red);
+  }
+  .qt-contract-btn {
+    display: inline-block;
+    font-family: var(--fd);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--red);
+    border-radius: 4px;
+    padding: 11px 24px;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .qt-contract-btn:hover { background: var(--red-dark); }
+
+  .qt-footer {
+    margin-top: 5vh;
+    border-top: 1px solid var(--grey-light);
+    padding-top: 2vh;
+    font-size: clamp(9px, 0.65vw, 11px);
+    color: var(--grey-mid);
+    font-family: var(--fd);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    .qt-page { padding: calc(var(--header-h) + 20px) 16px 40px; }
+    .qt-title { font-size: clamp(1.9rem, 8.5vw, 2.6rem); }
+    .qt-meta { gap: 10px 24px; }
+    .qt-meta-item { font-size: 14px; }
+    .qt-meta-item span { font-size: 10px; }
+    .qt-intro { font-size: 15px; }
+    .qt-stream-head { flex-direction: column; align-items: flex-start; gap: 8px; padding: 14px 16px; }
+    .qt-stream-price { text-align: left; }
+    .qt-stream-name h2 { font-size: 19px; }
+    .qt-stream-sub { font-size: 13px; }
+    .qt-price { font-size: 20px; }
+    .qt-items { padding: 14px 16px 4px; }
+    .qt-items li { font-size: 15px; }
+    .qt-note { font-size: 13px; }
+    .qt-caveat { margin: 0 16px 14px; font-size: 13px; }
+    .qt-total { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .qt-total-price { font-size: 26px; }
+    .qt-accept { padding: 18px 16px; }
+    .qt-accept h3 { font-size: 15px; }
+    .qt-accept-steps li { font-size: 15px; }
+    .qt-terms { grid-template-columns: 1fr; gap: 22px; }
+    .qt-terms-block li { font-size: 14px; }
+    .qt-footer { font-size: 12px; }
+  }
+</style>
+
