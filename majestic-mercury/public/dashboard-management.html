@@ -334,7 +334,7 @@ function renderHealth(){
    ['Playtomic revenue and fees','Playtomic API','p-build','To build','Replaces manual entry'],
    ['Point-of-sale, products','PerfectGym (Tilby retired)','p-part','Partly','Tilby switched off once PerfectGym sells products'],
    ['Bank transfers and receivables','Bank connection, matching in TCA','p-build','To build','Semi-automatic reconciliation with suggestions'],
-   ['Payables, due dates, cash flow','DATEV: bookkeeper, passive cycle','p-build','To build','Payment schedule from the books'],
+   ['Payables, due dates, cash flow','DATEV, kept by the bookkeeper (passive cycle)','p-build','To build','Live from the accounting software; owned by the bookkeeper'],
    ['Daily sales report and first entries','TCA email to Brian, Thomas, Alice','p-build','To build','Every morning']];
   let t='<tr><th>KPI</th><th style="text-align:left">Source</th><th>Status</th></tr>';
   rows.forEach(r=>{t+=`<tr><td>${r[0]}<div class="note" style="margin:0">${r[4]}</div></td><td style="text-align:left">${r[1]}</td><td><span class="pill ${r[2]}">${r[3]}</span></td></tr>`});
