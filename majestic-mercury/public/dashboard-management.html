@@ -65,7 +65,7 @@ body.embed .back{display:block}body.embed footer{display:none}
 <header><div class="hrow">
 <div><p class="kick">Tennis Club Ambrosiano · Management control</p><h1>Management Dashboard</h1>
 <p class="sub">Proof of concept · Monthly report (Management Pack) Jan–Sep 2026 · live CRM as of <span id="asof"></span></p></div>
-<div class="poc">Proof of concept. Monthly report figures are the Management Pack produced today; in the new flow they come from the accounting software (DATEV) once a month. CRM figures are live.</div>
+<div class="poc">Proof of concept. Monthly report figures are the Management Pack produced today; in the new flow they come from the accounting software (Superbill) once a month. CRM figures are live.</div>
 </div></header>
 <nav><div class="navin">
 <button class="tab on" data-p="overview">Overview</button>
@@ -326,15 +326,15 @@ function renderBU(){
 // ---------- health
 function renderHealth(){
   const rows=[
-   ['Revenue by department, EBITDA, budget','Monthly report from DATEV, shared on the CRM','p-pack','Monthly','Replaces the manual pack; plan of accounts rebuilt in DATEV'],
-   ['Results by business unit','Monthly report from DATEV','p-pack','Monthly','Analytic cost allocation by unit; utilities allocation is outside this demo'],
+   ['Revenue by department, EBITDA, budget','Monthly report from Superbill, shared on the CRM','p-pack','Monthly','Replaces the manual pack; plan of accounts rebuilt in Superbill'],
+   ['Results by business unit','Monthly report from Superbill','p-pack','Monthly','Analytic cost allocation by unit; utilities allocation is outside this demo'],
    ['Revenue cash vs accrual, deferred revenue','PerfectGym via CRM','p-live','Live','Sales go to the tax authority from PerfectGym (22% VAT)'],
    ['Members, starters, leavers, yield','PerfectGym via CRM','p-live','Live','Monthly report and CRM differ: reconcile (see right)'],
    ['Subscriptions sold, cancellations, debts','PerfectGym via CRM','p-live','Live','Automatic, always current'],
    ['Playtomic revenue and fees','Playtomic API','p-build','To build','Replaces manual entry'],
    ['Point-of-sale, products','PerfectGym (Tilby retired)','p-part','Partly','Tilby switched off once PerfectGym sells products'],
    ['Bank transfers and receivables','Bank connection, matching in TCA','p-build','To build','Semi-automatic reconciliation with suggestions'],
-   ['Payables, due dates, cash flow','DATEV, kept by the bookkeeper (passive cycle)','p-build','To build','Live from the accounting software; owned by the bookkeeper'],
+   ['Payables, due dates, cash flow','Superbill, kept by the bookkeeper (passive cycle)','p-build','To build','Live from the accounting software; owned by the bookkeeper'],
    ['Daily sales report and first entries','TCA email to Brian, Thomas, Alice','p-build','To build','Every morning']];
   let t='<tr><th>KPI</th><th style="text-align:left">Source</th><th>Status</th></tr>';
   rows.forEach(r=>{t+=`<tr><td>${r[0]}<div class="note" style="margin:0">${r[4]}</div></td><td style="text-align:left">${r[1]}</td><td><span class="pill ${r[2]}">${r[3]}</span></td></tr>`});
