@@ -110,7 +110,7 @@ body.embed .back{display:block}body.embed footer{display:none}
 <section class="pane" id="pl">
 <div class="grid g21">
 <div class="card"><h2>Profit and loss <span class="tag t-pack">Monthly report</span></h2><p class="note" id="pl_note"></p><table id="pl_t"></table></div>
-<div class="card"><h3>Club EBITDA by department</h3><p class="note">€000's, selected period.</p><div class="ch tall"><canvas id="c_dept"></canvas></div></div>
+<div class="card"><h3>Club EBITDA: business units and shared costs</h3><p class="note">€000's, selected period. Shared costs: Establishment, House, Reception, Administration, Sales.</p><div class="ch tall"><canvas id="c_dept"></canvas></div></div>
 </div>
 <div class="card"><h2>Departments <span class="tag t-pack">Monthly report</span></h2><p class="note">Revenue and club EBITDA against budget and last year (month only for last year). €000's.</p><table id="dept_t"></table></div>
 </section>
@@ -233,9 +233,10 @@ function renderPL(){
   let h='<tr><th>€000\'s</th><th>Actual</th><th>Budget</th><th>Var</th><th>Last year</th><th>Var</th></tr>';
   PLROWS.forEach(([key,lab,cls])=>{const l=p[key];if(!l)return;const x=cur(l);h+=`<tr class="${cls||''}"><td>${lab}</td><td>${f1(x.a)}</td><td>${f1(x.b)}</td><td>${sgn(x.a-x.b,/Cost|Payroll|Overheads|Central|Deprec/.test(lab)&&false)}</td><td>${f1(x.py)}</td><td>${sgn(x.a-x.py)}</td></tr>`});
   $('#pl_t').innerHTML=h;
-  const dep=Object.entries(p.dept_ebitda).filter(([n,v])=>!/Central|Corporate/.test(n)&&(Math.abs(v.a)>0.05||Math.abs(v.ya)>0.05));
-  const val=v=>V==='m'?v.a:v.ya;
-  mk('c_dept',{type:'bar',data:{labels:dep.map(d=>d[0]),datasets:[{data:dep.map(d=>val(d[1])),backgroundColor:dep.map(d=>val(d[1])>=0?RED:'#9A9188')}]},options:{indexAxis:'y',plugins:{legend:{display:false}}}});
+  const BUN=['Membership','Tennis','Padel','Academy','Food & Beverage','Fitness, Studio & Pool'],SHR=['Establishment','House','Reception','Administration','Sales'];
+  const dv=n=>V==='m'?p.dept_ebitda[n].a:p.dept_ebitda[n].ya;
+  const dep=BUN.map(n=>[n,dv(n)]).concat([['Shared costs',SHR.reduce((x,n)=>x+dv(n),0)]]);
+  mk('c_dept',{type:'bar',data:{labels:dep.map(d=>d[0]),datasets:[{data:dep.map(d=>d[1]),backgroundColor:dep.map(d=>d[1]>=0?RED:'#9A9188')}]},options:{indexAxis:'y',plugins:{legend:{display:false}}}});
   let t='<tr><th>Department</th><th>Revenue</th><th>Budget</th><th>Var</th><th>Club EBITDA</th><th>Budget</th><th>Var</th><th>Last year</th></tr>';
   const names=Object.keys(p.dept_rev).filter(n=>Math.abs(p.dept_rev[n].ya)+Math.abs((p.dept_ebitda[n]||{ya:0}).ya)>0.05);
   let sr=0,sb=0,se=0,seb=0;
