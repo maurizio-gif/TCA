@@ -18,24 +18,24 @@ interface Block {
 const blocks: Block[] = [
   {
     id: '01',
-    name: 'Active cycle',
+    name: 'Revenue',
     subtitle: 'Clean the revenue at the source',
     price: 3200,
     items: [
       { label: 'Sales confirmed in PerfectGym at 22% VAT sent for instant fiscal receipt issuing' },
       { label: 'Retirement of Tilby: sales taken from PerfectGym' },
       { label: 'Playtomic revenue through its API' },
-      { label: 'Cleaning and classification of all active-cycle revenue' },
+      { label: 'Cleaning and classification of all revenue' },
       { label: 'Live daily sales indicators: leads, tours and appointments, walk-ins, new contracts, target, conversion, membership mix' },
     ],
   },
   {
     id: '02',
     name: 'Connection to Superbill',
-    subtitle: 'Cleaned active cycle into the accounting software',
+    subtitle: 'Cleaned revenue into the accounting software',
     price: 3000,
     items: [
-      { label: 'The cleaned active cycle sent to Superbill through its API' },
+      { label: 'The cleaned revenue data sent to Superbill through its API' },
       { label: 'Bank data sent as well, once the bank module is active' },
       { label: 'Tests with the bookkeeper and the Studio, and a parallel run before go-live' },
     ],
@@ -47,7 +47,7 @@ const blocks: Block[] = [
     price: 3500,
     items: [
       { label: 'Live dashboard in the club CRM, with the payment schedule and cash flow taken from Superbill, kept by the bookkeeper' },
-      { label: 'Monthly import of the consolidated report (active and passive cycles) into the dashboard' },
+      { label: 'Monthly import of the consolidated report (revenue and costs) into the dashboard' },
       { label: 'Results by business unit, budget comparison, members and receivables' },
     ],
   },
@@ -106,7 +106,7 @@ const eur = (n: number) => '€' + n.toLocaleString('en-US');
     </div>
 
     <p class="qt-intro">
-      This offer covers the work to clean the club&rsquo;s active cycle at the source, connect it to the new
+      This offer covers the work to clean the club&rsquo;s revenue at the source, connect it to the new
       accounting software, and give management a live and a consolidated view. Prices are
       <strong>fixed per block</strong>, for a core total of <strong>{eur(corePrice)}</strong>, plus the optional
       bank module and a monthly fee after go-live. All amounts are subject to 22% VAT.
